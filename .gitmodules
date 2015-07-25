@@ -1,0 +1,3 @@
+[submodule "thing_libutils"]
+	path = thing_libutils
+	url = https://github.com/oysteinkrog/thing_libutils.git
