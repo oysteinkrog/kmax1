@@ -673,7 +673,7 @@ module extras()
     }
 }
 
-module design()
+module extruder()
 {
     extruder_own();
 
@@ -718,6 +718,6 @@ module print()
     }
 }
 
-design();
+/*extruder();*/
 /*print();*/
 
