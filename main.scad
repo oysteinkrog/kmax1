@@ -7,7 +7,7 @@ include <MCAD/motors.scad>
 include <config.scad>
 include <extruder-direct.scad>
 
-xaxis_pos_z = 150;
+xaxis_pos_z = 150*mm;
 
 main();
 

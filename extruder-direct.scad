@@ -73,42 +73,42 @@ module capmount(show_sensor=false,lower_height=12,mount_lower=12,height=10,thick
 house_bearing=bearing_MR128;
 guidler_bearing=bearing_625;
 
-house_padding_wd=11;
-house_padding_h=4;
+house_padding_wd=11*mm;
+house_padding_h=4*mm;
 
-filapath_width=10;
+filapath_width=10*mm;
 
 // 4mm ptfe tube
-filament_path_d = 4;
+filament_path_d = 4*mm;
 
 // offset from the center of the bolt to the filament path
-bolt_center_offset = 4.2;
+bolt_center_offset = 4.2*mm;
 
-hotend_mount_h=10.5;
+hotend_mount_h=10.5*mm;
 
 // from E3D V6 heatsink drawing
 // http://wiki.e3d-online.com/wiki/File:DRAWING-V6-175-SINK.png
 // each entry == dia + h
-hotmount_d_h=[[16,3.7],[12,6],[16,3]];
-hotmount_outer_size=max(vec_i(hotmount_d_h,0))+10;
-hotmount_h_offset=-2;
+hotmount_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
+hotmount_outer_size=max(vec_i(hotmount_d_h,0))+10*mm;
+hotmount_h_offset=-2*mm;
 // which side does hotend slide in (x-axis, i.e. -1 is left, 1 is right)
-hotmount_clamp_side=1;
+hotmount_clamp_side=1*mm;
 
-hotmount_tolerance=1.05;
+hotmount_tolerance=1.05*mm;
 
 // hotmount clamp screws distance from center
 hotmount_clamp_screws_dist = hotmount_d_h[1][1] + 2*screw_m3[0];
-hotmount_clamp_pad = 2.5;
-hotmount_clamp_thickness = 5;
+hotmount_clamp_pad = 2.5*mm;
+hotmount_clamp_thickness = 5*mm;
 hotmount_clamp_y = 2*(hotmount_clamp_screws_dist + screw_m3[0] + hotmount_clamp_pad);
 hotmount_clamp_height = hotmount_d_h[1][1];
 
 // length of the guidler bearing bolt/screw
-guidler_bolt_h=10;
+guidler_bolt_h=10*mm;
 
 guidler_mount_w=guidler_bearing[2];
-guidler_mount_d=9;
+guidler_mount_d=9*mm;
 
 guidler_w=max(guidler_mount_w+7, guidler_bearing[2]*2.8);
 guidler_d=5;
@@ -123,21 +123,21 @@ extruder_guidler_mount_off_y = guidler_mount_off_d - guidler_bearing[1]/2;
 house_inner_w=max(guidler_w+3, filament_d*2 + 4*2);
 
 guidler_screws=screw_m3;
-guidler_screws_distance=6;
-guidler_screws_mount_d = 10;
-guidler_screws_mount_d_offset = 0;
+guidler_screws_distance=6*mm;
+guidler_screws_mount_d = 10*mm;
+guidler_screws_mount_d_offset = 0*mm;
 
-xcarriage_mount_hole_distance = 23;
-xcarriage_mount_w = xcarriage_mount_hole_distance + 6;
-xcarriage_mount_d = 6;
+xcarriage_mount_hole_distance = 23*mm;
+xcarriage_mount_w = xcarriage_mount_hole_distance + 6*mm;
+xcarriage_mount_d = 6*mm;
 xcarriage_mount_h = xcarriage_mount_w;
 
 house_w = max(house_inner_w+2*house_bearing[2], hotmount_outer_size, xcarriage_mount_w);
 house_d=house_bearing[1]/2+house_padding_wd;
 house_h=house_bearing[1]+house_padding_h;
 
-house_guidler_screw_h = guidler_screws[0]*2+8;
-house_guidler_screw_h_offset = house_h/2 + guidler_screws[0]*2 + 4;
+house_guidler_screw_h = guidler_screws[0]*2+8*mm;
+house_guidler_screw_h_offset = house_h/2 + guidler_screws[0]*2 + 4*mm;
 
 CustomNema17 = [
                 [NemaModel, 17],
@@ -164,9 +164,9 @@ CustomNema17 = [
 extruder_motor = CustomNema17;
 
 // 80t + 20t w/228-2GT-6 belt
-gears_distance=38.8;
-motor_offset_x = -9;
-motor_offset_y = 27;
+gears_distance=38.8*mm;
+motor_offset_x = -9*mm;
+motor_offset_y = 27*mm;
 motor_offset_z = pythag_leg(motor_offset_y,gears_distance);
 
 alpha = 0.7;
@@ -178,7 +178,7 @@ color_guidler = [0.4,0.5,0.8, alpha];
 
 extruder_guidler_roll = 45;
 
-house_offset_xcarriage_y = house_d+19;
+house_offset_xcarriage_y = house_d+19*mm;
 house_offset_xcarriage_z = -25;
 
 // extruder connection point for guidler
@@ -572,15 +572,15 @@ module guidler()
 
 module extras()
 {
-    hob_offset_x = -5;
+    hob_offset_x = -5*mm;
 
     // hobbed bolt
     // measurements from
     // http://wiki.e3d-online.com/wiki/E3D_HobbGoblin_Drawings
-    hob_l = 64.5;
+    hob_l = 64.5*mm;
 
     // center of the hob (from left side)
-    hob_center = 37;
+    hob_center = 37*mm;
 
     hob_conn_extruder=[[-hob_l/2+hob_center,0,0], [0,0,0]];
 
@@ -629,12 +629,12 @@ module extras()
 
         }
 
-        hob_conn_cog = [[-hob_l/2 + 13,0,0], [-1,0,0]];
+        hob_conn_cog = [[-hob_l/2 + 13*mm,0,0], [-1,0,0]];
 
         /*connector(hob_conn_cog);*/
         // gear/cog
         // attach onto hobbed bolt
-        cog_conn = [[11,0,0],[1,0,0]];
+        cog_conn = [[11*mm,0,0],[1,0,0]];
         attach(hob_conn_cog, cog_conn, 019)
         {
             rotate([270,0,90])
@@ -655,7 +655,7 @@ module extras()
     }
 
     // hotend
-    hotend_conn =[[0,0,21.35],[0,0,1]];
+    hotend_conn =[[0,0,21.35*mm],[0,0,1]];
     attach(extruder_conn_hotend, hotend_conn)
         color(color_hotend)
         rotate([90,0,270])
@@ -667,7 +667,7 @@ module extras()
     {
         /*connector(xcarriage_conn);*/
         color(color_xcarriage)
-            translate([282,-170,14])
+            translate([282*mm,-170,14])
             rotate([90,180,180])
             import("../wilson/x-carriage.stl");
     }
@@ -704,14 +704,14 @@ module print()
     }
 
     guidler_conn_layflat = [ [0, guidler_mount_off_d-guidler_mount_d/2, guidler_mount_off_h],  [0,-1,0]];
-    attach([[34,10,0],[0,0,-1]], guidler_conn_layflat)
+    attach([[34*mm,10*mm,0],[0,0,-1]], guidler_conn_layflat)
     {
         /*connector(guidler_conn_layflat);*/
         guidler(false);
     }
 
     hotmount_clamp_conn_layflat=[[0,0,0],[-1,0,0]];
-    attach([[54,0,0],[0,0,1]], hotmount_clamp_conn_layflat)
+    attach([[54*mm,0,0],[0,0,1]], hotmount_clamp_conn_layflat)
     {
         /*connector(hotmount_clamp_conn);*/
         hotmount_clamp();

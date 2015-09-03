@@ -7,7 +7,7 @@ e=0.01;
 fnr                         = 0.4;
 
 // width of a single wall, should match your slicer settings
-extrusion_width             = 0.4;
+extrusion_width             = 0.4*mm;
 
 // how many lines should a normal wall have (i.e. 0.6(extrusion_width)*6(normal_wall_factor)= 3.6mm wall width)
 normal_wall_factor          = 3;
@@ -15,31 +15,31 @@ normal_wall_factor          = 3;
 thick_wall_factor           = 4;
 
 // diameter of your filament.
-filament_d                  = 1.75;
+filament_d                  = 1.75*mm;
 filament_r                  = filament_d/2;
 
-main_width = 340;
-main_depth = 420;
-main_height = 400;
-main_upper_width = 420;
-extrusion_size = 20;
+main_width = 340*mm;
+main_depth = 420*mm;
+main_height = 400*mm;
+main_upper_width = 420*mm;
+extrusion_size = 20*mm;
 
-main_lower_dist_z= 80;
-main_upper_dist_y= 160;
+main_lower_dist_z= 80*mm;
+main_upper_dist_y= 160*mm;
 
-xaxis_rod_distance = 45;
-xaxis_rod_d = 9.975;
-xaxis_rod_l = 500;
+xaxis_rod_distance = 45*mm;
+xaxis_rod_d = 9.975*mm;
+xaxis_rod_l = 500*mm;
 xaxis_bearing=bearing_igus_rj4jp_01_10;
 
-yaxis_rod_distance = 170;
-yaxis_rod_d = 11.975;
-yaxis_rod_l = 500;
+yaxis_rod_distance = 170*mm;
+yaxis_rod_d = 11.975*mm;
+yaxis_rod_l = 500*mm;
 yaxis_bearing=bearing_igus_rj4jp_01_12;
-ycarriage_size=[220,220,5];
+ycarriage_size=[220*mm,220*mm,5*mm];
 
-zaxis_rod_d = 11.975;
-zaxis_rod_l = 500;
+zaxis_rod_d = 11.975*mm;
+zaxis_rod_l = 500*mm;
 zaxis_bearing=bearing_igus_rj4jp_01_12;
 
 // NEMA17 motor w/340mm leadscrew
@@ -66,7 +66,7 @@ zaxis_motor = [
                 [NemaAxleFlatLengthBack, 14*mm]
          ];
 
-zaxis_motor_offset_z = 10;
+zaxis_motor_offset_z = 10*mm;
 
 // place z rod on edge of motor
 zaxis_rod_screw_distance_x = lookup(NemaSideSize,zaxis_motor);
