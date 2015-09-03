@@ -1,6 +1,6 @@
-use <thing_libutils/utils-shapes.scad>;
-use <thing_libutils/utils-misc.scad>;
-use <thing_libutils/utils-attach.scad>;
+use <thing_libutils/shapes.scad>;
+use <thing_libutils/misc.scad>;
+use <thing_libutils/attach.scad>;
 include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
 
