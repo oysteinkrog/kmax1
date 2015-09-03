@@ -76,7 +76,7 @@ module gantry_upper()
     for(i=[-1,1])
     translate([i*(main_width/2), 0]) 
     rotate([0,0,90])
-    #cubea([extrusion_size,extrusion_size,main_height], align=[0,i,1]);
+    cubea([extrusion_size,extrusion_size,main_height], align=[0,i,1]);
 
     translate([0, 0, main_height]) 
     cubea([main_upper_width,extrusion_size,extrusion_size], align=[0,0,1]);
