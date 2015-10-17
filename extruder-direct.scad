@@ -1,3 +1,5 @@
+include <thing_libutils/metric-thread.scad>;
+include <thing_libutils/metric-hexnut.scad>;
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
 use <thing_libutils/attach.scad>;
@@ -98,10 +100,14 @@ hotmount_clamp_side=1*mm;
 hotmount_tolerance=1.05*mm;
 
 // hotmount clamp screws distance from center
-hotmount_clamp_screws_dist = hotmount_d_h[1][1] + 2*screw_m3[0];
+hotmount_clamp_thread = ThreadM3;
+hotmount_clamp_nut = MHexNutM3;
+
+hotmount_clamp_screw_dia = lookup(ThreadSize, hotmount_clamp_thread);
+hotmount_clamp_screws_dist = hotmount_d_h[1][1] + 2*hotmount_clamp_screw_dia;
 hotmount_clamp_pad = 2.5*mm;
 hotmount_clamp_thickness = 5*mm;
-hotmount_clamp_y = 2*(hotmount_clamp_screws_dist + screw_m3[0] + hotmount_clamp_pad);
+hotmount_clamp_y = 2*(hotmount_clamp_screws_dist + hotmount_clamp_screw_dia + hotmount_clamp_pad);
 hotmount_clamp_height = hotmount_d_h[1][1];
 
 // length of the guidler bearing bolt/screw
@@ -113,7 +119,7 @@ guidler_mount_d=9*mm;
 guidler_w=max(guidler_mount_w+7, guidler_bearing[2]*2.8);
 guidler_d=5;
 guidler_h=12;
-guidler_extra_h_up=guidler_bearing[1]/2+screw_m3[0];
+guidler_extra_h_up=guidler_bearing[1]/2+hotmount_clamp_screw_dia/2;
 
 guidler_mount_off_d=-guidler_bearing[1]/1.7;
 guidler_mount_off_h=-guidler_bearing[1]/1.7;
@@ -122,7 +128,8 @@ extruder_guidler_mount_off_y = guidler_mount_off_d - guidler_bearing[1]/2;
 
 house_inner_w=max(guidler_w+3, filament_d*2 + 4*2);
 
-guidler_screws=screw_m3;
+guidler_screws_thread = ThreadM3;
+guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
 guidler_screws_distance=6*mm;
 guidler_screws_mount_d = 10*mm;
 guidler_screws_mount_d_offset = 0*mm;
@@ -136,8 +143,8 @@ house_w = max(house_inner_w+2*house_bearing[2], hotmount_outer_size, xcarriage_m
 house_d=house_bearing[1]/2+house_padding_wd;
 house_h=house_bearing[1]+house_padding_h;
 
-house_guidler_screw_h = guidler_screws[0]*2+8*mm;
-house_guidler_screw_h_offset = house_h/2 + guidler_screws[0]*2 + 4*mm;
+house_guidler_screw_h = guidler_screws_thread_dia+8*mm;
+house_guidler_screw_h_offset = house_h/2 + guidler_screws_thread_dia + 4*mm;
 
 CustomNema17 = [
                 [NemaModel, 17],
@@ -303,7 +310,7 @@ module extruder_own(show_filament=true)
         for(i=[-1,1])
         translate([i*(guidler_screws_distance), guidler_screws_mount_d_offset, house_guidler_screw_h_offset])
         {
-            r= guidler_screws[0]*1.1;
+            r= guidler_screws_thread_dia/2 * 1.1;
             cubea([r*2, guidler_screws_mount_d+1, r]);
             for(v=[-1,1])
             translate([0,0, v*r/2])
@@ -510,7 +517,7 @@ module guidler()
                 for(i=[-1,1])
                 translate([i*(guidler_screws_distance),guidler_mount_off_d-guidler_mount_d/2, house_guidler_screw_h_offset])
                 rotate([0,90,90])
-                fncylindera(r=guidler_screws[0]*3,h=guidler_d, align=[0,0,1]);
+                fncylindera(r=guidler_screws_thread_dia/2*3,h=guidler_d, align=[0,0,1]);
 
             }
         }
@@ -519,7 +526,7 @@ module guidler()
         for(i=[-1,1])
         translate([i*(guidler_screws_distance),guidler_mount_off_d-guidler_mount_d/2, house_guidler_screw_h_offset])
         {
-            r= guidler_screws[0]*1.1;
+            r= guidler_screws_thread_dia/2*1.1;
             cubea([r*2,house_w+1,r]);
             for(v=[-1,1])
                 translate([0,0, v*r/2])

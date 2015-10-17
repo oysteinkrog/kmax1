@@ -1,3 +1,5 @@
+include <thing_libutils/metric-thread.scad>;
+include <thing_libutils/metric-hexnut.scad>;
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
 use <thing_libutils/attach.scad>;

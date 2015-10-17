@@ -1,10 +1,13 @@
 include <bearings.scad>
 include <screws.scad>
+include <thing_libutils/metric-thread.scad>
 
 e=0.01;
 
 // resolution of any round object (segment length)
 fnr                         = 0.4;
+
+extrusion_height            = 0.4*mm;
 
 // width of a single wall, should match your slicer settings
 extrusion_width             = 0.4*mm;
@@ -23,6 +26,7 @@ main_depth = 420*mm;
 main_height = 400*mm;
 main_upper_width = 420*mm;
 extrusion_size = 20*mm;
+extrusion_thread = ThreadM5;
 
 main_lower_dist_z= 80*mm;
 main_upper_dist_y= 160*mm;
