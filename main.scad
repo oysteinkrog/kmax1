@@ -15,10 +15,14 @@ main();
 
 module main()
 {
+    color(extrusion_color)
     gantry_lower();
+
+    color(extrusion_color)
     translate([0,0,-main_lower_dist_z])
     gantry_lower();
 
+    color(extrusion_color)
     for(i=[-1,1])
     translate([0,i*(main_upper_dist_y/2),0])
     gantry_upper();

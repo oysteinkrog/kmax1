@@ -25,6 +25,8 @@ main_width = 340*mm;
 main_depth = 420*mm;
 main_height = 400*mm;
 main_upper_width = 420*mm;
+
+extrusion_color = [0.5,0.5,0.5];
 extrusion_size = 20*mm;
 extrusion_thread = ThreadM5;
 
