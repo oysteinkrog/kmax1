@@ -173,8 +173,9 @@ extruder_motor = CustomNema17;
 // 80t + 20t w/228-2GT-6 belt
 gears_distance=38.8*mm;
 motor_offset_x = -9*mm;
-motor_offset_y = 27*mm;
-motor_offset_z = pythag_leg(motor_offset_y,gears_distance);
+motor_offset_y = 38*mm;
+motor_offset_z = -pythag_leg(motor_offset_y,gears_distance);
+echo(motor_offset_z);
 
 alpha = 0.7;
 /*alpha = 1;*/
@@ -292,19 +293,19 @@ module extruder_own(show_filament=true)
         }
 
         translate([0,bolt_center_offset,0])
-            translate([motor_offset_x,motor_offset_y,motor_offset_z])
-            {
-                slide_dist=4;
-                side = motorWidth(CustomNema17);
-                    mount_thickness = motor_offset_x+house_w/2;
+        translate([motor_offset_x,motor_offset_y,motor_offset_z])
+        {
+            slide_dist=4;
+            side = motorWidth(CustomNema17);
+                mount_thickness = motor_offset_x+house_w/2;
 
-                cubea([motorLength(CustomNema17), side+slide_dist, side],[1,0,0]);
+            cubea([motorLength(CustomNema17), side+slide_dist, side],[1,0,0]);
 
-                translate([-mount_thickness-1,0,0])
-                    rotate([90,90,90])
-                    linear_extrude(mount_thickness+2)
-                    stepper_motor_mount(17, slide_distance=4, mochup=false);
-            }
+            translate([-mount_thickness-1,0,0])
+                rotate([90,90,90])
+                linear_extrude(mount_thickness+2)
+                stepper_motor_mount(17, slide_distance=4, mochup=false);
+        }
 
         // guidler screws cutouts
         for(i=[-1,1])
@@ -692,38 +693,25 @@ module extruder()
     attach(extruder_conn_hotmount_clamp, hotmount_clamp_conn)
     {
         /*connector(hotmount_clamp_conn);*/
-        hotmount_clamp();
-    }
+        hotmount_clamp(); }
 
-    if(true)
-    {
-        extras();
-    }
-}
+    if(true) { extras(); } }
 
-module print()
-{
-    extruder_conn_layflat = [[-house_w/2,0,0],[-1,0,0]];
-    attach([[0,0,0],[0,0,-1]], extruder_conn_layflat)
-    {
+module print() { extruder_conn_layflat = [[-house_w/2,0,0],[-1,0,0]];
+attach([[0,0,0],[0,0,-1]], extruder_conn_layflat) {
         /*connector(extruder_conn_layflat);*/
-        extruder_own(false,false);
-    }
+        extruder_own(false,false); }
 
-    guidler_conn_layflat = [ [0, guidler_mount_off_d-guidler_mount_d/2, guidler_mount_off_h],  [0,-1,0]];
-    attach([[34*mm,10*mm,0],[0,0,-1]], guidler_conn_layflat)
-    {
+    guidler_conn_layflat = [ [0, guidler_mount_off_d-guidler_mount_d/2,
+    guidler_mount_off_h],  [0,-1,0]]; attach([[34*mm,10*mm,0],[0,0,-1]],
+    guidler_conn_layflat) {
         /*connector(guidler_conn_layflat);*/
-        guidler(false);
-    }
+        guidler(false); }
 
     hotmount_clamp_conn_layflat=[[0,0,0],[-1,0,0]];
-    attach([[54*mm,0,0],[0,0,1]], hotmount_clamp_conn_layflat)
-    {
+    attach([[54*mm,0,0],[0,0,1]], hotmount_clamp_conn_layflat) {
         /*connector(hotmount_clamp_conn);*/
-        hotmount_clamp();
-    }
-}
+        hotmount_clamp(); } }
 
 /*extruder();*/
 /*print();*/
