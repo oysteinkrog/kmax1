@@ -85,3 +85,27 @@ zaxis_rod_screw_distance_x = zaxis_nut_mount_outer;
 
 xaxis_zaxis_distance_y = xaxis_rod_d/2 + zaxis_bearing[1]/2;
 
+// GT2 
+// there is bunch of GT2 belts with different tooth-to-tooth distance
+// this one is most common in reprap world
+// adjust to your needs.
+belt_width = 6.5;
+belt_tooth_distance = 2;
+belt_tooth_ratio = 0.5;
+belt_thickness = 0.8;
+
+//T2.5
+//belt_tooth_distance = 2.5;
+//belt_tooth_ratio = 0.5;
+
+//T5 (strongly discouraged)
+//belt_tooth_distance = 5;
+//belt_tooth_ratio = 0.75;
+
+//HTD3
+//belt_tooth_distance = 3;
+//belt_tooth_ratio = 0.75;
+
+//MXL
+//belt_tooth_distance = 2.032;
+//belt_tooth_ratio = 0.64;
