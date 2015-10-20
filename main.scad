@@ -13,9 +13,9 @@ include <config.scad>
 include <extruder-direct.scad>
 
 
-xaxis_pos_x = -225/2*mm;
-xaxis_range_z=[85,350];
-xaxis_pos_z = 350*mm;
+axis_pos_x = -225/2*mm;
+axis_range_z=[85,380];
+axis_pos_z = axis_range_z[1]*mm/2;
 
 main();
 
@@ -34,9 +34,9 @@ module main()
     gantry_upper();
 
     // x axis
-    translate([0,0,xaxis_pos_z])
+    translate([0,0,axis_pos_z])
     {
-        translate([xaxis_pos_x,0,0])
+        translate([axis_pos_x,0,0])
         {
             xaxis_bearing_dist = 10;
             translate([0,xaxis_zaxis_distance_y,0])
@@ -104,12 +104,12 @@ module main()
                 fncylindera(h=zaxis_rod_l,d=zaxis_rod_d,align=[0,0,1]);
 
             for(j=[-1,1])
-                translate([0,0,xaxis_pos_z-j*xaxis_rod_distance/2])
+                translate([0,0,axis_pos_z-j*xaxis_rod_distance/2])
                     bearing(zaxis_bearing);
         }
 
 
-        translate([i*zmotor_mount_motor_offset, 0, xaxis_pos_z-xaxis_rod_distance/2-10])
+        translate([i*zmotor_mount_motor_offset, 0, axis_pos_z-xaxis_rod_distance/2-10])
         {
             difference()
             {
