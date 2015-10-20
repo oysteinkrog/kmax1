@@ -74,8 +74,14 @@ zaxis_motor = [
 
 zaxis_motor_offset_z = 10*mm;
 
+// inner_d, outer_d, thread
+zaxis_nut = [20*mm, 36.5*mm, 8*mm];
+
+zaxis_nut_mount_outer = zaxis_nut[1]/2 + zaxis_bearing[1]/2 + 3;
+
 // place z rod on edge of motor
-zaxis_rod_screw_distance_x = lookup(NemaSideSize,zaxis_motor);
+/*zaxis_rod_screw_distance_x = max(zaxis_nut_mount_outer, zaxis_rod_d/2 + lookup(NemaSideSize,zaxis_motor)/2);*/
+zaxis_rod_screw_distance_x = zaxis_nut_mount_outer;
 
 xaxis_zaxis_distance_y = xaxis_rod_d/2 + zaxis_bearing[1]/2;
 
