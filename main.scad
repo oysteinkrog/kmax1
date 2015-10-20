@@ -4,6 +4,7 @@ use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
 use <thing_libutils/attach.scad>;
 use <thing_libutils/triangles.scad>
+use <thing_libutils/linear-extrusion.scad>;
 
 include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
@@ -141,32 +142,23 @@ module zmotor_mount()
     }
 }
 
-module extrusion(h, w, l) {
-    rotate([90, 0, 90]) {
-        translate([2.5, 2.5, 0]) cube([h - 5, w - 5, l]);
-        translate([0, 0, 0.1]) cube([h, w, l - 0.2]);
-    }
-}
-
 module gantry_upper()
 {
     for(i=[-1,1])
-    translate([i*(main_width/2), 0]) 
-    rotate([0,0,90])
-    cubea([extrusion_size,extrusion_size,main_height], align=[0,i,1]);
+    translate([i*(main_width/2), 0])
+    linear_extrusion(h=main_height, align=[-i,0,1], orient=[0,0,1]);
 
-    translate([0, 0, main_height]) 
-    cubea([main_upper_width,extrusion_size,extrusion_size], align=[0,0,1]);
+    translate([0, 0, main_height])
+    linear_extrusion(h=main_upper_width, align=[0,0,1], orient=[1,0,0]);
 }
 
 module gantry_lower()
 {
     for(i=[-1,1])
     translate([0,  i*(main_depth/2), 0]) 
-    cubea([main_width,extrusion_size,extrusion_size], align=[0,i,-1]);
+    linear_extrusion(h=main_width, align=[0,i,-1], orient=[1,0,0]);
 
     for(i=[-1,1])
-    translate([i*(main_width/2), 0]) 
-    rotate([0,0,90])
-    cubea([main_depth,extrusion_size,extrusion_size], align=[0,i,-1]);
+    translate([i*(main_width/2), 0, 0])
+    linear_extrusion(h=main_depth, align=[-i,0,-1], orient=[0,1,0]);
 }
