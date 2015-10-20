@@ -33,7 +33,7 @@ extrusion_thread = ThreadM5;
 main_lower_dist_z= 80*mm;
 main_upper_dist_y= 160*mm;
 
-xaxis_rod_distance = 45*mm;
+xaxis_rod_distance = 60*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
 xaxis_bearing=bearing_igus_rj4jp_01_10;
