@@ -57,8 +57,7 @@ module main()
         // x smooth rods
         for(i=[-1,1])
             translate([0,xaxis_zaxis_distance_y,i*(xaxis_rod_distance/2)])
-                rotate([0,90,0])
-                fncylindera(h=xaxis_rod_l,d=xaxis_rod_d);
+                fncylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
     }
 
     // y smooth rods
