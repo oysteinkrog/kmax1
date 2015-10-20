@@ -73,8 +73,9 @@ module main()
 
     // z axis
     for(i=[-1,1])
-    translate([i*(main_width/2 + lookup(NemaSideSize,zaxis_motor)/2), 0, zaxis_motor_offset_z])
+    translate([i*(main_width/2 + lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
     {
+        translate([0,0,zaxis_motor_offset_z])
         mirror([i==-1?1:0,0,0])
         {
             zmotor_mount();
@@ -87,12 +88,29 @@ module main()
         }
 
         // z smooth rods
-        translate([i*zaxis_rod_screw_distance_x/2+zmotor_mount_motor_offset,0,0])
+        translate([i*(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,0])
         {
-            fncylindera(h=zaxis_rod_l,d=zaxis_rod_d,align=[0,0,1]);
+            translate([0,0,zaxis_motor_offset_z])
+                fncylindera(h=zaxis_rod_l,d=zaxis_rod_d,align=[0,0,1]);
 
-            translate([0,0,xaxis_pos_z-zaxis_motor_offset_z])
-                fncylindera(h=zaxis_bearing[2], d=zaxis_bearing[1], align=[0,0,0]);
+            for(j=[-1,1])
+                translate([0,0,xaxis_pos_z-j*xaxis_rod_distance/2])
+                    bearing(zaxis_bearing);
+        }
+
+
+        translate([i*zmotor_mount_motor_offset, 0, xaxis_pos_z-xaxis_rod_distance/2-10])
+        {
+            difference()
+            {
+                fncylindera(h=10, d=zaxis_nut[1], align=[0,0,0]);
+                union()
+                {
+                    fncylindera(h=10+1, d=zaxis_nut[0], center= false);
+                    translate([0, 13.5, -1]) fncylindera(h=5, r=1.6);
+                    translate([0, -13.5, -1]) fncylindera(h=5, r=1.6);
+                }
+            }
         }
     }
 }
