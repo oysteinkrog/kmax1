@@ -61,15 +61,25 @@ module main()
     }
 
     // y smooth rods
-    for(i=[-1,1])
-    translate([i*(yaxis_rod_distance/2),0,0])
+    translate([0,0,yaxis_bearing[0]/2])
     {
-        rotate([90,0,0])
-            fncylindera(h=yaxis_rod_l,d=yaxis_rod_d, align=[0,1,0]);
-    }
+        for(i=[-1,1])
+        translate([i*(yaxis_rod_distance/2), 0, 0])
+        {
+            fncylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=[0,1,0]);
 
-    translate([0,0,yaxis_rod_d])
-        cubea(ycarriage_size, align=[0,0,1]);
+            for(j=[-1,1])
+                translate([0,j*(yaxis_rod_distance/2),0])
+                    rotate([90,0,0])
+                    bearing(yaxis_bearing);
+        }
+
+        translate([0,0,yaxis_bearing[1]/2])
+        {
+            // y axis plate
+            cubea(ycarriage_size, align=[0,0,1]);
+        }
+    }
 
     // z axis
     for(i=[-1,1])
