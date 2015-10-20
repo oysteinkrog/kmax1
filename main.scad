@@ -131,8 +131,7 @@ module zmotor_mount()
 
         for(i=[-1,1])
             translate([-motor_w/2,i*(motor_w/2+mount_thread_dia*3),-extrusion_size])
-                rotate([0,90,0])
-                    fncylindera(h=mount_thickness*3,d=mount_thread_dia);
+                fncylindera(h=mount_thickness*3,d=mount_thread_dia, orient=[1,0,0]);
     }
 
     // bottom mount plate
@@ -143,8 +142,7 @@ module zmotor_mount()
 
         for(i=[-1,1])
             translate([-motor_w/2,i*(motor_w/2+mount_thread_dia*3),-extrusion_size-main_lower_dist_z])
-                rotate([0,90,0])
-                fncylindera(h=mount_thickness*3,d=mount_thread_dia);
+                fncylindera(h=mount_thickness*3,d=mount_thread_dia,align=[0,0,0], orient=[1,0,0]);
     }
 
 /*#    cubea([motor_w+mount_thickness,motor_w+mount_thickness,zaxis_motor_offset_z], align=[0,0,-1]);*/
