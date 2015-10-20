@@ -36,8 +36,23 @@ module main()
     // x axis
     translate([0,0,xaxis_pos_z])
     {
-        attach([[0,0,0],[0,0,0]],extruder_conn_xcarriage)
-            extruder();
+        translate([xaxis_pos_x,0,0])
+        {
+            xaxis_bearing_dist = 10;
+            translate([0,xaxis_zaxis_distance_y,0])
+            translate([0,xaxis_bearing[1]/2,0])
+            cubea([xaxis_bearing[2]*2+xaxis_bearing_dist,5,xaxis_rod_distance+xaxis_bearing[1]], align=[0,1,0]);
+
+            attach([[-8,-15,-16],[-1,0,0]],extruder_conn_xcarriage)
+                extruder();
+
+            // x carriage
+            for(i=[-1,1])
+                for(j=[-1,1])
+                    translate([j*(xaxis_bearing_dist+xaxis_bearing[2])/2,xaxis_zaxis_distance_y,i*(xaxis_rod_distance/2)])
+                        rotate([0,90,0])
+                        bearing(xaxis_bearing);
+        }
 
         // x smooth rods
         for(i=[-1,1])
