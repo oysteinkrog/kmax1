@@ -175,7 +175,6 @@ gears_distance=38.8*mm;
 motor_offset_x = -9*mm;
 motor_offset_y = 38*mm;
 motor_offset_z = -pythag_leg(motor_offset_y,gears_distance);
-echo(motor_offset_z);
 
 alpha = 0.7;
 /*alpha = 1;*/
