@@ -53,12 +53,10 @@ module main()
             // x carriage bearings
             for(j=[-1,1])
             translate([j*(xaxis_bearing_dist+xaxis_bearing[2])/2,xaxis_zaxis_distance_y,(xaxis_rod_distance/2)])
-            rotate([0,90,0])
-                bearing(xaxis_bearing);
+                bearing(xaxis_bearing, orient=[1,0,0]);
 
             translate([0, xaxis_zaxis_distance_y, -(xaxis_rod_distance/2)])
-            rotate([0,90,0])
-                bearing(xaxis_bearing);
+                bearing(xaxis_bearing, orient=[1,0,0]);
         }
 
         // x smooth rods
@@ -77,8 +75,7 @@ module main()
 
             for(j=[-1,1])
                 translate([0,j*(yaxis_rod_distance/2),0])
-                    rotate([90,0,0])
-                    bearing(yaxis_bearing);
+                    bearing(yaxis_bearing, orient=[0,1,0]);
         }
 
         translate([0,0,yaxis_bearing[1]/2])
