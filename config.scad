@@ -1,3 +1,4 @@
+include <MCAD/stepper.scad>
 include <bearings.scad>
 include <screws.scad>
 include <thing_libutils/metric-thread.scad>

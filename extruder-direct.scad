@@ -172,9 +172,9 @@ extruder_motor = CustomNema17;
 
 // 80t + 20t w/228-2GT-6 belt
 gears_distance=38.8*mm;
-motor_offset_x = -9*mm;
-motor_offset_y = 38*mm;
-motor_offset_z = -pythag_leg(motor_offset_y,gears_distance);
+motor_offset_x = -8*mm;
+motor_offset_y = 20*mm;
+motor_offset_z = pythag_leg(motor_offset_y,gears_distance);
 
 alpha = 0.7;
 /*alpha = 1;*/
