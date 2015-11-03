@@ -34,25 +34,28 @@ module main()
     gantry_upper();
 
     // x axis
-    translate([0,0,axis_pos_z])
+    translate([0,10,axis_pos_z])
     {
         translate([axis_pos_x,0,0])
         {
-            xaxis_bearing_dist = 10;
+
             xcarriage_padding=10;
-            xcarriage_width = xaxis_bearing[2]*2 + xaxis_bearing_dist + xcarriage_padding;
+            xcarriage_width = xaxis_bearing[2]*2 + xaxis_bearing_distance + xcarriage_padding;
+
             // x carriage
             translate([0,xaxis_zaxis_distance_y,0])
             translate([0,-xaxis_bearing[1]/2,0])
-            cubea([xcarriage_width, 5, xaxis_rod_distance+xaxis_bearing[1]+xcarriage_padding], align=[0,-1,0]);
+            rotate([90,0,180])
+            x_carriage();
 
-            attach([[-motor_offset_x-motorWidth(extruder_motor)/2, 10, -17], [0,0,0]], extruder_conn_xcarriage)
-            /*#cubea([10,10,10]);*/
+            attach([[-motor_offset_x-motorWidth(extruder_motor)/2+10, -1, -17], [0,0,0]], extruder_conn_xcarriage)
+            {
                 extruder();
+            }
 
             // x carriage bearings
             for(j=[-1,1])
-            translate([j*(xaxis_bearing_dist+xaxis_bearing[2])/2,xaxis_zaxis_distance_y,(xaxis_rod_distance/2)])
+            translate([j*(xaxis_bearing_distance+xaxis_bearing[2])/2,xaxis_zaxis_distance_y,(xaxis_rod_distance/2)])
                 bearing(xaxis_bearing, orient=[1,0,0]);
 
             translate([0, xaxis_zaxis_distance_y, -(xaxis_rod_distance/2)])

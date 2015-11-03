@@ -38,6 +38,7 @@ xaxis_rod_distance = 70*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
 xaxis_bearing=bearing_igus_rj4jp_01_10;
+xaxis_pulley_d = 12.2;
 
 yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
