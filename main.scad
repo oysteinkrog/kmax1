@@ -13,7 +13,7 @@ include <config.scad>
 include <extruder-direct.scad>
 
 
-axis_pos_x = -225/2*mm;
+axis_pos_x = 0*mm;
 axis_range_z=[85,380];
 axis_pos_z = axis_range_z[1]*mm/2;
 
