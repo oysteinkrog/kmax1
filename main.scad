@@ -19,8 +19,6 @@ axis_pos_x = 0*mm;
 axis_range_z=[85,380];
 axis_pos_z = axis_range_z[1]*mm/2;
 
-main();
-
 module main()
 {
     color(extrusion_color)
@@ -202,3 +200,6 @@ module gantry_lower()
     translate([i*(main_width/2), 0, 0])
     linear_extrusion(h=main_depth, align=[-i,0,-1], orient=[0,1,0]);
 }
+
+
+main();
