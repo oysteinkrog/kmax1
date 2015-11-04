@@ -651,12 +651,12 @@ module extras()
 
     // motor/belt
     translate([0,bolt_center_offset,0])
-    translate([motor_offset_x,motor_offset_y,motor_offset_z])
+    translate([motor_offset_x-1,motor_offset_y,motor_offset_z])
     {
         // main motor body
         motor(extruder_motor, NemaShort, dualAxis=false, orientation=[0,90,0]);
 
-        translate([-2,0,0])
+        translate([-1,0,0])
             rotate([0,0,180])
             import("stl/GT2_20tooth.stl");
     }
