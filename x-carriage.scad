@@ -8,28 +8,16 @@ use <bearings.scad>
 include <config.scad>
 
 
-ziptie_thickness = 4;
-ziptie_width = 4;
-
-xaxis_bearing_distance = 6;
-ziptie_bearing_distance=2;
-xaxis_bearing_offset_z = ziptie_thickness/2;
+xaxis_carriage_bearing_distance = 6;
 xaxis_carriage_padding = 3;
-
 xaxis_carriage_mount_distance = 30;
-xcarriage_mount_offset_z = 15;
-
-xaxis_carriage_beltpath_offset = xaxis_bearing_offset_z+xaxis_bearing[1]/2;
-xaxis_belt_width = 6*mm;
+xaxis_carriage_mount_offset_z = 15;
 xaxis_carriage_teeth_height=xaxis_belt_width*1.5;
-
+xaxis_carriage_conn = [[0, -xaxis_bearing[1]/2 - xaxis_carriage_bearing_offset_z, 0],[0,1,0]];
 
 module horizontal_bearing_holes(bearing_type)
 {
-    one_holder_lenght = 8+25;
-    holder_lenght = 8+25;
-
-    translate([0,0,bearing_type[1]/2 + xaxis_bearing_offset_z])
+    translate([0,0,bearing_type[1]/2 + xaxis_carriage_bearing_offset_z])
     {
         // Main bearing cut
         difference()
@@ -51,15 +39,14 @@ module horizontal_bearing_holes(bearing_type)
         // for linear rod
         fncylindera(d=xaxis_rod_d*1.5, h=100, orient=[1,0,0]);
     }
-
 }
 
 
 module x_carriage_base()
 {
     bottom_width = xaxis_bearing[2] + 2*xaxis_carriage_padding;
-    top_width = xaxis_bearing[2]*2 + xaxis_bearing_distance + 2*xaxis_carriage_padding;
-    thickness = xaxis_bearing[1]/2 + xaxis_bearing_offset_z;
+    top_width = xaxis_bearing[2]*2 + xaxis_carriage_bearing_distance + 2*xaxis_carriage_padding;
+    thickness = xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_z;
 
     hull()
     {
@@ -67,25 +54,16 @@ module x_carriage_base()
         translate([0,xaxis_rod_distance/2,0])
             cubea(size = [top_width, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2, thickness], align=[0,0,1]);
 
-        cubea([top_width,xaxis_rod_distance/2,xaxis_bearing_offset_z], align=[0,0,1]);
-    translate([0,0,xaxis_carriage_beltpath_offset])
-        cubea([top_width,xaxis_rod_distance/2,xaxis_carriage_teeth_height], align=[0,0,0]);
+        cubea([top_width,xaxis_rod_distance/2,xaxis_carriage_bearing_offset_z], align=[0,0,1]);
+
+        translate([0,0,xaxis_carriage_beltpath_offset])
+            cubea([top_width,xaxis_rod_distance/2,xaxis_carriage_teeth_height], align=[0,0,0]);
 
         // bottom bearing
         translate([0,-xaxis_rod_distance/2,0]) 
             cubea(size = [bottom_width, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2, thickness], align=[0,0,1]);
 
     }
-
-    /*// for belt path*/
-    /*translate([0,0,xaxis_carriage_beltpath_offset])*/
-        /*cubea([bottom_width,xaxis_rod_distance-xaxis_bearing[1]*2,xaxis_carriage_teeth_height], align=[0,0,0]);*/
-
-    /*// for belt path*/
-    /*translate([0,0,xaxis_bearing_offset_z+xaxis_bearing[1]/2])*/
-    /*cubea([top_width,xaxis_rod_distance/2,xaxis_belt_width*2], align=[0,0,0]);*/
-
-    /*#cubea([bottom_width,xaxis_rod_distance,xaxis_bearing[1]/2], align=[0,0,1]);*/
 }
 
 module x_carriage_beltcut()
@@ -135,7 +113,7 @@ module x_carriage_holes(bearing_type){
         horizontal_bearing_holes(xaxis_bearing);
 
     // Extruder mounting holes
-    translate([0,xcarriage_mount_offset_z,0])
+    translate([0,xaxis_carriage_mount_offset_z,0])
         for ( i = [-1,1] )
         {
             translate([i*xaxis_carriage_mount_distance/2,0,0])
@@ -159,12 +137,12 @@ module x_carriage(show_bearings=true)
     %if(show_bearings)
     {
         for(j=[-1,1])
-        translate([0,0,xaxis_bearing[1]/2 + xaxis_bearing_offset_z])
+        translate([0,0,xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_z])
         translate([j*(xaxis_bearing_distance+xaxis_bearing[2])/2,0,0])
         translate([0, xaxis_rod_distance/2, 0])
                 bearing(xaxis_bearing, orient=[1,0,0]);
 
-        translate([0,0,xaxis_bearing[1]/2 + xaxis_bearing_offset_z])
+        translate([0,0,xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_z])
         translate([0, -xaxis_rod_distance/2, 0])
             bearing(xaxis_bearing, orient=[1,0,0]);
     }

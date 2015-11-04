@@ -12,8 +12,7 @@ include <MCAD/motors.scad>
 include <config.scad>
 include <extruder-direct.scad>
 
-use <x-carriage.scad>
-
+include <x-carriage.scad>
 
 axis_pos_x = 0*mm;
 axis_range_z=[85,380];
@@ -40,9 +39,10 @@ module main()
         {
             // x carriage
             translate([0,xaxis_zaxis_distance_y,0])
-            translate([0,-xaxis_bearing[1]/2,0])
-            rotate([90,0,180])
-            x_carriage(show_bearings=true);
+            /*translate([0,-xaxis_bearing[1]/2,0])*/
+            /*rotate([90,0,180])*/
+            attach(xaxis_carriage_conn, [[0,0,0],[0,0,1]])
+                x_carriage(show_bearings=true);
 
             attach([[-motor_offset_x-motorWidth(extruder_motor)/2+10, -1, -17], [0,0,0]], extruder_conn_xcarriage)
             {

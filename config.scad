@@ -34,11 +34,19 @@ extrusion_thread = ThreadM5;
 main_lower_dist_z= 80*mm;
 main_upper_dist_y= 160*mm;
 
+ziptie_thickness = 4;
+ziptie_width = 4;
+ziptie_bearing_distance=2;
+
 xaxis_rod_distance = 70*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
 xaxis_bearing=bearing_igus_rj4jp_01_10;
 xaxis_pulley_d = 12.2;
+xaxis_belt_width = 6*mm;
+
+xaxis_carriage_bearing_offset_z = ziptie_thickness/2;
+xaxis_carriage_beltpath_offset = xaxis_carriage_bearing_offset_z+xaxis_bearing[1]/2;
 
 yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
