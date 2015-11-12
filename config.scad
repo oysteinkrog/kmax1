@@ -40,7 +40,7 @@ ziptie_thickness = 4;
 ziptie_width = 4;
 ziptie_bearing_distance=2;
 
-xaxis_rod_distance = 70*mm;
+xaxis_rod_distance = 60*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
 xaxis_bearing=bearing_igus_rj4jp_01_10;

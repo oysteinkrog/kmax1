@@ -5,6 +5,7 @@ use <thing_libutils/misc.scad>;
 use <thing_libutils/attach.scad>;
 use <thing_libutils/triangles.scad>
 use <thing_libutils/linear-extrusion.scad>;
+include <thing_libutils/timing-belts.scad>;
 
 include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
@@ -13,6 +14,12 @@ include <config.scad>
 include <extruder-direct.scad>
 
 include <x-carriage.scad>
+
+use <scad-utils/trajectory.scad>
+use <scad-utils/trajectory_path.scad>
+use <scad-utils/transformations.scad>
+use <scad-utils/shapes.scad>
+use <list-comprehension-demos/skin.scad>
 
 axis_pos_x = 0*mm;
 axis_range_z=[85,380];
@@ -33,18 +40,20 @@ module main()
     gantry_upper();
 
     // x axis
-    translate([0,10,axis_pos_z])
+    translate([0,0,axis_pos_z])
     {
+        translate([0, xaxis_zaxis_distance_y, 0])
+        belt_path(500, 6, xaxis_pulley_d);
+
         translate([axis_pos_x,0,0])
         {
             // x carriage
-            translate([0,xaxis_zaxis_distance_y,0])
-            /*translate([0,-xaxis_bearing[1]/2,0])*/
-            /*rotate([90,0,180])*/
-            attach(xaxis_carriage_conn, [[0,0,0],[0,0,1]])
+            attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])
+            {
                 x_carriage(show_bearings=true);
+            }
 
-            attach([[-motor_offset_x-motorWidth(extruder_motor)/2+10, -1, -17], [0,0,0]], extruder_conn_xcarriage)
+            attach([[12, -30, -30], [1,0,0]], extruder_conn_xcarriage)
             {
                 extruder();
             }
@@ -245,5 +254,17 @@ module gantry_lower()
     linear_extrusion(h=main_depth, align=[-i,0,-1], orient=[0,1,0]);
 }
 
+module belt_path(len=200, belt_width=6, pulley_d=10)
+{
+    belt=tGT2_2;
+    rotate([90,0,0])
+    translate([-len/2, -pulley_d/2, 0])
+    {
+        belt_len(belt, belt_width, len);
+        translate([len,pulley_d,0]) rotate([0,0,180]) belt_len(belt, belt_width, len);
+        translate([0,pulley_d,0]) rotate([0,0,180]) belt_angle(belt, pulley_d/2, belt_width, 180);
+        translate([len,0,0]) rotate([0,0,0]) belt_angle(belt, pulley_d/2 ,belt_width,180);
+    }
+}
 
 main();
