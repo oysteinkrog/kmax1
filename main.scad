@@ -78,45 +78,89 @@ module main()
 
     // z axis
     for(i=[-1,1])
-    translate([i*(main_width/2 + lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
     {
-        translate([0,0,zaxis_motor_offset_z])
-        mirror([i==-1?1:0,0,0])
+        translate([i*(main_width/2),0,main_height])
         {
-            zmotor_mount();
-
-            attach([[0,0,0],[0,0,0]],zmotor_mount_conn_motor)
-            {
-                // z motor/leadscrews
-                motor(zaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
-            }
+            mirror([i==-1?1:0,0,0])
+            upper_gantry_zrod_connector();
         }
 
-        // z smooth rods
-        translate([i*(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,0])
+
+        translate([i*(main_width/2 + lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
         {
             translate([0,0,zaxis_motor_offset_z])
-                fncylindera(h=zaxis_rod_l,d=zaxis_rod_d,align=[0,0,1]);
-
-            for(j=[-1,1])
-                translate([0,0,axis_pos_z-j*xaxis_rod_distance/2])
-                    bearing(zaxis_bearing);
-        }
-
-
-        translate([i*zmotor_mount_motor_offset, 0, axis_pos_z-xaxis_rod_distance/2-10])
-        {
-            difference()
-            {
-                fncylindera(h=10, d=zaxis_nut[1], align=[0,0,0]);
-                union()
+                mirror([i==-1?1:0,0,0])
                 {
-                    fncylindera(h=10+1, d=zaxis_nut[0], center= false);
-                    translate([0, 13.5, -1]) fncylindera(h=5, r=1.6);
-                    translate([0, -13.5, -1]) fncylindera(h=5, r=1.6);
+                    zmotor_mount();
+
+                    attach([[0,0,0],[0,0,0]],zmotor_mount_conn_motor)
+                    {
+                        // z motor/leadscrews
+                        motor(zaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
+                    }
+                }
+
+            // z smooth rods
+            translate([i*(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,0])
+            {
+                translate([0,0,zaxis_motor_offset_z-50])
+                    fncylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=[0,0,1]);
+
+                for(j=[-1,1])
+                    translate([0,0,axis_pos_z-j*xaxis_rod_distance/2])
+                        bearing(zaxis_bearing);
+
+            }
+
+            translate([i*zmotor_mount_motor_offset, 0, axis_pos_z-xaxis_rod_distance/2-10])
+            {
+                difference()
+                {
+                    fncylindera(h=10, d=zaxis_nut[1], align=[0,0,0]);
+                    union()
+                    {
+                        fncylindera(h=10+1, d=zaxis_nut[0], center= false);
+                        translate([0, 13.5, -1]) fncylindera(h=5, r=1.6);
+                        translate([0, -13.5, -1]) fncylindera(h=5, r=1.6);
+                    }
                 }
             }
         }
+    }
+}
+
+module upper_gantry_zrod_connector()
+{
+    upper_width_extra = main_upper_width-main_width;
+    difference()
+    {
+        union()
+        {
+            hull()
+            {
+                // attach to z rod
+                translate([lookup(NemaSideSize,zaxis_motor)/2, 0, 0])
+                translate([(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,0])
+                {
+                    cubea([gantry_connector_thickness,zaxis_rod_d*4,extrusion_size+gantry_connector_thickness], align=[-1,0,1]);
+                }
+
+                // connect upper gantry
+                translate([upper_width_extra/2, 0, 0])
+                    translate([0,0,extrusion_size/2])
+                    cubea([gantry_connector_thickness,main_upper_dist_y+extrusion_size,extrusion_size], align=[1,0,0], extrasize=[0,0,gantry_connector_thickness], extrasize_align=[0,0,1]);
+            }
+
+            translate([upper_width_extra/2, 0, 0])
+                translate([0,0,extrusion_size])
+                cubea([extrusion_size*1.5,main_upper_dist_y+extrusion_size,gantry_connector_thickness], align=[-1,0,1]);
+
+        }
+
+        // cutout for z rod
+        translate([lookup(NemaSideSize,zaxis_motor)/2, 0, 0])
+        translate([(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,extrusion_size])
+        fncylindera(d=zaxis_rod_d*1.01, h=extrusion_size*3, align=[0,0,0], orient=[0,0,1]);
     }
 }
 

@@ -34,6 +34,8 @@ extrusion_thread = ThreadM5;
 main_lower_dist_z= 80*mm;
 main_upper_dist_y= 160*mm;
 
+gantry_connector_thickness = 5;
+
 ziptie_thickness = 4;
 ziptie_width = 4;
 ziptie_bearing_distance=2;
