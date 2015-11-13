@@ -91,17 +91,25 @@ module main()
         translate([i*(main_width/2),0,main_height])
         {
             mirror([i==-1?1:0,0,0])
-            upper_gantry_zrod_connector();
+            {
+                upper_gantry_zrod_connector();
+
+                translate([zmotor_mount_rod_offset_x, 0, extrusion_size/2])
+                    zmotor_mount_rod_clamp();
+            }
         }
 
 
-        translate([i*(main_width/2 + lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
+        translate([i*(main_width/2), 0, 0])
         {
             translate([0,0,zaxis_motor_offset_z])
                 mirror([i==-1?1:0,0,0])
                 {
                     zmotor_mount();
+                    translate([zmotor_mount_rod_offset_x, 0, zmotor_mount_thickness_h/2])
+                        zmotor_mount_rod_clamp();
 
+                    translate([(lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
                     attach([[0,0,0],[0,0,0]],zmotor_mount_conn_motor)
                     {
                         // z motor/leadscrews
@@ -110,6 +118,7 @@ module main()
                 }
 
             // z smooth rods
+            translate([i*(lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
             translate([i*(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,0])
             {
                 translate([0,0,zaxis_motor_offset_z-50])
@@ -151,7 +160,7 @@ module upper_gantry_zrod_connector()
                 translate([lookup(NemaSideSize,zaxis_motor)/2, 0, 0])
                 translate([(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,0])
                 {
-                    cubea([gantry_connector_thickness,zaxis_rod_d*4,extrusion_size+gantry_connector_thickness], align=[-1,0,1]);
+                    cubea([gantry_connector_thickness, zmotor_mount_clamp_width, extrusion_size+gantry_connector_thickness], align=[-1,0,1]);
                 }
 
                 // connect upper gantry
@@ -166,6 +175,20 @@ module upper_gantry_zrod_connector()
 
         }
 
+        // cut out z rod mounting clamp nut traps and screw holes
+        translate([0,0,extrusion_size/2])
+        translate([upper_width_extra/2, 0, 0])
+        for(i=[-1,1])
+        {
+            translate([-1, i*zmotor_mount_clamp_dist/2, 0])
+            {
+                fncylindera(fn=6, d=zmotor_mount_clamp_nut_dia, h=zmotor_mount_clamp_nut_thick, orient=[1,0,0], align=[1,0,0]);
+
+                fncylindera(d=zmotor_mount_clamp_thread_dia, h=100, orient=[1,0,0], align=[1,0,0]);
+            }
+        }
+
+
         // cutout for z rod
         translate([lookup(NemaSideSize,zaxis_motor)/2, 0, 0])
         translate([(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,extrusion_size])
@@ -173,70 +196,106 @@ module upper_gantry_zrod_connector()
     }
 }
 
-zmotor_mount_motor_offset=5;
-zmotor_mount_conn_motor=[[-zmotor_mount_motor_offset, 0, 0],[0,1,0]];
+module zmotor_mount_rod_clamp()
+{
+    difference()
+    {
+        union()
+        {
+            /*cubea([zaxis_rod_d, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);*/
+            difference()
+            {
+                fncylindera(d=zaxis_rod_d*2, h=zmotor_mount_thickness_h, orient=[0,0,1], align=[0,0,0]);
+                cubea([zaxis_rod_d+1, zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*2, zmotor_mount_thickness_h+1], align=[-1,0,0]);
+            }
+            cubea([zaxis_rod_d/2, zmotor_mount_clamp_width, zmotor_mount_thickness_h], align=[1,0,0]);
+        }
+
+        // cut clamp screw holes
+        for(i=[-1,1])
+            translate([0, i*zmotor_mount_clamp_dist/2, 0])
+                fncylindera(d=zmotor_mount_clamp_thread_dia, h=zmotor_mount_thickness*3, orient=[1,0,0]);
+
+        // cut zrod
+        fncylindera(d=zaxis_rod_d*rod_fit_tolerance, h=100, orient=[0,0,1]);
+    }
+}
 
 module zmotor_mount()
 {
-    motor_w = lookup(NemaSideSize,zaxis_motor);
 
-    mount_thickness = 5;
-    mount_thickness_h = 8;
-    mount_thread_dia = lookup(ThreadSize, extrusion_thread);
-    mount_width = motor_w+mount_thickness*2 + mount_thread_dia*8;
-    mount_h = main_lower_dist_z+extrusion_size+zaxis_motor_offset_z;
-
-    // side triangles
-    translate([-motor_w/2, 0, 0])
-    for(i=[-1,1])
-    {
-        translate([mount_thickness, i*((motor_w/2)+mount_thickness/2), 0])
-        rotate([90,90,0])
-        Right_Angled_Triangle(a=motor_w-mount_thickness+zmotor_mount_motor_offset, b=main_lower_dist_z+extrusion_size+zaxis_motor_offset_z, height=mount_thickness, centerXYZ=[0,0,1]);
-
-        translate([0, i*((motor_w/2)+mount_thickness/2), 0])
-        cubea([mount_thickness, mount_thickness, mount_h], align=[1,0,-1]);
-    }
-
-    // top mount plate
     difference()
     {
-        translate([-motor_w/2,0,-extrusion_size-zaxis_motor_offset_z])
-            cubea([mount_thickness, mount_width, extrusion_size], align=[1,0,1]);
+        // top plate
+        union()
+        {
+            // top mount plate
+            difference()
+            {
+                translate([0, 0,-extrusion_size-zaxis_motor_offset_z])
+                    cubea([zmotor_mount_thickness, zmotor_mount_width, extrusion_size], align=[1,0,1]);
 
+                for(i=[-1,1])
+                    translate([0, i*(zmotor_w/2+zmotor_mount_thread_dia*3), -extrusion_size])
+                        fncylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia, orient=[1,0,0]);
+            }
+
+            // bottom mount plate
+            difference()
+            {
+                translate([0, 0, -main_lower_dist_z-extrusion_size-zaxis_motor_offset_z])
+                    cubea([zmotor_mount_thickness, zmotor_mount_width, extrusion_size], align=[1,0,1]);
+
+                for(i=[-1,1])
+                    translate([0, i*(zmotor_w/2+zmotor_mount_thread_dia*3), -extrusion_size-main_lower_dist_z])
+                        fncylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia,align=[0,0,0], orient=[1,0,0]);
+            }
+
+            // side triangles
+            for(i=[-1,1])
+            {
+                translate([zmotor_mount_thickness, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
+                    rotate([90,90,0])
+                    Right_Angled_Triangle(a=zmotor_mount_rod_offset_x-zmotor_mount_thickness, b=main_lower_dist_z+extrusion_size+zaxis_motor_offset_z, height=zmotor_mount_thickness, centerXYZ=[0,0,1]);
+
+                translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
+                    cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h], align=[1,0,-1]);
+            }
+
+            // top plate
+            cubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
+            translate([zmotor_mount_rod_offset_x, 0, 0])
+            {
+                cubea([gantry_connector_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
+            }
+        }
+
+        // cut out motor mount holes etc
+        translate([zmotor_w/2+zmotor_mount_motor_offset,0,-1])
+            linear_extrude(zmotor_mount_thickness_h+2)
+            stepper_motor_mount(17, slide_distance=0, mochup=false);
+
+        // cut out z rod
+        translate([zmotor_mount_rod_offset_x, 0, 0])
+            fncylindera(d=zaxis_rod_d*rod_fit_tolerance, h=100, orient=[0,0,1]);
+
+        // cut out z rod mounting clamp nut traps
         for(i=[-1,1])
-            translate([-motor_w/2,i*(motor_w/2+mount_thread_dia*3),-extrusion_size])
-                fncylindera(h=mount_thickness*3,d=mount_thread_dia, orient=[1,0,0]);
-    }
+        {
+            translate([zmotor_mount_rod_offset_x-7, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
+            {
+                cubea([zmotor_mount_clamp_nut_thick*1.1, zmotor_mount_clamp_nut_dia*1.01, zmotor_mount_clamp_nut_dia*1.01], extrasize=[0,0,zmotor_mount_thickness_h], extrasize_align=[0,0,1]);
 
-    // bottom mount plate
-    difference()
-    {
-        translate([-motor_w/2,0,-main_lower_dist_z-extrusion_size-zaxis_motor_offset_z])
-            cubea([mount_thickness, mount_width, extrusion_size], align=[1,0,1]);
-
-        for(i=[-1,1])
-            translate([-motor_w/2,i*(motor_w/2+mount_thread_dia*3),-extrusion_size-main_lower_dist_z])
-                fncylindera(h=mount_thickness*3,d=mount_thread_dia,align=[0,0,0], orient=[1,0,0]);
-    }
-
-/*#    cubea([motor_w+mount_thickness,motor_w+mount_thickness,zaxis_motor_offset_z], align=[0,0,-1]);*/
-
-    // top plate
-    difference()
-    {
-        cubea([motor_w, motor_w+mount_thickness*2, mount_thickness_h], align=[0,0,1], extrasize=[5,0,0], extrasize_align=[1,0,0]);
-
-        translate([zmotor_mount_motor_offset,0,-1])
-        linear_extrude(mount_thickness_h+2)
-        stepper_motor_mount(17, slide_distance=0, mochup=false);
+                fncylindera(d=zmotor_mount_clamp_thread_dia, h=20, orient=[1,0,0], align=[1,0,0]);
+            }
+        }
     }
 }
 
 module gantry_upper()
 {
     for(i=[-1,1])
-    translate([i*(main_width/2), 0])
+    translate([i*(main_width/2), 0, 0])
     linear_extrusion(h=main_height, align=[-i,0,1], orient=[0,0,1]);
 
     translate([0, 0, main_height])
