@@ -327,3 +327,31 @@ module belt_path(len=200, belt_width=6, pulley_d=10)
 }
 
 main();
+
+%enclosure();
+
+module enclosure()
+{
+    w=60*cm;
+    h=60*cm;
+    d=60*cm;
+    wallthick=2*cm;
+    backthick=0.5*cm;
+
+    translate([0, 0, h/2-main_lower_dist_z-extrusion_size*2])
+    {
+        // left/right walls
+        for(i=[-1,1])
+            translate([i*w/2,0,0])
+                cubea([wallthick,d,h], align=[-i, 0, 0]);
+
+        // back plate
+        translate([0,d/2,0])
+            cubea([w,backthick,h], align=[0,-1, 0]);
+
+        // top/bottom plate
+        for(i=[-1,1])
+        translate([0,0,i*h/2])
+            cubea([w-wallthick*2,d,wallthick], align=[0,0, -i]);
+    }
+}
