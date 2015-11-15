@@ -119,6 +119,8 @@ zmotor_mount_clamp_nut_thick = lookup(MHexNutThickness, zmotor_mount_clamp_nut);
 zmotor_mount_conn_motor=[[-zmotor_mount_motor_offset, 0, 0],[0,1,0]];
 zmotor_mount_clamp_width = zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*3;
 
+zaxis_leadscrew_offset_x = zmotor_w/2 + zmotor_mount_motor_offset;
+
 // GT2 
 // there is bunch of GT2 belts with different tooth-to-tooth distance
 // this one is most common in reprap world

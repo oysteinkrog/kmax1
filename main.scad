@@ -121,6 +121,7 @@ module main()
             translate([i*(lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
             translate([i*(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,0])
             {
+                // z rods
                 translate([0,0,zaxis_motor_offset_z-50])
                     fncylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=[0,0,1]);
 
@@ -130,11 +131,14 @@ module main()
 
             }
 
-            translate([i*zmotor_mount_motor_offset, 0, axis_pos_z-xaxis_rod_distance/2-10])
+            translate([i*zmotor_mount_rod_offset_x, 0, axis_pos_z])
+                #fncylindera(h=100, d=zaxis_nut[1], align=[0,0,0]);
+
+            translate([i*zaxis_leadscrew_offset_x, 0, axis_pos_z-xaxis_rod_distance/2-10])
             {
                 difference()
                 {
-                    fncylindera(h=10, d=zaxis_nut[1], align=[0,0,0]);
+                    #fncylindera(h=10, d=zaxis_nut[1], align=[0,0,0]);
                     union()
                     {
                         fncylindera(h=10+1, d=zaxis_nut[0], center= false);
