@@ -33,6 +33,7 @@ main_upper_width = 420*mm;
 extrusion_color = [0.5,0.5,0.5];
 extrusion_size = 20*mm;
 extrusion_thread = ThreadM5;
+extrusion_thread_dia = lookup(ThreadSize, extrusion_thread);
 
 main_lower_dist_z= 80*mm;
 main_upper_dist_y= 160*mm;
