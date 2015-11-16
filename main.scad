@@ -42,8 +42,11 @@ module main()
     // x axis
     translate([0,0,axis_pos_z])
     {
-        translate([0, xaxis_zaxis_distance_y, 0])
-        belt_path(500, 6, xaxis_pulley_d);
+        if(!preview_mode)
+        {
+            translate([0, xaxis_zaxis_distance_y, 0])
+                belt_path(500, 6, xaxis_pulley_d);
+        }
 
         translate([axis_pos_x,0,0])
         {
@@ -53,9 +56,12 @@ module main()
                 x_carriage(show_bearings=true);
             }
 
-            attach([[12, -30, -30], [1,0,0]], extruder_conn_xcarriage)
+            if(!preview_mode)
             {
-                extruder();
+                attach([[12, -30, -30], [1,0,0]], extruder_conn_xcarriage)
+                {
+                    extruder();
+                }
             }
         }
 
@@ -300,21 +306,57 @@ module gantry_upper()
 {
     for(i=[-1,1])
     translate([i*(main_width/2), 0, 0])
-    linear_extrusion(h=main_height, align=[-i,0,1], orient=[0,0,1]);
+    {
+        if(preview_mode)
+        {
+            cubea(size=[extrusion_size, extrusion_size, main_height], align=[-i,0,1]);
+        }
+        else
+        {
+            linear_extrusion(h=main_height, align=[-i,0,1], orient=[0,0,1]);
+        }
+    }
 
     translate([0, 0, main_height])
-    linear_extrusion(h=main_upper_width, align=[0,0,1], orient=[1,0,0]);
+    {
+        if(preview_mode)
+        {
+            cubea(size=[main_upper_width, extrusion_size, extrusion_size], align=[0,0,1]);
+        }
+        else
+        {
+            linear_extrusion(h=main_upper_width, align=[0,0,1], orient=[1,0,0]);
+        }
+    }
 }
 
 module gantry_lower()
 {
     for(i=[-1,1])
     translate([0,  i*(main_depth/2), 0]) 
-    linear_extrusion(h=main_width, align=[0,i,-1], orient=[1,0,0]);
+    {
+        if(preview_mode)
+        {
+            cubea([main_width, extrusion_size, extrusion_size], align=[0,i,-1]);
+        }
+        else
+        {
+            linear_extrusion(h=main_width, align=[0,i,-1], orient=[1,0,0]);
+        }
+    }
 
     for(i=[-1,1])
     translate([i*(main_width/2), 0, 0])
-    linear_extrusion(h=main_depth, align=[-i,0,-1], orient=[0,1,0]);
+    {
+        if(preview_mode)
+        {
+            cubea([extrusion_size, main_depth, extrusion_size], align=[-i,0,-1]);
+        }
+        else
+        {
+            #linear_extrusion(h=main_depth, align=[-i,0,-1], orient=[0,1,0]);
+        }
+    }
 }
 
 module belt_path(len=200, belt_width=6, pulley_d=10)

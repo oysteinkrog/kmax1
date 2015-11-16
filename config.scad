@@ -22,6 +22,9 @@ thick_wall_factor           = 4;
 filament_d                  = 1.75*mm;
 filament_r                  = filament_d/2;
 
+// enable preview model (faster openscad)
+preview_mode=true;
+
 main_width = 340*mm;
 main_depth = 420*mm;
 main_height = 400*mm;
