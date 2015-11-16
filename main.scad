@@ -389,10 +389,6 @@ module belt_path(len=200, belt_width=6, pulley_d=10)
     }
 }
 
-main();
-
-%enclosure();
-
 module enclosure()
 {
     w=60*cm;
@@ -401,7 +397,7 @@ module enclosure()
     wallthick=2*cm;
     backthick=0.5*cm;
 
-    translate([0, 0, h/2-main_lower_dist_z-extrusion_size*2])
+    translate([0, 0, h/2])
     {
         // left/right walls
         for(i=[-1,1])
@@ -418,3 +414,10 @@ module enclosure()
             cubea([w-wallthick*2,d,wallthick], align=[0,0, -i]);
     }
 }
+
+translate([0, 0, main_lower_dist_z+extrusion_size*2])
+main();
+
+/*psu();*/
+
+/*%enclosure();*/
