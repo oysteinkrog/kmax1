@@ -43,7 +43,7 @@ module bearing(bearing_type, orient=[0,0,1])
     }
 }
 
-module bearing_mount_holes(bearing_type, orient=[1,0,0])
+module bearing_mount_holes(bearing_type, orient=[1,0,0], ziptie_dist=undef)
 {
     orient(orient)
     {
@@ -57,8 +57,9 @@ module bearing_mount_holes(bearing_type, orient=[1,0,0])
         {
             union()
             {
+                ziptie_dist_ = ziptie_dist==undef?bearing_type[3]/2:ziptie_dist;
                 for(i=[-1,1])
-                translate([0,0,i*bearing_type[3]/2])
+                translate([0,0,i*ziptie_dist_])
                 fncylindera(h=ziptie_width, d=bearing_type[1]+ziptie_bearing_distance+ziptie_thickness, orient=[0,0,1]);
             }
             fncylindera(h=bearing_type[2], d=bearing_type[1]+ziptie_bearing_distance, orient=[0,0,1]);
