@@ -43,8 +43,9 @@ module bearing(bearing_type, orient=[0,0,1])
     }
 }
 
-module bearing_mount_holes(bearing_type, orient=[1,0,0], ziptie_dist=undef)
+module bearing_mount_holes(bearing_type, orient=[1,0,0], ziptie_dist=undef, show_zips=false)
 {
+    ziptie_dist_ = ziptie_dist==undef?bearing_type[3]/2:ziptie_dist;
     orient(orient)
     {
         // Main bearing cut
@@ -57,7 +58,6 @@ module bearing_mount_holes(bearing_type, orient=[1,0,0], ziptie_dist=undef)
         {
             union()
             {
-                ziptie_dist_ = ziptie_dist==undef?bearing_type[3]/2:ziptie_dist;
                 for(i=[-1,1])
                 translate([0,0,i*ziptie_dist_])
                 fncylindera(h=ziptie_width, d=bearing_type[1]+ziptie_bearing_distance+ziptie_thickness, orient=[0,0,1]);
@@ -67,5 +67,12 @@ module bearing_mount_holes(bearing_type, orient=[1,0,0], ziptie_dist=undef)
 
         // for linear rod
         fncylindera(d=bearing_type[0]*1.5, h=100, orient=[0,0,1]);
+
+        %if(show_zips)
+        {
+            for(i=[-1,1])
+            translate([0,0,i*ziptie_dist_])
+            fncylindera(h=ziptie_width, d=bearing_type[1]+ziptie_thickness, orient=[0,0,1]);
+        }
     }
 }
