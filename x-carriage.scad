@@ -17,33 +17,6 @@ xaxis_carriage_mount_screws = ThreadM4;
 
 xaxis_carriage_conn = [[0, -xaxis_bearing[1]/2 - xaxis_carriage_bearing_offset_z,0], [0,0,0]];
 
-module horizontal_bearing_holes(bearing_type)
-{
-    translate([0,bearing_type[1]/2 + xaxis_carriage_bearing_offset_z,0])
-    {
-        // Main bearing cut
-        difference()
-        {
-            fncylindera(h=bearing_type[2], d=bearing_type[1], orient=[1,0,0]);
-        }
-
-        difference()
-        {
-            union()
-            {
-                for(i=[-1,1])
-                    translate([i*bearing_type[3]/2,0,0])
-                        fncylindera(h=ziptie_width, d=bearing_type[1]+ziptie_bearing_distance+ziptie_thickness, orient=[1,0,0]);
-            }
-            fncylindera(h=bearing_type[2], d=bearing_type[1]+ziptie_bearing_distance, orient=[1,0,0]);
-        }
-
-        // for linear rod
-        fncylindera(d=xaxis_rod_d*1.5, h=100, orient=[1,0,0]);
-    }
-}
-
-
 module x_carriage_base()
 {
     bottom_width = xaxis_bearing[2] + 2*xaxis_carriage_padding;
@@ -121,11 +94,11 @@ module x_carriage_holes()
 {
     for(i=[-1,1])
     translate([i*(xaxis_bearing[2]/2+xaxis_carriage_bearing_distance/2),0,0])
-    translate([0,0,xaxis_rod_distance/2])
-    horizontal_bearing_holes(xaxis_bearing);
+    translate([0, xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_z, xaxis_rod_distance/2])
+    bearing_mount_holes(xaxis_bearing, orient=[1,0,0]);
 
-    translate([0,0,-xaxis_rod_distance/2])
-    horizontal_bearing_holes(xaxis_bearing);
+    translate([0, xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_z, -xaxis_rod_distance/2])
+    bearing_mount_holes(xaxis_bearing, orient=[1,0,0]);
 
     // Extruder mounting holes
     translate([0,0,xaxis_carriage_mount_offset_z])

@@ -1,3 +1,5 @@
+use <thing_libutils/shapes.scad>;
+
 // radial bearings
 // inner_d, outer_d, length
 bearing_608 = [8,22,7];
@@ -41,3 +43,28 @@ module bearing(bearing_type, orient=[0,0,1])
     }
 }
 
+module bearing_mount_holes(bearing_type, orient=[1,0,0])
+{
+    orient(orient)
+    {
+        // Main bearing cut
+        difference()
+        {
+            fncylindera(h=bearing_type[2], d=bearing_type[1]*rod_fit_tolerance, orient=[0,0,1]);
+        }
+
+        difference()
+        {
+            union()
+            {
+                for(i=[-1,1])
+                translate([0,0,i*bearing_type[3]/2])
+                fncylindera(h=ziptie_width, d=bearing_type[1]+ziptie_bearing_distance+ziptie_thickness, orient=[0,0,1]);
+            }
+            fncylindera(h=bearing_type[2], d=bearing_type[1]+ziptie_bearing_distance, orient=[0,0,1]);
+        }
+
+        // for linear rod
+        fncylindera(d=bearing_type[0]*1.5, h=100, orient=[0,0,1]);
+    }
+}
