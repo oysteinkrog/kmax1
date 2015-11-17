@@ -13,6 +13,7 @@ include <MCAD/motors.scad>
 include <config.scad>
 include <extruder-direct.scad>
 include <x-carriage.scad>
+include <y-carriage.scad>
 
 include <psu.scad>
 
@@ -81,14 +82,18 @@ module main()
             fncylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=[0,1,0]);
 
             for(j=[-1,1])
-                translate([0,j*(yaxis_rod_distance/2),0])
-                    bearing(yaxis_bearing, orient=[0,1,0]);
+            {
+                attach([[0,j*(yaxis_rod_distance/2),0],[0,0,-1]], ycarriage_bearing_mount_conn_bearing)
+                {
+                    ycarriage_bearing_mount(show_bearing=true, show_zips=true);
+                }
+            }
         }
 
-        translate([0,0,yaxis_bearing[1]/2])
+        attach([[0,0,0],[0,0,-1]], ycarriage_bearing_mount_conn_bearing)
         {
             // y axis plate
-            cubea(ycarriage_size, align=[0,0,1]);
+            cubea(ycarriage_size, align=[0,0,-1]);
         }
     }
 
