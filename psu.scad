@@ -5,7 +5,7 @@ include <thing_libutils/metric-hexnut.scad>;
 
 include <config.scad>
 
-psu_w=11*cm;
+psu_w=11.5*cm;
 psu_d=21.5*cm;
 psu_h=5*cm;
 psu_screw_side_dist_z = 2.5*cm;
@@ -15,7 +15,7 @@ psu_screw_bottom_dist_x = 5*cm;
 psu_screw_thread = ThreadM4;
 psu_screw_thread_dia = lookup(ThreadSize, psu_screw_thread);
 
-psu_mount_bottom_height = 3*mm;
+psu_mount_bottom_height = 5*mm;
 
 
 module psu(align=[0,0,0])
