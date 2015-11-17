@@ -2,6 +2,7 @@ include <MCAD/stepper.scad>
 include <bearings.scad>
 include <screws.scad>
 include <thing_libutils/metric-thread.scad>
+include <thing_libutils/metric-hexnut.scad>
 
 e=0.01;
 
