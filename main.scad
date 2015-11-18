@@ -112,6 +112,9 @@ module main()
         {
             // y axis plate
             cubea(ycarriage_size, align=[0,0,-1]);
+
+            translate([0,0,-10*mm])
+                cubea(ycarriage_size, align=[0,0,-1]);
         }
     }
 
