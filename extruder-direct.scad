@@ -146,28 +146,10 @@ house_h=house_bearing[1]+house_padding_h;
 house_guidler_screw_h = guidler_screws_thread_dia+8*mm;
 house_guidler_screw_h_offset = house_h/2 + guidler_screws_thread_dia + 4*mm;
 
-CustomNema17 = [
-                [NemaModel, 17],
-                [NemaLengthShort, 33*mm],
-                [NemaLengthMedium, 39*mm],
-                [NemaLengthLong, 47*mm],
-                [NemaSideSize, 42.20*mm], 
-                [NemaDistanceBetweenMountingHoles, 31.04*mm], 
-                [NemaMountingHoleDiameter, 4*mm], 
-                [NemaMountingHoleDepth, 4.5*mm], 
-                [NemaMountingHoleLip, -1*mm], 
-                [NemaMountingHoleCutoutRadius, 0*mm], 
-                [NemaEdgeRoundingRadius, 7*mm], 
-                [NemaRoundExtrusionDiameter, 22*mm], 
-                [NemaRoundExtrusionHeight, 1.9*mm], 
-                [NemaAxleDiameter, 5*mm], 
-                // custom front axle length
-                [NemaFrontAxleLength, 22*mm], 
-                [NemaBackAxleLength, 15*mm],
-                [NemaAxleFlatDepth, 0.5*mm],
-                [NemaAxleFlatLengthFront, 15*mm],
-                [NemaAxleFlatLengthBack, 14*mm]
-         ];
+CustomNema17 = dict_replace_multiple(Nema17, 
+        [
+        [NemaFrontAxleLength, 22*mm]
+        ]);
 extruder_motor = CustomNema17;
 
 // 80t + 20t w/228-2GT-6 belt
