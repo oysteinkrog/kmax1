@@ -93,39 +93,6 @@ zaxis_motor = [
 
 zaxis_motor_offset_z = 10*mm;
 
-// inner_d, outer_d, thread
-zaxis_nut = [20*mm, 36.5*mm, 8*mm];
-
-zaxis_nut_mount_outer = zaxis_nut[1]/2 + zaxis_bearing[1]/2 + 3;
-
-// place z rod on edge of motor
-/*zaxis_rod_screw_distance_x = max(zaxis_nut_mount_outer, zaxis_rod_d/2 + lookup(NemaSideSize,zaxis_motor)/2);*/
-zaxis_rod_screw_distance_x = zaxis_nut_mount_outer;
-
-xaxis_zaxis_distance_y = xaxis_rod_d/2 + zaxis_bearing[1]/2;
-
-
-zmotor_w = lookup(NemaSideSize,zaxis_motor);
-zmotor_mount_thickness = 5;
-zmotor_mount_thickness_h = 10;
-zmotor_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
-zmotor_mount_width = zmotor_w+zmotor_mount_thickness*2 + zmotor_mount_thread_dia*8;
-zmotor_mount_h = main_lower_dist_z+extrusion_size+zaxis_motor_offset_z;
-zmotor_mount_motor_offset=5;
-zmotor_mount_rod_offset_x = zmotor_w/2+zaxis_rod_screw_distance_x+zmotor_mount_motor_offset;
-
-zmotor_mount_clamp_dist = zaxis_rod_d*2.5;
-zmotor_mount_clamp_thread = ThreadM4;
-zmotor_mount_clamp_thread_dia = lookup(ThreadSize, zmotor_mount_clamp_thread);
-zmotor_mount_clamp_nut = MHexNutM4;
-zmotor_mount_clamp_nut_dia = lookup(MHexNutWidthMin, zmotor_mount_clamp_nut);
-zmotor_mount_clamp_nut_thick = lookup(MHexNutThickness, zmotor_mount_clamp_nut);
-
-zmotor_mount_conn_motor=[[-zmotor_mount_motor_offset, 0, 0],[0,1,0]];
-zmotor_mount_clamp_width = zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*3;
-
-zaxis_leadscrew_offset_x = zmotor_w/2 + zmotor_mount_motor_offset;
-
 // GT2 
 // there is bunch of GT2 belts with different tooth-to-tooth distance
 // this one is most common in reprap world
