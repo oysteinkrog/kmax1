@@ -16,13 +16,15 @@ module mount_rod_clamp_half(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
     {
         union()
         {
-            difference()
-            {
-                fncylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
-                cubea([outer_d/2+.1, outer_d+.1, width+1], align=[-1,0,0]);
-            }
+            // cylinder around rod
+            fncylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
+
+            // base
             cubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=[1,0,0]);
         }
+
+        // cut bottom of cylinder
+        cubea([outer_d/2+.1, outer_d+.1, width+1], align=[-1,0,0]);
 
         // cut clamp screw holes
         for(i=[-1,1])
@@ -49,15 +51,17 @@ module mount_rod_clamp_full(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
     {
         union()
         {
-            difference()
-            {
-                fncylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
-                translate([-rod_d/2,0,0])
-                    cubea([outer_d/2+.1, outer_d+.1, width+1], align=[-1,0,0]);
-            }
+            // cylinder around rod
+            fncylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
+
+            // base
             translate([-rod_d/2,0,0])
             cubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=[1,0,0]);
         }
+
+        // cut bottom of cylinder
+        translate([-rod_d/2,0,0])
+            cubea([outer_d/2+.1, outer_d+.1, width+1], align=[-1,0,0]);
 
         // cut clamp screw holes
         for(i=[-1,1])
