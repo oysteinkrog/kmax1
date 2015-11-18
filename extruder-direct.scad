@@ -146,11 +146,10 @@ house_h=house_bearing[1]+house_padding_h;
 house_guidler_screw_h = guidler_screws_thread_dia+8*mm;
 house_guidler_screw_h_offset = house_h/2 + guidler_screws_thread_dia + 4*mm;
 
-CustomNema17 = dict_replace_multiple(Nema17, 
+extruder_motor = dict_replace_multiple(Nema17, 
         [
         [NemaFrontAxleLength, 22*mm]
         ]);
-extruder_motor = CustomNema17;
 
 // 80t + 20t w/228-2GT-6 belt
 gears_distance=38.8*mm;
@@ -257,7 +256,7 @@ module extruder_own(show_filament=true)
                 {
                     slide_dist=4;
                     mount_thickness = motor_offset_x+house_w/2;
-                    side = motorWidth(CustomNema17);
+                    side = motorWidth(extruder_motor);
 
                     translate([-mount_thickness,0,0])
                         cubea([mount_thickness, side+slide_dist, side],[1,0,0]);
@@ -277,10 +276,10 @@ module extruder_own(show_filament=true)
         translate([motor_offset_x,motor_offset_y,motor_offset_z])
         {
             slide_dist=4;
-            side = motorWidth(CustomNema17);
+            side = motorWidth(extruder_motor);
                 mount_thickness = motor_offset_x+house_w/2;
 
-            cubea([motorLength(CustomNema17), side+slide_dist, side],[1,0,0]);
+            cubea([motorLength(extruder_motor), side+slide_dist, side],[1,0,0]);
 
             translate([-mount_thickness-1,0,0])
                 rotate([90,90,90])
