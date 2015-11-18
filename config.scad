@@ -62,6 +62,13 @@ yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
 yaxis_rod_l = 500*mm;
 yaxis_bearing=bearing_igus_rj4jp_01_12;
+
+yaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 21.5*mm);
+
+yaxis_motor_offset_z = 0;
+yaxis_pulley_d = 12.2;
+ymotor_mount_thickness = 5;
+ymotor_mount_thickness_h = 5;
 ycarriage_size=[220*mm,220*mm,5*mm];
 
 zaxis_rod_d = 11.975*mm;
