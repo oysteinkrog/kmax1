@@ -13,7 +13,7 @@ include <MCAD/motors.scad>
 include <config.scad>
 include <extruder-direct.scad>
 include <x-carriage.scad>
-include <y-carriage.scad>
+include <y-axis.scad>
 include <z-axis.scad>
 include <psu.scad>
 include <rod-clamps.scad>
