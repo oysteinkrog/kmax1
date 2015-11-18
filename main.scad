@@ -165,6 +165,7 @@ module main()
                 mirror([i==-1?1:0,0,0])
                 {
                     zaxis_motor_mount();
+
                     translate([zmotor_mount_rod_offset_x, 0, zmotor_mount_thickness_h/2])
                     {
                         mount_rod_clamp_half(
@@ -176,8 +177,7 @@ module main()
                                 thread=zmotor_mount_clamp_thread);
                     }
 
-                    translate([(lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
-                    attach([[0,0,0],[0,0,0]],zmotor_mount_conn_motor)
+                    attach([[lookup(NemaSideSize,zaxis_motor)/2,0,0],[0,0,0]],zmotor_mount_conn_motor)
                     {
                         // z motor/leadscrews
                         motor(zaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
