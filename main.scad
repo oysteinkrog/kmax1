@@ -11,6 +11,7 @@ include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
 
 include <config.scad>
+include <misc.scad>
 include <extruder-direct.scad>
 include <x-carriage.scad>
 include <y-axis.scad>
@@ -319,21 +320,6 @@ module gantry_lower()
         {
             linear_extrusion(h=main_depth, align=[-i,0,-1], orient=[0,1,0]);
         }
-    }
-}
-
-module belt_path(len=200, belt_width=6, pulley_d=10, orient=[0,0,1])
-{
-    belt=tGT2_2;
-    orient(orient)
-    orient([1,0,0])
-    orient([0,1,0])
-    translate([-len/2, -pulley_d/2, 0])
-    {
-        belt_len(belt, belt_width, len);
-        translate([len,pulley_d,0]) rotate([0,0,180]) belt_len(belt, belt_width, len);
-        translate([0,pulley_d,0]) rotate([0,0,180]) belt_angle(belt, pulley_d/2, belt_width, 180);
-        translate([len,0,0]) rotate([0,0,0]) belt_angle(belt, pulley_d/2 ,belt_width,180);
     }
 }
 
