@@ -73,15 +73,6 @@ module main()
         for(i=[-1,1])
             translate([0,xaxis_zaxis_distance_y,i*(xaxis_rod_distance/2)])
                 fncylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
-
-        translate([16,16,-8])
-            translate([(main_width/2 + lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
-            /*translate([(xaxis_bearing_distance+xaxis_bearing[2])/2, xaxis_zaxis_distance_y, 0])*/
-            idler_x_end();
-
-        translate([-21,16,-8])
-            translate([-(main_width/2 + lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
-            motor_x_end();
     }
 
     // y axis
