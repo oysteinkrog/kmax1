@@ -3,6 +3,7 @@ include <bearings.scad>
 include <screws.scad>
 include <thing_libutils/metric-thread.scad>
 include <thing_libutils/metric-hexnut.scad>
+include <thing_libutils/misc.scad>
 
 e=0.01;
 
@@ -67,29 +68,12 @@ zaxis_rod_d = 11.975*mm;
 zaxis_rod_l = 500*mm;
 zaxis_bearing=bearing_igus_rj4jp_01_12;
 
-// NEMA17 motor w/340mm leadscrew
-zaxis_motor = [
-                [NemaModel, 17],
-                [NemaLengthShort, 33*mm],
-                [NemaLengthMedium, 39*mm],
-                [NemaLengthLong, 47*mm],
-                [NemaSideSize, 42.20*mm], 
-                [NemaDistanceBetweenMountingHoles, 31.04*mm], 
-                [NemaMountingHoleDiameter, 4*mm], 
-                [NemaMountingHoleDepth, 4.5*mm], 
-                [NemaMountingHoleLip, -1*mm], 
-                [NemaMountingHoleCutoutRadius, 0*mm], 
-                [NemaEdgeRoundingRadius, 7*mm], 
-                [NemaRoundExtrusionDiameter, 22*mm], 
-                [NemaRoundExtrusionHeight, 1.9*mm], 
-                [NemaAxleDiameter, 8*mm], 
-                // custom front axle length
-                [NemaFrontAxleLength, 340*mm], 
-                [NemaBackAxleLength, 15*mm],
-                [NemaAxleFlatDepth, 0.5*mm],
-                [NemaAxleFlatLengthFront, 15*mm],
-                [NemaAxleFlatLengthBack, 14*mm]
-         ];
+// Nema17 motor w/340mm long 8*mm leadscrew
+zaxis_motor = dict_replace_multiple(Nema17,
+        [
+        [NemaAxleDiameter, 8*mm],
+        [NemaFrontAxleLength, 340*mm],
+        ]);
 
 zaxis_motor_offset_z = 10*mm;
 
