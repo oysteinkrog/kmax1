@@ -100,6 +100,11 @@ module main()
 
     translate([0,0,yaxis_bearing[0]/2])
     {
+        if(!preview_mode)
+        {
+            belt_path(main_depth-yaxis_motor_offset*2, 6, yaxis_pulley_d, orient=[0,1,0]);
+        }
+
         for(i=[-1,1])
         for(j=[-1,1])
         {
