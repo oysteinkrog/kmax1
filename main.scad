@@ -144,7 +144,7 @@ module main()
             translate([0,0,zaxis_motor_offset_z])
                 mirror([i==-1?1:0,0,0])
                 {
-                    zmotor_mount();
+                    zaxis_motor_mount();
                     translate([zmotor_mount_rod_offset_x, 0, zmotor_mount_thickness_h/2])
                     {
                         mount_rod_clamp_half(
@@ -263,7 +263,7 @@ module upper_gantry_zrod_connector()
     }
 }
 
-module zmotor_mount()
+module zaxis_motor_mount()
 {
 
     difference()
