@@ -47,7 +47,7 @@ module main()
         if(!preview_mode)
         {
             translate([0, xaxis_zaxis_distance_y, 0])
-                belt_path(500, 6, xaxis_pulley_d);
+                belt_path(500, 6, xaxis_pulley_d, orient=[1,0,0]);
         }
 
         translate([axis_pos_x,0,0])
@@ -391,10 +391,12 @@ module gantry_lower()
     }
 }
 
-module belt_path(len=200, belt_width=6, pulley_d=10)
+module belt_path(len=200, belt_width=6, pulley_d=10, orient=[0,0,1])
 {
     belt=tGT2_2;
-    rotate([90,0,0])
+    orient(orient)
+    orient([1,0,0])
+    orient([0,1,0])
     translate([-len/2, -pulley_d/2, 0])
     {
         belt_len(belt, belt_width, len);
@@ -436,3 +438,5 @@ main();
 /*psu();*/
 
 /*%enclosure();*/
+
+
