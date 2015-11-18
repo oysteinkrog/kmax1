@@ -76,6 +76,9 @@ zaxis_motor = dict_replace_multiple(Nema17,
         ]);
 
 zaxis_motor_offset_z = 10*mm;
+zmotor_mount_thickness = 5;
+zmotor_mount_thickness_h = 10;
+zmotor_mount_motor_offset=5;
 
 // GT2 
 // there is bunch of GT2 belts with different tooth-to-tooth distance
