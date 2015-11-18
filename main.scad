@@ -14,8 +14,8 @@ include <config.scad>
 include <extruder-direct.scad>
 include <x-carriage.scad>
 include <y-carriage.scad>
-
 include <psu.scad>
+include <rod-clamps.scad>
 
 use <scad-utils/trajectory.scad>
 use <scad-utils/trajectory_path.scad>
@@ -107,7 +107,13 @@ module main()
                 upper_gantry_zrod_connector();
 
                 translate([zmotor_mount_rod_offset_x, 0, extrusion_size/2])
-                    zmotor_mount_rod_clamp();
+                    mount_rod_clamp_half(
+                            rod_d=zaxis_rod_d,
+                            screw_dist=zmotor_mount_clamp_dist,
+                            thick=5,
+                            base_thick=5,
+                            width=zmotor_mount_thickness_h,
+                            thread=zmotor_mount_clamp_thread);
             }
         }
 
@@ -119,7 +125,15 @@ module main()
                 {
                     zmotor_mount();
                     translate([zmotor_mount_rod_offset_x, 0, zmotor_mount_thickness_h/2])
-                        zmotor_mount_rod_clamp();
+                    {
+                        mount_rod_clamp_half(
+                                rod_d=zaxis_rod_d,
+                                screw_dist=zmotor_mount_clamp_dist,
+                                thick=5,
+                                base_thick=5,
+                                width=zmotor_mount_thickness_h,
+                                thread=zmotor_mount_clamp_thread);
+                    }
 
                     translate([(lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
                     attach([[0,0,0],[0,0,0]],zmotor_mount_conn_motor)
@@ -225,31 +239,6 @@ module upper_gantry_zrod_connector()
         translate([lookup(NemaSideSize,zaxis_motor)/2, 0, 0])
         translate([(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,extrusion_size])
         fncylindera(d=zaxis_rod_d*1.01, h=extrusion_size*3, align=[0,0,0], orient=[0,0,1]);
-    }
-}
-
-module zmotor_mount_rod_clamp()
-{
-    difference()
-    {
-        union()
-        {
-            /*cubea([zaxis_rod_d, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);*/
-            difference()
-            {
-                fncylindera(d=zaxis_rod_d*2, h=zmotor_mount_thickness_h, orient=[0,0,1], align=[0,0,0]);
-                cubea([zaxis_rod_d+1, zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*2, zmotor_mount_thickness_h+1], align=[-1,0,0]);
-            }
-            cubea([zaxis_rod_d/2, zmotor_mount_clamp_width, zmotor_mount_thickness_h], align=[1,0,0]);
-        }
-
-        // cut clamp screw holes
-        for(i=[-1,1])
-            translate([0, i*zmotor_mount_clamp_dist/2, 0])
-                fncylindera(d=zmotor_mount_clamp_thread_dia, h=zmotor_mount_thickness*3, orient=[1,0,0]);
-
-        // cut zrod
-        fncylindera(d=zaxis_rod_d*rod_fit_tolerance, h=100, orient=[0,0,1]);
     }
 }
 
