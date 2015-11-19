@@ -55,8 +55,8 @@ module ycarriage_bearing_mount(show_bearing=false, show_zips=false)
 /*}*/
 
 yaxis_motor_mount_conn = [[0,0,+extrusion_size/2+yaxis_motor_offset_z],[1,0,0]];
-yaxis_motor_offset = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
-yaxis_motor_mount_conn_motor = [[-yaxis_motor_offset, 0,-extrusion_size/2],[0,0,1]];
+yaxis_motor_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
+yaxis_motor_mount_conn_motor = [[+yaxis_motor_offset_x, 0,+extrusion_size/2+yaxis_motor_offset_z],[0,0,1]];
 
 ymotor_w = lookup(NemaSideSize, yaxis_motor);
 ymotor_h = lookup(NemaLengthLong, yaxis_motor);
@@ -64,7 +64,7 @@ ymotor_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
 ymotor_mount_h = main_lower_dist_z+extrusion_size+yaxis_motor_offset_z;
 ymotor_mount_width = ymotor_w+ymotor_mount_thickness*2 + ymotor_mount_thread_dia*8;
 
-module yaxis_motor_mount()
+module yaxis_motor_mount(show_motor=false)
 {
     difference()
     {
@@ -137,6 +137,18 @@ module yaxis_motor_mount()
 
         }
 
+    }
+
+
+    if(show_motor)
+    {
+        attach(yaxis_motor_mount_conn_motor,[[0,0,0],[0,0,0]])
+        {
+            motor(yaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
+
+            translate([0,0,5*mm])
+            fncylindera(d=yaxis_pulley_d, h=yaxis_motor_pulley_h, orient=[0,0,1]);
+        }
     }
 }
 

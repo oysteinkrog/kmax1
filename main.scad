@@ -78,15 +78,7 @@ module main()
     // y axis
     attach([[0,main_depth/2,0], [0,-1,0]], yaxis_motor_mount_conn)
     {
-        yaxis_motor_mount();
-
-        attach([[0,0,0],[0,0,0]], yaxis_motor_mount_conn_motor)
-        {
-            motor(yaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
-
-            translate([0,0,5*mm])
-            fncylindera(d=yaxis_pulley_d, h=10*mm, orient=[0,0,1]);
-        }
+        yaxis_motor_mount(show_motor=true);
     }
 
     translate([0,0,yaxis_bearing[0]/2])
