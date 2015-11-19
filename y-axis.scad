@@ -76,12 +76,19 @@ module yaxis_motor_mount(show_motor=false)
                 // top plate
                 translate([ymotor_mount_thickness,0,extrusion_size/2])
                 {
+                    translate([ymotor_w/2,0,0])
                     difference()
                     {
-                        cubea([ymotor_w+ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_mount_thickness_h], align=[1,0,1]);
+                        cubea([ymotor_w+ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_mount_thickness_h], align=[0,0,1]);
+                        ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
+
+                        // cutout for belt path
+                        fncylindera(d=ymotor_round_d, h=ymotor_mount_thickness_h*2, orient=[0,0,1]);
+                        translate([0, 0,-1])
+                        cubea([1000, ymotor_round_d, ymotor_mount_thickness_h*2], align=[1,0,1]);
 
                         // cut out motor mount holes etc
-                        translate([ymotor_w/2,0,-1])
+                        translate([0,0,-1])
                             linear_extrude(ymotor_mount_thickness_h+2)
                             stepper_motor_mount(17, slide_distance=0, mochup=false);
                     }
@@ -105,7 +112,7 @@ module yaxis_motor_mount(show_motor=false)
                 {
                     translate([ymotor_mount_thickness, i*((ymotor_w/2)+ymotor_mount_thickness/2), extrusion_size/2])
                         rotate([90,90,0])
-                        Right_Angled_Triangle(a=ymotor_w+ymotor_mount_thickness, b=main_lower_dist_z+extrusion_size+yaxis_motor_offset_z, height=ymotor_mount_thickness, centerXYZ=[0,0,1]);
+                        Right_Angled_Triangle(a=ymotor_w+ymotor_mount_thickness/2, b=main_lower_dist_z+extrusion_size+yaxis_motor_offset_z, height=ymotor_mount_thickness, centerXYZ=[0,0,1]);
 
                     translate([0, i*((ymotor_w/2)+ymotor_mount_thickness/2), extrusion_size/2])
                         cubea([ymotor_mount_thickness, ymotor_mount_thickness, ymotor_mount_h], align=[1,0,-1]);
