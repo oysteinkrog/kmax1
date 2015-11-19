@@ -17,6 +17,7 @@ zaxis_rod_screw_distance_x = zaxis_nut_mount_outer;
 xaxis_zaxis_distance_y = xaxis_rod_d/2 + zaxis_bearing[1]/2;
 
 zmotor_w = lookup(NemaSideSize,zaxis_motor);
+zmotor_h = lookup(NemaLengthLong,zaxis_motor);
 zmotor_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
 zmotor_mount_width = zmotor_w+zmotor_mount_thickness*2 + zmotor_mount_thread_dia*8;
 zmotor_mount_h = main_lower_dist_z+extrusion_size+zaxis_motor_offset_z;
@@ -28,10 +29,12 @@ zmotor_mount_clamp_nut = MHexNutM4;
 zmotor_mount_clamp_thread_dia = lookup(ThreadSize, zmotor_mount_clamp_thread);
 zmotor_mount_clamp_nut_dia = lookup(MHexNutWidthMin, zmotor_mount_clamp_nut);
 zmotor_mount_clamp_nut_thick = lookup(MHexNutThickness, zmotor_mount_clamp_nut);
-zmotor_mount_conn_motor=[[-zmotor_mount_motor_offset, 0, 0],[0,1,0]];
+
 zmotor_mount_clamp_width = zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*3;
 
 zaxis_leadscrew_offset_x = zmotor_w/2 + zmotor_mount_motor_offset;
+
+zmotor_mount_conn_motor=[[-zmotor_mount_motor_offset, 0, 0],[0,1,0]];
 
 module zaxis_motor_mount()
 {
@@ -41,6 +44,22 @@ module zaxis_motor_mount()
         // top plate
         union()
         {
+            // top plate
+            cubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
+            translate([zmotor_mount_rod_offset_x, 0, 0])
+            {
+                cubea([gantry_connector_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
+            }
+
+            // reinforcement plate between motor and extrusion
+            difference()
+            {
+                cubea([zmotor_mount_thickness, zmotor_w, zmotor_h], align=[1,0,-1]);
+                // cutout for motor cables
+                translate([0,0,-20*mm])
+                cubea([zmotor_mount_thickness*3, 20*mm, zmotor_h], align=[0,0,-1]);
+            }
+
             // top mount plate
             difference()
             {
@@ -72,13 +91,6 @@ module zaxis_motor_mount()
 
                 translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
                     cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h], align=[1,0,-1]);
-            }
-
-            // top plate
-            cubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
-            translate([zmotor_mount_rod_offset_x, 0, 0])
-            {
-                cubea([gantry_connector_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
             }
         }
 
