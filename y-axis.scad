@@ -59,6 +59,7 @@ yaxis_motor_offset = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
 yaxis_motor_mount_conn_motor = [[-yaxis_motor_offset, 0,-extrusion_size/2],[0,0,1]];
 
 ymotor_w = lookup(NemaSideSize, yaxis_motor);
+ymotor_h = lookup(NemaLengthLong, yaxis_motor);
 ymotor_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
 ymotor_mount_h = main_lower_dist_z+extrusion_size+yaxis_motor_offset_z;
 ymotor_mount_width = ymotor_w+ymotor_mount_thickness*2 + ymotor_mount_thread_dia*8;
@@ -86,6 +87,16 @@ module yaxis_motor_mount()
 
             translate([0,0,yaxis_motor_offset_z])
             {
+                difference()
+                {
+                    // reinforcement plate between motor and extrusion
+                    cubea([ymotor_mount_thickness, ymotor_w, ymotor_h], align=[1,0,-1]);
+
+                    // cutout for motor cables
+                    translate([0,0,-20*mm])
+                        cubea([ymotor_mount_thickness*3, 20*mm, ymotor_h], align=[0,0,-1]);
+                }
+
                 // top mount plate
                 difference()
                 {
