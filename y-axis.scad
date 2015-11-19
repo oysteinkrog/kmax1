@@ -71,53 +71,33 @@ module yaxis_motor_mount()
         // top plate
         union()
         {
-            // top plate
-            translate([ymotor_mount_thickness,0,extrusion_size/2])
-            {
-                difference()
-                {
-                    cubea([ymotor_w+ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_mount_thickness_h], align=[1,0,1]);
-
-                    // cut out motor mount holes etc
-                    translate([ymotor_w/2,0,-1])
-                        linear_extrude(ymotor_mount_thickness_h+2)
-                        stepper_motor_mount(17, slide_distance=0, mochup=false);
-                }
-            }
-
             translate([0,0,yaxis_motor_offset_z])
             {
-                difference()
+                // top plate
+                translate([ymotor_mount_thickness,0,extrusion_size/2])
                 {
-                    // reinforcement plate between motor and extrusion
-                    cubea([ymotor_mount_thickness, ymotor_w, ymotor_h], align=[1,0,-1]);
+                    difference()
+                    {
+                        cubea([ymotor_w+ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_mount_thickness_h], align=[1,0,1]);
 
-                    // cutout for motor cables
-                    translate([0,0,-20*mm])
-                        cubea([ymotor_mount_thickness*3, 20*mm, ymotor_h], align=[0,0,-1]);
+                        // cut out motor mount holes etc
+                        translate([ymotor_w/2,0,-1])
+                            linear_extrude(ymotor_mount_thickness_h+2)
+                            stepper_motor_mount(17, slide_distance=0, mochup=false);
+                    }
                 }
 
-                // top mount plate
-                difference()
+                translate([0,0,extrusion_size/2])
                 {
-                    cubea([ymotor_mount_thickness, ymotor_mount_width, extrusion_size], align=[1,0,0]);
+                    difference()
+                    {
+                        // reinforcement plate between motor and extrusion
+                        cubea([ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_h], align=[1,0,-1], extrasize=[0,0,ymotor_mount_thickness_h], extrasize_align=[0,0,1]);
 
-                    for(i=[-1,1])
-                        translate([0, i*(ymotor_w/2+ymotor_mount_thread_dia*3), 0])
-                            fncylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia, orient=[1,0,0]);
-                }
-
-
-                // bottom mount plate
-                translate([0,0,-main_lower_dist_z])
-                difference()
-                {
-                    translate([0, 0, yaxis_motor_offset_z])
-                        cubea([ymotor_mount_thickness, ymotor_w, extrusion_size], align=[1,0,0]);
-
-                    for(i=[0])
-                        translate([0, i*(ymotor_w/2+ymotor_mount_thread_dia*3), 0])
-                            fncylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia,align=[0,0,0], orient=[1,0,0]);
+                        // cutout for motor cables
+                        translate([0,0,-20*mm])
+                            cubea([ymotor_mount_thickness*3, 20*mm, ymotor_h], align=[0,0,-1]);
+                    }
                 }
 
                 // side triangles
@@ -129,6 +109,29 @@ module yaxis_motor_mount()
 
                     translate([0, i*((ymotor_w/2)+ymotor_mount_thickness/2), extrusion_size/2])
                         cubea([ymotor_mount_thickness, ymotor_mount_thickness, ymotor_mount_h], align=[1,0,-1]);
+                }
+            }
+
+            // top mount plate
+            difference()
+            {
+                cubea([ymotor_mount_thickness, ymotor_mount_width, extrusion_size], align=[1,0,0]);
+
+                for(i=[-1,1])
+                    translate([0, i*(ymotor_w/2+ymotor_mount_thread_dia*3), 0])
+                        fncylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia, orient=[1,0,0]);
+            }
+
+            // bottom mount plate
+            translate([0,0,-main_lower_dist_z])
+            {
+                difference()
+                {
+                    cubea([ymotor_mount_thickness, ymotor_w, extrusion_size], align=[1,0,0]);
+
+                    for(i=[0])
+                        translate([0, i*(ymotor_w/2+ymotor_mount_thread_dia*3), 0])
+                            fncylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia,align=[0,0,0], orient=[1,0,0]);
                 }
             }
 
