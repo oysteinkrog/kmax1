@@ -36,7 +36,7 @@ zaxis_leadscrew_offset_x = zmotor_w/2 + zmotor_mount_motor_offset;
 
 zmotor_mount_conn_motor=[[-zmotor_mount_motor_offset, 0, 0],[0,1,0]];
 
-module zaxis_motor_mount()
+module zaxis_motor_mount(show_motor=false)
 {
 
     difference()
@@ -111,6 +111,15 @@ module zaxis_motor_mount()
                 cubea([zmotor_mount_clamp_nut_thick*1.1, zmotor_mount_clamp_nut_dia*1.01, zmotor_mount_clamp_nut_dia*1.01], extrasize=[0,0,zmotor_mount_thickness_h], extrasize_align=[0,0,1]);
 
                 fncylindera(d=zmotor_mount_clamp_thread_dia, h=20, orient=[1,0,0], align=[1,0,0]);
+            }
+        }
+
+        if(show_motor)
+        {
+            attach([[lookup(NemaSideSize,zaxis_motor)/2,0,0],[0,0,0]],zmotor_mount_conn_motor)
+            {
+                // z motor/leadscrews
+                motor(zaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
             }
         }
     }
