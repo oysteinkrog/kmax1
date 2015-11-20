@@ -3,10 +3,10 @@ use <thing_libutils/misc.scad>;
 use <thing_libutils/attach.scad>;
 
 
-module belt_path(len=200, belt_width=6, pulley_d=10, orient=[0,0,1])
+module belt_path(len=200, belt_width=6, pulley_d=10, align=[0,0,0], orient=[0,0,1])
 {
     belt=tGT2_2;
-    orient(orient)
+    size_align(size=[pulley_d, belt_width, len], align=align, orient=orient)
     orient([1,0,0])
     orient([0,1,0])
     translate([-len/2, -pulley_d/2, 0])
