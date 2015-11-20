@@ -139,11 +139,11 @@ module y_axis()
             {
                 translate([x*ycarriage_size[0]/2, y*(ycarriage_size[1])/2, 0])
                 {
-                    fncylindera(d=10*mm, h=ycarriage_size[2], align=[-x,-y,0]);
+                    fncylindera(d=10*mm, h=ycarriage_size[2], align=[-x,-y,1]);
                 }
                 translate([x*(ycarriage_size[0]/2-16*mm), y*(ycarriage_size[1]/2-16*mm), 0])
                 {
-                    fncylindera(d=10*mm, h=ycarriage_size[2], align=[-x,-y,0]);
+                    fncylindera(d=10*mm, h=ycarriage_size[2], align=[-x,-y,1]);
                 }
             }
 
