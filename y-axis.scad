@@ -64,6 +64,65 @@ ymotor_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
 ymotor_mount_h = main_lower_dist_z+extrusion_size+yaxis_motor_offset_z;
 ymotor_mount_width = ymotor_w+ymotor_mount_thickness*2 + ymotor_mount_thread_dia*8;
 
+yaxis_motor_pulley_h = 17.5*mm;
+yaxis_motor_mount_bearing_clamp_offset_z = yaxis_motor_pulley_h;
+
+module yaxis_motor_mount_bearing_clamp(align=[0,0,0])
+{
+    bearing_d = bearing_625[1];
+    bearing_h = bearing_625[2];
+    width=ymotor_w+ymotor_mount_thickness;
+    depth=ymotor_w+ymotor_mount_thickness*2;
+    height=yaxis_motor_mount_bearing_clamp_offset_z;
+
+    /*size_align(size=[width,depth,height], align=align);*/
+    difference()
+    {
+        cubea([width, depth, height], align=[0,0,-1]);
+
+        ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
+
+        translate([0,0,.1])
+            fncylindera(h=bearing_h*2, d=bearing_d*rod_fit_tolerance, orient=[0,0,1], align=[0,0,-1]);
+
+        // cutout for belt path
+        fncylindera(d=bearing_d, h=height*2, orient=[0,0,1], align=[0,0,-1]);
+        translate([depth/2, 0, -bearing_h])
+            cubea([depth, ymotor_round_d, height-bearing_h+1], align=[0,0,-1]);
+
+        // cut out motor mount holes etc
+        screw_dist = lookup(NemaDistanceBetweenMountingHoles, yaxis_motor);
+        for(x=[-1,1])
+        for(y=[-1,1])
+        translate([x*screw_dist/2, y*screw_dist/2, 1])
+        fncylindera(h=height, d=3*mm, orient=[0,0,1], align=[0,0,-1]);
+    }
+
+    // debug bearing
+    %fncylindera(h=bearing_h, d=bearing_d*rod_fit_tolerance, align=[0,0,-1], orient=[0,0,1]);
+}
+
+module motor_mount_top(width, depth, height, belt_cutout=true, belt_cutout_orient=[1,0,0], align=[0,0,0])
+{
+    size_align(size=[width, depth, height], align=align);
+    difference()
+    {
+        cubea([width, depth, height], align=[0,0,1]);
+
+        ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
+
+        // cutout for belt path
+        fncylindera(d=ymotor_round_d, h=height*2, orient=[0,0,1], align=[0,0,0]);
+        translate([0, 0,-1])
+            cubea([depth/2, ymotor_round_d, height*2], align=[1,0,1]);
+
+        // cut out motor mount holes etc
+        translate([0,0,-1])
+            linear_extrude(height+2)
+            stepper_motor_mount(17, slide_distance=0, mochup=false);
+    }
+}
+
 module yaxis_motor_mount(show_motor=false)
 {
     difference()
@@ -76,22 +135,15 @@ module yaxis_motor_mount(show_motor=false)
                 // top plate
                 translate([ymotor_mount_thickness,0,extrusion_size/2])
                 {
+                    /*translate([ymotor_w/2,0,ymotor_mount_thickness_h+yaxis_motor_mount_bearing_clamp_offset_z+1])*/
+                        /*yaxis_motor_mount_bearing_clamp(align=[0,0,-1]);*/
+
                     translate([ymotor_w/2,0,0])
-                    difference()
-                    {
-                        cubea([ymotor_w+ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_mount_thickness_h], align=[0,0,1]);
-                        ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
-
-                        // cutout for belt path
-                        fncylindera(d=ymotor_round_d, h=ymotor_mount_thickness_h*2, orient=[0,0,1]);
-                        translate([0, 0,-1])
-                        cubea([1000, ymotor_round_d, ymotor_mount_thickness_h*2], align=[1,0,1]);
-
-                        // cut out motor mount holes etc
-                        translate([0,0,-1])
-                            linear_extrude(ymotor_mount_thickness_h+2)
-                            stepper_motor_mount(17, slide_distance=0, mochup=false);
-                    }
+                        motor_mount_top(width=ymotor_w+ymotor_mount_thickness,
+                        depth=ymotor_w+ymotor_mount_thickness*2,
+                        height=ymotor_mount_thickness_h,
+                        belt_cutout=true,
+                        belt_cutout_orient=[1,0,0]);
                 }
 
                 translate([0,0,extrusion_size/2])
