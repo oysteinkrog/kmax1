@@ -15,6 +15,7 @@ include <misc.scad>
 include <extruder-direct.scad>
 include <x-carriage.scad>
 include <y-axis.scad>
+include <y-axis-idler.scad>
 include <z-axis.scad>
 include <psu.scad>
 include <rod-clamps.scad>
@@ -30,20 +31,9 @@ axis_pos_y = 0*mm;
 axis_range_z=[85,380];
 axis_pos_z = axis_range_z[1]*mm/2;
 
-module main()
+
+module x_axis()
 {
-    color(extrusion_color)
-    gantry_lower();
-
-    color(extrusion_color)
-    translate([0,0,-main_lower_dist_z])
-    gantry_lower();
-
-    color(extrusion_color)
-    for(i=[-1,1])
-    translate([0,i*(main_upper_dist_y/2),0])
-    gantry_upper();
-
     // x axis
     translate([0,0,axis_pos_z])
     {
@@ -75,7 +65,10 @@ module main()
             translate([0,xaxis_zaxis_distance_y,i*(xaxis_rod_distance/2)])
                 fncylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
     }
+}
 
+module y_axis()
+{
     // y axis
     attach([[0,main_depth/2,yaxis_motor_offset_z], [0,-1,0]], yaxis_motor_mount_conn)
     {
@@ -161,6 +154,10 @@ module main()
         }
     }
 
+}
+
+module z_axis()
+{
     // z axis
     for(i=[-1,1])
     {
@@ -249,6 +246,24 @@ module main()
                 psu_extrusion_bracket_back();
         }
     }
+}
+module main()
+{
+    color(extrusion_color)
+    gantry_lower();
+
+    color(extrusion_color)
+    translate([0,0,-main_lower_dist_z])
+    gantry_lower();
+
+    color(extrusion_color)
+    for(i=[-1,1])
+    translate([0,i*(main_upper_dist_y/2),0])
+    gantry_upper();
+
+    x_axis();
+    y_axis();
+    z_axis();
 }
 
 module upper_gantry_zrod_connector()
