@@ -71,8 +71,15 @@ yaxis_pulley_d = 12.2;
 ymotor_mount_thickness = 5;
 ymotor_mount_thickness_h = 5;
 yaxis_motor_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
-yaxis_motor_offset_z = 10*mm;
-yaxis_belt_path_offset_z = yaxis_motor_offset_z + 5*mm;
+yaxis_motor_offset_z = -5*mm;
+yaxis_belt_path_offset_x = -yaxis_pulley_d/2;
+yaxis_belt_path_offset_z = yaxis_motor_offset_z + 10*mm;
+
+yaxis_idler_mount_thickness = 5;
+yaxis_idler_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
+yaxis_idler_offset_z = 10*mm;
+
+yaxis_idler_pulley_h = 10*mm;
 
 ycarriage_size=[220*mm,220*mm,5*mm];
 

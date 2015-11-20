@@ -15,6 +15,7 @@ include <misc.scad>
 include <extruder-direct.scad>
 include <x-carriage.scad>
 include <y-axis.scad>
+include <y-axis-carriage-belt-clamp.scad>
 include <y-axis-idler.scad>
 include <z-axis.scad>
 include <psu.scad>
@@ -70,12 +71,12 @@ module x_axis()
 module y_axis()
 {
     // y axis
-    attach([[0,main_depth/2,yaxis_motor_offset_z], [0,-1,0]], yaxis_motor_mount_conn)
+    attach([[yaxis_belt_path_offset_x,main_depth/2,yaxis_motor_offset_z], [0,-1,0]], yaxis_motor_mount_conn)
     {
         yaxis_motor_mount(show_motor=true);
     }
 
-    translate([0,0,yaxis_belt_path_offset_z])
+    translate([yaxis_belt_path_offset_x,0,yaxis_belt_path_offset_z])
     {
         if(!preview_mode)
         {
@@ -87,22 +88,11 @@ module y_axis()
         }
     }
 
-    hull()
+    translate([0,0,yaxis_bearing[0]/2])
+    attach(ycarriage_bearing_mount_conn_bearing, yaxis_belt_mount_conn)
     {
-        translate([0,0,yaxis_bearing[0]/2])
-        {
-            attach(ycarriage_bearing_mount_conn_bearing, [[0,0,0],[0,0,1]])
-            {
-                cubea([10,20,10], align=[0,0,-1]);
-            }
-            translate([0,0,yaxis_belt_path_offset_z])
-            {
-                cubea([10,20,10], align=[0,0,-1]);
-            }
-        }
-
+        yaxis_belt_holder();
     }
-
 
     translate([0,0,yaxis_bearing[0]/2])
     {
