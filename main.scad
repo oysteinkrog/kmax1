@@ -85,7 +85,11 @@ module main()
     {
         if(!preview_mode)
         {
-            belt_path(main_depth-yaxis_motor_offset_x*2, 6, yaxis_pulley_d, orient=[0,1,0]);
+            translate([0,main_depth/2-yaxis_motor_offset_x,0])
+            {
+                /*cubea([10,main_depth-yaxis_motor_offset_x,10], align=[0,-1,0]);*/
+                belt_path(main_depth-yaxis_motor_offset_x, 6, yaxis_pulley_d, align=[0,-1,0], orient=[0,1,0]);
+            }
         }
     }
 

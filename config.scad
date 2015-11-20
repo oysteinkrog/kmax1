@@ -65,13 +65,14 @@ yaxis_bearing=bearing_igus_rj4jp_01_12;
 
 yaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 21.5*mm);
 
-yaxis_motor_offset_z = 10*mm;
-yaxis_belt_path_offset_z = yaxis_motor_offset_z + 5*mm;
-
 // 2GT2 20T pulley
 yaxis_pulley_d = 12.2;
 ymotor_mount_thickness = 5;
 ymotor_mount_thickness_h = 5;
+yaxis_motor_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
+yaxis_motor_offset_z = 10*mm;
+yaxis_belt_path_offset_z = yaxis_motor_offset_z + 5*mm;
+
 ycarriage_size=[220*mm,220*mm,5*mm];
 
 zaxis_rod_d = 11.975*mm;
