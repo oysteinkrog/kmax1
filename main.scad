@@ -63,7 +63,7 @@ module main()
 
             if(!preview_mode)
             {
-                attach([[12, -30, -30], [1,0,0]], extruder_conn_xcarriage)
+                attach([[35, -0, -0], [1,0,0]], extruder_conn_xcarriage)
                 {
                     extruder();
                 }
