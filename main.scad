@@ -76,18 +76,38 @@ module main()
     }
 
     // y axis
-    attach([[0,main_depth/2,0], [0,-1,0]], yaxis_motor_mount_conn)
+    attach([[0,main_depth/2,yaxis_motor_offset_z], [0,-1,0]], yaxis_motor_mount_conn)
     {
         yaxis_motor_mount(show_motor=true);
     }
 
-    translate([0,0,yaxis_bearing[0]/2])
+    translate([0,0,yaxis_belt_path_offset_z])
     {
         if(!preview_mode)
         {
-            belt_path(main_depth-yaxis_motor_offset*2, 6, yaxis_pulley_d, orient=[0,1,0]);
+            belt_path(main_depth-yaxis_motor_offset_x*2, 6, yaxis_pulley_d, orient=[0,1,0]);
+        }
+    }
+
+    hull()
+    {
+        translate([0,0,yaxis_bearing[0]/2])
+        {
+            attach(ycarriage_bearing_mount_conn_bearing, [[0,0,0],[0,0,1]])
+            {
+                cubea([10,20,10], align=[0,0,-1]);
+            }
+            translate([0,0,yaxis_belt_path_offset_z])
+            {
+                cubea([10,20,10], align=[0,0,-1]);
+            }
         }
 
+    }
+
+
+    translate([0,0,yaxis_bearing[0]/2])
+    {
         for(i=[-1,1])
         for(j=[-1,1])
         {
@@ -111,13 +131,13 @@ module main()
             }
         }
 
-        attach([[0,0,0],[0,0,-1]], ycarriage_bearing_mount_conn_bearing)
+        attach(ycarriage_bearing_mount_conn_bearing, [[0,0,0],[0,0,1]])
         {
             // y axis plate
-            cubea(ycarriage_size, align=[0,0,-1]);
+            cubea(ycarriage_size, align=[0,0,1]);
 
-            translate([0,0,-10*mm])
-                cubea(ycarriage_size, align=[0,0,-1]);
+            translate([0,0,10*mm])
+                cubea(ycarriage_size, align=[0,0,1]);
         }
     }
 
