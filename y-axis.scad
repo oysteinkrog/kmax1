@@ -55,7 +55,6 @@ module ycarriage_bearing_mount(show_bearing=false, show_zips=false)
 /*}*/
 
 yaxis_motor_mount_conn = [[0,0,+extrusion_size/2+yaxis_motor_offset_z],[1,0,0]];
-yaxis_motor_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
 yaxis_motor_mount_conn_motor = [[+yaxis_motor_offset_x, 0,+extrusion_size/2+yaxis_motor_offset_z],[0,0,1]];
 
 ymotor_w = lookup(NemaSideSize, yaxis_motor);
