@@ -26,6 +26,7 @@ use <scad-utils/shapes.scad>
 use <list-comprehension-demos/skin.scad>
 
 axis_pos_x = 0*mm;
+axis_pos_y = 0*mm;
 axis_range_z=[85,380];
 axis_pos_z = axis_range_z[1]*mm/2;
 
@@ -128,14 +129,14 @@ module main()
 
             for(j=[-1,1])
             {
-                attach([[0,j*(yaxis_bearing_distance_y/2),0],[0,0,-1]], ycarriage_bearing_mount_conn_bearing)
+                attach([[0,j*(yaxis_bearing_distance_y/2)-axis_pos_y,0],[0,0,-1]], ycarriage_bearing_mount_conn_bearing)
                 {
                     ycarriage_bearing_mount(show_bearing=true, show_zips=true);
                 }
             }
         }
 
-        attach(ycarriage_bearing_mount_conn_bearing, [[0,0,0],[0,0,1]])
+        attach(ycarriage_bearing_mount_conn_bearing, [[0,axis_pos_y,0],[0,0,1]])
         {
             /*translate([x*ycarriage_size[0]/2, y*(ycarriage_size[1]-16*mm)/2, 0])*/
             // y axis plate
