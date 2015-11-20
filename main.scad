@@ -128,7 +128,7 @@ module main()
 
             for(j=[-1,1])
             {
-                attach([[0,j*(yaxis_rod_distance/2),0],[0,0,-1]], ycarriage_bearing_mount_conn_bearing)
+                attach([[0,j*(yaxis_bearing_distance_y/2),0],[0,0,-1]], ycarriage_bearing_mount_conn_bearing)
                 {
                     ycarriage_bearing_mount(show_bearing=true, show_zips=true);
                 }
@@ -137,8 +137,23 @@ module main()
 
         attach(ycarriage_bearing_mount_conn_bearing, [[0,0,0],[0,0,1]])
         {
+            /*translate([x*ycarriage_size[0]/2, y*(ycarriage_size[1]-16*mm)/2, 0])*/
             // y axis plate
-            cubea(ycarriage_size, align=[0,0,1]);
+            for(x=[-1,1])
+            for(y=[-1,1])
+            hull()
+            {
+                translate([x*ycarriage_size[0]/2, y*(ycarriage_size[1])/2, 0])
+                {
+                    fncylindera(d=10*mm, h=ycarriage_size[2], align=[-x,-y,0]);
+                }
+                translate([x*(ycarriage_size[0]/2-16*mm), y*(ycarriage_size[1]/2-16*mm), 0])
+                {
+                    fncylindera(d=10*mm, h=ycarriage_size[2], align=[-x,-y,0]);
+                }
+            }
+
+            cubea([ycarriage_size[0]-16*mm*2,ycarriage_size[1]-16*mm*2, ycarriage_size[2]], align=[0,0,1]);
 
             translate([0,0,10*mm])
                 cubea(ycarriage_size, align=[0,0,1]);
