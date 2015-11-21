@@ -1,12 +1,14 @@
 use <thing_libutils/shapes.scad>;
 
 // radial bearings
-// inner_d, outer_d, length
+// inner_d, outer_d, length/width (thickness)
 bearing_608 = [8,22,7];
 bearing_626 = [8,19,6];
 bearing_625 = [5,16,5];
 bearing_608 = [8,22,7];
 bearing_MR128 = [8,12,3.5];
+bearing_MR115 = [5,11,4];
+
 
 // linear bearings
 // inner_d, outer_d, length, clips_len, clips_d
