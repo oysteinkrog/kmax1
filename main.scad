@@ -76,6 +76,12 @@ module y_axis()
         yaxis_motor_mount(show_motor=true);
     }
 
+    attach([[yaxis_belt_path_offset_x,-main_depth/2,yaxis_idler_offset_z], [0,1,0]], yaxis_idler_mount_conn)
+    {
+        yaxis_idler();
+        yaxis_idler_pulleyblock(show_bearing=true);
+    }
+
     translate([yaxis_belt_path_offset_x,0,yaxis_belt_path_offset_z])
     {
         if(!preview_mode)
@@ -83,7 +89,7 @@ module y_axis()
             translate([0,main_depth/2-yaxis_motor_offset_x,0])
             {
                 /*cubea([10,main_depth-yaxis_motor_offset_x,10], align=[0,-1,0]);*/
-                belt_path(main_depth-yaxis_motor_offset_x, 6, yaxis_pulley_d, align=[0,-1,0], orient=[0,1,0]);
+                belt_path(main_depth-yaxis_motor_offset_x-yaxis_idler_pulley_offset_y, 6, yaxis_pulley_d, align=[0,-1,0], orient=[0,1,0]);
             }
         }
     }
@@ -221,22 +227,8 @@ module z_axis()
         }
     }
 
-    for(x=[-1,1])
-    translate([x*(main_width/2-extrusion_size),main_depth/2,-main_lower_dist_z-extrusion_size])
-    {
-        translate([-x*psu_w/2, -psu_d/2, psu_h/2])
-        {
-            psu();
-
-            mirror([x==-1?1:0,0,0])
-            translate([0, -psu_screw_dist_y/2, 0])
-                psu_extrusion_bracket_side();
-
-            translate([0, psu_screw_dist_y/2, 0])
-                psu_extrusion_bracket_back();
-        }
-    }
 }
+
 module main()
 {
     color(extrusion_color)
