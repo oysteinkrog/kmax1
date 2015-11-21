@@ -18,25 +18,35 @@ psu_screw_thread_dia = lookup(ThreadSize, psu_screw_thread);
 psu_mount_bottom_height = 5*mm;
 
 
-module psu(align=[0,0,0])
+module psu(align=[0,0,0], detailed_model=true)
 {
-    size_align([psu_w,psu_d,psu_h], align)
-    difference()
+    if(detailed_model)
     {
-        cubea([psu_w,psu_d,psu_h]);
+        size_align([psu_w,psu_d,psu_h], align)
+            translate([-24.5,105,-25])
+            rotate([0,0,90])
+            import("stl/ledpowersupply.stl");
+    }
+    else
+    {
+        size_align([psu_w,psu_d,psu_h], align)
+        difference()
+        {
+            cubea([psu_w,psu_d,psu_h]);
 
-        // screw holes, sides
-        for(x=[-1,1])
-        for(y=[-1,1])
-        for(z=[-1,1])
-        translate([x*(psu_w/2+1), y*(psu_screw_dist_y/2), z*psu_screw_side_dist_z/2])
-        fncylindera(d=psu_screw_thread_dia, h=0.5*cm, orient=[1,0,0], align=[-x,0,0]);
+            // screw holes, sides
+            for(x=[-1,1])
+                for(y=[-1,1])
+                    for(z=[-1,1])
+                        translate([x*(psu_w/2+1), y*(psu_screw_dist_y/2), z*psu_screw_side_dist_z/2])
+                            fncylindera(d=psu_screw_thread_dia, h=0.5*cm, orient=[1,0,0], align=[-x,0,0]);
 
-        // screw holes, bottom
-        for(x=[-1,1])
-        for(y=[-1,1])
-        translate([x*(psu_screw_bottom_dist_x/2), y*(psu_screw_dist_y/2), -psu_h/2-1])
-        fncylindera(d=psu_screw_thread_dia, h=1*cm, orient=[0,0,1], align=[0,0,1]);
+            // screw holes, bottom
+            for(x=[-1,1])
+                for(y=[-1,1])
+                    translate([x*(psu_screw_bottom_dist_x/2), y*(psu_screw_dist_y/2), -psu_h/2-1])
+                        fncylindera(d=psu_screw_thread_dia, h=1*cm, orient=[0,0,1], align=[0,0,1]);
+        }
     }
 }
 
