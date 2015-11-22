@@ -76,10 +76,14 @@ module y_axis()
         yaxis_motor_mount(show_motor=true);
     }
 
-    attach([[yaxis_belt_path_offset_x,-main_depth/2,yaxis_idler_offset_z], [0,1,0]], yaxis_idler_mount_conn)
+    extrusion_idler_conn = [[yaxis_belt_path_offset_x, -main_depth/2-extrusion_size, -extrusion_size+yaxis_idler_offset_z], [0,-1,0]];
+    attach(extrusion_idler_conn, yaxis_idler_conn)
     {
         yaxis_idler();
-        yaxis_idler_pulleyblock(show_bearing=true);
+        attach(yaxis_idler_conn_pulleyblock, yaxis_idler_pulleyblock_conn)
+        {
+            yaxis_idler_pulleyblock(show_bearing=true);
+        }
     }
 
     translate([yaxis_belt_path_offset_x,0,yaxis_belt_path_offset_z])
