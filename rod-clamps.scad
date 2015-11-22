@@ -8,7 +8,7 @@ module mount_rod_clamp_half(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
     thick_=thick==undef?rod_d:thick;
     outer_d= rod_d+thick_*2;
     thread_dia=lookup(ThreadSize, thread);
-    screw_dist_=screw_dist==undef?rod_d+thread_dia*2+thick_+thread_dia/2:screw_dist;
+    screw_dist_=screw_dist==undef?outer_d+thread_dia+thick_:screw_dist;
     base_thick_=base_thick==undef?thick_*1.5:base_thick;
 
     orient(orient)
@@ -43,7 +43,7 @@ module mount_rod_clamp_full(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
     thick_=thick==undef?rod_d:thick;
     outer_d= rod_d+thick_*2;
     thread_dia=lookup(ThreadSize, thread);
-    screw_dist_=screw_dist==undef?rod_d+thread_dia*2+thick_+thread_dia/2:screw_dist;
+    screw_dist_=screw_dist==undef?outer_d+thread_dia*2+thick_:screw_dist;
     base_thick_=base_thick==undef?thick_*1.5:base_thick;
 
     orient(orient)
@@ -77,5 +77,6 @@ module mount_rod_clamp_full(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
 
 /*translate([20,0,0])*/
 /*mount_rod_clamp_half(rod_d=xaxis_rod_d,  width=extrusion_size, thick=4, thread=ThreadM5);*/
-
 /*mount_rod_clamp_full(rod_d=xaxis_rod_d,  width=extrusion_size, thick=4, thread=ThreadM5);*/
+
+
