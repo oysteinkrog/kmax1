@@ -1,6 +1,7 @@
 use <thing_libutils/triangles.scad>
 include <thing_libutils/attach.scad>
 include <config.scad>
+include <pulley.scad>
 
 yaxis_idler_conn = [[-extrusion_size/2, 0, 0], [-1,0,0]];
 
@@ -113,15 +114,15 @@ module yaxis_idler()
 
 yaxis_idler_pulley_thread = ThreadM5;
 yaxis_idler_pulley_thread_dia = lookup(ThreadSize, yaxis_idler_pulley_thread);
-yaxis_idler_pulleyblock_supportsize = yaxis_pulley_d*1.5;
+yaxis_idler_pulleyblock_supportsize = yaxis_pulley_d*1.2;
 yaxis_idler_pulleyblock_wallthick = 5*mm;
 yaxis_idler_pulleyblock_lenfrompulley = yaxis_idler_pulleyblock_supportsize/2 + yaxis_idler_pulley_tight_len;
 
-module yaxis_idler_pulleyblock(show_bearing=false)
+module yaxis_idler_pulleyblock(show_pulley=false)
 {
-    if(show_bearing)
+    if(show_pulley)
     {
-        %fncylindera(d=yaxis_pulley_d, h=yaxis_idler_pulley_h, orient=[0,0,1]);
+        %pulley_idler_2GT2_20T();
     }
 
     h = yaxis_idler_pulley_h + 3*mm*2;
@@ -188,7 +189,7 @@ module print_yaxis_idler_pulleyblock()
 {
     attach([[0,0,0], [0,0,-1]], yaxis_idler_pulleyblock_conn_print)
     {
-        yaxis_idler_pulleyblock(show_bearing=false);
+        yaxis_idler_pulleyblock(show_pulley=false);
     }
 }
 
@@ -197,11 +198,11 @@ module print_yaxis_idler_pulleyblock()
 /*print_yaxis_idler_pulleyblock();*/
 /*yaxis_idler_pulleyblock();*/
 
-/*attach(extrusion_idler_conn, yaxis_idler_conn)*/
+/*attach([[0,0,0],[-1,0,0]], yaxis_idler_conn)*/
 /*{*/
     /*yaxis_idler();*/
     /*attach(yaxis_idler_conn_pulleyblock, yaxis_idler_pulleyblock_conn)*/
     /*{*/
-        /*yaxis_idler_pulleyblock(show_bearing=true);*/
+        /*yaxis_idler_pulleyblock(show_pulley=true);*/
     /*}*/
 /*}*/

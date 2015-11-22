@@ -4,6 +4,7 @@ include <MCAD/motors.scad>
 use <thing_libutils/triangles.scad>
 include <thing_libutils/attach.scad>
 include <config.scad>
+include <pulley.scad>
 
 ycarriage_bearing_mount_bottom_thick = 3;
 ycarriage_bearing_mount_conn_bottom = [[0,0,0], [0,0,1]];
@@ -204,8 +205,9 @@ module yaxis_motor_mount(show_motor=false)
         {
             motor(yaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
 
-            translate([0,0,5*mm])
-            fncylindera(d=yaxis_pulley_d, h=yaxis_motor_pulley_h, orient=[0,0,1]);
+            translate([0,0,8*mm])
+                %pulley_2GT2_20T();
+
         }
     }
 }

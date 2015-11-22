@@ -67,7 +67,7 @@ yaxis_bearing_distance_y = 7*cm;
 yaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 21.5*mm);
 
 // 2GT2 20T pulley
-yaxis_pulley_d = 12.2;
+yaxis_pulley_d = 18;
 ymotor_mount_thickness = 5;
 ymotor_mount_thickness_h = 5;
 yaxis_motor_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
@@ -80,7 +80,7 @@ yaxis_idler_pulley_tight_len = 20*mm;
 yaxis_idler_pulley_offset_y = yaxis_idler_mount_thickness + yaxis_pulley_d/2 + yaxis_idler_pulley_tight_len;
 yaxis_idler_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
 yaxis_idler_offset_z = 10*mm;
-yaxis_idler_pulley_h = 10*mm;
+yaxis_idler_pulley_h = 8.65*mm;
 
 ycarriage_size=[220*mm,220*mm,5*mm];
 
