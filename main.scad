@@ -99,7 +99,7 @@ module y_axis()
     }
 
     translate([0,-axis_pos_y,yaxis_bearing[0]/2])
-    attach(ycarriage_bearing_mount_conn_bearing, yaxis_belt_mount_conn)
+    attach(yaxis_carriage_bearing_mount_conn_bearing, yaxis_belt_mount_conn)
     {
         yaxis_belt_holder();
     }
@@ -122,35 +122,35 @@ module y_axis()
 
             for(j=[-1,1])
             {
-                attach([[0,j*(yaxis_bearing_distance_y/2)-axis_pos_y,0],[0,0,-1]], ycarriage_bearing_mount_conn_bearing)
+                attach([[0,j*(yaxis_bearing_distance_y/2)-axis_pos_y,0],[0,0,-1]], yaxis_carriage_bearing_mount_conn_bearing)
                 {
-                    ycarriage_bearing_mount(show_bearing=true, show_zips=true);
+                    yaxis_carriage_bearing_mount(show_bearing=true, show_zips=true);
                 }
             }
         }
 
-        attach(ycarriage_bearing_mount_conn_bearing, [[0,axis_pos_y,0],[0,0,1]])
+        attach(yaxis_carriage_bearing_mount_conn_bearing, [[0,axis_pos_y,0],[0,0,1]])
         {
-            /*translate([x*ycarriage_size[0]/2, y*(ycarriage_size[1]-16*mm)/2, 0])*/
+            /*translate([x*yaxis_carriage_size[0]/2, y*(yaxis_carriage_size[1]-16*mm)/2, 0])*/
             // y axis plate
             for(x=[-1,1])
             for(y=[-1,1])
             hull()
             {
-                translate([x*ycarriage_size[0]/2, y*(ycarriage_size[1])/2, 0])
+                translate([x*yaxis_carriage_size[0]/2, y*(yaxis_carriage_size[1])/2, 0])
                 {
-                    fncylindera(d=10*mm, h=ycarriage_size[2], align=[-x,-y,1]);
+                    fncylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
                 }
-                translate([x*(ycarriage_size[0]/2-16*mm), y*(ycarriage_size[1]/2-16*mm), 0])
+                translate([x*(yaxis_carriage_size[0]/2-16*mm), y*(yaxis_carriage_size[1]/2-16*mm), 0])
                 {
-                    fncylindera(d=10*mm, h=ycarriage_size[2], align=[-x,-y,1]);
+                    fncylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
                 }
             }
 
-            cubea([ycarriage_size[0]-16*mm*2,ycarriage_size[1]-16*mm*2, ycarriage_size[2]], align=[0,0,1]);
+            cubea([yaxis_carriage_size[0]-16*mm*2,yaxis_carriage_size[1]-16*mm*2, yaxis_carriage_size[2]], align=[0,0,1]);
 
             translate([0,0,10*mm])
-                cubea(ycarriage_size, align=[0,0,1]);
+                cubea(yaxis_carriage_size, align=[0,0,1]);
         }
     }
 
