@@ -15,6 +15,7 @@ include <misc.scad>
 include <extruder-direct.scad>
 include <x-carriage.scad>
 include <y-axis.scad>
+include <y-axis-carriage-bearing-mount.scad>
 include <y-axis-carriage-belt-clamp.scad>
 include <y-axis-idler.scad>
 include <z-axis.scad>
