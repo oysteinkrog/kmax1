@@ -1,10 +1,6 @@
-include <MCAD/stepper.scad>
-include <MCAD/motors.scad>
-
 use <thing_libutils/triangles.scad>
 include <thing_libutils/attach.scad>
 include <config.scad>
-include <pulley.scad>
 
 yaxis_carriage_bearing_mount_bottom_thick = 3;
 yaxis_carriage_bearing_mount_conn_bottom = [[0,0,0], [0,0,1]];
