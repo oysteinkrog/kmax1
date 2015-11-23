@@ -18,7 +18,7 @@ include <y-axis-motor-mount.scad>
 include <y-axis-carriage-bearing-mount.scad>
 include <y-axis-carriage-belt-clamp.scad>
 include <y-axis-idler.scad>
-include <z-axis.scad>
+include <z-axis-motor-mount.scad>
 include <psu.scad>
 include <rod-clamps.scad>
 
