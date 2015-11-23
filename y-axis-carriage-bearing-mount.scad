@@ -44,9 +44,9 @@ module yaxis_carriage_bearing_mount(show_bearing=false, show_zips=false)
     }
 }
 
-/*c1=[[0,0,0],[0,0,-1]];*/
-/*attach(c1,yaxis_carriage_bearing_mount_conn)*/
+/*c1=[[0,0,0],[0,0,1]];*/
+/*attach(c1,yaxis_carriage_bearing_mount_conn_bottom)*/
 /*{*/
     /*yaxis_carriage_bearing_mount();*/
-    /*#connector(yaxis_carriage_bearing_mount_conn);*/
+    /*#connector(yaxis_carriage_bearing_mount_conn_bottom);*/
 /*}*/
