@@ -266,6 +266,14 @@ module main()
                 psu_extrusion_bracket_back();
         }
     }
+
+    if(!preview_mode)
+    {
+        translate([0,-main_depth/2,-main_lower_dist_z-extrusion_size])
+            translate([-100,100,0])
+            rotate([0,0,270])
+            import("stl/RAMPS1_4.STL");
+    }
 }
 
 module upper_gantry_zrod_connector()
