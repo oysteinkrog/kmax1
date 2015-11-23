@@ -98,7 +98,7 @@ module y_axis()
         }
     }
 
-    translate([0,0,yaxis_bearing[0]/2])
+    translate([0,-axis_pos_y,yaxis_bearing[0]/2])
     attach(ycarriage_bearing_mount_conn_bearing, yaxis_belt_mount_conn)
     {
         yaxis_belt_holder();
