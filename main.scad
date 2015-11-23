@@ -250,6 +250,22 @@ module main()
     x_axis();
     y_axis();
     z_axis();
+
+    for(x=[-1,1])
+    translate([x*(main_width/2-extrusion_size),main_depth/2,-main_lower_dist_z-extrusion_size])
+    {
+        translate([-x*psu_w/2, -psu_d/2, psu_h/2])
+        {
+            psu();
+
+            mirror([x==-1?1:0,0,0])
+            translate([0, -psu_screw_dist_y/2, 0])
+                psu_extrusion_bracket_side();
+
+            translate([0, psu_screw_dist_y/2, 0])
+                psu_extrusion_bracket_back();
+        }
+    }
 }
 
 module upper_gantry_zrod_connector()
