@@ -163,4 +163,12 @@ module yaxis_motor_mount(show_motor=false)
     }
 }
 
+module print_yaxis_motor_mount()
+{
+    attach(yaxis_motor_mount_conn_motor,[[0,0,0],[1,0,0]])
+    {
+        yaxis_motor_mount(show_motor=false);
+    }
+}
+
 /*yaxis_motor_mount(show_motor=true);*/
