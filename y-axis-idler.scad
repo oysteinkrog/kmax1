@@ -156,10 +156,11 @@ module yaxis_idler_pulleyblock(show_pulley=false)
 
         fncylindera(d=yaxis_idler_pulley_thread_dia, h=h*2, orient=[0,0,1], align=[0,0,0]);
 
-        translate([8*mm-yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len-.1, 0, 0])
+        translate([-15*mm+yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len-.1, 0, 0])
         {
             fncylindera(fn=6, d=yaxis_idler_mount_tightscrew_hexnut_dia*1.01, h=yaxis_idler_pulley_tight_len+.1, orient=[1,0,0], align=[1,0,0]);
 
+            translate([yaxis_idler_mount_tightscrew_hexnut_thick,0,0])
             fncylindera(d=yaxis_idler_mount_tightscrew_hexnut_dia*1.2, h=yaxis_idler_pulley_tight_len+.1, orient=[1,0,0], align=[1,0,0]);
         }
 
