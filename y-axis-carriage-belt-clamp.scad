@@ -1,7 +1,7 @@
 include <thing_libutils/attach.scad>
 include <config.scad>
 
-yaxis_belt_mount_base_thick = 6;
+yaxis_belt_mount_base_thick = 4;
 
 yaxis_belt_mounthole_dist = 41;
 yaxis_belt_mounthole_thread = ThreadM3;
