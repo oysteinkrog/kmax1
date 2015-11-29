@@ -44,54 +44,57 @@ module zaxis_motor_mount(show_motor=false)
         // top plate
         union()
         {
-            // top plate
-            cubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
-            translate([zmotor_mount_rod_offset_x, 0, 0])
-            {
-                cubea([gantry_connector_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
-            }
 
-            // reinforcement plate between motor and extrusion
             difference()
             {
-                cubea([zmotor_mount_thickness, zmotor_w, zmotor_h], align=[1,0,-1]);
+                union()
+                {
+                    // top plate
+                    cubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
+                    translate([zmotor_mount_rod_offset_x, 0, 0])
+                    {
+                        cubea([gantry_connector_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
+                    }
+
+                    // reinforcement plate between motor and extrusion
+                    cubea([zmotor_mount_thickness, zmotor_w, zmotor_h], align=[1,0,-1]);
+
+                    // top extrusion mount plate
+                    translate([0, 0,-extrusion_size-zaxis_motor_offset_z])
+                        cubea([zmotor_mount_thickness, zmotor_mount_width, extrusion_size], align=[1,0,1]);
+
+                    // bottom extrusion mount plate
+                    translate([0, 0, -main_lower_dist_z-extrusion_size-zaxis_motor_offset_z])
+                        cubea([zmotor_mount_thickness, zmotor_w, extrusion_size], align=[1,0,1]);
+
+                    // side triangles
+                    for(i=[-1,1])
+                    {
+                        translate([zmotor_mount_thickness, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
+                            rotate([90,90,0])
+                            Right_Angled_Triangle(a=zmotor_mount_rod_offset_x-zmotor_mount_thickness, b=main_lower_dist_z+extrusion_size+zaxis_motor_offset_z, height=zmotor_mount_thickness, centerXYZ=[0,0,1]);
+
+                        translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
+                            cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h], align=[1,0,-1]);
+                    }
+
+                }
+
                 // cutout for motor cables
-                translate([0,0,-20*mm])
+                translate([0,0,-30*mm])
                 cubea([zmotor_mount_thickness*3, 20*mm, zmotor_h], align=[0,0,-1]);
-            }
 
-            // top mount plate
-            difference()
-            {
-                translate([0, 0,-extrusion_size-zaxis_motor_offset_z])
-                    cubea([zmotor_mount_thickness, zmotor_mount_width, extrusion_size], align=[1,0,1]);
-
+                // screw holes top
                 for(i=[-1,1])
                     translate([0, i*(zmotor_w/2+zmotor_mount_thread_dia*3), -extrusion_size])
                         fncylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia, orient=[1,0,0]);
-            }
 
-            // bottom mount plate
-            difference()
-            {
-                translate([0, 0, -main_lower_dist_z-extrusion_size-zaxis_motor_offset_z])
-                    cubea([zmotor_mount_thickness, zmotor_w, extrusion_size], align=[1,0,1]);
-
+                // screw hole bottom
                 for(i=[0])
                     translate([0, i*(zmotor_w/2+zmotor_mount_thread_dia*3), -extrusion_size-main_lower_dist_z])
                         fncylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia,align=[0,0,0], orient=[1,0,0]);
             }
 
-            // side triangles
-            for(i=[-1,1])
-            {
-                translate([zmotor_mount_thickness, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
-                    rotate([90,90,0])
-                    Right_Angled_Triangle(a=zmotor_mount_rod_offset_x-zmotor_mount_thickness, b=main_lower_dist_z+extrusion_size+zaxis_motor_offset_z, height=zmotor_mount_thickness, centerXYZ=[0,0,1]);
-
-                translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
-                    cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h], align=[1,0,-1]);
-            }
         }
 
         // cut out motor mount holes etc
