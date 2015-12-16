@@ -301,7 +301,7 @@ module upper_gantry_zrod_connector()
 
             translate([upper_width_extra/2, 0, 0])
                 translate([0,0,extrusion_size])
-                cubea([extrusion_size*1.5,main_upper_dist_y+extrusion_size,gantry_connector_thickness], align=[-1,0,1]);
+                cubea([extrusion_size*2,main_upper_dist_y+extrusion_size,gantry_connector_thickness], align=[-1,0,1]);
 
         }
 
@@ -318,6 +318,16 @@ module upper_gantry_zrod_connector()
             }
         }
 
+        translate([0,0,extrusion_size/2])
+        translate([upper_width_extra/4, 0, 0])
+        for(x=[-1,1])
+        for(y=[-1,1])
+        {
+            translate([x*extrusion_thread_dia*2, y*main_upper_dist_y/2, -1])
+            {
+                fncylindera(d=extrusion_thread_dia, h=100, orient=[0,0,1], align=[1,0,1]);
+            }
+        }
 
         // cutout for z rod
         translate([lookup(NemaSideSize,zaxis_motor)/2, 0, 0])
