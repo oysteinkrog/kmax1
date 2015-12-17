@@ -27,7 +27,7 @@ filament_r                  = filament_d/2;
 // enable preview model (faster openscad)
 preview_mode=true;
 
-main_width = 300*mm;
+main_width = 340*mm;
 main_depth = 420*mm;
 main_height = 400*mm;
 main_upper_width = 420*mm;
