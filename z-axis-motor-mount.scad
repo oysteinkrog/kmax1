@@ -117,7 +117,7 @@ module zaxis_motor_mount(show_motor=false)
             }
         }
 
-        if(show_motor)
+        %if(show_motor)
         {
             attach([[lookup(NemaSideSize,zaxis_motor)/2,0,0],[0,0,0]],zmotor_mount_conn_motor)
             {
