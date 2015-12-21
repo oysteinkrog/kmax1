@@ -10,9 +10,9 @@ include <thing_libutils/timing-belts.scad>;
 include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
 
-include <config.scad>
 include <misc.scad>
 include <extruder-direct.scad>
+include <x-axis-end.scad>
 include <x-carriage.scad>
 include <y-axis-motor-mount.scad>
 include <y-axis-carriage-bearing-mount.scad>
@@ -63,9 +63,19 @@ module x_axis()
         }
 
         // x smooth rods
-        for(i=[-1,1])
-            translate([0,xaxis_zaxis_distance_y,i*(xaxis_rod_distance/2)])
+        for(z=[-1,1])
+            translate([0,xaxis_zaxis_distance_y,z*(xaxis_rod_distance/2)])
                 fncylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
+
+        for(x=[-1,1])
+        {
+            translate([x*(main_width/2), 0, 0])
+            {
+                translate([0, xaxis_zaxis_distance_y, 0])
+                translate([x*zmotor_mount_rod_offset_x, 0, 0])
+                xaxis_end(with_motor=x==-1);
+            }
+        }
     }
 }
 
@@ -211,23 +221,6 @@ module z_axis()
                     translate([0,0,axis_pos_z-j*xaxis_rod_distance/2])
                         bearing(zaxis_bearing);
 
-            }
-
-            translate([i*zmotor_mount_rod_offset_x, 0, axis_pos_z])
-                #fncylindera(h=100, d=zaxis_nut[1], align=[0,0,0]);
-
-            translate([i*zaxis_leadscrew_offset_x, 0, axis_pos_z-xaxis_rod_distance/2-10])
-            {
-                difference()
-                {
-                    #fncylindera(h=10, d=zaxis_nut[1], align=[0,0,0]);
-                    union()
-                    {
-                        fncylindera(h=10+1, d=zaxis_nut[0], center= false);
-                        translate([0, 13.5, -1]) fncylindera(h=5, r=1.6);
-                        translate([0, -13.5, -1]) fncylindera(h=5, r=1.6);
-                    }
-                }
             }
         }
     }

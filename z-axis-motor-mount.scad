@@ -14,8 +14,6 @@ zaxis_nut_mount_outer = zaxis_nut[1]/2 + zaxis_bearing[1]/2 + 3;
 /*zaxis_rod_screw_distance_x = max(zaxis_nut_mount_outer, zaxis_rod_d/2 + lookup(NemaSideSize,zaxis_motor)/2);*/
 zaxis_rod_screw_distance_x = zaxis_nut_mount_outer;
 
-xaxis_zaxis_distance_y = xaxis_rod_d/2 + zaxis_bearing[1]/2;
-
 zmotor_w = lookup(NemaSideSize,zaxis_motor);
 zmotor_h = lookup(NemaLengthLong,zaxis_motor);
 zmotor_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
@@ -31,8 +29,6 @@ zmotor_mount_clamp_nut_dia = lookup(MHexNutWidthMin, zmotor_mount_clamp_nut);
 zmotor_mount_clamp_nut_thick = lookup(MHexNutThickness, zmotor_mount_clamp_nut);
 
 zmotor_mount_clamp_width = zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*3;
-
-zaxis_leadscrew_offset_x = zmotor_w/2 + zmotor_mount_motor_offset;
 
 zmotor_mount_conn_motor=[[-zmotor_mount_motor_offset, 0, 0],[0,1,0]];
 

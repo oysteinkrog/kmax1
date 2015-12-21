@@ -60,6 +60,8 @@ xaxis_belt_width = 6*mm;
 xaxis_carriage_bearing_offset_z = ziptie_thickness/2;
 xaxis_carriage_beltpath_offset = xaxis_carriage_bearing_offset_z+xaxis_bearing[1]/2;
 
+xaxis_motor = Nema17;
+
 yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
 yaxis_rod_l = 500*mm;
@@ -98,9 +100,14 @@ zaxis_motor = dict_replace_multiple(Nema17,
         ]);
 
 zaxis_motor_offset_z = 10*mm;
+zmotor_w = lookup(NemaSideSize,zaxis_motor);
+zmotor_h = lookup(NemaLengthLong,zaxis_motor);
 zmotor_mount_thickness = 5;
 zmotor_mount_thickness_h = 10;
 zmotor_mount_motor_offset=5;
+zaxis_leadscrew_offset_x = zmotor_w/2 + zmotor_mount_motor_offset;
+
+xaxis_zaxis_distance_y = 0*mm + xaxis_rod_d/2 + zaxis_bearing[1]/2;
 
 // GT2 
 // there is bunch of GT2 belts with different tooth-to-tooth distance
