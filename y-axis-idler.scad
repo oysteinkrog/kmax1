@@ -140,7 +140,7 @@ module yaxis_idler_pulleyblock(show_pulley=false)
 {
     if(show_pulley)
     {
-        %pulley_idler_2GT2_20T();
+        %pulley(pulley_2GT_20T_idler);
     }
 
     h = yaxis_idler_pulley_h + 3*mm*2;

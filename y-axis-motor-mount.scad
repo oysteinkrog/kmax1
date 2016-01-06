@@ -157,8 +157,7 @@ module yaxis_motor_mount(show_motor=false)
             motor(yaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
 
             translate([0,0,8*mm])
-                %pulley_2GT2_20T();
-
+                %pulley(pulley_2GT_20T);
         }
     }
 }
