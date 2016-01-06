@@ -76,7 +76,7 @@ module mount_rod_clamp_full(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
 }
 
 /*translate([20,0,0])*/
-/*mount_rod_clamp_half(rod_d=xaxis_rod_d,  width=extrusion_size, thick=4, thread=ThreadM5);*/
-/*mount_rod_clamp_full(rod_d=xaxis_rod_d,  width=extrusion_size, thick=4, thread=ThreadM5);*/
+/*mount_rod_clamp_half(rod_d=yaxis_rod_d,  width=extrusion_size, thick=4, thread=ThreadM5);*/
+/*mount_rod_clamp_full(rod_d=yaxis_rod_d,  width=extrusion_size, thick=4, thread=ThreadM5);*/
 
 

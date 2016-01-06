@@ -1,5 +1,3 @@
-include <config.scad>
-
 // h, full_h, inner_d, outer_d, walls, bore
 pulley_2GT_20T_idler = [8.65*mm, undef, 12*mm, 18*mm, 1*mm, 5*mm];
 pulley_2GT_20T       = [8.65*mm, 16*mm, 12*mm, 16*mm, 1*mm, 5*mm];

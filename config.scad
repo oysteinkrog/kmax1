@@ -1,6 +1,7 @@
 include <MCAD/stepper.scad>
 include <bearings.scad>
 include <screws.scad>
+include <pulley.scad>
 include <thing_libutils/metric-thread.scad>
 include <thing_libutils/metric-hexnut.scad>
 include <thing_libutils/misc.scad>
@@ -54,7 +55,13 @@ xaxis_rod_distance = 60*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
 xaxis_bearing=bearing_igus_rj4jp_01_10;
-xaxis_pulley_d = 12.2;
+
+xaxis_pulley = pulley_2GT_20T;
+xaxis_pulley_inner_d = xaxis_pulley[2];
+xaxis_idler_pulley = pulley_2GT_20T_idler;
+xaxis_idler_pulley_inner_d = xaxis_idler_pulley[2];
+xaxis_idler_pulley_outer_d = xaxis_idler_pulley[3];
+
 xaxis_belt_width = 6*mm;
 
 xaxis_carriage_bearing_offset_z = ziptie_thickness/2;
@@ -70,21 +77,24 @@ yaxis_bearing_distance_y = 7*cm;
 
 yaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 21.5*mm);
 
-// 2GT2 20T pulley
-yaxis_pulley_d = 18;
+yaxis_pulley = pulley_2GT_20T;
+yaxis_pulley_inner_d = yaxis_pulley[2];
 ymotor_mount_thickness = 5;
 ymotor_mount_thickness_h = 5;
 yaxis_motor_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
 yaxis_motor_offset_z = -5*mm;
-yaxis_belt_path_offset_x = -yaxis_pulley_d/2;
+yaxis_belt_path_offset_x = -yaxis_pulley_inner_d/2;
 yaxis_belt_path_offset_z = yaxis_motor_offset_z + 15*mm;
 
+yaxis_idler_pulley = pulley_2GT_20T_idler;
+yaxis_idler_pulley_inner_d = yaxis_idler_pulley[2];
+yaxis_idler_pulley_outer_d = yaxis_idler_pulley[3];
+yaxis_idler_pulley_h = yaxis_idler_pulley[0];
 yaxis_idler_mount_thickness = 5;
 yaxis_idler_pulley_tight_len = 20*mm;
-yaxis_idler_pulley_offset_y = yaxis_idler_mount_thickness + yaxis_pulley_d/2 + yaxis_idler_pulley_tight_len;
+yaxis_idler_pulley_offset_y = yaxis_idler_mount_thickness + yaxis_pulley_inner_d/2 + yaxis_idler_pulley_tight_len;
 yaxis_idler_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
 yaxis_idler_offset_z = 10*mm;
-yaxis_idler_pulley_h = 8.65*mm;
 
 yaxis_carriage_size=[220*mm,220*mm,5*mm];
 

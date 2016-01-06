@@ -5,7 +5,7 @@ include <pulley.scad>
 
 yaxis_idler_conn = [[-extrusion_size/2, 0, 0], [-1,0,0]];
 
-yidler_w = 2*yaxis_pulley_d;
+yidler_w = 2*yaxis_idler_pulley_inner_d;
 yaxis_idler_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
 
 yaxis_idler_mount_tightscrew_dia = lookup(ThreadSize, ThreadM4);
@@ -132,7 +132,7 @@ module yaxis_idler()
 yaxis_idler_tightscrew_dist = 10*mm;
 yaxis_idler_pulley_thread = ThreadM5;
 yaxis_idler_pulley_thread_dia = lookup(ThreadSize, yaxis_idler_pulley_thread);
-yaxis_idler_pulleyblock_supportsize = yaxis_pulley_d*1.2;
+yaxis_idler_pulleyblock_supportsize = yaxis_idler_pulley_outer_d*1.2;
 yaxis_idler_pulleyblock_wallthick = 5*mm;
 yaxis_idler_pulleyblock_lenfrompulley = yaxis_idler_pulleyblock_supportsize/2 + yaxis_idler_pulley_tight_len;
 
@@ -148,20 +148,20 @@ module yaxis_idler_pulleyblock(show_pulley=false)
     {
         hull()
         {
-            /*fncylindera(d=yaxis_pulley_d*1.5, h=h, orient=[0,0,1], align=[0,0,0]);*/
+            /*fncylindera(d=yaxis_idler_pulley_inner_d*1.5, h=h, orient=[0,0,1], align=[0,0,0]);*/
             cubea([yaxis_idler_pulleyblock_supportsize, 2*yaxis_idler_pulleyblock_supportsize, h],
                     align=[0,0,0],
                     extrasize=[yaxis_idler_pulley_tight_len,0,0], 
                     extrasize_align=[-1,0,0]
                  );
             /*translate([-yaxis_idler_pulley_tight_len,0,0])*/
-                /*cubea([yaxis_pulley_d, yaxis_pulley_d*1.5, h]);*/
+                /*cubea([yaxis_idler_pulley_inner_d, yaxis_idler_pulley_inner_d*1.5, h]);*/
         }
 
         // pulley cutout
         translate([-3*mm,0,0])
             cubea(
-                    size=[yaxis_pulley_d, yaxis_pulley_d*3, yaxis_idler_pulley_h+0.5],
+                    size=[yaxis_idler_pulley_outer_d, yaxis_idler_pulley_outer_d*3, yaxis_idler_pulley_h+0.5],
                     align=[0,0,0],
                     extrasize=[20*mm,0,0], extrasize_align=[1,0,0]
                  );
@@ -218,10 +218,11 @@ module print_yaxis_idler_pulleyblock()
     }
 }
 
-/*print_yaxis_idler();*/
 /*yaxis_idler();*/
-/*print_yaxis_idler_pulleyblock();*/
 /*yaxis_idler_pulleyblock();*/
+
+/*print_yaxis_idler();*/
+/*print_yaxis_idler_pulleyblock();*/
 
 /*attach([[0,0,0],[-1,0,0]], yaxis_idler_conn)*/
 /*{*/

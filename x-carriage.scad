@@ -45,7 +45,7 @@ module x_carriage_base()
             {
                 difference()
                 {
-                    translate([0,0,xaxis_pulley_d/2])
+                    translate([0,0,xaxis_pulley_inner_d/2])
                         cubea([50, xaxis_carriage_teeth_height, 10], align=[0,0,-1]);
                 }
             }
@@ -54,7 +54,7 @@ module x_carriage_base()
         translate([0,xaxis_carriage_beltpath_offset+.1,0])
         {
             // Cut clearing space for the belt
-            translate([0,0,-xaxis_pulley_d/2])
+            translate([0,0,-xaxis_pulley_inner_d/2])
                 cubea([500,xaxis_carriage_teeth_height,5], align=[0,0,0], extrasize=[0,0,4], extrasize_align=[0,0,1]);
 
             belt_thickness=1.5;
@@ -65,7 +65,7 @@ module x_carriage_base()
             // Cut in the middle for belt
             cubea([7,xaxis_carriage_teeth_height+.1,15], align=[0,0,0]);
 
-            translate([0,0,xaxis_pulley_d/2])
+            translate([0,0,xaxis_pulley_inner_d/2])
             {
                 // Belt slit
                 cubea([500,xaxis_carriage_teeth_height,belt_thickness], align=[0,0,0]);
@@ -83,7 +83,7 @@ module x_carriage_base()
 
             for(i=[-1,1])
             translate([i*50,0,0])
-            %fncylindera(d=xaxis_pulley_d, h=xaxis_belt_width*1.2, orient=[0,1,0], align=[0,0,0]);
+            %fncylindera(d=xaxis_pulley_inner_d, h=xaxis_belt_width*1.2, orient=[0,1,0], align=[0,0,0]);
         }
 
 

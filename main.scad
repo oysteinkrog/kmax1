@@ -104,7 +104,7 @@ module y_axis()
             translate([0,main_depth/2-yaxis_motor_offset_x,0])
             {
                 /*cubea([10,main_depth-yaxis_motor_offset_x,10], align=[0,-1,0]);*/
-                belt_path(main_depth-yaxis_motor_offset_x-yaxis_idler_pulley_offset_y, 6, yaxis_pulley_d, align=[0,-1,0], orient=[0,1,0]);
+                belt_path(main_depth-yaxis_motor_offset_x-yaxis_idler_pulley_offset_y, 6, yaxis_pulley_inner_d, align=[0,-1,0], orient=[0,1,0]);
             }
         }
     }
