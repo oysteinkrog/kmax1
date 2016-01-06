@@ -1,6 +1,26 @@
 include <config.scad>
 
-module pulley(h, inner_d, outer_d, bore, walls, idler=false, full_h, align=[0,0,0], orient = [0,0,1])
+// h, full_h, inner_d, outer_d, walls, bore
+pulley_2GT_20T_idler = [8.65*mm, undef, 12*mm, 18*mm, 1*mm, 5*mm];
+pulley_2GT_20T       = [8.65*mm, 16*mm, 12*mm, 16*mm, 1*mm, 5*mm];
+
+module pulley(pulley=pulley_2GT_20T, align=[0,0,0], orient = [0,0,1])
+{
+    is_idler = pulley[1] == undef;
+    pulley_full(
+            is_idler=is_idler,
+            h=pulley[0],
+            full_h=is_idler?0:pulley[1],
+            inner_d=pulley[2],
+            outer_d=pulley[3],
+            walls=pulley[4],
+            bore=pulley[5],
+            align=align,
+            orient=orient
+            );
+}
+
+module pulley_full(h, inner_d, outer_d, bore, walls, is_idler=false, full_h, align=[0,0,0], orient = [0,0,1])
 {
     size_align(size=[outer_d, outer_d, h], align=align, orient=orient)
     {
@@ -14,7 +34,7 @@ module pulley(h, inner_d, outer_d, bore, walls, idler=false, full_h, align=[0,0,
 
                 fncylindera(d = inner_d, h = h, align=[0,0,0], orient=[0,0,1]);
 
-                if(!idler)
+                if(!is_idler)
                 {
                     translate([0,0,h-walls])
                         fncylindera(d = outer_d, h = full_h-h, align=[0,0,0], orient=[0,0,1]);
@@ -25,26 +45,5 @@ module pulley(h, inner_d, outer_d, bore, walls, idler=false, full_h, align=[0,0,
     }
 }
 
-module pulley_idler_2GT2_20T(align=[0,0,0], orient = [0,0,1])
-{
-    h = 8.65*mm;
-    inner_d = 12*mm;
-    outer_d = 18*mm;
-    walls = 1*mm;
-
-    pulley(inner_d = inner_d, outer_d=outer_d, bore=5*mm, h=h, walls=walls, idler=true);
-}
-
-module pulley_2GT2_20T(align=[0,0,0], orient = [0,0,1])
-{
-    h = 8.65*mm;
-    full_h = 16*mm;
-    inner_d = 12*mm;
-    outer_d = 16*mm;
-    walls = 1*mm;
-
-    pulley(inner_d = inner_d, outer_d=outer_d, bore=5*mm, h=h, walls=walls, idler=false, full_h=full_h);
-}
-
-/*pulley_idler_2GT2_20T();*/
-/*pulley_2GT2_20T();*/
+/*pulley(pulley_2GT_20T_idler, align, orient);*/
+/*pulley(pulley_2GT_20T, align=align, orient=orient);*/

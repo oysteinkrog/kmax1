@@ -93,7 +93,7 @@ module y_axis()
         yaxis_idler();
         attach(yaxis_idler_conn_pulleyblock, yaxis_idler_pulleyblock_conn)
         {
-            yaxis_idler_pulleyblock(show_bearing=true);
+            yaxis_idler_pulleyblock(show_pulley=true);
         }
     }
 
