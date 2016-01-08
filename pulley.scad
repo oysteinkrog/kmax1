@@ -1,3 +1,6 @@
+include <thing_libutils/units.scad>
+include <thing_libutils/shapes.scad>
+
 // h, full_h, inner_d, outer_d, walls, bore
 pulley_2GT_20T_idler = [8.65*mm, undef, 12*mm, 18*mm, 1*mm, 5*mm];
 pulley_2GT_20T       = [8.65*mm, 16*mm, 12*mm, 16*mm, 1*mm, 5*mm];
@@ -38,10 +41,14 @@ module pulley_full(h, inner_d, outer_d, bore, walls, is_idler=false, full_h, ali
                         fncylindera(d = outer_d, h = full_h-h, align=[0,0,0], orient=[0,0,1]);
                 }
             }
-            fncylindera(d = bore, h = h+full_h, align=[0,0,0], orient=[0,0,1]);
+            fncylindera(d = bore, h = full_h, align=[0,0,0], orient=[0,0,1]);
         }
     }
 }
 
-/*pulley(pulley_2GT_20T_idler, align, orient);*/
-/*pulley(pulley_2GT_20T, align=align, orient=orient);*/
+/*debug = false;*/
+if(debug)
+{
+    /*pulley(pulley_2GT_20T_idler, align=[0,0,1], orient=[0,0,1]);*/
+    /*pulley(pulley_2GT_20T, align=[0,0,1], orient=[0,0,1]);*/
+}
