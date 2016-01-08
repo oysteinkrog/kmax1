@@ -4,11 +4,9 @@ include <MCAD/stepper.scad>
 include <config.scad>
 include <thing_libutils/misc.scad>
 
-motor_mount_wall_thick = 10*mm;
-wz = xaxis_rod_distance+xaxis_bearing[2]+5*mm;
-wy = xaxis_bearing[1]*2+xaxis_zaxis_distance_y;
+motor_mount_wall_thick = 11*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
-xaxis_end_motor_offset=[xaxis_end_motorsize/2+9*mm,0,0];
+xaxis_end_motor_offset=[xaxis_end_motorsize/2+9*mm,motor_mount_wall_thick,0];
 
 module xaxis_end(with_motor=false, show_motor=false, show_nut=false)
 {
@@ -16,6 +14,8 @@ module xaxis_end(with_motor=false, show_motor=false, show_nut=false)
     nut_h = zaxis_nut[4];
     wx = zaxis_bearing[1]/2+zaxis_nut[1];
     wx_ = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : wx;
+    wy = xaxis_bearing[1]*2+xaxis_zaxis_distance_y;
+    wz = xaxis_rod_distance+xaxis_bearing[2]+5*mm;
     difference()
     {
         extrasize = with_motor?0*mm:0*mm;
@@ -23,16 +23,11 @@ module xaxis_end(with_motor=false, show_motor=false, show_nut=false)
 
         union()
         {
-            cubea([wx_, xaxis_rod_d*2, wz], align=[with_motor?1:-1,0,0]);
+            /*cubea([wx_, xaxis_rod_d*2, wz], align=[with_motor?1:-1,0,0]);*/
 
             translate([0,-xaxis_zaxis_distance_y,0])
-            cubea([wx_, zaxis_bearing[1]*2, wz], align=[with_motor?1:-1,0,0]);
+            cuberounda(size=[wx_, zaxis_bearing[1]*2, wz], rounding_radius=3, align=[with_motor?1:-1,0,0], extrasize=[0,motor_mount_wall_thick/2,0], extrasize_align=[0,1,0]);
 
-            if(with_motor)
-            {
-                translate(xaxis_end_motor_offset)
-                cubea([xaxis_end_motorsize, motor_mount_wall_thick, wz], align=[0,1,0]);
-            }
             // nut mount
             translate([x_side*zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -wz/2])
             {
@@ -79,20 +74,25 @@ module xaxis_end(with_motor=false, show_motor=false, show_nut=false)
         {
             screw_dist = lookup(NemaDistanceBetweenMountingHoles, xaxis_motor);
 
-            for(x=[-1,1])
-            for(z=[-1,1])
-            translate([x*screw_dist/2, 0, z*screw_dist/2])
+            // axle
             translate(xaxis_end_motor_offset)
-            translate([0,motor_mount_wall_thick+.1,0])
-            fncylindera(d=lookup(NemaMountingHoleDiameter, xaxis_motor), h=wy, orient=[0,1,0], align=[0,1,0]);
+            {
+                translate([0, .1, 0])
+                fncylindera(d=lookup(NemaRoundExtrusionDiameter, xaxis_motor), h=motor_mount_wall_thick+xaxis_pulley[2]+5*mm, orient=[0,1,0], align=[0,1,0]);
 
-            translate([0,-motor_mount_wall_thick,0])
-            for(x=[-1,1])
-            for(z=[-1,1])
-            translate([x*screw_dist/2, 0, z*screw_dist/2])
-            translate(xaxis_end_motor_offset)
-            translate([0,motor_mount_wall_thick+.1,0])
-            fncylindera(d=lookup(NemaMountingHoleDiameter, xaxis_motor)*1.9, h=wy, orient=[0,1,0], align=[0,1,0]);
+                for(x=[-1,1])
+                for(z=[-1,1])
+                translate([x*screw_dist/2, .1, z*screw_dist/2])
+                {
+                    // screw
+                    fncylindera(d=lookup(NemaMountingHoleDiameter, xaxis_motor), h=wy+motor_mount_wall_thick, orient=[0,1,0], align=[0,1,0]);
+
+                    // screw head
+                    translate([0,-7,0])
+                        fncylindera(d=lookup(NemaMountingHoleDiameter, xaxis_motor)*1.9, h=wy+motor_mount_wall_thick, orient=[0,1,0], align=[0,1,0]);
+                }
+            }
+
         }
 
         // nut mount
@@ -117,11 +117,12 @@ module xaxis_end(with_motor=false, show_motor=false, show_nut=false)
     if(with_motor && show_motor)
     {
         translate(xaxis_end_motor_offset)
-            pulley(pulley_2GT_20T, align, orient=[0,1,0]);
+        {
+            translate([0,-7,0])
+            pulley(pulley_2GT_20T, align, orient=[0,1,0], align=[0,-1,0]);
 
-        translate([0,motor_mount_wall_thick+.1,0])
-        translate(xaxis_end_motor_offset)
-        motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+            motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+        }
     }
 
     %if(show_nut)
@@ -160,6 +161,6 @@ if(debug)
         xaxis_end(with_motor=false, show_motor=true, show_nut=true);
 }
 
-xaxis_end(with_motor=true, show_motor=false, show_nut=false);
-translate([100,-10,0])
-xaxis_end(with_motor=false, show_motor=false, show_nut=false);
+/*xaxis_end(with_motor=true, show_motor=false, show_nut=false);*/
+/*translate([100,-10,0])*/
+/*xaxis_end(with_motor=false, show_motor=false, show_nut=false);*/
