@@ -41,8 +41,9 @@ module x_axis()
     {
         if(!preview_mode)
         {
-            translate([0, xaxis_zaxis_distance_y, 0])
-                belt_path(500, 6, xaxis_pulley_d, orient=[1,0,0]);
+            zrod_offset = zmotor_mount_rod_offset_x;
+            translate([-main_width/2-zrod_offset+xaxis_end_motor_offset[0], xaxis_zaxis_distance_y, 0])
+                belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
         }
 
         translate([axis_pos_x,0,0])
@@ -73,7 +74,7 @@ module x_axis()
             {
                 translate([0, xaxis_zaxis_distance_y, 0])
                 translate([x*zmotor_mount_rod_offset_x, 0, 0])
-                xaxis_end(with_motor=x==-1);
+                xaxis_end(with_motor=x==-1, show_nut=true);
             }
         }
     }
@@ -210,8 +211,7 @@ module z_axis()
                 }
 
             // z smooth rods
-            translate([i*(lookup(NemaSideSize,zaxis_motor)/2), 0, 0])
-            translate([i*(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,0])
+            translate([i*(zmotor_mount_rod_offset_x),0,0])
             {
                 // z rods
                 translate([0,0,zaxis_motor_offset_z-50])

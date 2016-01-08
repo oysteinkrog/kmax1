@@ -109,13 +109,22 @@ zaxis_motor = dict_replace_multiple(Nema17,
         [NemaFrontAxleLength, 340*mm],
         ]);
 
-zaxis_motor_offset_z = 10*mm;
 zmotor_w = lookup(NemaSideSize,zaxis_motor);
 zmotor_h = lookup(NemaLengthLong,zaxis_motor);
+
+// inner_d, outer_d, thread, outer_h, full_h
+zaxis_nut = [20*mm, 36*mm, 8*mm, 5*mm, 23*mm];
+
+zaxis_nut_mount_outer = zaxis_nut[1]/2 + zaxis_rod_d/2 + 1*mm;
+
+// place z rod as close as possible (depends on z nut and also motor etc)
+zaxis_rod_screw_distance_x = max(zaxis_nut_mount_outer, zaxis_rod_d/2 + zmotor_w/2 + 1*mm);
+
+zaxis_motor_offset_z = 10*mm;
 zmotor_mount_thickness = 5;
 zmotor_mount_thickness_h = 10;
 zmotor_mount_motor_offset=5;
-zaxis_leadscrew_offset_x = zmotor_w/2 + zmotor_mount_motor_offset;
+zmotor_mount_rod_offset_x = zmotor_w/2 + zaxis_rod_screw_distance_x + zmotor_mount_motor_offset;
 
 xaxis_zaxis_distance_y = 0*mm + xaxis_rod_d/2 + zaxis_bearing[1]/2;
 
