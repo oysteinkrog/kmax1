@@ -11,7 +11,7 @@ module pulley(pulley=pulley_2GT_20T, flip=false, align=[0,0,0], orient = [0,0,1]
     pulley_full(
             is_idler=is_idler,
             h=pulley[0],
-            full_h=is_idler?0:pulley[1],
+            full_h=is_idler?undef:pulley[1],
             inner_d=pulley[2],
             outer_d=pulley[3],
             walls=pulley[4],
@@ -57,7 +57,7 @@ module pulley_full(h, inner_d, outer_d, bore, walls, is_idler=false, full_h, fli
 /*debug = true;*/
 /*if(debug)*/
 /*{*/
-    /*[>pulley(pulley_2GT_20T_idler, align=[0,0,1], orient=[0,0,1]);<]*/
-    /*[>pulley(pulley_2GT_20T, align=[0,0,1], orient=[0,0,1], flip=false);<]*/
+    /*pulley(pulley_2GT_20T_idler, align=[0,0,0], orient=[0,0,1]);*/
+    /*pulley(pulley_2GT_20T, align=[0,0,1], orient=[0,0,1], flip=false);*/
     /*pulley(pulley_2GT_20T, align=[0,0,-1], orient=[0,0,1], flip=false);*/
 /*}*/
