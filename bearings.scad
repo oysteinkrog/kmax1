@@ -8,6 +8,7 @@ bearing_625 = [5,16,5];
 bearing_608 = [8,22,7];
 bearing_MR128 = [8,12,3.5];
 bearing_MR115 = [5,11,4];
+bearing_MR105 = [5,10,4];
 
 
 // linear bearings
