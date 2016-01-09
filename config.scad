@@ -47,13 +47,15 @@ gantry_connector_thickness = 5;
 
 rod_fit_tolerance=1.01;
 
-ziptie_thickness = 4;
-ziptie_width = 4;
-ziptie_bearing_distance=2;
+ziptie_type = [1.1*mm, 2.4*mm];
+ziptie_thickness = ziptie_type[0];
+ziptie_width = ziptie_type[1]+0.6*mm;
+ziptie_bearing_distance=2*mm;
 
 xaxis_rod_distance = 60*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
+xaxis_rod_offset_x = 0*mm;
 xaxis_bearing=bearing_igus_rj4jp_01_10;
 
 xaxis_pulley = pulley_2GT_20T;
@@ -67,7 +69,7 @@ xaxis_belt_width = 6*mm;
 xaxis_carriage_bearing_offset_z = ziptie_thickness/2;
 xaxis_carriage_beltpath_offset = xaxis_carriage_bearing_offset_z+xaxis_bearing[1]/2;
 
-xaxis_motor = Nema17;
+xaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);
 
 yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
@@ -75,7 +77,7 @@ yaxis_rod_l = 500*mm;
 yaxis_bearing=bearing_igus_rj4jp_01_12;
 yaxis_bearing_distance_y = 7*cm;
 
-yaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 21.5*mm);
+yaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);
 
 yaxis_pulley = pulley_2GT_20T;
 yaxis_pulley_inner_d = yaxis_pulley[2];
