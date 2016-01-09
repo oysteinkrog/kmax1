@@ -21,9 +21,9 @@ bearing_igus_rj4jp_01_12 = [12,21,30,23.5,20];
 bearing_igus_rj4jp_01_16 = [16,28,37,26.5,26.6];
 bearing_igus_rj4jp_01_20 = [20,32,42,30.5,30.3];
 
-module bearing(bearing_type, orient=[0,0,1])
+module bearing(bearing_type, orient=[0,0,1], align=[0,0,0])
 {
-    orient(orient)
+    size_align(size=[bearing_type[1],bearing_type[1],bearing_type[2]], align=align ,orient=orient)
     difference()
     {
         // outer
