@@ -3,9 +3,9 @@ include <thing_libutils/shapes.scad>
 
 // h, full_h, inner_d, outer_d, walls, bore
 pulley_2GT_20T_idler = [8.65*mm, undef, 12*mm, 18*mm, 1*mm, 5*mm];
-pulley_2GT_20T       = [8.65*mm, 16*mm, 12*mm, 16*mm, 1*mm, 5*mm];
+pulley_2GT_20T       = [8.65*mm, 16*mm, 12*mm, 16*mm, 1.15*mm, 5*mm];
 
-module pulley(pulley=pulley_2GT_20T, align=[0,0,0], orient = [0,0,1])
+module pulley(pulley=pulley_2GT_20T, flip=false, align=[0,0,0], orient = [0,0,1])
 {
     is_idler = pulley[1] == undef;
     pulley_full(
@@ -16,39 +16,48 @@ module pulley(pulley=pulley_2GT_20T, align=[0,0,0], orient = [0,0,1])
             outer_d=pulley[3],
             walls=pulley[4],
             bore=pulley[5],
+            flip=flip,
             align=align,
             orient=orient
             );
 }
 
-module pulley_full(h, inner_d, outer_d, bore, walls, is_idler=false, full_h, align=[0,0,0], orient = [0,0,1])
+module pulley_full(h, inner_d, outer_d, bore, walls, is_idler=false, full_h, flip=false, align=[0,0,0], orient = [0,0,1])
 {
-    size_align(size=[outer_d, outer_d, h], align=align, orient=orient)
+    size_align(size=[outer_d, outer_d, full_h==undef?h:full_h], align=align, orient=orient)
     {
+        //for flipping
+        mirror([0,0,flip?-1:0])
+        //center
+        translate([0,0,full_h==undef?-h/2:-full_h/2])
         difference()
         {
             union()
             {
-                for(z=[-1,1])
-                    translate([0,0,z*h/2])
-                        fncylindera(d = outer_d, h = walls, align=[0,0,-z], orient=[0,0,1]);
+                fncylindera(d = outer_d, h = walls, align=[0,0,1], orient=[0,0,1]);
 
-                fncylindera(d = inner_d, h = h, align=[0,0,0], orient=[0,0,1]);
+                translate([0,0,0])
+                fncylindera(d = inner_d, h = h, align=[0,0,1], orient=[0,0,1]);
 
+                translate([0,0,h-walls])
+                fncylindera(d = outer_d, h = walls, align=[0,0,1], orient=[0,0,1]);
+
+                translate([0,0,h])
                 if(!is_idler)
                 {
-                    translate([0,0,h-walls])
-                        fncylindera(d = outer_d, h = full_h-h, align=[0,0,0], orient=[0,0,1]);
+                    fncylindera(d = outer_d, h = full_h-h, align=[0,0,1], orient=[0,0,1]);
                 }
             }
-            fncylindera(d = bore, h = full_h, align=[0,0,0], orient=[0,0,1]);
+            translate([0,0,-.1])
+            fncylindera(d = bore, h = full_h+.2, align=[0,0,1], orient=[0,0,1]);
         }
     }
 }
 
-/*debug = false;*/
-if(debug)
-{
-    /*pulley(pulley_2GT_20T_idler, align=[0,0,1], orient=[0,0,1]);*/
-    /*pulley(pulley_2GT_20T, align=[0,0,1], orient=[0,0,1]);*/
-}
+/*debug = true;*/
+/*if(debug)*/
+/*{*/
+    /*[>pulley(pulley_2GT_20T_idler, align=[0,0,1], orient=[0,0,1]);<]*/
+    /*[>pulley(pulley_2GT_20T, align=[0,0,1], orient=[0,0,1], flip=false);<]*/
+    /*pulley(pulley_2GT_20T, align=[0,0,-1], orient=[0,0,1], flip=false);*/
+/*}*/
