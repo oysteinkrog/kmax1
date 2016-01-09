@@ -3,6 +3,7 @@ include <MCAD/stepper.scad>
 
 include <config.scad>
 include <thing_libutils/misc.scad>
+include <thing_libutils/bearing.scad>
 
 motor_mount_wall_thick = 11*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);

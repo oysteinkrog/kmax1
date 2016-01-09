@@ -1,4 +1,5 @@
 use <thing_libutils/triangles.scad>
+use <thing_libutils/bearing.scad>
 include <thing_libutils/attach.scad>
 include <config.scad>
 

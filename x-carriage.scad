@@ -3,7 +3,7 @@ use <thing_libutils/misc.scad>;
 use <thing_libutils/attach.scad>;
 use <thing_libutils/triangles.scad>
 use <thing_libutils/linear-extrusion.scad>;
-use <bearings.scad>
+use <thing_libutils/bearing.scad>
 
 include <config.scad>
 
