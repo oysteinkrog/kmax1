@@ -4,6 +4,7 @@ include <MCAD/motors.scad>
 use <thing_libutils/triangles.scad>
 
 include <config.scad>
+include <rod-clamps.scad>
 
 // inner_d, outer_d, thread
 zaxis_nut = [20*mm, 36.5*mm, 8*mm];
@@ -107,8 +108,9 @@ module zaxis_motor_mount(show_motor=false)
         {
             translate([zmotor_mount_rod_offset_x-7, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
             {
-                cubea([zmotor_mount_clamp_nut_thick*1.1, zmotor_mount_clamp_nut_dia*1.01, zmotor_mount_clamp_nut_dia*1.01], extrasize=[0,0,zmotor_mount_thickness_h], extrasize_align=[0,0,1]);
+                cubea([zmotor_mount_clamp_nut_thick*1.3, zmotor_mount_clamp_nut_dia*1.1, zmotor_mount_clamp_nut_dia*1.01], extrasize=[0,0,zmotor_mount_thickness_h], extrasize_align=[0,0,1]);
 
+                translate([-zmotor_mount_clamp_nut_thick*1.3/2,0,0])
                 fncylindera(d=zmotor_mount_clamp_thread_dia, h=20, orient=[1,0,0], align=[1,0,0]);
             }
         }
@@ -124,3 +126,18 @@ module zaxis_motor_mount(show_motor=false)
     }
 }
 
+/*print = true;*/
+/*if(print)*/
+/*{*/
+    /*rotate([0,-90,0])*/
+        /*zaxis_motor_mount();*/
+
+    /*translate([-25,0,zmotor_mount_thickness_h/2])*/
+        /*mount_rod_clamp_half(*/
+                /*rod_d=zaxis_rod_d,*/
+                /*screw_dist=zmotor_mount_clamp_dist,*/
+                /*thick=5,*/
+                /*base_thick=5,*/
+                /*width=zmotor_mount_thickness_h,*/
+                /*thread=zmotor_mount_clamp_thread);*/
+/*}*/
