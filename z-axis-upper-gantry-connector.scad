@@ -35,7 +35,7 @@ module zaxis_upper_gantry_zrod_connector()
         {
             translate([-1, i*zmotor_mount_clamp_dist/2, 0])
             {
-                fncylindera(fn=6, d=zmotor_mount_clamp_nut_dia, h=zmotor_mount_clamp_nut_thick, orient=[1,0,0], align=[1,0,0]);
+                fncylindera(fn=6, d=zmotor_mount_clamp_nut_dia*1.05, h=zmotor_mount_clamp_nut_thick*1.05, orient=[1,0,0], align=[1,0,0]);
 
                 fncylindera(d=zmotor_mount_clamp_thread_dia, h=100, orient=[1,0,0], align=[1,0,0]);
             }
