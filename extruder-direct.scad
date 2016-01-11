@@ -9,7 +9,6 @@ include <MCAD/motors.scad>
 include <config.scad>
 
 module capmount(show_sensor=false,lower_height=12,mount_lower=12,height=10,thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
-
 {
     mount_start = 1.7+sensor_spacing+screws_spacing+screws_diameter+2*screw_offset[0];
     if(show_sensor)
@@ -139,6 +138,22 @@ xcarriage_mount_w = xcarriage_mount_hole_distance + 6*mm;
 xcarriage_mount_d = 6*mm;
 xcarriage_mount_h = xcarriage_mount_w;
 
+// 80t + 20t w/228-2GT-6 belt
+gears_distance=38.8*mm;
+motor_offset_y = 20*mm;
+motor_offset_z = pythag_leg(motor_offset_y,gears_distance);
+
+extruder_motor_type = NemaShort;
+extruder_motor = dict_replace_multiple(Nema17, 
+        [
+        [NemaShort, 33*mm],
+        [NemaFrontAxleLength, 22*mm]
+        ]);
+
+extruder_motor_mount_thickness = 5*mm;
+extruder_motor_side = motorWidth(extruder_motor);
+extruder_motor_length = motorLength(extruder_motor);
+
 house_w = max(house_inner_w+2*house_bearing[2], hotmount_outer_size, xcarriage_mount_w);
 house_d=house_bearing[1]/2+house_padding_wd;
 house_h=house_bearing[1]+house_padding_h;
@@ -146,16 +161,6 @@ house_h=house_bearing[1]+house_padding_h;
 house_guidler_screw_h = guidler_screws_thread_dia+8*mm;
 house_guidler_screw_h_offset = house_h/2 + guidler_screws_thread_dia + 4*mm;
 
-extruder_motor = dict_replace_multiple(Nema17, 
-        [
-        [NemaFrontAxleLength, 22*mm]
-        ]);
-
-// 80t + 20t w/228-2GT-6 belt
-gears_distance=38.8*mm;
-motor_offset_x = -8*mm;
-motor_offset_y = 20*mm;
-motor_offset_z = pythag_leg(motor_offset_y,gears_distance);
 
 alpha = 0.7;
 /*alpha = 1;*/
@@ -200,6 +205,7 @@ module extruder_own(show_filament=true)
     {
         union(){
 
+            house_w_extended = max(house_w, extruder_motor_mount_thickness*2+extruder_motor_length);
             hull()
             {
                 // main house
@@ -250,20 +256,27 @@ module extruder_own(show_filament=true)
             }
 
             translate([0,bolt_center_offset,0])
-            translate([motor_offset_x,motor_offset_y,motor_offset_z])
+            translate([0,motor_offset_y,motor_offset_z])
             {
                 difference()
                 {
                     slide_dist=4;
-                    mount_thickness = motor_offset_x+house_w/2;
-                    side = motorWidth(extruder_motor);
+                    union()
+                    {
+                        // front mount plate for motor
+                        translate([-house_w/2,0,0])
+                        {
+                            cubea([extruder_motor_mount_thickness, extruder_motor_side+slide_dist, extruder_motor_side],[1,0,0]);
 
-                    translate([-mount_thickness,0,0])
-                        cubea([mount_thickness, side+slide_dist, side],[1,0,0]);
+                            // back mount plate for motor
+                            translate([extruder_motor_length,0,0])
+                                cubea([extruder_motor_mount_thickness, extruder_motor_side+slide_dist, extruder_motor_side],[1,0,0]);
+                        }
+                    }
 
-                    translate([-mount_thickness-1,0,0])
+                    translate([-extruder_motor_mount_thickness-1,0,0])
                         rotate([90,90,90])
-                        linear_extrude(mount_thickness+2)
+                        linear_extrude(extruder_motor_mount_thickness+2)
                         stepper_motor_mount(17, slide_distance=4, mochup=false);
                 }
             }
@@ -273,17 +286,14 @@ module extruder_own(show_filament=true)
         }
 
         translate([0,bolt_center_offset,0])
-        translate([motor_offset_x,motor_offset_y,motor_offset_z])
+        translate([0,motor_offset_y,motor_offset_z])
         {
             slide_dist=4;
-            side = motorWidth(extruder_motor);
-                mount_thickness = motor_offset_x+house_w/2;
+            cubea([extruder_motor_length, extruder_motor_side+slide_dist, extruder_motor_side],[1,0,0]);
 
-            cubea([motorLength(extruder_motor), side+slide_dist, side],[1,0,0]);
-
-            translate([-mount_thickness-1,0,0])
+            translate([-extruder_motor_mount_thickness-1,0,0])
                 rotate([90,90,90])
-                linear_extrude(mount_thickness+2)
+                linear_extrude(extruder_motor_mount_thickness+2)
                 stepper_motor_mount(17, slide_distance=4, mochup=false);
         }
 
@@ -631,11 +641,11 @@ module extras()
     }
 
     // motor/belt
-    translate([0,bolt_center_offset,0])
-    translate([motor_offset_x-1,motor_offset_y,motor_offset_z])
+    translate([-1,bolt_center_offset,0])
+    translate([-house_w/2+extruder_motor_mount_thickness,motor_offset_y,motor_offset_z])
     {
         // main motor body
-        motor(extruder_motor, NemaShort, dualAxis=false, orientation=[0,90,0]);
+        motor(extruder_motor, extruder_motor_type, dualAxis=false, orientation=[0,90,0]);
 
         translate([-1,0,0])
             rotate([0,0,180])
@@ -677,21 +687,28 @@ module extruder()
 
     if(true) { extras(); } }
 
-module print() { extruder_conn_layflat = [[-house_w/2,0,0],[-1,0,0]];
-attach([[0,0,0],[0,0,-1]], extruder_conn_layflat) {
+module print() 
+{
+    extruder_conn_layflat = [[-house_w/2,0,0],[-1,0,0]];
+    attach([[0,0,0],[0,0,-1]], extruder_conn_layflat)
+    {
         /*connector(extruder_conn_layflat);*/
-        extruder_own(false,false); }
+        extruder_own(false,false); 
+    }
 
-    guidler_conn_layflat = [ [0, guidler_mount_off_d-guidler_mount_d/2,
-    guidler_mount_off_h],  [0,-1,0]]; attach([[34*mm,10*mm,0],[0,0,-1]],
-    guidler_conn_layflat) {
+    guidler_conn_layflat = [ [0, guidler_mount_off_d-guidler_mount_d/2, guidler_mount_off_h],  [0,-1,0]]; attach([[34*mm,10*mm,0],[0,0,-1]], guidler_conn_layflat)
+    {
         /*connector(guidler_conn_layflat);*/
-        guidler(false); }
+        guidler(false); 
+    }
 
     hotmount_clamp_conn_layflat=[[0,0,0],[-1,0,0]];
-    attach([[54*mm,0,0],[0,0,1]], hotmount_clamp_conn_layflat) {
+    attach([[54*mm,0,0],[0,0,1]], hotmount_clamp_conn_layflat) 
+    {
         /*connector(hotmount_clamp_conn);*/
-        hotmount_clamp(); } }
+        hotmount_clamp(); 
+    }
+}
 
 /*extruder();*/
 /*print();*/
