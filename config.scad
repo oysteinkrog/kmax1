@@ -128,6 +128,21 @@ zmotor_mount_thickness_h = 10;
 zmotor_mount_motor_offset=5;
 zmotor_mount_rod_offset_x = zmotor_w/2 + zaxis_rod_screw_distance_x + zmotor_mount_motor_offset;
 
+zmotor_w = lookup(NemaSideSize,zaxis_motor);
+zmotor_h = lookup(NemaLengthLong,zaxis_motor);
+zmotor_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
+zmotor_mount_width = zmotor_w+zmotor_mount_thickness*2 + zmotor_mount_thread_dia*8;
+zmotor_mount_h = main_lower_dist_z+extrusion_size+zaxis_motor_offset_z;
+zmotor_mount_rod_offset_x = zmotor_w/2+zaxis_rod_screw_distance_x+zmotor_mount_motor_offset;
+
+zmotor_mount_clamp_dist = zaxis_rod_d*2.5;
+zmotor_mount_clamp_thread = ThreadM4;
+zmotor_mount_clamp_nut = MHexNutM4;
+zmotor_mount_clamp_thread_dia = lookup(ThreadSize, zmotor_mount_clamp_thread);
+zmotor_mount_clamp_nut_dia = lookup(MHexNutWidthMin, zmotor_mount_clamp_nut);
+zmotor_mount_clamp_nut_thick = lookup(MHexNutThickness, zmotor_mount_clamp_nut);
+
+zmotor_mount_clamp_width = zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*3;
 xaxis_zaxis_distance_y = 0*mm + xaxis_rod_d/2 + zaxis_bearing[1]/2;
 
 // GT2 
