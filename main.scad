@@ -29,10 +29,10 @@ use <scad-utils/transformations.scad>
 use <scad-utils/shapes.scad>
 use <list-comprehension-demos/skin.scad>
 
-axis_pos_x = 0*mm;
+axis_pos_x = -213/2*mm;
 axis_pos_y = 0*mm;
 axis_range_z=[85,380];
-axis_pos_z = axis_range_z[1]*mm/2;
+axis_pos_z = 80;//axis_range_z[1]*mm/2;
 
 
 module x_axis()
