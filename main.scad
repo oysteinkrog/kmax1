@@ -74,7 +74,7 @@ module x_axis()
             {
                 translate([0, xaxis_zaxis_distance_y, 0])
                 translate([x*zmotor_mount_rod_offset_x, 0, 0])
-                xaxis_end(with_motor=x==-1, show_nut=true);
+                xaxis_end(with_motor=x==-1, show_nut=true, show_motor=true, show_nut=true);
             }
         }
     }
