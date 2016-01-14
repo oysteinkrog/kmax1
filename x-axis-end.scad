@@ -4,6 +4,7 @@ include <MCAD/stepper.scad>
 include <config.scad>
 include <thing_libutils/misc.scad>
 include <thing_libutils/bearing.scad>
+use <thing_libutils/metric-screw.scad>
 
 motor_mount_wall_thick = xaxis_pulley[1]+1*mm-xaxis_pulley[0]/2;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
@@ -122,17 +123,12 @@ module xaxis_end(with_motor=false, show_motor=false, nut_top=false, show_nut=fal
                 bearing(bearing_MR105, orient=[0,1,0], align=[0,-1,0]);
 
                 xaxis_motor_thread=ThreadM3;
+                xaxis_motor_nut=MHexNutM3;
                 for(x=[-1,1])
                 for(z=[-1,1])
-                translate([x*screw_dist/2, .1, z*screw_dist/2])
+                translate([x*screw_dist/2, -motor_mount_wall_thick, z*screw_dist/2])
                 {
-                    // screw
-                    translate([0,1,0])
-                    fncylindera(d=lookup(ThreadSize, xaxis_motor_thread), h=wy+motor_mount_wall_thick, orient=[0,1,0], align=[0,1,0]);
-
-                    // screw head
-                    translate([0,-motor_mount_wall_thick,0])
-                        fncylindera(d=lookup(ThreadSize, xaxis_motor_thread)*1.9, h=wy+motor_mount_wall_thick, orient=[0,1,0], align=[0,1,0]);
+                    screw_cut(xaxis_motor_nut, h=motor_mount_wall_thick, with_nut=false, orient=[0,1,0], align=[0,1,0]);
                 }
             }
 
