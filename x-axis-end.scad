@@ -6,11 +6,11 @@ include <thing_libutils/misc.scad>
 include <thing_libutils/bearing.scad>
 use <thing_libutils/metric-screw.scad>
 
-motor_mount_wall_thick = xaxis_pulley[1]+1*mm-xaxis_pulley[0]/2;
+motor_mount_wall_thick = xaxis_pulley[1]+0*mm-xaxis_pulley[0]/2;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
 xaxis_end_motor_offset=[xaxis_end_motorsize/2+9*mm,motor_mount_wall_thick,0];
+xaxis_end_wz = xaxis_rod_distance+xaxis_bearing[2]+5*mm;
 
-    xaxis_end_wz = xaxis_rod_distance+xaxis_bearing[2]+5*mm;
 module xaxis_end_body(with_motor, nut_top=false)
 {
     x_side = with_motor?1:-1;
@@ -23,7 +23,6 @@ module xaxis_end_body(with_motor, nut_top=false)
 
     if(with_motor)
     translate(xaxis_end_motor_offset)
-    translate([0,1*mm,0])
     cuberounda([xaxis_end_motorsize, motor_mount_wall_thick, xaxis_end_motorsize], rounding_radius=3, align=[0,-1,0]);
 
     // nut mount
@@ -118,7 +117,7 @@ module xaxis_end(with_motor=false, show_motor=false, nut_top=false, show_nut=fal
                 fncylindera(d=1.1*lookup(NemaAxleDiameter, xaxis_motor), h=lookup(NemaFrontAxleLength, xaxis_motor), orient=[0,1,0], align=[0,1,0]);
 
                 // bearing for offloading force on motor shaft
-                translate([0, -xaxis_pulley[1]-1*mm+.1, 0])
+                translate([0, -xaxis_pulley[1]-0*mm+.1, 0])
                 scale(1.03)
                 bearing(bearing_MR105, orient=[0,1,0], align=[0,-1,0]);
 
@@ -163,12 +162,11 @@ module xaxis_end(with_motor=false, show_motor=false, nut_top=false, show_nut=fal
         {
             /*translate([0,-motor_mount_wall_thick,0])*/
             /*translate([0,-5,0])*/
-            translate([0,-1,0])
             /*translate([0,-xaxis_pulley[0]/2,0])*/
             pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);
+            translate([0,-1,0])
 
-
-            motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+                motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
         }
     }
 
