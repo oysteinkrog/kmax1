@@ -50,12 +50,12 @@ rod_fit_tolerance=1.01;
 ziptie_type = [1.1*mm, 2.4*mm];
 ziptie_thickness = ziptie_type[0];
 ziptie_width = ziptie_type[1]+0.6*mm;
-ziptie_bearing_distance=2*mm;
+ziptie_bearing_distance=3*mm;
 
 xaxis_rod_distance = 60*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
-xaxis_rod_offset_x = 0*mm;
+xaxis_rod_offset_x = 20*mm;
 xaxis_bearing=bearing_igus_rj4jp_01_10;
 
 xaxis_pulley = pulley_2GT_20T;
