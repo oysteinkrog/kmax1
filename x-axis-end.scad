@@ -6,9 +6,9 @@ include <thing_libutils/misc.scad>
 include <thing_libutils/bearing.scad>
 use <thing_libutils/metric-screw.scad>
 
-motor_mount_wall_thick = xaxis_pulley[1]+0*mm-xaxis_pulley[0]/2;
+motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
-xaxis_end_motor_offset=[xaxis_end_motorsize/2+9*mm,motor_mount_wall_thick,0];
+xaxis_end_motor_offset=[xaxis_end_motorsize/2+9*mm,motor_mount_wall_thick-2*mm,0];
 xaxis_end_wz = xaxis_rod_distance+xaxis_bearing[2]+5*mm;
 
 module xaxis_end_body(with_motor, nut_top=false)
@@ -17,7 +17,6 @@ module xaxis_end_body(with_motor, nut_top=false)
     nut_h = zaxis_nut[4];
     wx = zaxis_bearing[1]/2+zaxis_nut[1];
     wx_ = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : wx;
-    wy = xaxis_bearing[1]*2+xaxis_zaxis_distance_y;
 
     /*%cuberounda([wx_, xaxis_rod_d*2, xaxis_end_wz], rounding_radius=3, align=[with_motor?1:-1,0,0]);*/
 
@@ -35,14 +34,14 @@ module xaxis_end_body(with_motor, nut_top=false)
 
             // lead screw
             // ensure some support for the leadscrew cutout all the way to the top
-            fncylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=[0,0,1]);
+            /*fncylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=[0,0,1]);*/
         }
     }
 
     // x axis rod holders
     for(z=[-1,1])
     translate([0,0,z*(xaxis_rod_distance/2)])
-        fncylindera(h=wx_,d=xaxis_rod_d*2, orient=[1,0,0], align=[x_side,0,0]);
+        fncylindera(h=wx_,d=xaxis_rod_d+5*mm, orient=[1,0,0], align=[x_side,0,0]);
 
 
     // support around z axis bearings
@@ -50,7 +49,7 @@ module xaxis_end_body(with_motor, nut_top=false)
     {
         difference()
         {
-            sizey= zaxis_bearing[1]*2;
+            sizey= zaxis_bearing[1]+10*mm;
             fncylindera(h=xaxis_end_wz,d=sizey, orient=[0,0,1], align=[0,0,0]);
             translate([0,0,.1])
             cubea([sizey/2+.1, sizey+.2, xaxis_end_wz+.4], orient=[0,0,1], align=[-x_side,0,0]);
@@ -64,7 +63,6 @@ module xaxis_end(with_motor=false, show_motor=false, nut_top=false, show_nut=fal
     nut_h = zaxis_nut[4];
     wx = zaxis_bearing[1]/2+zaxis_nut[1];
     wx_ = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : wx;
-    wy = xaxis_bearing[1]*2+xaxis_zaxis_distance_y;
     xaxis_end_wz = xaxis_rod_distance+xaxis_bearing[2]+5*mm;
     difference()
     {
@@ -114,12 +112,12 @@ module xaxis_end(with_motor=false, show_motor=false, nut_top=false, show_nut=fal
 
                 // motor axle
                 translate([0, .1, 0])
-                fncylindera(d=1.1*lookup(NemaAxleDiameter, xaxis_motor), h=lookup(NemaFrontAxleLength, xaxis_motor), orient=[0,1,0], align=[0,1,0]);
+                fncylindera(d=1.2*lookup(NemaAxleDiameter, xaxis_motor), h=lookup(NemaFrontAxleLength, xaxis_motor)+2*mm, orient=[0,1,0], align=[0,1,0]);
 
                 // bearing for offloading force on motor shaft
-                translate([0, -xaxis_pulley[1]-0*mm+.1, 0])
+                translate([0, -1*mm-xaxis_pulley[1]-.1, 0])
                 scale(1.03)
-                bearing(bearing_MR105, orient=[0,1,0], align=[0,-1,0]);
+                bearing(bearing_MR105, override_h=6*mm, orient=[0,1,0], align=[0,-1,0]);
 
                 xaxis_motor_thread=ThreadM3;
                 xaxis_motor_nut=MHexNutM3;
@@ -158,15 +156,21 @@ module xaxis_end(with_motor=false, show_motor=false, nut_top=false, show_nut=fal
 
     if(with_motor && show_motor)
     {
+            /*translate([0,5,0])*/
         translate(xaxis_end_motor_offset)
         {
             /*translate([0,-motor_mount_wall_thick,0])*/
             /*translate([0,-5,0])*/
             /*translate([0,-xaxis_pulley[0]/2,0])*/
-            pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);
-            translate([0,-1,0])
 
-                motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+            // 1mm due to motor offset
+            translate([0,-1*mm,0])
+            {
+                // 1mm between pulley and motor
+                /*translate([0,-1*mm,0])*/
+                    /*pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);*/
+                /*motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);*/
+            }
         }
     }
 
@@ -247,34 +251,31 @@ module xaxis_end_znut()
 }
 
 
-/*debug=false;*/
-/*[>debug=true;<]*/
-/*if(debug)*/
-/*{*/
-    /*// x smooth rods*/
-    /*for(z=[-1,1])*/
-        /*translate([0,0,z*(xaxis_rod_distance/2)])*/
-            /*%fncylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);*/
+/*if(false)*/
+{
+    // x smooth rods
+    for(z=[-1,1])
+        translate([0,0,z*(xaxis_rod_distance/2)])
+            %fncylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
 
-    /*xaxis_end(with_motor=true, show_motor=true, nut_top=false, show_nut=true, show_rods=true);*/
+    xaxis_end(with_motor=true, show_motor=false, nut_top=false, show_nut=true, show_rods=true);
 
-    /*translate([150,0,0])*/
-    /*{*/
-        /*xaxis_end(with_motor=false, show_motor=true, nut_top=false, show_nut=true, show_rods=true);*/
-        /*xaxis_end_idlerholder();*/
-    /*}*/
-/*}*/
+    translate([150,0,0])
+    {
+        xaxis_end(with_motor=false, show_motor=true, nut_top=false, show_nut=true, show_rods=true);
+        xaxis_end_idlerholder();
+    }
+}
 
-/*print=false;*/
-/*if(print)*/
-/*{*/
-    /*translate([0,0,xaxis_end_wz/2])*/
-    /*xaxis_end(with_motor=true, show_motor=false, show_nut=false);*/
+if(false)
+{
+    translate([0,0,xaxis_end_wz/2])
+    xaxis_end(with_motor=true, show_motor=true, show_nut=false);
 
-    /*translate([100,0,xaxis_end_wz/2])*/
-    /*xaxis_end(with_motor=false, show_motor=false, show_nut=false);*/
+    translate([100,0,xaxis_end_wz/2])
+    xaxis_end(with_motor=false, show_nut=false);
 
     /*translate([50,30,25])*/
         /*rotate([0,90,0])*/
         /*xaxis_end_idlerholder();*/
-/*}*/
+}
