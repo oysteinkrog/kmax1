@@ -143,7 +143,7 @@ zmotor_mount_clamp_nut_dia = lookup(MHexNutWidthMin, zmotor_mount_clamp_nut);
 zmotor_mount_clamp_nut_thick = lookup(MHexNutThickness, zmotor_mount_clamp_nut);
 
 zmotor_mount_clamp_width = zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*3;
-xaxis_zaxis_distance_y = 0*mm + xaxis_rod_d/2 + zaxis_bearing[1]/2;
+xaxis_zaxis_distance_y = 1*mm + xaxis_rod_d/2 + zaxis_bearing[1]/2;
 
 // GT2 
 // there is bunch of GT2 belts with different tooth-to-tooth distance
