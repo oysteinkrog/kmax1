@@ -106,16 +106,26 @@ module xaxis_end(with_motor=false, show_motor=false, nut_top=false, show_nut=fal
             // axle
             translate(xaxis_end_motor_offset)
             {
+                round_d=1.1*lookup(NemaRoundExtrusionDiameter, xaxis_motor);
                 translate([0, .1, 0])
                 translate([0,1,0])
-                fncylindera(d=1.1*lookup(NemaRoundExtrusionDiameter, xaxis_motor), h=motor_mount_wall_thick, orient=[0,1,0], align=[0,1,0]);
+
+                fncylindera(d=round_d, h=motor_mount_wall_thick, orient=[0,1,0], align=[0,1,0]);
+                rotate([0,45,0])
+                difference()
+                {
+                    cubea([round_d, motor_mount_wall_thick, round_d], align=[0,-1,0]);
+
+                    cubea([round_d, motor_mount_wall_thick, round_d/2], align=[0,-1,-1]);
+                    cubea([round_d/2, motor_mount_wall_thick, round_d], align=[1,-1,0]);
+                }
 
                 // motor axle
                 translate([0, .1, 0])
-                fncylindera(d=1.2*lookup(NemaAxleDiameter, xaxis_motor), h=lookup(NemaFrontAxleLength, xaxis_motor)+2*mm, orient=[0,1,0], align=[0,1,0]);
+                fncylindera(d=1.2*lookup(NemaAxleDiameter, xaxis_motor), h=lookup(NemaFrontAxleLength, xaxis_motor)+3*mm, orient=[0,1,0], align=[0,1,0]);
 
                 // bearing for offloading force on motor shaft
-                translate([0, -1*mm-xaxis_pulley[1]-.1, 0])
+                translate([0, -2.5*mm-xaxis_pulley[1]-.1, 0])
                 scale(1.03)
                 bearing(bearing_MR105, override_h=6*mm, orient=[0,1,0], align=[0,-1,0]);
 
@@ -198,6 +208,8 @@ module xaxis_end_beltpath(xaxis_end_beltpath_length=1000)
 {
     diag = pythag_hyp(xaxis_end_beltpath_width,xaxis_end_beltpath_width)/2;
 
+    /*cubea([xaxis_end_beltpath_length, xaxis_end_beltpath_width, xaxis_end_beltpath_height+diag/2]);*/
+
     hull()
     for(z=[-1,1])
     translate([0,0,z*xaxis_end_beltpath_height/2])
@@ -251,7 +263,7 @@ module xaxis_end_znut()
 }
 
 
-/*if(false)*/
+if(false)
 {
     // x smooth rods
     for(z=[-1,1])
@@ -272,8 +284,8 @@ if(false)
     translate([0,0,xaxis_end_wz/2])
     xaxis_end(with_motor=true, show_motor=true, show_nut=false);
 
-    translate([100,0,xaxis_end_wz/2])
-    xaxis_end(with_motor=false, show_nut=false);
+    /*translate([100,0,xaxis_end_wz/2])*/
+    /*xaxis_end(with_motor=false, show_nut=false);*/
 
     /*translate([50,30,25])*/
         /*rotate([0,90,0])*/
