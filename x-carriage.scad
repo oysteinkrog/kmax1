@@ -31,13 +31,13 @@ module x_carriage_base()
             {
                 // top bearings
                 translate([0,0,xaxis_rod_distance/2])
-                    cubea([top_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+                    cuberounda([top_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
                 /*#cubea([top_width,xaxis_carriage_bearing_offset_z,xaxis_rod_distance/2], align=[0,1,0]);*/
 
                 // bottom bearing
                 translate([0,0,-xaxis_rod_distance/2])
-                    cubea([bottom_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+                    cuberounda([bottom_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
             }
 
@@ -46,7 +46,7 @@ module x_carriage_base()
                 difference()
                 {
                     translate([0,0,xaxis_pulley_inner_d/2])
-                        cubea([50, xaxis_carriage_teeth_height, 10], align=[0,0,-1]);
+                        cuberounda([50, xaxis_carriage_teeth_height, 10], align=[0,0,-1]);
                 }
             }
         }
