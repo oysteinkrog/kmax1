@@ -201,18 +201,15 @@ module xaxis_end(with_motor=false, show_motor=false, nut_top=false, show_nut=fal
     }
 }
 
-xaxis_end_beltpath_height = xaxis_pulley_inner_d+5*mm;
-xaxis_end_beltpath_width = max(belt_width+3*mm, xaxis_pulley[0]+3*mm);
-
 module xaxis_end_beltpath(xaxis_end_beltpath_length=1000)
 {
-    diag = pythag_hyp(xaxis_end_beltpath_width,xaxis_end_beltpath_width)/2;
+    diag = pythag_hyp(xaxis_beltpath_width,xaxis_beltpath_width)/2;
 
-    /*cubea([xaxis_end_beltpath_length, xaxis_end_beltpath_width, xaxis_end_beltpath_height+diag/2]);*/
+    /*cubea([xaxis_end_beltpath_length, xaxis_beltpath_width, xaxis_beltpath_height+diag/2]);*/
 
     hull()
     for(z=[-1,1])
-    translate([0,0,z*xaxis_end_beltpath_height/2])
+    translate([0,0,z*xaxis_beltpath_height/2])
     translate([-diag/2,0,0])
     translate([diag/2,0,0])
     rotate([z*-45,0,0])
@@ -221,13 +218,13 @@ module xaxis_end_beltpath(xaxis_end_beltpath_length=1000)
 
 module xaxis_end_idlerholder(xaxis_end_beltpath_length=10)
 {
-    diag = pythag_hyp(xaxis_end_beltpath_width,xaxis_end_beltpath_width)/2;
+    diag = pythag_hyp(xaxis_beltpath_width,xaxis_beltpath_width)/2;
 
     difference()
     {
         union()
         {
-            cubea([10*mm, xaxis_end_beltpath_width/sqrt(2), xaxis_rod_distance], align=[1,0,0]);
+            cubea([10*mm, xaxis_beltpath_width/sqrt(2), xaxis_rod_distance], align=[1,0,0]);
 
             translate([10*mm, 0,0])
                 cubea([15*mm, xaxis_idler_pulley[0]+8*mm, xaxis_rod_distance+xaxis_rod_d*2], align=[1,0,0]);
@@ -281,11 +278,11 @@ if(false)
 
 if(false)
 {
-    translate([0,0,xaxis_end_wz/2])
-    xaxis_end(with_motor=true, show_motor=true, show_nut=false);
+    /*translate([0,0,xaxis_end_wz/2])*/
+    /*xaxis_end(with_motor=true, show_motor=true, show_nut=false);*/
 
-    /*translate([100,0,xaxis_end_wz/2])*/
-    /*xaxis_end(with_motor=false, show_nut=false);*/
+    translate([100,0,xaxis_end_wz/2])
+    xaxis_end(with_motor=false, show_nut=false);
 
     /*translate([50,30,25])*/
         /*rotate([0,90,0])*/
