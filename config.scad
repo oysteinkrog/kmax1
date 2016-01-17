@@ -66,7 +66,7 @@ xaxis_idler_pulley_outer_d = xaxis_idler_pulley[3];
 
 xaxis_belt_width = 6*mm;
 xaxis_beltpath_height = xaxis_pulley_inner_d+5*mm;
-xaxis_beltpath_width = max(xaxis_belt_width+3*mm, xaxis_pulley[0]+3*mm);
+xaxis_beltpath_width = max(xaxis_belt_width+3*mm, xaxis_pulley[0]+2*mm);
 
 xaxis_carriage_bearing_offset_y = ziptie_thickness/2;
 xaxis_carriage_beltpath_offset = xaxis_carriage_bearing_offset_y+xaxis_bearing[1]/2;
