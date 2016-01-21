@@ -218,6 +218,7 @@ extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_moto
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
 extruder_a_h = 14*mm;
+
 module extruder_a(show_vitamins=false)
 {
     difference()
@@ -296,7 +297,7 @@ module extruder_a(show_vitamins=false)
 hotmount_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
 hotmount_outer_size_xy=max(vec_i(hotmount_d_h,0))+5*mm;
 hotmount_outer_size_h=max(vec_i(hotmount_d_h,1))+5*mm;
-hotmount_offset_h=-2*mm;
+hotmount_offset_h=-4*mm;
 // which side does hotend slide in (x-axis, i.e. -1 is left, 1 is right)
 hotmount_clamp_side=1;
 hotmount_tolerance=1.05*mm;
@@ -377,7 +378,8 @@ module extruder_b(show_vitamins=false)
     {
         difference()
         {
-            hull()
+            /*hull()*/
+            union()
             {
                 // gear support
                 translate([0,-hobbed_gear_h/2,0])
@@ -399,7 +401,7 @@ module extruder_b(show_vitamins=false)
                 {
                     translate([0, i*hotmount_clamp_screws_dist, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
                         rotate([0,90,0])
-                        cylindera(r=screw_m3[0]+3*mm, h=extruder_b_w+1);
+                        cylindera(r=screw_m3[0]+3*mm, h=extruder_b_w);
                 }
             }
             translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h])
@@ -427,7 +429,7 @@ module extruder_b(show_vitamins=false)
                     cylindera(d=extruder_guilder_bearing[1]+1*mm, h=extruder_guilder_bearing[2]+1*mm, orient=[0,1,0], align=[0,0,0]);
                 }
 
-            translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 - 2*mm])
+            translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h+.01])
             {
                 hotmount_cutout(extend_cut=true);
 
@@ -448,9 +450,8 @@ module extruder_b(show_vitamins=false)
 
         if(show_vitamins)
         {
-            translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h])
-            translate([extruder_b_w/2,0,0])
-            translate([0,0,-hobbed_gear_d_outer/2])
+            translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h+.01])
+            translate([extruder_b_w/2 * (hotmount_clamp_side), 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
             hotmount_clamp();
             
             translate([0,-hobbed_gear_h/2-extruder_b_bearing[2]-.5*mm,0])
@@ -498,7 +499,7 @@ module x_carriage(show_bearings=true)
                 for(x=[-1,1])
                 for(z=[-1,1])
                 translate([x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2])
-                cylindera(d=10*mm, h=extruder_offset_a[1], orient=[0,1,0], align=[0,1,0]);
+                cylindera(d=10*mm, h=extruder_offset_a[1], orient=[0,1,0], align=[0,1,0], round_radius=2);
             }
         }
         translate(extruder_offset)
@@ -524,16 +525,23 @@ module x_carriage(show_bearings=true)
         }
     }
 
+    /*translate([0,-42,38])*/
+    /*rotate([0,0,90])*/
+    /*translate([0,-1,-42])*/
+    /*translate([-83,25,-42])*/
+    /*rotate([90,0,0])*/
+    /*import("stl/i3R_Compact_E3Dv6_Extruder_1.75_01.STL");*/
+
     //filament path
     %translate(extruder_filapath_offset)
         cylindera(h=1000, d=1.75*mm, orient=[0,0,1], align=[0,0,0]);
 
-    hotend_conn =[[0,0,30],[0,0,1]];
+    hotend_conn =[[0,0,27.8-hotmount_offset_h],[0,0,1]];
     translate(extruder_offset)
     translate(extruder_filapath_offset)
     attach(extruder_conn_hotend, hotend_conn)
         rotate([90,0,270])
-        import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
+        %import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
 
     if(show_bearings)
     {
