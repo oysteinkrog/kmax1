@@ -47,7 +47,7 @@ module yaxis_idler()
                         translate([-yaxis_idler_mount_thickness,0,extrusion_size/2])
                         {
                             translate([yaxis_idler_mount_thickness/2,0,yaxis_belt_path_offset_z])
-                            fncylindera(
+                            cylindera(
                                     h=extrusion_size+yaxis_idler_mount_thickness,
                                     d=tighten_screw_dia_outer,
                                     align=[0,0,0],
@@ -122,7 +122,7 @@ module yaxis_idler_pulleyblock(show_pulley=false)
     {
         hull()
         {
-            /*fncylindera(d=yaxis_idler_pulley_inner_d*1.5, h=h, orient=[0,0,1], align=[0,0,0]);*/
+            /*cylindera(d=yaxis_idler_pulley_inner_d*1.5, h=h, orient=[0,0,1], align=[0,0,0]);*/
             cuberounda([yaxis_idler_pulleyblock_supportsize, 2*yaxis_idler_pulleyblock_supportsize, h],
                     align=[0,0,0],
                     extrasize=[yaxis_idler_pulley_tight_len,0,0], 
@@ -146,7 +146,7 @@ module yaxis_idler_pulleyblock(show_pulley=false)
             screw_cut(yaxis_idler_pulley_nut, h=h+5*mm, orient=[0,0,-1], align=[0,0,-1]);
         }
 
-        fncylindera(d=yaxis_idler_pulley_thread_dia, h=h*2, orient=[0,0,1], align=[0,0,0]);
+        cylindera(d=yaxis_idler_pulley_thread_dia, h=h*2, orient=[0,0,1], align=[0,0,0]);
 
         for(y=[-1,1])
         {

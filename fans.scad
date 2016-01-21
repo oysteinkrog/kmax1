@@ -15,33 +15,33 @@ module blowfan40()
         union()
         {
             translate([d/2,d/2,0])
-                fncylindera(d=d,h=h);
+                cylindera(d=d,h=h);
 
             //cube([51.5,52.5,15]);
             translate([d,d,0])
                 cubea([20,30,h],[-1,-1,1]);
 
             translate([(d-35)-3,d-3,h-13.2])
-                fncylindera(d=6.3,h=13.2);
+                cylindera(d=6.3,h=13.2);
             translate([d-3,(d-35)-3,h-13.2])
-                fncylindera(d=6.3,h=13.2);
+                cylindera(d=6.3,h=13.2);
             translate([(d-35)-3,(d-35)-3,h-13.2])
-                fncylindera(d=6.3,h=13.2);
+                cylindera(d=6.3,h=13.2);
         }
 
         translate([41.5/2,40.5/2,-9])
             difference()
             {
-                fncylindera(d=27.4,h=h, center=false);
-                fncylindera(d=22,h=h, center=false);
+                cylindera(d=27.4,h=h, center=false);
+                cylindera(d=22,h=h, center=false);
             }
 
         translate([(d-35)-3,d-3,-1])
-            fncylindera(d=3,h=13.2*2);
+            cylindera(d=3,h=13.2*2);
         translate([d-3,(d-35)-3,-1])
-            fncylindera(d=3,h=13.2*2);
+            cylindera(d=3,h=13.2*2);
         translate([(d-35)-3,(d-35)-3,-1])
-            fncylindera(d=3,h=13.2*2);
+            cylindera(d=3,h=13.2*2);
     }
 }
 

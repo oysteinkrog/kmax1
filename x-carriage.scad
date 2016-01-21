@@ -105,7 +105,7 @@ module x_carriage_holes()
         translate([i*xaxis_carriage_mount_distance/2,0,j*xaxis_carriage_mount_distance/2])
         {
             screw_dia = lookup(ThreadSize, xaxis_carriage_mount_screws);
-            fncylindera(d=screw_dia, h=100, orient=[0,1,0]);
+            cylindera(d=screw_dia, h=100, orient=[0,1,0]);
         }
     }
 }

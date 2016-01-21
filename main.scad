@@ -66,7 +66,7 @@ module x_axis()
         // x smooth rods
         for(z=[-1,1])
             translate([xaxis_rod_offset_x,xaxis_zaxis_distance_y,z*(xaxis_rod_distance/2)])
-                fncylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
+                cylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
 
         for(x=[-1,1])
         {
@@ -130,7 +130,7 @@ module y_axis()
         for(i=[-1,1])
         translate([i*(yaxis_rod_distance/2), 0, 0])
         {
-            fncylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=[0,1,0]);
+            cylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=[0,1,0]);
 
             for(j=[-1,1])
             {
@@ -151,11 +151,11 @@ module y_axis()
             {
                 translate([x*yaxis_carriage_size[0]/2, y*(yaxis_carriage_size[1])/2, 0])
                 {
-                    fncylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
+                    cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
                 }
                 translate([x*(yaxis_carriage_size[0]/2-16*mm), y*(yaxis_carriage_size[1]/2-16*mm), 0])
                 {
-                    fncylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
+                    cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
                 }
             }
 
@@ -215,7 +215,7 @@ module z_axis()
             {
                 // z rods
                 translate([0,0,zaxis_motor_offset_z-50])
-                    fncylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=[0,0,1]);
+                    cylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=[0,0,1]);
 
                 for(j=[-1,1])
                     translate([0,0,axis_pos_z-j*xaxis_rod_distance/2])

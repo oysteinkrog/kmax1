@@ -18,7 +18,7 @@ module mount_rod_clamp_half(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
         union()
         {
             // cylinder around rod
-            fncylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
+            cylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
 
             // base
             cubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=[1,0,0]);
@@ -31,11 +31,11 @@ module mount_rod_clamp_half(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
         for(i=[-1,1])
         translate([0, i*screw_dist_/2, 0])
         {
-            fncylindera(d=thread_dia, h=base_thick_*3, orient=[1,0,0]);
+            cylindera(d=thread_dia, h=base_thick_*3, orient=[1,0,0]);
         }
 
         // cut zrod
-        fncylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=[0,0,1]);
+        cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=[0,0,1]);
     }
 }
 
@@ -55,7 +55,7 @@ module mount_rod_clamp_full(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
         union()
         {
             // cylinder around rod
-            fncylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
+            cylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
 
             // base
             translate([base_cut,0,0])
@@ -70,11 +70,11 @@ module mount_rod_clamp_full(rod_d=10, screw_dist=undef, width=4, thick=undef, ba
         for(i=[-1,1])
         translate([0, i*screw_dist_/2, 0])
         {
-            fncylindera(d=thread_dia, h=base_thick_*3, orient=[1,0,0]);
+            cylindera(d=thread_dia, h=base_thick_*3, orient=[1,0,0]);
         }
 
         // cut zrod
-        fncylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=[0,0,1]);
+        cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=[0,0,1]);
     }
 }
 

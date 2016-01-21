@@ -55,7 +55,7 @@ module zaxis_upper_gantry_zrod_connector()
         // cutout for z rod
         translate([lookup(NemaSideSize,zaxis_motor)/2, 0, 0])
         translate([(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,extrusion_size])
-        fncylindera(d=zaxis_rod_d*1.01, h=extrusion_size*3, align=[0,0,0], orient=[0,0,1]);
+        cylindera(d=zaxis_rod_d*1.01, h=extrusion_size*3, align=[0,0,0], orient=[0,0,1]);
     }
 }
 

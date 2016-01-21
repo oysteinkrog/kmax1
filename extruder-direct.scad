@@ -16,10 +16,10 @@ module capmount(show_sensor=false,lower_height=12,mount_lower=12,height=10,thick
         translate([-8+sensor_diameter/2+thickness,-.5+mount_start+thickness+sensor_diameter/2,-39])
         {
             translate([0,0,sensor_height[1]+sensor_height[2]])
-                fncylindera(d=sensor_diameter-0.5,h=sensor_height[0]);
+                cylindera(d=sensor_diameter-0.5,h=sensor_height[0]);
             translate([0,0,sensor_height[2]])
-                %fncylindera(d=sensor_diameter-0.5,h=sensor_height[1]);
-            fncylindera(d=sensor_diameter-0.5,h=sensor_height[2]);
+                %cylindera(d=sensor_diameter-0.5,h=sensor_height[1]);
+            cylindera(d=sensor_diameter-0.5,h=sensor_height[2]);
         }
     }
 
@@ -35,17 +35,17 @@ module capmount(show_sensor=false,lower_height=12,mount_lower=12,height=10,thick
         {
             rotate([0,90,0])
             {
-                fncylindera(d=screws_diameter, h=thickness+1);
+                cylindera(d=screws_diameter, h=thickness+1);
                 translate([0,0,2.5])
-                    fncylindera(h = 4, d=8.2, $fn=6);
+                    cylindera(h = 4, d=8.2, $fn=6);
             }
             //Screws 2
             translate([0,screws_spacing,0])
                 rotate([0,90,0])
                 {
-                    fncylindera(d=screws_diameter, h=thickness+1);
+                    cylindera(d=screws_diameter, h=thickness+1);
                     translate([0,0,2.5])
-                        fncylindera(h = 4, d=8.2, $fn=6);
+                        cylindera(h = 4, d=8.2, $fn=6);
                 }
         }
 
@@ -56,11 +56,11 @@ module capmount(show_sensor=false,lower_height=12,mount_lower=12,height=10,thick
         difference() {
             union() {
                 translate([sensor_diameter/2+thickness,mount_start+thickness+sensor_diameter/2, -lower_height])
-                    fncylindera(d=sensor_diameter+2*thickness, h=height+lower_height-mount_lower);
+                    cylindera(d=sensor_diameter+2*thickness, h=height+lower_height-mount_lower);
 
             }
             translate([sensor_diameter/2+thickness,mount_start+thickness+sensor_diameter/2, -height/2])
-                fncylindera(d=sensor_diameter+0,5, h=2*height, center=true);
+                cylindera(d=sensor_diameter+0,5, h=2*height, center=true);
 
             cutoff=[1,2];
             translate([0,mount_start, -lower_height-e])
@@ -190,7 +190,7 @@ module extruder_guidler_mount(){
         cubea([guidler_mount_w,guidler_mount_d,guidler_mount_d],align=[0,0,-1], extrasize=[0,5,0], extrasize_align=[0,1,0]);
         rotate([0,90,0])
         {
-            fncylindera(d=guidler_mount_d, h=guidler_mount_w);
+            cylindera(d=guidler_mount_d, h=guidler_mount_w);
         }
 
         translate([0,0,-guidler_mount_d/2-1])
@@ -212,7 +212,7 @@ module extruder_own(show_filament=true)
                 translate([0,bolt_center_offset,0])
                 {
                     /*rotate([0,90,0])*/
-                    /*fncylindera(h=house_w, d=house_d);*/
+                    /*cylindera(h=house_w, d=house_d);*/
                     cubea(size=[house_w,house_d,house_h], align=[0,0,0]);
                 }
 
@@ -231,7 +231,7 @@ module extruder_own(show_filament=true)
                 translate([0,bolt_center_offset,0])
                 {
                     /*rotate([0,90,0])*/
-                    /*fncylindera(h=house_w, d=house_d);*/
+                    /*cylindera(h=house_w, d=house_d);*/
                     cubea(size=[house_w, house_d, house_h], align=[0,0,0]);
                 }
 
@@ -243,7 +243,7 @@ module extruder_own(show_filament=true)
                     for(i=[-1,1])
                     translate([i*(guidler_screws_distance), 0, 0])
                     rotate([0,90,90])
-                    fncylindera(d=house_guidler_screw_h, h=guidler_screws_mount_d);
+                    cylindera(d=house_guidler_screw_h, h=guidler_screws_mount_d);
                 }
 
                 // mount onto xcarriage
@@ -307,7 +307,7 @@ module extruder_own(show_filament=true)
             translate([0,0, v*r/2])
             {
                 rotate([0,90,90])
-                    fncylindera(r=r,h=guidler_screws_mount_d+1);
+                    cylindera(r=r,h=guidler_screws_mount_d+1);
             }
 
             // guidler screw nuts drop-in slots
@@ -316,7 +316,7 @@ module extruder_own(show_filament=true)
         }
 
         // filament path ptfe line cutout
-        fncylindera(d=filament_path_d, h=50, align=[0,0,0]);
+        cylindera(d=filament_path_d, h=50, align=[0,0,0]);
 
         translate([0,0,-house_h/2+hotmount_h_offset])
         {
@@ -327,7 +327,7 @@ module extruder_own(show_filament=true)
             {
                 translate([0, i*hotmount_clamp_screws_dist, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
                     rotate([0,90,0])
-                    fncylindera(r=screw_m3[0], h=house_w+1);
+                    cylindera(r=screw_m3[0], h=house_w+1);
             }
 
             translate([house_w/2 * (hotmount_clamp_side), 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
@@ -373,35 +373,35 @@ module extruder_own(show_filament=true)
 
         /*translate([0,-guidler_bearing[1]/2,0])*/
         /*rotate([0,90,0])*/
-        /*fncylindera(d=guidler_bearing[1]*1.05, h=house_inner_w);*/
+        /*cylindera(d=guidler_bearing[1]*1.05, h=house_inner_w);*/
 
         translate([0,bolt_center_offset,0])
         {
             // left bearing
             translate([-house_w/2-2*e,0,0])
                 rotate([90,0,90])
-                fncylindera(d=house_bearing[1]*1.02, h=house_bearing[2], align=[0,0,1]);
+                cylindera(d=house_bearing[1]*1.02, h=house_bearing[2], align=[0,0,1]);
 
             // right bearing
             translate([house_w/2+2*e,0,0])
                 rotate([90,0,90])
-                fncylindera(d=house_bearing[1]*1.02, h=house_bearing[2], align=[0,0,-1]);
+                cylindera(d=house_bearing[1]*1.02, h=house_bearing[2], align=[0,0,-1]);
 
             // hobbed bolt
             rotate([90,0,90])
-                fncylindera(d=8.5, h=house_w+1);
+                cylindera(d=8.5, h=house_w+1);
         }
 
         // guidler mount bolt hole
         translate([0,guidler_mount_off_d-guidler_bearing[1]/2, guidler_mount_off_h])
             rotate([0,90,0])
-            fncylindera(r=screw_m3[0],h=guidler_w+1);
+            cylindera(r=screw_m3[0],h=guidler_w+1);
     }
 
     if(show_filament)
     {
         // filament
-        fncylindera(d=filament_d, h=50);
+        cylindera(d=filament_d, h=50);
     }
 
     /*translate([0,0,-house_h/2])*/
@@ -418,7 +418,7 @@ module hotmount_cutout(extend_cut=false)
         {
             d=hotmount_d_h[e][0]*hotmount_tolerance;
             h=hotmount_d_h[e][1]*hotmount_tolerance;
-            fncylindera(d=d,h=h,align=[0,0,-1]);
+            cylindera(d=d,h=h,align=[0,0,-1]);
             if(extend_cut)
             {
                 cubea([house_w/2+1,d,h],align=[hotmount_clamp_side,0,-1]);
@@ -458,7 +458,7 @@ module hotmount_clamp()
         {
             translate([0, i*hotmount_clamp_screws_dist, 0])
                 rotate([0,90,0])
-                fncylindera(r=screw_m3[0], h=hotmount_clamp_thickness, align=[0,0,-hotmount_clamp_side], extra_h=1);
+                cylindera(r=screw_m3[0], h=hotmount_clamp_thickness, align=[0,0,-hotmount_clamp_side], extra_h=1);
         }
     }
 }
@@ -484,7 +484,7 @@ module guidler()
 
                 // guidler bearing bolt holder
                 rotate([0,90,0])
-                    fncylindera(d=guidler_bearing[0]*1.5,h=guidler_w);
+                    cylindera(d=guidler_bearing[0]*1.5,h=guidler_w);
             }
             hull()
             {
@@ -495,7 +495,7 @@ module guidler()
                 // guidler mount point
                 translate([0,guidler_mount_off_d, guidler_mount_off_h])
                     rotate([0,90,0])
-                    fncylindera(d=guidler_mount_d,h=guidler_w);
+                    cylindera(d=guidler_mount_d,h=guidler_w);
             }
 
             hull()
@@ -508,7 +508,7 @@ module guidler()
                 for(i=[-1,1])
                 translate([i*(guidler_screws_distance),guidler_mount_off_d-guidler_mount_d/2, house_guidler_screw_h_offset])
                 rotate([0,90,90])
-                fncylindera(r=guidler_screws_thread_dia/2*3,h=guidler_d, align=[0,0,1]);
+                cylindera(r=guidler_screws_thread_dia/2*3,h=guidler_d, align=[0,0,1]);
 
             }
         }
@@ -523,7 +523,7 @@ module guidler()
                 translate([0,0, v*r/2])
                 {
                     rotate([0,90,90])
-                        fncylindera(r=r,h=house_w+1);
+                        cylindera(r=r,h=house_w+1);
                 }
         }
 
@@ -535,25 +535,25 @@ module guidler()
         translate([0,guidler_mount_off_d, guidler_mount_off_h])
             rotate([0,90,0])
             {
-                fncylindera(d=guidler_mount_d*1.25,h=guidler_mount_w*1.1);
+                cylindera(d=guidler_mount_d*1.25,h=guidler_mount_w*1.1);
             }
 
         // mount bolt hole
         translate([0,guidler_mount_off_d, guidler_mount_off_h])
             rotate([0,90,0])
-            fncylindera(r=screw_m3[0],h=100);
+            cylindera(r=screw_m3[0],h=100);
 
         // guidler bearing bolt holder cutout
         union() {
             cubea([guidler_bolt_h*1.05+2*e,guidler_bearing[0]*1.05,guidler_bearing[0]*1.05],align=[0,1,0]);
 
             rotate([0,90,0])
-                fncylindera(d=guidler_bearing[0]*1.05, h=guidler_bolt_h*1.05);
+                cylindera(d=guidler_bearing[0]*1.05, h=guidler_bolt_h*1.05);
         }
 
         // guidler bearing cutout
         rotate([0,90,0])
-            fncylindera(d=guidler_bearing[1]*1.1, h=guidler_bearing[2]*1.1);
+            cylindera(d=guidler_bearing[1]*1.1, h=guidler_bearing[2]*1.1);
     }
 
 
@@ -561,8 +561,8 @@ module guidler()
     {
         rotate([0,90,0])
         {
-            fncylindera(d=guidler_bearing[1], h=guidler_bearing[2]);
-            fncylindera(d=guidler_bearing[0], h=guidler_bolt_h);
+            cylindera(d=guidler_bearing[1], h=guidler_bearing[2]);
+            cylindera(d=guidler_bearing[0], h=guidler_bolt_h);
         }
     }
 }
@@ -595,35 +595,35 @@ module extras()
             color([0.1,0.2,0.3])
                 translate([-hob_l/2,0,0])
                 rotate([0,90,0])
-                fncylindera(h=thread_left, d=8, align=[0,0,1]);
+                cylindera(h=thread_left, d=8, align=[0,0,1]);
 
             color([0.6,0.6,0.6])
             difference()
             {
                 translate([-hob_l/2+thread_left,0,0])
                     rotate([0,90,0])
-                    fncylindera(h=hob_l-thread_left-thread_right, d=8, align=[0,0,1]);
+                    cylindera(h=hob_l-thread_left-thread_right, d=8, align=[0,0,1]);
 
                 translate([-hob_l/2+hob_center,0,0])
                     rotate([0,90,0])
-                    fncylindera(h=hob_width, d=8.1);
+                    cylindera(h=hob_width, d=8.1);
             }
             color([0.6,0.2,0.3])
                 translate([-hob_l/2+hob_center,0,0])
                 rotate([0,90,0])
-                fncylindera(h=hob_width, d=7);
+                cylindera(h=hob_width, d=7);
 
             color([0.1,0.2,0.3])
             translate([hob_l/2-thread_right,0,0])
                 rotate([0,90,0])
-                fncylindera(h=thread_right, d=8, align=[0,0,1]);
+                cylindera(h=thread_right, d=8, align=[0,0,1]);
 
             /*rotate([0,90,0])*/
-                /*fncylindera(h=hob_l, d=8);*/
+                /*cylindera(h=hob_l, d=8);*/
 
             /*translate([-hob_l/2+hob_center,0,0])*/
                 /*rotate([0,90,0])*/
-                /*fncylindera(h=hob_width, d=8.1);*/
+                /*cylindera(h=hob_width, d=8.1);*/
 
         }
 

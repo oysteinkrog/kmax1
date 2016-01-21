@@ -34,10 +34,10 @@ module yaxis_motor_mount_bearing_clamp(align=[0,0,0])
         ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
 
         translate([0,0,.1])
-            fncylindera(h=bearing_h*2, d=bearing_d*rod_fit_tolerance, orient=[0,0,1], align=[0,0,-1]);
+            cylindera(h=bearing_h*2, d=bearing_d*rod_fit_tolerance, orient=[0,0,1], align=[0,0,-1]);
 
         // cutout for belt path
-        fncylindera(d=bearing_d, h=height*2, orient=[0,0,1], align=[0,0,-1]);
+        cylindera(d=bearing_d, h=height*2, orient=[0,0,1], align=[0,0,-1]);
         translate([depth/2, 0, -bearing_h])
             cubea([depth, ymotor_round_d, height-bearing_h+1], align=[0,0,-1]);
 
@@ -46,11 +46,11 @@ module yaxis_motor_mount_bearing_clamp(align=[0,0,0])
         for(x=[-1,1])
         for(y=[-1,1])
         translate([x*screw_dist/2, y*screw_dist/2, 1])
-        fncylindera(h=height, d=3*mm, orient=[0,0,1], align=[0,0,-1]);
+        cylindera(h=height, d=3*mm, orient=[0,0,1], align=[0,0,-1]);
     }
 
     // debug bearing
-    %fncylindera(h=bearing_h, d=bearing_d*rod_fit_tolerance, align=[0,0,-1], orient=[0,0,1]);
+    %cylindera(h=bearing_h, d=bearing_d*rod_fit_tolerance, align=[0,0,-1], orient=[0,0,1]);
 }
 
 module motor_mount_top(width, depth, height, belt_cutout=true, belt_cutout_orient=[1,0,0], align=[0,0,0])
@@ -63,7 +63,7 @@ module motor_mount_top(width, depth, height, belt_cutout=true, belt_cutout_orien
         ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
 
         // cutout for belt path
-        fncylindera(d=ymotor_round_d, h=height*2, orient=[0,0,1], align=[0,0,0]);
+        cylindera(d=ymotor_round_d, h=height*2, orient=[0,0,1], align=[0,0,0]);
         translate([0, 0,-1])
             cubea([depth/2, ymotor_round_d, height*2], align=[1,0,1]);
 
@@ -129,7 +129,7 @@ module yaxis_motor_mount(show_motor=false)
 
                 for(i=[-1,1])
                     translate([0, i*(ymotor_w/2+ymotor_mount_thread_dia*3), 0])
-                        fncylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia, orient=[1,0,0]);
+                        cylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia, orient=[1,0,0]);
             }
 
             // bottom mount plate
@@ -141,7 +141,7 @@ module yaxis_motor_mount(show_motor=false)
 
                     for(i=[0])
                         translate([0, i*(ymotor_w/2+ymotor_mount_thread_dia*3), 0])
-                            fncylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia,align=[0,0,0], orient=[1,0,0]);
+                            cylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia,align=[0,0,0], orient=[1,0,0]);
                 }
             }
 

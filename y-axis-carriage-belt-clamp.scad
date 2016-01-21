@@ -35,7 +35,7 @@ module yaxis_belt_holder()
 
         for(y=[-1,1])
         translate([0,y*yaxis_belt_mounthole_dist/2,-1])
-        fncylindera(d=yaxis_belt_mounthole_thread_dia,yaxis_belt_mount_base_thick*2, align=[0,0,1], orient=[0,0,1]);
+        cylindera(d=yaxis_belt_mounthole_thread_dia,yaxis_belt_mount_base_thick*2, align=[0,0,1], orient=[0,0,1]);
     }
 }
 

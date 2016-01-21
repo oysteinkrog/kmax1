@@ -34,22 +34,22 @@ module pulley_full(h, inner_d, outer_d, bore, walls, is_idler=false, full_h, fli
         {
             union()
             {
-                fncylindera(d = outer_d, h = walls, align=[0,0,1], orient=[0,0,1]);
+                cylindera(d = outer_d, h = walls, align=[0,0,1], orient=[0,0,1]);
 
                 translate([0,0,0])
-                fncylindera(d = inner_d, h = h, align=[0,0,1], orient=[0,0,1]);
+                cylindera(d = inner_d, h = h, align=[0,0,1], orient=[0,0,1]);
 
                 translate([0,0,h-walls])
-                fncylindera(d = outer_d, h = walls, align=[0,0,1], orient=[0,0,1]);
+                cylindera(d = outer_d, h = walls, align=[0,0,1], orient=[0,0,1]);
 
                 translate([0,0,h])
                 if(!is_idler)
                 {
-                    fncylindera(d = outer_d, h = full_h-h, align=[0,0,1], orient=[0,0,1]);
+                    cylindera(d = outer_d, h = full_h-h, align=[0,0,1], orient=[0,0,1]);
                 }
             }
             translate([0,0,-.1])
-            fncylindera(d = bore, h = full_h+.2, align=[0,0,1], orient=[0,0,1]);
+            cylindera(d = bore, h = full_h+.2, align=[0,0,1], orient=[0,0,1]);
         }
     }
 }

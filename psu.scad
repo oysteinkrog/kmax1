@@ -39,13 +39,13 @@ module psu(align=[0,0,0], detailed_model=true)
                 for(y=[-1,1])
                     for(z=[-1,1])
                         translate([x*(psu_w/2+1), y*(psu_screw_dist_y/2), z*psu_screw_side_dist_z/2])
-                            fncylindera(d=psu_screw_thread_dia, h=0.5*cm, orient=[1,0,0], align=[-x,0,0]);
+                            cylindera(d=psu_screw_thread_dia, h=0.5*cm, orient=[1,0,0], align=[-x,0,0]);
 
             // screw holes, bottom
             for(x=[-1,1])
                 for(y=[-1,1])
                     translate([x*(psu_screw_bottom_dist_x/2), y*(psu_screw_dist_y/2), -psu_h/2-1])
-                        fncylindera(d=psu_screw_thread_dia, h=1*cm, orient=[0,0,1], align=[0,0,1]);
+                        cylindera(d=psu_screw_thread_dia, h=1*cm, orient=[0,0,1], align=[0,0,1]);
         }
     }
 }
@@ -60,20 +60,20 @@ module psu_extrusion_bracket_side()
         {
             for(x=[-1,1])
                 translate([x*(psu_screw_bottom_dist_x/2), 0, -psu_h/2])
-                    fncylindera(d=psu_screw_thread_dia*4, h=psu_mount_bottom_height, align=[0,0,-1]);
+                    cylindera(d=psu_screw_thread_dia*4, h=psu_mount_bottom_height, align=[0,0,-1]);
 
             for(y=[-1,1])
                 translate([psu_w/2+extrusion_size/2, y*extrusion_side_screw_dist/2, -psu_h/2])
-                    fncylindera(d=extrusion_thread_dia*4, h=psu_mount_bottom_height, align=[0,0,-1]);
+                    cylindera(d=extrusion_thread_dia*4, h=psu_mount_bottom_height, align=[0,0,-1]);
         }
 
         for(x=[-1,1])
             translate([x*(psu_screw_bottom_dist_x/2), 0, -psu_h/2+1])
-                fncylindera(d=psu_screw_thread_dia, h=psu_mount_bottom_height*2, align=[0,0,-1]);
+                cylindera(d=psu_screw_thread_dia, h=psu_mount_bottom_height*2, align=[0,0,-1]);
 
         for(y=[-1,1])
             translate([psu_w/2+extrusion_size/2, y*extrusion_side_screw_dist/2, -psu_h/2+1])
-                fncylindera(d=extrusion_thread_dia, h=psu_mount_bottom_height*2, align=[0,0,-1]);
+                cylindera(d=extrusion_thread_dia, h=psu_mount_bottom_height*2, align=[0,0,-1]);
     }
 }
 
@@ -86,20 +86,20 @@ module psu_extrusion_bracket_back()
         {
             for(x=[-1,1])
                 translate([x*(psu_screw_bottom_dist_x/2), 0, -psu_h/2])
-                    fncylindera(d=psu_screw_thread_dia*4, h=psu_mount_bottom_height, align=[0,0,-1]);
+                    cylindera(d=psu_screw_thread_dia*4, h=psu_mount_bottom_height, align=[0,0,-1]);
 
             for(x=[-1,1])
                 translate([x*psu_screw_bottom_dist_x/2, -psu_screw_dist_y/2+psu_d/2+extrusion_size/2, -psu_h/2])
-                    fncylindera(d=extrusion_thread_dia*4, h=psu_mount_bottom_height, align=[0,0,-1]);
+                    cylindera(d=extrusion_thread_dia*4, h=psu_mount_bottom_height, align=[0,0,-1]);
         }
 
         for(x=[-1,1])
             translate([x*(psu_screw_bottom_dist_x/2), 0, -psu_h/2+1])
-                fncylindera(d=psu_screw_thread_dia, h=psu_mount_bottom_height*2, align=[0,0,-1]);
+                cylindera(d=psu_screw_thread_dia, h=psu_mount_bottom_height*2, align=[0,0,-1]);
 
         for(x=[-1,1])
             translate([x*psu_screw_bottom_dist_x/2, -psu_screw_dist_y/2+psu_d/2+extrusion_size/2, -psu_h/2+1])
-                fncylindera(d=extrusion_thread_dia, h=psu_mount_bottom_height*2, align=[0,0,-1]);
+                cylindera(d=extrusion_thread_dia, h=psu_mount_bottom_height*2, align=[0,0,-1]);
     }
 }
 

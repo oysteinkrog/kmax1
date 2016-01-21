@@ -8,8 +8,17 @@ include <thing_libutils/misc.scad>
 
 e=0.01;
 
+// minimum size of a fragment
 // resolution of any round object (segment length)
-fnr                         = 0.4;
+// Because of this variable very small circles have a smaller number of fragments than specified using $fa. 
+/// The default value is 2.
+/*$fs                         = 2;*/
+$fs                         = 0.5;
+
+// minimum angle for a fragment.
+// The default value is 12 (i.e. 30 fragments for a full circle)
+/*$fa = 12;*/
+$fa = 4;
 
 extrusion_height            = 0.4*mm;
 
