@@ -1,0 +1,2 @@
+OPENSCADPATH=`cygpath -aw .` openscad $@ &
+
