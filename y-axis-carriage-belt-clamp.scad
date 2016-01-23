@@ -24,14 +24,14 @@ module yaxis_belt_holder()
         union()
         {
             // base (screws etc)
-            cubea([yaxis_belt_mount_width_base,yaxis_belt_mount_depth_base,yaxis_belt_mount_base_thick], align=[0,0,1]);
+            rcubea([yaxis_belt_mount_width_base,yaxis_belt_mount_depth_base,yaxis_belt_mount_base_thick], align=[0,0,1]);
 
             // for belt attachment
-            cubea([yaxis_belt_mount_width_belt,yaxis_belt_mount_depth,yaxis_belt_mount_height], align=[0,0,-1]);
+            rcubea([yaxis_belt_mount_width_belt,yaxis_belt_mount_depth,yaxis_belt_mount_height], align=[0,0,-1]);
         }
 
         // for belt attachment
-        cubea([yaxis_belt_mount_width_base*2,yaxis_belt_mount_belt_gap,yaxis_belt_mount_height+1], align=[0,0,-1]);
+        rcubea([yaxis_belt_mount_width_base*2,yaxis_belt_mount_belt_gap,yaxis_belt_mount_height+1], align=[0,0,-1]);
 
         for(y=[-1,1])
         translate([0,y*yaxis_belt_mounthole_dist/2,-1])

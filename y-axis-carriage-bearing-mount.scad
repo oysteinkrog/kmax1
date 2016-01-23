@@ -26,7 +26,7 @@ module yaxis_carriage_bearing_mount(show_bearing=false, show_zips=false)
     {
         union()
         {
-            cubea ([width, depth, height], align=[0,0,1]);
+            rcubea ([width, depth, height], align=[0,0,1]);
         }
 
         translate ([+screw_dx/2, +screw_dy/2, -1]) cylindera(d=carriage_plate_thread_d, h=height+2, align=[0,0,1]);
