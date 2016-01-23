@@ -123,7 +123,7 @@ module yaxis_idler_pulleyblock(show_pulley=false)
         hull()
         {
             /*cylindera(d=yaxis_idler_pulley_inner_d*1.5, h=h, orient=[0,0,1], align=[0,0,0]);*/
-            cuberounda([yaxis_idler_pulleyblock_supportsize, 2*yaxis_idler_pulleyblock_supportsize, h],
+            rcubea([yaxis_idler_pulleyblock_supportsize, 2*yaxis_idler_pulleyblock_supportsize, h],
                     align=[0,0,0],
                     extrasize=[yaxis_idler_pulley_tight_len,0,0], 
                     extrasize_align=[-1,0,0]

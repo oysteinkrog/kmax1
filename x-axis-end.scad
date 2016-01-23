@@ -18,11 +18,11 @@ module xaxis_end_body(with_motor, nut_top=false)
     wx = zaxis_bearing[1]/2+zaxis_nut[1];
     wx_ = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : wx;
 
-    /*%cuberounda([wx_, xaxis_rod_d*2, xaxis_end_wz], rounding_radius=3, align=[with_motor?1:-1,0,0]);*/
+    /*%rcubea([wx_, xaxis_rod_d*2, xaxis_end_wz], rounding_radius=3, align=[with_motor?1:-1,0,0]);*/
 
     if(with_motor)
     translate(xaxis_end_motor_offset)
-    cuberounda([xaxis_end_motorsize, motor_mount_wall_thick, xaxis_end_motorsize], rounding_radius=3, align=[0,-1,0]);
+    rcubea([xaxis_end_motorsize, motor_mount_wall_thick, xaxis_end_motorsize], rounding_radius=3, align=[0,-1,0]);
 
     // nut mount
     mirror([0,0,nut_top?1:0])

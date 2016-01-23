@@ -1,5 +1,6 @@
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
+use <thing_libutils/transforms.scad>;
 use <thing_libutils/attach.scad>;
 use <thing_libutils/triangles.scad>
 use <thing_libutils/linear-extrusion.scad>;
@@ -29,13 +30,13 @@ module x_carriage_base()
     {
         // top bearings
         translate([0,0,xaxis_rod_distance/2])
-            cuberounda([top_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+            rcubea([top_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
-        /*cuberounda([top_width,thickness,xaxis_rod_distance/2], align=[0,1,0]);*/
+        /*rcubea([top_width,thickness,xaxis_rod_distance/2], align=[0,1,0]);*/
 
         // bottom bearing
         translate([0,0,-xaxis_rod_distance/2])
-            cuberounda([bottom_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+            rcubea([bottom_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
     }
     translate([0,xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y+xaxis_carriage_beltpath_offset+.1,0])
@@ -43,7 +44,7 @@ module x_carriage_base()
         translate([0,-xaxis_beltpath_width/2,0])
         for(x=[-1,1])
         translate([x*(xaxis_carriage_beltfasten_w/2+5),-xaxis_beltpath_width/2,xaxis_pulley_inner_d/2])
-        cuberounda([xaxis_carriage_beltfasten_w,xaxis_beltpath_width,xaxis_beltpath_height/3], align=[0,0,-1]);
+        rcubea([xaxis_carriage_beltfasten_w,xaxis_beltpath_width,xaxis_beltpath_height/3], align=[0,0,-1]);
     }
 }
 
@@ -85,31 +86,31 @@ module x_carriage_holes()
     {
         // Cut clearing space for the belt
         /*translate([0,-xaxis_beltpath_width/2,-xaxis_beltpath_height/2])*/
-            /*#cuberounda([500,xaxis_beltpath_width+1,5], align=[0,1,0], extrasize=[0,0,4], extrasize_align=[0,0,1]);*/
+            /*#rcubea([500,xaxis_beltpath_width+1,5], align=[0,1,0], extrasize=[0,0,4], extrasize_align=[0,0,1]);*/
 
         translate([0,-xaxis_beltpath_width/2,0])
         {
             difference()
             {
-                cuberounda([500,xaxis_beltpath_width*2,xaxis_beltpath_height], align=[0,1,0]);
+                rcubea([500,xaxis_beltpath_width*2,xaxis_beltpath_height], align=[0,1,0]);
                 for(x=[-1,1])
                 translate([x*(xaxis_carriage_beltfasten_w/2+5),-xaxis_beltpath_width/2,xaxis_pulley_inner_d/2])
-                    cuberounda([xaxis_carriage_beltfasten_w,xaxis_beltpath_width*2,xaxis_beltpath_height/3], align=[0,1,-1]);
+                    rcubea([xaxis_carriage_beltfasten_w,xaxis_beltpath_width*2,xaxis_beltpath_height/3], align=[0,1,-1]);
             }
         }
 
         /*belt_thickness=1.5;*/
         /*for(i=[-1,1])*/
             /*translate([i*30,0,0])*/
-                /*cuberounda([15,xaxis_beltpath_width,15-belt_thickness], align=[0,0,0]);*/
+                /*rcubea([15,xaxis_beltpath_width,15-belt_thickness], align=[0,0,0]);*/
 
         // Cut in the middle for belt
-        /*cuberounda([7,xaxis_beltpath_width,xaxis_beltpath_height], align=[0,0,0]);*/
+        /*rcubea([7,xaxis_beltpath_width,xaxis_beltpath_height], align=[0,0,0]);*/
 
         /*translate([0,-xaxis_beltpath_width/2,xaxis_pulley_inner_d/2])*/
         /*{*/
             /*// Belt slit*/
-            /*cuberounda([500,xaxis_beltpath_width,belt_thickness], align=[0,1,0]);*/
+            /*rcubea([500,xaxis_beltpath_width,belt_thickness], align=[0,1,0]);*/
 
             /*[>// Teeth cuts<]*/
             /*[>teeth = 50;<]*/
@@ -227,14 +228,14 @@ module extruder_a(show_vitamins=false)
         /*union()*/
         {
             side = 15*mm;
-            cuberounda([extruder_motor_holedist+side/2,extruder_a_h,extruder_motor_holedist+side/2], align=[0,1,0]);
+            rcubea([extruder_motor_holedist+side/2,extruder_a_h,extruder_motor_holedist+side/2], align=[0,1,0]);
             /*hull()*/
             /*{*/
                 /*for(x=[-1,1])*/
                 /*for(z=[-1,1])*/
                 /*translate([(extruder_motor_holedist/2)*x,0,(extruder_motor_holedist/2)*z])*/
                 /*rotate([0,x*45,0])*/
-                /*cuberounda([side/2,extruder_a_h,side/2], align=[0,1,0]);*/
+                /*rcubea([side/2,extruder_a_h,side/2], align=[0,1,0]);*/
             /*}*/
             translate(extruder_gear_big_offset)
             cylindera(d=extruder_gear_big_d_outer+3*mm, h=extruder_a_h, orient=[0,1,0], align=[0,-1,0]);
