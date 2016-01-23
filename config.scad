@@ -11,7 +11,7 @@ e=0.01;
 // minimum size of a fragment
 // resolution of any round object (segment length)
 // Because of this variable very small circles have a smaller number of fragments than specified using $fa. 
-/// The default value is 2.
+// The default value is 2.
 $fs                         = 2;
 /*$fs                         = 0.5;*/
 
