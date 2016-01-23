@@ -1,4 +1,5 @@
 include <thing_libutils/attach.scad>
+include <thing_libutils/shapes.scad>
 include <config.scad>
 
 mount_rod_clamp_conn_rod = [[0,0,0],[1,0,0]];
