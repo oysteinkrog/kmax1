@@ -56,9 +56,10 @@ extruder_offset_a = -extruder_gear_big_offset+[
     0,
     xaxis_bearing[1] + xaxis_carriage_bearing_offset_y + 1*mm,
     0];
-extruder_filapath_offset = [hobbed_gear_d_inner/2, -15*mm, 0];
+extruder_filapath_offset = [hobbed_gear_d_inner/2, -12*mm, 0];
 
 guidler_bearing = bearing_MR105;
+extruder_hotmount_clamp_nut = MHexNutM3;
 extruder_hotmount_clamp_thread = ThreadM3;
 
 module x_carriage_base(show_bearings=false)
@@ -334,9 +335,9 @@ module extruder_a(show_vitamins=false)
 hotmount_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
 hotmount_outer_size_xy=max(vec_i(hotmount_d_h,0))+5*mm;
 hotmount_outer_size_h=max(vec_i(hotmount_d_h,1))+5*mm;
-hotmount_offset_h=-6*mm;
+hotmount_offset_h=-3*mm;
+
 // which side does hotend slide in (x-axis, i.e. -1 is left, 1 is right)
-hotmount_clamp_side=1;
 hotmount_tolerance=1.05*mm;
 
 // hotmount clamp screws distance from center
@@ -364,7 +365,7 @@ module hotmount_cutout(extend_cut=false)
             cylindera(d=d,h=h,align=[0,0,-1]);
             if(extend_cut)
             {
-                cubea([extruder_b_w/2+1,d,h],align=[hotmount_clamp_side,0,-1]);
+                cubea([extruder_b_w/2+1,d,h],align=[1,0,-1]);
             }
         }
     }
@@ -377,19 +378,19 @@ module hotmount_clamp()
     {
         union()
         {
-            translate([extruder_b_w/2 * hotmount_clamp_side, 0, 0]);
+            translate([extruder_b_w/2, 0, 0]);
             {
-                cubea([hotmount_clamp_thickness, hotmount_clamp_y, hotmount_clamp_height], align=[-hotmount_clamp_side,0,0]);
+                rcubea([hotmount_clamp_thickness, hotmount_clamp_y, hotmount_clamp_height], align=[-1,0,0]);
             }
 
             difference()
             {
-                translate([extruder_b_w/2 * hotmount_clamp_side, 0, 0]);
+                translate([extruder_b_w/2 * 1, 0, 0]);
                 {
-                    cubea([extruder_b_w/2, hotmount_d_h[1][0], hotmount_clamp_height], align=[-hotmount_clamp_side,0,0]);
+                    rcubea([extruder_b_w/2, hotmount_d_h[1][0], hotmount_clamp_height], align=[-1,0,0]);
                 }
 
-                translate([(-extruder_b_w/2 * hotmount_clamp_side) + (-0.5*hotmount_clamp_side), 0, hotmount_d_h[0][1]+hotmount_d_h[1][1]/2])
+                translate([(-extruder_b_w/2 * 1) + (-0.5*1), 0, hotmount_d_h[0][1]+hotmount_d_h[1][1]/2])
                 {
                     hotmount_cutout(extend_cut = false);
                 }
@@ -402,29 +403,37 @@ module hotmount_clamp()
         {
             translate([.1, i*hotmount_clamp_screws_dist, 0])
                 rotate([0,90,0])
-                cylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread), h=hotmount_clamp_thickness+.2, align=[0,0,-hotmount_clamp_side], extra_h=2);
+                cylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread), h=hotmount_clamp_thickness+.2, align=[0,0,-1], extra_h=2);
         }
     }
 }
 
 extruder_b_bearing = bearing_MR105;
-extruder_b_w = hobbed_gear_d_outer+10*mm;
+extruder_b_w = hobbed_gear_d_outer+15*mm;
 
-guidler_mount_off = [0,-guidler_bearing[1]/1.7, -guidler_bearing[1]/1.7];
+guidler_mount_off = [0,-guidler_bearing[1]/1.8, -guidler_bearing[1]/1.7];
 extruder_guidler_mount_off = [.5*mm -guidler_mount_off[1]+hobbed_gear_d_inner/2+guidler_bearing[1]/2,0,guidler_mount_off[2]];
 
 module extruder_b(show_vitamins=false)
 {
     difference()
     {
-        /*hull()*/
-        union()
+        hull()
+        /*union()*/
         {
             // main house
-            extruder_b_size=[10,extruder_filapath_offset,10];
-            rcubea(extruder_b_size);
+            extruder_b_size=[
+                hobbed_gear_d_outer+5*mm,
+                abs(extruder_filapath_offset[1])+hobbed_gear_h/2+extruder_b_bearing[2]+4*mm,
+                hobbed_gear_d_outer+5*mm
+            ];
+            /*translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])*/
+            /*translate([hobbed_gear_d_inner/2,0,0])*/
+            /*rcubea(extruder_b_size, align=[0,sign(extruder_filapath_offset[1]),0]);*/
 
+            
             // gear support
+            translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
             translate([0,-hobbed_gear_h/2,0])
             {
                 // hobbed gear support
@@ -435,14 +444,25 @@ module extruder_b(show_vitamins=false)
 
             }
 
+            translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
+            translate([0, guidler_screws_mount_d_offset, house_guidler_screw_h_offset])
+            {
+                /*cubea([guidler_screws_mount_d, house_w, house_guidler_screw_h], align=[0,0,0]);*/
+                for(i=[-1,1])
+                translate([0,i*(guidler_screws_distance),  0])
+                cylindera(d=house_guidler_screw_h, h=guidler_screws_mount_d, orient=[1,0,0]);
+            }
+
             // guidler mount
+            translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
             translate(extruder_guidler_mount_off)
             {
                 cylindera(d=guidler_mount_d, h=guidler_mount_w, orient=[0,1,0]);
             }
 
             // hotmount support
-            translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h])
+            translate(extruder_filapath_offset)
+            translate([0,0,-hobbed_gear_d_outer/2 + hotmount_offset_h])
             {
                 cubea([extruder_b_w, hotmount_outer_size_xy, hotmount_outer_size_h], align=[0,0,-1]);
 
@@ -450,54 +470,103 @@ module extruder_b(show_vitamins=false)
                 cubea([extruder_b_w, abs(extruder_filapath_offset[1]), hotmount_outer_size_h], align=[0,-1,-1]);
             }
 
-            // clamp mount screw holes
-            translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h])
-            for(i=[-1,1])
+            /*// clamp mount screw holes*/
+            /*translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])*/
+            /*translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h])*/
+            /*for(i=[-1,1])*/
+            /*{*/
+                /*translate([0, i*hotmount_clamp_screws_dist, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])*/
+                /*cylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread)+6*mm, h=extruder_b_w, orient=[1,0,0]);*/
+            /*}*/
+        }
+
+        // guidler cutout
+        translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
+        {
+            difference()
             {
-                translate([0, i*hotmount_clamp_screws_dist, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
-                cylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread)+6*mm, h=extruder_b_w, orient=[1,0,0]);
+                hull()
+                {
+                    translate([hobbed_gear_d_inner/2,0,0])
+                    {
+                        cubea([guidler_bearing[1]+1*mm,guidler_w+1*mm,guidler_bearing[1]*2], align=[1,0,1]);
+                        cylindera(d=guidler_bearing[1]+1*mm, h=guidler_w+1*mm, orient=[0,1,0], align=[1,0,0]);
+                    }
+
+                    translate(extruder_guidler_mount_off)
+                    {
+                        for(y=[-1,1])
+                        translate([0,y*guidler_mount_w/2,0])
+                        {
+                            cylindera(d=guidler_mount_d+.5*mm, h=guidler_mount_w, orient=[0,1,0], align=[0,-y,0]);
+                            cubea([10,(guidler_w-guidler_mount_w)/2+.5*mm,10], align=[1,y,1]);
+                        }
+                    }
+                }
+                translate(extruder_guidler_mount_off)
+                {
+                    cylindera(d=guidler_mount_d, h=guidler_mount_w, orient=[0,1,0]);
+                    cubea([guidler_mount_d, guidler_mount_w, 10], align=[0,0,-1]);
+                }
             }
         }
 
+        // guidler screws cutouts
+        translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
+        for(y=[-1,1])
+        translate([guidler_screws_mount_d_offset, y*(guidler_screws_distance), house_guidler_screw_h_offset])
+        {
+            r= guidler_screws_thread_dia/2 * 1.1;
+            cubea([1000, r*2, r]);
+
+            for(v=[-1,1])
+            translate([0,0, v*r/2])
+            cylindera(r=r,h=1000, orient=[1,0,0]);
+
+            // guidler screw nuts drop-in slots
+            translate([0,0, -r*2])
+            cubea([nut_m3[2]*1.25,nut_m3[1]*1.1,house_guidler_screw_h], align=[0,0,1], extrasize=[0,0,1], extrasize_align=[0,0,1]);
+        }
+
         // guidler mount screw
+        translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
         translate(extruder_guidler_mount_off)
         {
             cylindera(d=lookup(ThreadSize, guidler_screws_thread), h=guidler_mount_w+.1, orient=[0,1,0]);
         }
 
-        // hobbed gear (inner)
-        cylindera(h=hobbed_gear_h, d=hobbed_gear_d_outer+2*mm, orient=[0,1,0], align=[0,0,0]);
+        // cutout for hobbed gear (inner)
+        cylindera(h=abs(extruder_filapath_offset[1])+hobbed_gear_h/2+1*mm, d=hobbed_gear_d_outer+2*mm, orient=[0,1,0], align=[0,1,0]);
+
+        // cutout for bearing
+        cylindera(h=abs(extruder_filapath_offset[1])+hobbed_gear_h/2+extruder_b_bearing[2]+1*mm, d=extruder_b_bearing[1]+.1*mm, orient=[0,1,0], align=[0,1,0]);
 
         // hotmount clamp screws
-        translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h])
+        translate([hobbed_gear_d_inner/2, 0,-hobbed_gear_d_outer/2 + hotmount_offset_h])
         for(i=[-1,1])
         {
-            translate([0, i*hotmount_clamp_screws_dist, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
-                rotate([0,90,0])
-                cylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread), h=extruder_b_w+10);
+            translate([i*hotmount_clamp_screws_dist, 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
+            screw_cut(nut=extruder_hotmount_clamp_nut, h=1000, head_embed=false, orient=[0,1,0], align=[0,-1,0]);
         }
 
         // filament path
+        translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
         translate([hobbed_gear_d_outer/2,0,0])
         cylindera(h=1000, d=4*mm, orient=[0,0,1], align=[0,0,0]);
 
         // gear cutout
+        translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
         translate([0,-hobbed_gear_h/2-.5*mm,0])
         cylindera(d=extruder_b_bearing[1]+.3*mm, h=extruder_b_bearing[2]+.5*mm, align=[0,1,0], orient=[0,1,0]);
 
-        for(x=[1])
-        translate([x*hobbed_gear_d_inner/2,0,0])
-        scale([1.03,1,1.03])
-        {
-            cubea([guidler_bearing[1]+1*mm,guidler_w+1*mm,guidler_bearing[1]*2], align=[x,0,1]);
-            cylindera(d=guidler_bearing[1]+1*mm, h=guidler_w+1*mm, orient=[0,1,0], align=[x,0,0]);
-        }
-
         // extruder shaft
+        translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
         translate([0,-extruder_filapath_offset[1]+.1,0])
         cylindera(h=1000, d=extruder_shaft_d, orient=[0,1,0], align=[0,1,0]);
 
+        translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
         translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h+.01])
+        rotate([0,0,-90])
         {
             hotmount_cutout(extend_cut=true);
 
@@ -509,18 +578,20 @@ module extruder_b(show_vitamins=false)
             }
 
             // hotmount clamp cutout
-            translate([extruder_b_w/2 * (hotmount_clamp_side), 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
+            translate([extruder_b_w/2, 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
             {
-                rcubea([hotmount_clamp_thickness+0.2, hotmount_clamp_y+0.2, hotmount_clamp_height+0.2], align=[-hotmount_clamp_side,0,0], extrasize=[1,0,0], extrasize_align=[hotmount_clamp_side,0,0]);
+                rcubea([hotmount_clamp_thickness+1.2, hotmount_clamp_y+0.2, hotmount_clamp_height+0.2], align=[-1,0,0], extrasize=[100,0,0], extrasize_align=[1,0,0]);
             }
         }
     }
 
+    translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
     if(show_vitamins)
     {
         translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h+.01])
-            translate([extruder_b_w/2 * (hotmount_clamp_side), 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
-            hotmount_clamp();
+        translate([0, -extruder_b_w/2 * (1), -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
+        rotate([0,0,-90])
+        hotmount_clamp();
 
         translate([0,-hobbed_gear_h/2-extruder_b_bearing[2]-.5*mm,0])
         {
@@ -582,7 +653,7 @@ module x_extruder_hotend()
     hotend_conn =[[0,0,27.8-hotmount_offset_h],[0,0,1]];
     translate(extruder_filapath_offset)
     attach(extruder_conn_hotend, hotend_conn)
-        rotate([90,0,270])
+        rotate([90,0,90])
         %import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
 
 }
@@ -594,14 +665,13 @@ house_h = 30;
 // length of the guidler bearing bolt/screw
 
 guidler_mount_w=guidler_bearing[2];
-guidler_mount_d=8*mm;
+guidler_mount_d=6*mm;
 guidler_bolt_h=guidler_bearing[2]+4*mm;
 
 guidler_w=max(guidler_mount_w+7, guidler_bearing[2]*2.8);
 guidler_d=5;
-guidler_h=9;
+guidler_h=7;
 guidler_extra_h_up=guidler_bearing[1]/2+hotmount_clamp_screw_dia/2;
-
 
 guidler_screws_thread = ThreadM3;
 guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
@@ -612,7 +682,7 @@ guidler_screws_mount_d_offset = 0*mm;
 guidler_srew_distance = 10;
 
 house_guidler_screw_h = guidler_screws_thread_dia+8*mm;
-house_guidler_screw_h_offset = house_h/2 + guidler_screws_thread_dia -3*mm;
+house_guidler_screw_h_offset = house_h/2 + guidler_screws_thread_dia -7*mm;
 
 module extruder_guidler()
 {
@@ -693,6 +763,7 @@ module extruder_guidler()
 
         // guidler bearing cutout
         cylindera(d=guidler_bearing[1]*1.1, h=guidler_bearing[2]*1.1, orient=[1,0,0]);
+
     }
 
 
@@ -703,14 +774,13 @@ module extruder_guidler()
     }
 }
 
-extruder_offset_b = extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0];
 
 // extruder guidler mount point
 extruder_conn_guidler = [ extruder_guidler_mount_off, [0,1,0]];
 
 // guidler connection point
 extruder_guidler_conn_mount = [ guidler_mount_off,  [1,0,0]];
-extruder_guidler_roll = 0;
+extruder_guidler_roll = 45;
 
 if(false)
 attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
@@ -720,20 +790,20 @@ attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll
 
 /*if(false)*/
 {
-    /*%x_carriage(show_bearings=false);*/
+    %x_carriage(show_bearings=false);
 
     translate(extruder_offset)
     {
         translate(extruder_offset_a)
         extruder_a(show_vitamins=true);
 
-        translate(extruder_offset_b)
         {
             extruder_b(show_vitamins=true);
 
+            translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
             attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
             {
-                extruder_guidler(show_extras=true);
+                %extruder_guidler(show_extras=true);
             }
         }
 
