@@ -6,6 +6,8 @@ use <thing_libutils/triangles.scad>
 use <thing_libutils/linear-extrusion.scad>;
 use <thing_libutils/bearing.scad>
 use <thing_libutils/metric-screw.scad>
+use <thing_libutils/gears.scad>
+include <thing_libutils/gears-data.scad>
 
 include <config.scad>
 
@@ -25,14 +27,26 @@ hobbed_gear_d_outer = 12.65;
 hobbed_gear_d_inner = 11.5;
 hobbed_gear_h = 11;
 
-extruder_gear_small_d_inner = 5.75*mm;
-extruder_gear_big_d_inner = 29.35*mm;
-extruder_gear_big_d_outer = 30.85*mm;
-extruder_gear_big_h = [3.85*mm, 5*mm];
+gear_60t_mod05 =[
+[GearMod, 0.5],
+[GearTeeth, 60]
+];
+
+gear_13t_mod05 =[
+[GearMod, 0.5],
+[GearTeeth, 13]
+];
 
 // 13t metal gear and 60t metal gear
-extruder_gears_distance=extruder_gear_big_d_inner/2+extruder_gear_small_d_inner/2+.5*mm;
+extruder_gear_small = gear_13t_mod05;
+extruder_gear_big = gear_60t_mod05;
 
+extruder_gears_distance=calc_gears_center_distance(gear_60t_mod05,gear_13t_mod05);
+extruder_gear_small_PD = calc_gear_PD(extruder_gear_small);
+extruder_gear_big_PD = calc_gear_PD(extruder_gear_big);
+extruder_gear_big_OD = calc_gear_OD(extruder_gear_big);
+
+extruder_gear_big_h = [3.85*mm, 5*mm];
 extruder_motor = dict_replace_multiple(Nema17,
         [
         [NemaLengthMedium, 11.75*mm],
@@ -227,10 +241,10 @@ module extruder_gear_small()
         {
             hull()
             {
-                cylindera(d=extruder_gear_small_d_inner, h=7*mm, orient=[0,1,0], align=[0,1,0]);
+                cylindera(d=extruder_gear_small_PD, h=7*mm, orient=[0,1,0], align=[0,1,0]);
                 cylindera(d=10*mm, h= 3*mm, orient=[0,1,0], align=[0,1,0]);
             }
-            cylindera(d=extruder_gear_small_d_inner, h=13*mm, orient=[0,1,0], align=[0,1,0]);
+            cylindera(d=extruder_gear_small_PD, h=13*mm, orient=[0,1,0], align=[0,1,0]);
         }
         cylindera(d=5*mm, h=13*mm+.1, orient=[0,1,0], align=[0,1,0]);
     }
@@ -240,13 +254,13 @@ module extruder_gear_small()
 module extruder_gear_big(align=[0,0,0], orient=[0,0,1])
 {
     total_h = extruder_gear_big_h[0]+extruder_gear_big_h[1];
-    size_align([extruder_gear_big_d_inner, extruder_gear_big_d_inner, total_h], align=align, orient=orient)
+    size_align([extruder_gear_big_PD, extruder_gear_big_PD, total_h], align=align, orient=orient)
     translate([0,0,-extruder_gear_big_h[0] + total_h/2])
     difference()
     {
         union()
         {
-            cylindera(d=extruder_gear_big_d_inner, h=extruder_gear_big_h[0], orient=[0,0,1], align=[0,0,1]);
+            cylindera(d=extruder_gear_big_PD, h=extruder_gear_big_h[0], orient=[0,0,1], align=[0,0,1]);
             cylindera(d=12*mm, h=extruder_gear_big_h[1], orient=[0,0,1], align=[0,0,-1]);
         }
         translate([0,0,-.5])
@@ -302,7 +316,7 @@ module extruder_a(show_vitamins=false)
                 /*rcubea([side/2,extruder_a_h,side/2], align=[0,1,0]);*/
             /*}*/
             translate(extruder_gear_big_offset)
-            cylindera(d=extruder_gear_big_d_outer+6*mm, h=extruder_a_h, orient=[0,1,0], align=[0,-1,0], round_radius=2);
+            cylindera(d=extruder_gear_big_OD+7*mm, h=extruder_a_h, orient=[0,1,0], align=[0,-1,0], round_radius=2);
         }
 
         translate([0,extruder_a_h,0])
@@ -314,7 +328,7 @@ module extruder_a(show_vitamins=false)
 
                 // big gear cutout
                 translate([0,-bearing_MR105[2]+.1,0])
-                cylindera(d=extruder_gear_big_d_outer+1*mm, h=extruder_a_h+.2, orient=[0,1,0], align=[0,1,0]);
+                cylindera(d=extruder_gear_big_OD+2*mm, h=extruder_a_h+.2, orient=[0,1,0], align=[0,1,0]);
 
                 translate([0,.1,0])
                 cylindera(d=extruder_shaft_d+.5*mm, h=extruder_a_h+.2, orient=[0,1,0], align=[0,1,0]);
