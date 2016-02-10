@@ -881,37 +881,37 @@ module extruder_guidler()
             {
                 // guidler main block
                 translate([0,guidler_mount_off[1]-guidler_mount_d/2, 0])
-                cubea([guidler_w, guidler_d, guidler_h], align=[0,1,0]);
+                rcubea([guidler_w, guidler_d, guidler_h], align=[0,1,0]);
 
                 // guidler bearing bolt holder
-                cylindera(d=guidler_bearing[0]*1.5,h=guidler_w, orient=[1,0,0]);
+                cylindera(d=guidler_bearing[0]*1.5,h=guidler_w, orient=[1,0,0], round_radius=2);
             }
 
             hull()
             {
                 // guidler main block
                 translate([0,guidler_mount_off[1]-guidler_mount_d/2, 0])
-                cubea([guidler_w, guidler_d, guidler_h], align=[0,1,0], extrasize=[0,0,guidler_extra_h_up], extrasize_align=[0,0,1]);
+                rcubea([guidler_w, guidler_d, guidler_h], align=[0,1,0], extrasize=[0,0,guidler_extra_h_up], extrasize_align=[0,0,1]);
 
                 // guidler mount point
                 translate([0,guidler_mount_off[1], guidler_mount_off[2]])
-                cylindera(d=guidler_mount_d,h=guidler_w, orient=[1,0,0]);
+                cylindera(d=guidler_mount_d,h=guidler_w, orient=[1,0,0], round_radius=2);
             }
 
             hull()
             {
                 // guidler main block
                 translate([0,guidler_mount_off[1]-guidler_mount_d/2, guidler_h])
-                cubea([guidler_w, guidler_d, 1], align=[0,1,0]);
+                rcubea([guidler_w, guidler_d, 1], align=[0,1,0]);
 
                 // guidler screws mount
                 for(i=[-1,1])
                 translate([i*(guidler_screws_distance),guidler_mount_off[1]-guidler_mount_d/2, extruder_b_guidler_screw_offset_h])
-                cylindera(r=guidler_screws_thread_dia/2*3,h=guidler_d, align=[0,-1,0], orient=[0,1,0]);
+                cylindera(r=guidler_screws_thread_dia/2*3,h=guidler_d, align=[0,-1,0], orient=[0,1,0], round_radius=2);
 
                 // tab above screw mount, for easier open
                 translate([0,guidler_mount_off[1]-guidler_mount_d/2, extruder_b_guidler_screw_offset_h+guidler_screws_thread_dia/2*3])
-                cylindera(r=5*mm,h=guidler_d, align=[0,-1,0], orient=[0,1,0]);
+                cylindera(r=5*mm,h=guidler_d/2, align=[0,-1,0], orient=[0,1,0], round_radius=2);
 
             }
         }
