@@ -10,8 +10,7 @@ module zaxis_upper_gantry_zrod_connector()
             hull()
             {
                 // attach to z rod
-                translate([lookup(NemaSideSize,zaxis_motor)/2, 0, 0])
-                translate([(zaxis_rod_screw_distance_x+zmotor_mount_motor_offset),0,0])
+                translate([extrusion_size/2+zmotor_mount_rod_offset_x,0,0])
                 {
                     cubea([gantry_connector_thickness, zmotor_mount_clamp_width, extrusion_size+gantry_connector_thickness], align=[-1,0,1]);
                 }
