@@ -1,4 +1,3 @@
-use <thing_libutils/triangles.scad>
 use <thing_libutils/metric-screw.scad>
 include <thing_libutils/attach.scad>
 include <config.scad>
