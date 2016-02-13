@@ -1,7 +1,7 @@
 include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
 
-use <thing_libutils/triangles.scad>
+use <thing_libutils/shapes.scad>
 
 include <config.scad>
 include <rod-clamps.scad>
@@ -43,8 +43,13 @@ module zaxis_motor_mount(show_motor=false)
                     for(i=[-1,1])
                     {
                         translate([zmotor_mount_thickness, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
-                            rotate([90,90,0])
-                            Right_Angled_Triangle(a=zmotor_mount_rod_offset_x-zmotor_mount_thickness, b=main_lower_dist_z+extrusion_size+zaxis_motor_offset_z, height=zmotor_mount_thickness, centerXYZ=[0,0,1]);
+                            triangle(
+                                    zmotor_mount_rod_offset_x-zmotor_mount_thickness,
+                                    main_lower_dist_z+extrusion_size+zaxis_motor_offset_z,
+                                    depth=zmotor_mount_thickness,
+                                    align=[1,0,-1],
+                                    orient=[1,0,0]
+                                    );
 
                         translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
                             cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h], align=[1,0,-1]);
