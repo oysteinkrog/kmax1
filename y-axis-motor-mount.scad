@@ -1,7 +1,7 @@
 include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
 
-use <thing_libutils/triangles.scad>
+use <thing_libutils/shapes.scad>
 include <thing_libutils/attach.scad>
 include <config.scad>
 include <pulley.scad>
@@ -114,8 +114,13 @@ module yaxis_motor_mount(show_motor=false)
                 for(i=[-1,1])
                 {
                     translate([ymotor_mount_thickness, i*((ymotor_w/2)+ymotor_mount_thickness/2), extrusion_size/2])
-                        rotate([90,90,0])
-                        Right_Angled_Triangle(a=ymotor_w+ymotor_mount_thickness/2, b=main_lower_dist_z+extrusion_size+yaxis_motor_offset_z, height=ymotor_mount_thickness, centerXYZ=[0,0,1]);
+                        triangle(
+                                ymotor_w+ymotor_mount_thickness/2,
+                                main_lower_dist_z+extrusion_size+yaxis_motor_offset_z,
+                                depth=ymotor_mount_thickness,
+                                align=[1,0,-1],
+                                orient=[1,0,0]
+                                );
 
                     translate([0, i*((ymotor_w/2)+ymotor_mount_thickness/2), extrusion_size/2])
                         cubea([ymotor_mount_thickness, ymotor_mount_thickness, ymotor_mount_h], align=[1,0,-1]);
