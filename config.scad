@@ -48,7 +48,6 @@ main_depth = 420*mm;
 main_height = 400*mm;
 main_upper_width = 420*mm;
 
-extrusion_color = [0.5,0.5,0.5];
 extrusion_size = 20*mm;
 extrusion_thread = ThreadM5;
 extrusion_thread_dia = lookup(ThreadSize, extrusion_thread);
@@ -167,6 +166,10 @@ zmotor_mount_rod_offset_x = zmotor_w/2+zaxis_rod_screw_distance_x+zmotor_mount_m
 // z screw offset from lower extrusion (outer)
 zmotor_mount_screw_offset_x = zmotor_mount_rod_offset_x - zaxis_rod_screw_distance_x ;
 
+color_extrusion = "DimGray";
+color_rods = "CornflowerBlue";
+color_part = "DarkRed";
+color_gantry_connectors = "OliveDrab";
 
 // GT2 
 // there is bunch of GT2 belts with different tooth-to-tooth distance

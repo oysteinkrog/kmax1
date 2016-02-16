@@ -57,6 +57,7 @@ module x_axis()
         }
 
         // x smooth rods
+        color(color_rods)
         for(z=[-1,1])
             translate([xaxis_rod_offset_x,xaxis_zaxis_distance_y,z*(xaxis_rod_distance/2)])
                 cylindera(h=xaxis_rod_l,d=xaxis_rod_d+.1, orient=[1,0,0]);
@@ -76,6 +77,7 @@ module x_axis()
 module y_axis()
 {
     // y axis
+    color(color_part)
     attach([[yaxis_belt_path_offset_x,main_depth/2,yaxis_motor_offset_z], [0,-1,0]], yaxis_motor_mount_conn)
     {
         yaxis_motor_mount(show_motor=true);
@@ -84,9 +86,12 @@ module y_axis()
     extrusion_idler_conn = [[yaxis_belt_path_offset_x, -main_depth/2-extrusion_size, -extrusion_size+yaxis_idler_offset_z], [0,-1,0]];
     attach(extrusion_idler_conn, yaxis_idler_conn)
     {
+        color(color_part)
         yaxis_idler();
+
         attach(yaxis_idler_conn_pulleyblock, yaxis_idler_pulleyblock_conn)
         {
+            color(color_part)
             yaxis_idler_pulleyblock(show_pulley=true);
         }
     }
@@ -103,6 +108,7 @@ module y_axis()
         }
     }
 
+    color(color_part)
     translate([0,-axis_pos_y,yaxis_bearing[0]/2])
     attach(yaxis_carriage_bearing_mount_conn_bearing, yaxis_belt_mount_conn)
     {
@@ -124,6 +130,7 @@ module y_axis()
         for(x=[-1,1])
         translate([x*(yaxis_rod_distance/2), 0, 0])
         {
+            color(color_rods)
             cylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=[0,1,0]);
 
             for(y=[-1,1])
@@ -171,9 +178,12 @@ module z_axis()
         {
             mirror([x==-1?1:0,0,0])
             {
+                color(color_gantry_connectors)
                 gantry_upper_connector();
 
+                color(color_part)
                 translate([zmotor_mount_rod_offset_x, 0, extrusion_size/2])
+                {
                     mount_rod_clamp_half(
                             rod_d=zaxis_rod_d,
                             screw_dist=zmotor_mount_clamp_dist,
@@ -181,6 +191,7 @@ module z_axis()
                             base_thick=5,
                             width=zmotor_mount_thickness_h,
                             thread=zmotor_mount_clamp_thread);
+                }
             }
         }
 
@@ -190,8 +201,10 @@ module z_axis()
             translate([0,0,zaxis_motor_offset_z])
                 mirror([x==-1?1:0,0,0])
                 {
+                    color(color_part)
                     zaxis_motor_mount(show_motor=true);
 
+                    color(color_part)
                     translate([zmotor_mount_rod_offset_x, 0, zmotor_mount_thickness_h/2])
                     {
                         mount_rod_clamp_half(
@@ -208,6 +221,7 @@ module z_axis()
             translate([x*(zmotor_mount_rod_offset_x),0,0])
             {
                 // z rods
+                color(color_rods)
                 translate([0,0,zaxis_motor_offset_z-50])
                     cylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=[0,0,1]);
 
@@ -223,14 +237,14 @@ module z_axis()
 
 module main()
 {
-    color(extrusion_color)
+    color(color_extrusion)
     gantry_lower();
 
-    color(extrusion_color)
+    color(color_extrusion)
     translate([0,0,-main_lower_dist_z])
     gantry_lower();
 
-    color(extrusion_color)
+    color(color_extrusion)
     for(x=[-1,1])
     translate([0,x*(main_upper_dist_y/2),0])
     gantry_upper();
