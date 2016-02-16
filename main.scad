@@ -59,7 +59,7 @@ module x_axis()
         // x smooth rods
         for(z=[-1,1])
             translate([xaxis_rod_offset_x,xaxis_zaxis_distance_y,z*(xaxis_rod_distance/2)])
-                cylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
+                cylindera(h=xaxis_rod_l,d=xaxis_rod_d+.1, orient=[1,0,0]);
 
         for(x=[-1,1])
         {
