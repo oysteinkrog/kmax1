@@ -831,7 +831,7 @@ module x_extruder_hotend()
 {
     hotend_conn =[[0,0,27.8-hotmount_offset_h],[0,0,1]];
     translate(extruder_filapath_offset)
-    attach(extruder_conn_hotend, hotend_conn)
+    attach([[0,0,0]], hotend_conn)
         rotate([90,0,270])
         %import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
 
