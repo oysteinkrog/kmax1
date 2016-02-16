@@ -12,13 +12,21 @@ e=0.01;
 // resolution of any round object (segment length)
 // Because of this variable very small circles have a smaller number of fragments than specified using $fa. 
 // The default value is 2.
-$fs                         = 2;
-/*$fs                         = 0.5;*/
+$fs = 2;
 
 // minimum angle for a fragment.
 // The default value is 12 (i.e. 30 fragments for a full circle)
 $fa = 12;
-/*$fa = 4;*/
+
+//hq
+if(false)
+{
+    $fs= 0.5;
+    $fa = 4;
+}
+
+// enable preview model (faster openscad)
+preview_mode=false;
 
 extrusion_height            = 0.4*mm;
 
@@ -34,8 +42,6 @@ thick_wall_factor           = 4;
 filament_d                  = 1.75*mm;
 filament_r                  = filament_d/2;
 
-// enable preview model (faster openscad)
-preview_mode=true;
 
 main_width = 340*mm;
 main_depth = 420*mm;
