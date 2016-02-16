@@ -18,7 +18,7 @@ include <y-axis-carriage-bearing-mount.scad>
 include <y-axis-carriage-belt-clamp.scad>
 include <y-axis-idler.scad>
 include <z-axis-motor-mount.scad>
-include <z-axis-upper-gantry-connector.scad>
+include <gantry-upper-connector.scad>
 include <psu.scad>
 use <rod-clamps.scad>
 
@@ -170,7 +170,7 @@ module z_axis()
         {
             mirror([i==-1?1:0,0,0])
             {
-                zaxis_upper_gantry_zrod_connector();
+                gantry_upper_connector();
 
                 translate([zmotor_mount_rod_offset_x, 0, extrusion_size/2])
                     mount_rod_clamp_half(

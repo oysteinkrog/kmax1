@@ -1,7 +1,7 @@
 include <config.scad>
 include <thing_libutils/metric-screw.scad>
 
-module zaxis_upper_gantry_zrod_connector()
+module gantry_upper_connector()
 {
     // how much bigger/smaller is the upper gantry (on each side)
     upper_gantry_width_diff  = (main_upper_width-main_width)/2;
