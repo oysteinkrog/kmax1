@@ -52,15 +52,7 @@ module x_axis()
             // x carriage
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])
             {
-                x_carriage(show_bearings=true);
-            }
-
-            if(!preview_mode)
-            {
-                attach([[35, -0, -0], [1,0,0]], extruder_conn_xcarriage)
-                {
-                    extruder();
-                }
+                x_carriage_full();
             }
         }
 

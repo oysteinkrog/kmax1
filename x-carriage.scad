@@ -1118,7 +1118,7 @@ color_filament = [0,0,0, alpha];
 
 extruder_b_capmount_offset=[35,-7,-41];
 
-if(false)
+module x_carriage_full()
 {
     color(color_xcarriage)
     x_carriage_withmounts(show_vitamins=true);
