@@ -111,23 +111,24 @@ module y_axis()
 
     translate([0,0,yaxis_bearing[0]/2])
     {
-        for(i=[-1,1])
-        for(j=[-1,1])
+        for(x=[-1,1])
+        for(y=[-1,1])
         {
-            attach([[i*(yaxis_rod_distance/2),j*(main_depth/2+extrusion_size/2),0],[0,0,1]],mount_rod_clamp_conn_rod)
+            attach([[x*(yaxis_rod_distance/2),y*(main_depth/2+extrusion_size/2),0],[0,0,1]],mount_rod_clamp_conn_rod)
             {
                 mount_rod_clamp_full(rod_d=zaxis_rod_d, thick=4, width=extrusion_size, thread=zmotor_mount_clamp_thread, orient=[0,1,0]);
             }
         }
 
-        for(i=[-1,1])
-        translate([i*(yaxis_rod_distance/2), 0, 0])
+        // y smooth rods
+        for(x=[-1,1])
+        translate([x*(yaxis_rod_distance/2), 0, 0])
         {
             cylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=[0,1,0]);
 
-            for(j=[-1,1])
+            for(y=[-1,1])
             {
-                attach([[0,j*(yaxis_bearing_distance_y/2)-axis_pos_y,0],[0,0,-1]], yaxis_carriage_bearing_mount_conn_bearing)
+                attach([[0,y*(yaxis_bearing_distance_y/2)-axis_pos_y,0],[0,0,-1]], yaxis_carriage_bearing_mount_conn_bearing)
                 {
                     yaxis_carriage_bearing_mount(show_bearing=true, show_zips=true);
                 }
@@ -164,11 +165,11 @@ module y_axis()
 module z_axis()
 {
     // z axis
-    for(i=[-1,1])
+    for(x=[-1,1])
     {
-        translate([i*(main_width/2),0,main_height])
+        translate([x*(main_width/2),0,main_height])
         {
-            mirror([i==-1?1:0,0,0])
+            mirror([x==-1?1:0,0,0])
             {
                 gantry_upper_connector();
 
@@ -184,10 +185,10 @@ module z_axis()
         }
 
 
-        translate([i*(main_width/2), 0, 0])
+        translate([x*(main_width/2), 0, 0])
         {
             translate([0,0,zaxis_motor_offset_z])
-                mirror([i==-1?1:0,0,0])
+                mirror([x==-1?1:0,0,0])
                 {
                     zaxis_motor_mount(show_motor=true);
 
@@ -204,14 +205,14 @@ module z_axis()
                 }
 
             // z smooth rods
-            translate([i*(zmotor_mount_rod_offset_x),0,0])
+            translate([x*(zmotor_mount_rod_offset_x),0,0])
             {
                 // z rods
                 translate([0,0,zaxis_motor_offset_z-50])
                     cylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=[0,0,1]);
 
-                for(j=[-1,1])
-                    translate([0,0,axis_pos_z-j*xaxis_rod_distance/2])
+                for(z=[-1,1])
+                    translate([0,0,axis_pos_z-z*xaxis_rod_distance/2])
                         bearing(zaxis_bearing);
 
             }
@@ -230,8 +231,8 @@ module main()
     gantry_lower();
 
     color(extrusion_color)
-    for(i=[-1,1])
-    translate([0,i*(main_upper_dist_y/2),0])
+    for(x=[-1,1])
+    translate([0,x*(main_upper_dist_y/2),0])
     gantry_upper();
 
     x_axis();
@@ -266,16 +267,16 @@ module main()
 
 module gantry_upper()
 {
-    for(i=[-1,1])
-    translate([i*(main_width/2), 0, 0])
+    for(x=[-1,1])
+    translate([x*(main_width/2), 0, 0])
     {
         if(preview_mode)
         {
-            cubea(size=[extrusion_size, extrusion_size, main_height], align=[-i,0,1]);
+            cubea(size=[extrusion_size, extrusion_size, main_height], align=[-x,0,1]);
         }
         else
         {
-            linear_extrusion(h=main_height, align=[-i,0,1], orient=[0,0,1]);
+            linear_extrusion(h=main_height, align=[-x,0,1], orient=[0,0,1]);
         }
     }
 
@@ -294,29 +295,29 @@ module gantry_upper()
 
 module gantry_lower()
 {
-    for(i=[-1,1])
-    translate([0,  i*(main_depth/2), 0]) 
+    for(y=[-1,1])
+    translate([0, y*(main_depth/2), 0])
     {
         if(preview_mode)
         {
-            cubea([main_width, extrusion_size, extrusion_size], align=[0,i,-1]);
+            cubea([main_width, extrusion_size, extrusion_size], align=[0,y,-1]);
         }
         else
         {
-            linear_extrusion(h=main_width, align=[0,i,-1], orient=[1,0,0]);
+            linear_extrusion(h=main_width, align=[0,y,-1], orient=[1,0,0]);
         }
     }
 
-    for(i=[-1,1])
-    translate([i*(main_width/2), 0, 0])
+    for(x=[-1,1])
+    translate([x*(main_width/2), 0, 0])
     {
         if(preview_mode)
         {
-            cubea([extrusion_size, main_depth, extrusion_size], align=[-i,0,-1]);
+            cubea([extrusion_size, main_depth, extrusion_size], align=[-x,0,-1]);
         }
         else
         {
-            linear_extrusion(h=main_depth, align=[-i,0,-1], orient=[0,1,0]);
+            linear_extrusion(h=main_depth, align=[-x,0,-1], orient=[0,1,0]);
         }
     }
 }
@@ -332,18 +333,18 @@ module enclosure()
     translate([0, 0, h/2])
     {
         // left/right walls
-        for(i=[-1,1])
-            translate([i*w/2,0,0])
-                cubea([wallthick,d,h], align=[-i, 0, 0]);
+        for(x=[-1,1])
+            translate([x*w/2,0,0])
+                cubea([wallthick,d,h], align=[-x, 0, 0]);
 
         // back plate
         translate([0,d/2,0])
             cubea([w,backthick,h], align=[0,-1, 0]);
 
         // top/bottom plate
-        for(i=[-1,1])
-        translate([0,0,i*h/2])
-            cubea([w-wallthick*2,d,wallthick], align=[0,0, -i]);
+        for(z=[-1,1])
+        translate([0,0,z*h/2])
+            cubea([w-wallthick*2,d,wallthick], align=[0,0, -z]);
     }
 }
 
