@@ -30,9 +30,10 @@ use <list-comprehension-demos/skin.scad>
 
 axis_pos_x = -213/2*mm;
 axis_pos_y = 0*mm;
-axis_range_z=[85,380];
-axis_pos_z = 80;//axis_range_z[1]*mm/2;
+axis_range_z=[98*mm,353*mm];
+axis_pos_z = axis_range_z[0];
 
+echo(str("Build area Z: " , axis_range_z[1]-axis_range_z[0] , " mm"));
 
 module x_axis()
 {
