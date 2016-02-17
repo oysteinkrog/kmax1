@@ -54,6 +54,9 @@ extrusion_thread_dia = lookup(ThreadSize, extrusion_thread);
 extrusion_nut = MHexNutM5;
 extrusion_nut_dia = lookup(MHexNutWidthMax, extrusion_nut);
 
+// for tapped ends
+extrusion_end_nut = MHexNutM6;
+
 main_lower_dist_z= 80*mm;
 main_upper_dist_y= 160*mm;
 
