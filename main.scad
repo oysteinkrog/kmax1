@@ -19,6 +19,7 @@ include <y-axis-carriage-belt-clamp.scad>
 include <y-axis-idler.scad>
 include <z-axis-motor-mount.scad>
 include <gantry-upper-connector.scad>
+include <gantry-lower-connector.scad>
 include <psu.scad>
 use <rod-clamps.scad>
 
@@ -28,8 +29,10 @@ use <scad-utils/transformations.scad>
 use <scad-utils/shapes.scad>
 use <list-comprehension-demos/skin.scad>
 
-axis_pos_x = -213/2*mm;
-axis_pos_y = 0*mm;
+axis_range_x=[0*mm,200*mm];
+axis_pos_x = axis_range_x[0];
+axis_range_y=[0*mm,200*mm];
+axis_pos_y = axis_range_y[0];
 axis_range_z=[98*mm,353*mm];
 axis_pos_z = axis_range_z[0];
 
@@ -178,9 +181,6 @@ module z_axis()
         {
             mirror([x==-1?1:0,0,0])
             {
-                color(color_gantry_connectors)
-                gantry_upper_connector();
-
                 color(color_part)
                 translate([zmotor_mount_rod_offset_x, 0, extrusion_size/2])
                 {
@@ -237,16 +237,9 @@ module z_axis()
 
 module main()
 {
-    color(color_extrusion)
+    translate([0,0,-main_lower_dist_z/2])
     gantry_lower();
 
-    color(color_extrusion)
-    translate([0,0,-main_lower_dist_z])
-    gantry_lower();
-
-    color(color_extrusion)
-    for(x=[-1,1])
-    translate([0,x*(main_upper_dist_y/2),0])
     gantry_upper();
 
     x_axis();
@@ -281,57 +274,100 @@ module main()
 
 module gantry_upper()
 {
-    for(x=[-1,1])
-    translate([x*(main_width/2), 0, 0])
+    color(color_extrusion)
+    for(y=[-1,1])
+    translate([0,y*(main_upper_dist_y/2),0])
     {
-        if(preview_mode)
+        for(x=[-1,1])
+        translate([x*(main_width/2), 0, 0])
         {
-            cubea(size=[extrusion_size, extrusion_size, main_height], align=[-x,0,1]);
+            if(preview_mode)
+            {
+                cubea(size=[extrusion_size, extrusion_size, main_height], align=[-x,0,1]);
+            }
+            else
+            {
+                linear_extrusion(h=main_height, align=[-x,0,1], orient=[0,0,1]);
+            }
         }
-        else
+
+        translate([0, 0, main_height])
         {
-            linear_extrusion(h=main_height, align=[-x,0,1], orient=[0,0,1]);
+            if(preview_mode)
+            {
+                cubea(size=[main_upper_width, extrusion_size, extrusion_size], align=[0,0,1]);
+            }
+            else
+            {
+                linear_extrusion(h=main_upper_width, align=[0,0,1], orient=[1,0,0]);
+            }
         }
     }
 
-    translate([0, 0, main_height])
+    // upper gantry connectors
+    for(x=[-1,1])
     {
-        if(preview_mode)
+        translate([x*(main_width/2),0,main_height])
         {
-            cubea(size=[main_upper_width, extrusion_size, extrusion_size], align=[0,0,1]);
-        }
-        else
-        {
-            linear_extrusion(h=main_upper_width, align=[0,0,1], orient=[1,0,0]);
+            mirror([x==-1?1:0,0,0])
+            {
+                color(color_gantry_connectors)
+                    gantry_upper_connector();
+            }
+
         }
     }
 }
 
 module gantry_lower()
 {
-    for(y=[-1,1])
-    translate([0, y*(main_depth/2), 0])
+    color(color_extrusion)
+    for(z=[-1,1])
     {
-        if(preview_mode)
+        translate([0,0,z*-main_lower_dist_z/2])
         {
-            cubea([main_width, extrusion_size, extrusion_size], align=[0,y,-1]);
+            for(y=[-1,1])
+            translate([0, y*(main_depth/2), 0])
+            {
+                if(preview_mode)
+                {
+                    cubea([main_width, extrusion_size, extrusion_size], align=[0,y,-1]);
+                }
+                else
+                {
+                    linear_extrusion(h=main_width, align=[0,y,-1], orient=[1,0,0]);
+                }
+            }
+
+            for(x=[-1,1])
+            translate([x*(main_width/2), 0, 0])
+            {
+                if(preview_mode)
+                {
+                    cubea([extrusion_size, main_depth, extrusion_size], align=[-x,0,-1]);
+                }
+                else
+                {
+                    linear_extrusion(h=main_depth, align=[-x,0,-1], orient=[0,1,0]);
+                }
+            }
         }
-        else
-        {
-            linear_extrusion(h=main_width, align=[0,y,-1], orient=[1,0,0]);
-        }
+
     }
 
+    // lower gantry connectors
     for(x=[-1,1])
-    translate([x*(main_width/2), 0, 0])
+    for(y=[-1,1])
     {
-        if(preview_mode)
+        translate([x*(main_width/2),y*(main_depth/2),-extrusion_size/2])
         {
-            cubea([extrusion_size, main_depth, extrusion_size], align=[-x,0,-1]);
-        }
-        else
-        {
-            linear_extrusion(h=main_depth, align=[-x,0,-1], orient=[0,1,0]);
+            mirror([x==1?0:-1,0,0])
+            mirror([0,y==1?1:0,0])
+            {
+                color(color_gantry_connectors)
+                    gantry_lower_connector();
+            }
+
         }
     }
 }
