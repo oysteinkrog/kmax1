@@ -123,6 +123,13 @@ module x_carriage(mode=undef)
             translate([0,0,-xaxis_rod_distance/2])
                 rcubea([bottom_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
+            /// support for extruder mount
+            translate(extruder_offset)
+            for(pos=extruder_b_mount_offsets)
+            translate(pos)
+            /*translate([0, -extruder_b_mount_thick-1*mm, 0])*/
+            rcylinder(r=5*mm, align=[0,1,0], orient=[0,1,0]);
+
         }
         translate([0,xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y+xaxis_carriage_beltpath_offset+.1,0])
         {
