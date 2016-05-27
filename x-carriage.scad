@@ -11,16 +11,16 @@ include <thing_libutils/gears-data.scad>
 include <config.scad>
 
 
-xaxis_carriage_bearing_distance = 8*mm;
+xaxis_carriage_bearing_distance = 20*mm;
 xaxis_carriage_padding = 4*mm;
-xaxis_carriage_mount_distance = 23*mm;
+xaxis_carriage_mount_distance = xaxis_carriage_bearing_distance+5*mm;
 xaxis_carriage_mount_offset_z = 0*mm;
 xaxis_carriage_teeth_height=xaxis_belt_width*1.5;
 xaxis_carriage_mount_screws = ThreadM4;
 
 xaxis_carriage_conn = [[0, -xaxis_bearing[1]/2 - xaxis_carriage_bearing_offset_y,0], [0,0,0]];
 
-xaxis_carriage_beltfasten_w = 20*mm;
+xaxis_carriage_beltfasten_w = 13*mm;
 
 hobbed_gear_d_outer = 12.65*mm;
 hobbed_gear_d_inner = 11.5*mm;
@@ -96,8 +96,8 @@ extruder_a_h = 15*mm;
 
 module x_carriage(mode=undef)
 {
-    bottom_width = xaxis_bearing[2] + 2*xaxis_carriage_padding;
-    top_width = xaxis_bearing[2]*2 + xaxis_carriage_bearing_distance + 2*xaxis_carriage_padding;
+    bottom_width = 5*mm + xaxis_bearing[2] + 2*xaxis_carriage_padding;
+    top_width = 5*mm + xaxis_bearing[2]*2 + xaxis_carriage_bearing_distance + 2*xaxis_carriage_padding;
     thickness = xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_y;
 
     if(mode==undef)
@@ -127,8 +127,7 @@ module x_carriage(mode=undef)
             translate(extruder_offset)
             for(pos=extruder_b_mount_offsets)
             translate(pos)
-            /*translate([0, -extruder_b_mount_thick-1*mm, 0])*/
-            rcylinder(r=5*mm, align=[0,1,0], orient=[0,1,0]);
+            rcylinder(r=4*mm, align=[0,1,0], orient=[0,1,0]);
 
         }
         translate([0,xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y+xaxis_carriage_beltpath_offset+.1,0])
