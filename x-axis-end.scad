@@ -9,7 +9,7 @@ use <thing_libutils/metric-screw.scad>
 motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
 xaxis_end_motor_offset=[xaxis_end_motorsize/2+9*mm,motor_mount_wall_thick-2*mm,0];
-xaxis_end_wz = xaxis_rod_distance+xaxis_bearing[2]+5*mm;
+xaxis_end_wz = xaxis_rod_distance+zaxis_bearing[2]+5*mm;
 
 module xaxis_end_body(with_motor, nut_top=false)
 {
@@ -63,7 +63,6 @@ module xaxis_end(with_motor=false, show_motor=false, nut_top=false, show_nut=fal
     nut_h = zaxis_nut[4];
     wx = zaxis_bearing[1]/2+zaxis_nut[1];
     wx_ = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : wx;
-    xaxis_end_wz = xaxis_rod_distance+xaxis_bearing[2]+5*mm;
     difference()
     {
         extrasize = with_motor?0*mm:0*mm;
