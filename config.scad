@@ -73,6 +73,7 @@ xaxis_rod_distance = 60*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
 xaxis_rod_offset_x = 20*mm;
+/*xaxis_bearing=bearing_sf1_1010;*/
 xaxis_bearing=bearing_igus_rj4jp_01_10;
 
 xaxis_pulley = pulley_2GT_20T;
@@ -94,6 +95,7 @@ yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
 yaxis_rod_l = 500*mm;
 yaxis_bearing=bearing_igus_rj4jp_01_12;
+/*yaxis_bearing=bearing_sf1_1212;*/
 yaxis_bearing_distance_y = 7*cm;
 
 yaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);
@@ -122,6 +124,7 @@ yaxis_carriage_size=[220*mm,220*mm,5*mm];
 zaxis_rod_d = 11.975*mm;
 zaxis_rod_l = 500*mm;
 zaxis_bearing=bearing_igus_rj4jp_01_12;
+/*zaxis_bearing=bearing_sf1_1212;*/
 
 // Nema17 motor w/340mm long 8*mm leadscrew
 zaxis_motor = dict_replace_multiple(Nema17,
