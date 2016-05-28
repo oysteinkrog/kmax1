@@ -131,6 +131,19 @@ module x_carriage(mode=undef, quad=true)
             translate(pos)
             rcylinder(r=4*mm, align=[0,1,0], orient=[0,1,0]);
 
+            // extruder A mount
+            translate(extruder_offset)
+            translate(extruder_offset_a)
+            {
+                for(x=[-1,1])
+                for(z=[-1,1])
+                {
+                    if(x!=-1||z!=-1)
+                    translate([x*extruder_motor_holedist/2,-extruder_offset_a[1],z*extruder_motor_holedist/2])
+                    cylindera(d=extruder_b_mount_thickness, h=xaxis_carriage_thickness, orient=[0,1,0], align=[0,-1,0], round_radius=2);
+                }
+            }
+
         }
         translate([0,xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y+xaxis_carriage_beltpath_offset+.1,0])
         {
