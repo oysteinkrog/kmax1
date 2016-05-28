@@ -196,20 +196,15 @@ module xaxis_end(with_motor=false, stop_x_rods=true, show_motor=false, nut_top=f
 
     if(with_motor && show_motor)
     {
-            /*translate([0,5,0])*/
         translate(xaxis_end_motor_offset)
         {
-            /*translate([0,-motor_mount_wall_thick,0])*/
-            /*translate([0,-5,0])*/
-            /*translate([0,-xaxis_pulley[0]/2,0])*/
-
             // 1mm due to motor offset
             translate([0,-1*mm,0])
             {
                 // 1mm between pulley and motor
-                /*translate([0,-1*mm,0])*/
-                    /*pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);*/
-                /*motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);*/
+                translate([0,-1*mm,0])
+                    pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);
+                motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
             }
         }
     }
