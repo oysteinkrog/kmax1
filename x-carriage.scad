@@ -11,8 +11,8 @@ include <thing_libutils/gears-data.scad>
 include <config.scad>
 
 
-xaxis_carriage_bearing_distance = 20*mm;
-xaxis_carriage_padding = 4*mm;
+xaxis_carriage_bearing_distance = xaxis_rod_distance/3;
+xaxis_carriage_padding = 2*mm;
 xaxis_carriage_mount_distance = xaxis_carriage_bearing_distance+5*mm;
 xaxis_carriage_mount_offset_z = 0*mm;
 xaxis_carriage_teeth_height=xaxis_belt_width*1.5;
@@ -21,6 +21,8 @@ xaxis_carriage_mount_screws = ThreadM4;
 xaxis_carriage_conn = [[0, -xaxis_bearing[1]/2 - xaxis_carriage_bearing_offset_y,0], [0,0,0]];
 
 xaxis_carriage_beltfasten_w = 13*mm;
+
+xaxis_carriage_thickness = xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_y;
 
 hobbed_gear_d_outer = 12.65*mm;
 hobbed_gear_d_inner = 11.5*mm;
@@ -94,11 +96,11 @@ MKnurlInsertNutM3_3_42 = [
 
 extruder_a_h = 15*mm;
 
-module x_carriage(mode=undef)
+module x_carriage(mode=undef, quad=true)
 {
-    bottom_width = 5*mm + xaxis_bearing[2] + 2*xaxis_carriage_padding;
-    top_width = 5*mm + xaxis_bearing[2]*2 + xaxis_carriage_bearing_distance + 2*xaxis_carriage_padding;
-    thickness = xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_y;
+    top_width = xaxis_bearing[2]*2 + xaxis_carriage_bearing_distance + 2*xaxis_carriage_padding;
+    bottom_width = quad ? top_width : xaxis_bearing[2] + 2*xaxis_carriage_padding;
+
 
     if(mode==undef)
     {
@@ -115,13 +117,13 @@ module x_carriage(mode=undef)
         {
             // top bearings
             translate([0,0,xaxis_rod_distance/2])
-                rcubea([top_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+                rcubea([top_width, xaxis_carriage_thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
-            /*rcubea([top_width,thickness,xaxis_rod_distance/2], align=[0,1,0]);*/
+            /*rcubea([top_width,xaxis_carriage_thickness,xaxis_rod_distance/2], align=[0,1,0]);*/
 
             // bottom bearing
             translate([0,0,-xaxis_rod_distance/2])
-                rcubea([bottom_width, thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+                rcubea([bottom_width, xaxis_carriage_thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
             /// support for extruder mount
             translate(extruder_offset)
@@ -151,8 +153,9 @@ module x_carriage(mode=undef)
             cubea([xaxis_bearing[2]*2,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
         }
 
+        for(i=quad?[-1,1]:[0])
         translate([
-                0,
+                i*(xaxis_bearing[2]/2+xaxis_carriage_bearing_distance/2),
                 xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y,
                 -xaxis_rod_distance/2])
         {
@@ -184,8 +187,9 @@ module x_carriage(mode=undef)
         ])
             bearing(xaxis_bearing, orient=[1,0,0]);
 
+        for(i=quad?[-1,1]:[0])
         translate([
-                0,
+                i*(xaxis_bearing[2]/2+xaxis_carriage_bearing_distance/2),
                 xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_y,
                 -xaxis_rod_distance/2
         ])
