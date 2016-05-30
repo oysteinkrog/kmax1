@@ -413,15 +413,15 @@ module hotmount_cutout(extend_cut=false)
     heights=vec_i(hotmount_d_h,1);
     for(e=v_itrlen(hotmount_d_h))
     {
-        hs=v_sum(heights,e-1);
+        hs=v_sum(heights,e);
         translate([0,0,-hs])
         {
             d=hotmount_d_h[e][0]*hotmount_tolerance;
             h=hotmount_d_h[e][1]*hotmount_tolerance;
-            cylindera(d=d,h=h,align=[0,0,-1]);
+            cylindera(d=d,h=h,align=[0,0,1]);
             if(extend_cut)
             {
-                cubea([house_w/2+1,d,h],align=[hotmount_clamp_side,0,-1]);
+                cubea([house_w/2+1,d,h],align=[hotmount_clamp_side,0,1]);
             }
         }
     }

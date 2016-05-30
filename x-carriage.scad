@@ -407,15 +407,15 @@ module hotmount_cutout(extend_cut=false)
     heights=vec_i(hotmount_d_h,1);
     for(e=v_itrlen(hotmount_d_h))
     {
-        hs=v_sum(heights,e-1);
+        hs=v_sum(heights,e);
         translate([0,0,-hs])
         {
             d=hotmount_d_h[e][0]*hotmount_tolerance;
             h=hotmount_d_h[e][1]*hotmount_tolerance;
-            cylindera(d=d,h=h,align=[0,0,-1]);
+            cylindera(d=d,h=h,align=[0,0,1]);
             if(extend_cut)
             {
-                cubea([extruder_b_w/2+1,d,h],align=[1,0,-1]);
+                cubea([extruder_b_w/2+1,d,h],align=[1,0,1]);
             }
         }
     }
@@ -1026,13 +1026,19 @@ module capmount(part=undef, height=10,thickness=5,screws_spacing=21,screw_offset
             {
                 for(e=v_itrlen(sensor_height))
                 {
-                    hs=v_sum(sensor_height,e-1);
+                    hs=v_sum(sensor_height, e);
                     translate([0,0,-hs])
+                    {
                         if(e==0||e==2)
+                        {
                             color([0.3,.4,0])
-                                cylindera(d=sensor_diameter,h=sensor_height[e], align=[0,0,-1]);
+                            cylindera(d=sensor_diameter,h=sensor_height[e], align=[0,0,1]);
+                        }
                         else
-                            cylindera(d=sensor_diameter,h=sensor_height[e], align=[0,0,-1]);
+                        {
+                            cylindera(d=sensor_diameter,h=sensor_height[e], align=[0,0,1]);
+                        }
+                    }
                 }
             }
         }
