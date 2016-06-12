@@ -265,9 +265,9 @@ module xaxis_end_idlerholder(height=xaxis_beltpath_height, width=xaxis_beltpath_
                 translate([width/2-1*mm, 0,0])
                 hull()
                 {
-                    screw_nut(MHexNutM4, tolerance=1.25, orient=[1,0,0], align=[-1,0,0]);
+                    screw_nut(MHexNutM4, tolerance=1.1, orient=[1,0,0], align=[-1,0,0]);
                     translate([0,-10,0])
-                    screw_nut(MHexNutM4, tolerance=1.25, orient=[1,0,0], align=[-1,0,0]);
+                    screw_nut(MHexNutM4, tolerance=1.1, orient=[1,0,0], align=[-1,0,0]);
                 }
 
             }
