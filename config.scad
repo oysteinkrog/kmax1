@@ -161,7 +161,8 @@ zmotor_mount_clamp_nut_dia = lookup(MHexNutWidthMin, zmotor_mount_clamp_nut);
 zmotor_mount_clamp_nut_thick = lookup(MHexNutThickness, zmotor_mount_clamp_nut);
 zmotor_mount_clamp_width = zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*3;
 
-xaxis_zaxis_distance_y = 1*mm + xaxis_rod_d/2 + zaxis_bearing[1]/2;
+xaxis_zaxis_distance_y_ = max(xaxis_rod_d/2 + zaxis_bearing[1]/2, zaxis_nut[1]/2 - xaxis_rod_d/2);
+xaxis_zaxis_distance_y = xaxis_zaxis_distance_y_ + ziptie_type[0]+.5*mm + 1*mm;
 
 zaxis_nut_mount_outer = zaxis_nut[1]/2 + zaxis_rod_d/2 + 1*mm;
 
