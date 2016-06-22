@@ -52,12 +52,13 @@ module x_axis()
             belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
         }
 
-        translate([axis_pos_x,0,0])
+        for(x=[-1,1])
+        translate([axis_pos_x+x*30,0,0])
         {
             // x carriage
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])
             {
-                x_carriage_withmounts(show_vitamins=true);
+                x_carriage_withmounts(show_vitamins=true, beltpath_offset=x);
 
                 /*x_carriage_extruder(show_vitamins=true);*/
             }
