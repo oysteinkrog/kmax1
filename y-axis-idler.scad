@@ -13,7 +13,7 @@ yaxis_idler_mount_tightscrew_hexnut = MHexNutM4;
 yaxis_idler_mount_tightscrew_hexnut_dia = lookup(MHexNutWidthMax, yaxis_idler_mount_tightscrew_hexnut);
 yaxis_idler_mount_tightscrew_hexnut_thick = lookup(MHexNutThickness, yaxis_idler_mount_tightscrew_hexnut);
 
-yidler_mount_width = yidler_w+yaxis_idler_mount_thickness*2 + yaxis_idler_mount_thread_dia*3.5*2;
+yidler_mount_width = yidler_w+yaxis_idler_mount_thickness*2 + yaxis_idler_mount_thread_dia*3;
 
 module yaxis_idler()
 {
@@ -26,7 +26,7 @@ module yaxis_idler()
             difference()
             {
                 tighten_screw_dia_outer = yaxis_idler_mount_tightscrew_dia*4;
-                mount_screw_dist = (yidler_w/2+yaxis_idler_mount_thread_dia*3)*1.5;
+                mount_screw_dist = (yidler_w/2+yaxis_idler_mount_thread_dia*3)*1.3;
                 union()
                 {
                     translate([-yaxis_idler_mount_thickness,0,extrusion_size/2])
@@ -39,47 +39,58 @@ module yaxis_idler()
                                 );
                     }
 
-                    hull()
+                    difference()
                     {
-                        for(y=[-1,1])
-                        translate([0, y*yaxis_idler_tightscrew_dist, 0])
+                        hull()
+                        {
+                            for(y=[-1,1])
+                            translate([0, y*yaxis_idler_tightscrew_dist, 0])
+                            translate([-yaxis_idler_mount_thickness,0,extrusion_size/2])
+                            {
+                                translate([yaxis_idler_mount_thickness/2,0,yaxis_belt_path_offset_z])
+                                cylindera(
+                                        h=extrusion_size+yaxis_idler_mount_thickness,
+                                        d=tighten_screw_dia_outer,
+                                        align=[0,0,0],
+                                        orient=[1,0,0]
+                                        );
+                                cubea(
+                                        size=[extrusion_size, mount_screw_dist-yaxis_idler_mount_tightscrew_dia*3, yaxis_idler_mount_thickness],
+                                        align=[0,0,1],
+                                        extrasize=[yaxis_idler_mount_thickness,0,0],
+                                        extrasize_align=[1,0,0]
+                                        );
+                            }
+                        }
+
                         translate([-yaxis_idler_mount_thickness,0,extrusion_size/2])
                         {
-                            translate([yaxis_idler_mount_thickness/2,0,yaxis_belt_path_offset_z])
-                            cylindera(
-                                    h=extrusion_size+yaxis_idler_mount_thickness,
-                                    d=tighten_screw_dia_outer,
-                                    align=[0,0,0],
-                                    orient=[1,0,0]
-                                    );
                             cubea(
-                                    size=[extrusion_size, mount_screw_dist-yaxis_idler_mount_tightscrew_dia*3, yaxis_idler_mount_thickness],
-                                    align=[0,0,1],
-                                    extrasize=[yaxis_idler_mount_thickness,0,0],
-                                    extrasize_align=[1,0,0]
-                                    );
+                                size=[1000, 1000, 1000],
+                                align=[0,0,-1]
+                                );
                         }
+
+
                     }
                 }
 
+                // top/vertical mount screws (to extrusion)
                 translate([0,0,extrusion_size/2+yaxis_idler_mount_thickness])
                 {
                     for(i=[-1,0,1])
-                    {
-                        translate([0, i*mount_screw_dist/2, 0])
-                        {
-                            screw_cut(extrusion_nut, head_embed=false, h=extrusion_size+yaxis_idler_mount_thickness, with_nut=false, orient=[0,0,-1], align=[0,0,-1]);
-                        }
-                    }
+                    translate([0, i*mount_screw_dist/2, 0])
+                    screw_cut(extrusion_nut, head_embed=false, h=extrusion_size+yaxis_idler_mount_thickness, with_nut=false, orient=[0,0,-1], align=[0,0,-1]);
                 }
 
 
+                // mount screws for pulley block
                 for(y=[-1,1])
-                    translate([
-                            -extrusion_size/2-yaxis_idler_mount_thickness,
-                            y*yaxis_idler_tightscrew_dist,
-                            extrusion_size/2+yaxis_belt_path_offset_z])
-                        screw_cut(yaxis_idler_mount_tightscrew_hexnut, head_embed=true, h=extrusion_size+yaxis_idler_mount_thickness, with_nut=false, orient=[1,0,0], align=[1,0,0]);
+                translate([
+                        -extrusion_size/2-yaxis_idler_mount_thickness,
+                        y*yaxis_idler_tightscrew_dist,
+                        extrusion_size/2+yaxis_belt_path_offset_z])
+                    screw_cut(yaxis_idler_mount_tightscrew_hexnut, head_embed=true, h=extrusion_size+yaxis_idler_mount_thickness, with_nut=false, orient=[1,0,0], align=[1,0,0]);
 
                 translate([0,0,extrusion_size/2])
                 cubea(size=[extrusion_size+1, yidler_mount_width, tighten_screw_dia_outer/2],
@@ -93,9 +104,10 @@ module yaxis_idler()
             {
                 cubea([yaxis_idler_mount_thickness, yidler_mount_width, extrusion_size], align=[-1,0,0]);
 
+                // front/horizontal mount screws (to extrusion)
                 for(i=[-1,1])
-                    translate([0, i*(yidler_w/2+yaxis_idler_mount_thread_dia*3), 0])
-                        screw_cut(yaxis_idler_mount_tightscrew_hexnut, h=yaxis_idler_mount_thickness, with_nut=false, orient=[-1,0,0], align=[-1,0,0]); 
+                translate([0, i*(yaxis_idler_mount_thread_dia*2.5), 0])
+                screw_cut(yaxis_idler_mount_tightscrew_hexnut, h=yaxis_idler_mount_thickness, with_nut=false, orient=[-1,0,0], align=[-1,0,0]); 
             }
         }
     }
