@@ -110,7 +110,7 @@ ymotor_mount_thickness_h = 5;
 yaxis_motor_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
 yaxis_motor_offset_z = -5*mm;
 yaxis_belt_path_offset_x = -yaxis_pulley_inner_d/2;
-yaxis_belt_path_offset_z = yaxis_motor_offset_z + 15*mm;
+yaxis_belt_path_offset_z = yaxis_motor_offset_z + 10*mm;
 
 yaxis_idler_pulley = pulley_2GT_20T_idler;
 yaxis_idler_pulley_inner_d = yaxis_idler_pulley[2];
