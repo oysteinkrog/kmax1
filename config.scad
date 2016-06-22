@@ -72,7 +72,7 @@ ziptie_bearing_distance=3*mm;
 xaxis_rod_distance = 60*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
-xaxis_rod_offset_x = 20*mm;
+xaxis_rod_offset_x = 0*mm;
 xaxis_bearing=bearing_sf1_1010;
 /*xaxis_bearing=bearing_igus_rj4jp_01_10;*/
 
