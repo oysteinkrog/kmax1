@@ -34,7 +34,7 @@ module yaxis_carriage_bearing_mount(show_bearing=false, show_zips=false)
         translate ([-screw_dx/2, -screw_dy/2, -1]) cylindera(d=carriage_plate_thread_d, h=height+2, align=[0,0,1]);
 
         translate([0,0,yaxis_bearing[1]/2+yaxis_carriage_bearing_mount_bottom_thick])
-        bearing_mount_holes(yaxis_bearing, orient=[0,1,0], ziptie_dist=5, show_zips=show_zips);
+        bearing_mount_holes(yaxis_bearing, orient=[0,1,0], ziptie_dist=4, show_zips=show_zips);
     }
 
     %if(show_bearing)
