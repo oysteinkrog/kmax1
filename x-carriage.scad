@@ -536,29 +536,29 @@ module extruder_b(part=undef, with_sensormount=true)
             if(with_sensormount)
             intersection()
             {
-                translate(extruder_b_capmount_offset)
-                translate(-[0,extruder_b_capmount_offset[1],0])
-                capmount(part);
+                translate(extruder_b_sensormount_offset)
+                translate(-[0,extruder_b_sensormount_offset[1],0])
+                sensormount(part);
                 cubea([1000,extruder_b_mount_thick,1000], align=[0,-1,0]);
             }
         }
 
         if(with_sensormount)
-        translate(extruder_b_capmount_offset)
+        translate(extruder_b_sensormount_offset)
         rotate([-90,0,0])
         hull()
         {
             linear_extrude(1)
                 projection()
                 rotate([90,0,0])
-                capmount(part);
+                sensormount(part);
 
             rotate([90,0,0])
-                translate(-[0,extruder_b_capmount_offset[1],0])
-                capmount(part);
+                translate(-[0,extruder_b_sensormount_offset[1],0])
+                sensormount(part);
 
             rotate([90,0,0])
-                capmount(part);
+                sensormount(part);
         }
 
         hull()
@@ -802,8 +802,8 @@ module extruder_b(part=undef, with_sensormount=true)
         }
 
         if(with_sensormount)
-        translate(extruder_b_capmount_offset)
-            capmount(part);
+        translate(extruder_b_sensormount_offset)
+            sensormount(part);
     }
     else if(part=="vit")
     {
@@ -831,8 +831,8 @@ module extruder_b(part=undef, with_sensormount=true)
         }
 
         if(with_sensormount)
-        translate(extruder_b_capmount_offset)
-            capmount(part);
+        translate(extruder_b_sensormount_offset)
+            sensormount(part);
     }
 }
 
@@ -1048,7 +1048,7 @@ module extruder_guidler()
     }
 }
 
-module capmount(part=undef, height=10,thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
+module sensormount(part=undef, height=10,thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
 {
     align=[0,-1,0];
 
@@ -1207,8 +1207,8 @@ color_guidler = [0.4,0.5,0.8, alpha];
 color_filament = [0,0,0, alpha];
                 // belt path cutout
 
-/*extruder_b_capmount_offset=[35,-7,-41];*/
-extruder_b_capmount_offset=[-25,-7,-41];
+/*extruder_b_sensormount_offset=[35,-7,-41];*/
+extruder_b_sensormount_offset=[-25,-7,-41];
 
 explode=[0,0,0];
 /*explode=[0,50,0];*/
@@ -1290,11 +1290,11 @@ if(false)
     {
         /*extruder_a();*/
 
-        extruder_a(part="support");
+        /*extruder_a(part="support");*/
     }
 
-    /*rotate([-90,0,0])*/
-    /*extruder_b(with_sensormount=false);*/
+    rotate([-90,0,0])
+    extruder_b(with_sensormount=false);
 
     /*guidler_conn_layflat = [ [0, guidler_mount_off[1]-guidler_mount_d/2, guidler_mount_off[2]],  [0,-1,0]]; */
     /*attach([[0*mm,0*mm,0],[0,0,-1]], guidler_conn_layflat)*/
