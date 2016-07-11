@@ -39,7 +39,12 @@ module xaxis_end_body(with_motor, beltpath_index=0, nut_top=false)
     {
         union()
         {
-            cylindera(h=zaxis_nut[4], d=zaxis_nut[1], align=[0,0,1]);
+            difference()
+            {
+                cylindera(h=zaxis_nut[4], d=zaxis_nut[1], align=[0,0,1]);
+                translate([0,-zaxis_nut[0]/2-1*mm,0])
+                cubea([zaxis_nut[4]*2,zaxis_nut[4]+.2,zaxis_nut[4]+.2], align=[0,-1,1]);
+            }
 
             // lead screw
             // ensure some support for the leadscrew cutout all the way to the top
