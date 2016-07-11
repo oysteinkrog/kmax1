@@ -737,8 +737,7 @@ module extruder_b(part=undef, with_sensormount=true)
                     cylindera(r=r,h=1000, orient=[1,0,0]);
 
             // guidler screw nuts drop-in slots
-            translate([0,0, -r*2])
-                cubea([nut_m3[2]*1.25,nut_m3[1]+.5*mm,house_guidler_screw_h], align=[0,0,1], extrasize=[0,0,1], extrasize_align=[0,0,1]);
+            nut_trap_cut(nut=guidler_screws_nut, screw_l=1000, screw_l_extra=1000, trap_axis=[0,0,1], orient=[1,0,0]);
         }
 
         // guidler mount screw
