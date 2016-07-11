@@ -53,14 +53,14 @@ module x_axis()
         }
 
         for(x=[-1,1])
-        translate([axis_pos_x+x*30,0,0])
+        translate([axis_pos_x+x*148,0,0])
         {
             // x carriage
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])
             {
                 x_carriage_withmounts(show_vitamins=true, beltpath_offset=x);
 
-                /*x_carriage_extruder(show_vitamins=true);*/
+                x_carriage_extruder(show_vitamins=true, with_sensormount=x<=0);
             }
         }
 
