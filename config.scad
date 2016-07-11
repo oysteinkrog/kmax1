@@ -24,6 +24,8 @@ if(false)
     $fa = 4;
 }
 
+/*$show_vit=true;*/
+
 // enable preview model (faster openscad)
 preview_mode=false;
 
