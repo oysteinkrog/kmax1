@@ -176,9 +176,9 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
                 for(x=[-1,1])
                 for(z=[-1,1])
                 translate([0,-xaxis_end_motor_offset[1],0])
-                translate([x*screw_dist/2, -(xaxis_beltpath_width/2+3*mm), z*screw_dist/2])
+                translate([x*screw_dist/2, -(xaxis_beltpath_width/2+4*mm), z*screw_dist/2])
                 {
-                    screw_cut(xaxis_motor_nut, h=100, with_nut=false, orient=[0,1,0], align=[0,1,0]);
+                    screw_cut(xaxis_motor_nut, h=25, with_nut=false, orient=[0,1,0], align=[0,1,0]);
                 }
             }
 
@@ -328,8 +328,9 @@ module xaxis_end_znut()
             cylindera(d=zaxis_nut[1], h=zaxis_nut[3], orient=[0,0,1], align=[0,0,1]);
             cylindera(d=zaxis_nut[0], h=zaxis_nut[4], orient=[0,0,1], align=[0,0,1]);
         }
+
         translate([0,0,-.1])
-            cylindera(d=zaxis_nut[2], h=zaxis_nut[4]+.2, orient=[0,0,1], align=[0,0,1]);
+        cylindera(d=zaxis_nut[2], h=zaxis_nut[4]+.2, orient=[0,0,1], align=[0,0,1]);
     }
 }
 
@@ -374,6 +375,7 @@ if(false)
                 xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
 
                 translate([x*110, 0, 0])
+                mirror([max(0,x),0,0])
                 xaxis_end_idlerholder();
             }
         }
