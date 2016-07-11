@@ -8,7 +8,7 @@ use <thing_libutils/metric-screw.scad>
 
 motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
-xaxis_end_motor_offset=[xaxis_end_motorsize/2+9*mm,motor_mount_wall_thick-2*mm,0];
+xaxis_end_motor_offset=[xaxis_end_motorsize/2+5*mm,motor_mount_wall_thick-2*mm,0];
 xaxis_end_wz = xaxis_rod_distance+zaxis_bearing[2]+5*mm;
 
 // overlap of the X and Z rods
@@ -16,6 +16,9 @@ xaxis_end_xz_rod_overlap = 4*mm;
 
 // how much "stop" for the x rods
 xaxis_end_rod_stop = 10*mm;
+
+xaxis_endstop_size = [10.3*mm, 20*mm, 6.3*mm];
+xaxis_endstop_screw_offset = [-1.8*mm, 0*mm, 0*mm];
 
 module xaxis_end_body(with_motor, beltpath_index=0, nut_top=false)
 {
@@ -45,10 +48,15 @@ module xaxis_end_body(with_motor, beltpath_index=0, nut_top=false)
     }
 
     // x axis rod holders
+    xaxis_rod_d_support = xaxis_rod_d+5*mm;
     for(z=[-1,1])
     translate([-xaxis_end_xz_rod_overlap,0,z*(xaxis_rod_distance/2)])
-        cylindera(h=wx_+xaxis_end_xz_rod_overlap,d=xaxis_rod_d+5*mm, orient=[1,0,0], align=[1,0,0]);
+    cylindera(h=wx_+xaxis_end_xz_rod_overlap, d=xaxis_rod_d_support, orient=[1,0,0], align=[1,0,0]);
 
+    translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
+    {
+        rcubea(xaxis_endstop_size, align=[-1,0,-1]);
+    }
 
     // support around z axis bearings
     translate([0, -xaxis_zaxis_distance_y, 0])
@@ -85,6 +93,12 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
                 xaxis_end_body(with_motor);
         }
 
+        //endstop mount screw cuts
+        translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
+        translate(xaxis_endstop_screw_offset)
+        for(y=[-1,1])
+        translate([-5*mm,y*9.5*mm/2,-3*mm])
+        nut_trap_cut(nut=MHexNutM3, screw_l=6*mm, trap_axis=[1,0,0], orient=[0,0,1], align=[0,0,-1]);
 
         xaxis_end_beltpath(height=xaxis_beltpath_height+v_sum(v_abs(xaxis_beltpath_z_offsets)));
 
@@ -178,7 +192,7 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
 
                     // lead screw
                     translate([0,0,-.1])
-                    cylindera(h=xaxis_end_wz+1, d=zaxis_nut[2]*1.5, align=[0,0,1]);
+                    cylindera(h=lookup(NemaFrontAxleLength,zaxis_motor), d=zaxis_nut[2]*1.5, align=[0,0,1]);
 
                     for(i=[-1,1])
                         translate([i*13.5, 0, 0])
@@ -200,6 +214,23 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
                 translate([0,-1*mm,0])
                     pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);
                 motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+            }
+        }
+    }
+
+    //endstop
+    %if($show_vit)
+    {
+        translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
+        {
+            difference()
+            {
+                rcubea(xaxis_endstop_size, align=[-1,0,1]);
+
+                translate(xaxis_endstop_screw_offset)
+                for(y=[-1,1])
+                translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size[2]])
+                screw_cut(nut=MHexNutM3, h=10*mm, orient=[0,0,-1], align=[0,0,-1]);
             }
         }
     }
