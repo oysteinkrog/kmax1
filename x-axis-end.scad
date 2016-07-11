@@ -200,8 +200,8 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
                     cylindera(h=lookup(NemaFrontAxleLength,zaxis_motor), d=zaxis_nut[2]*1.5, align=[0,0,1]);
 
                     for(i=[-1,1])
-                        translate([i*13.5, 0, 0])
-                            cylindera(h=5, r=1.6, align=[0,0,1]);
+                    translate([i*13.5*mm, 0, -zaxis_nut[3]])
+                    screw_cut(thread=ThreadM3, h=16*mm, with_nut=false, orient=[0,0,1], align=[0,0,1]);
                 }
             }
         }
