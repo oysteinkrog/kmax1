@@ -296,23 +296,13 @@ module xaxis_end_idlerholder(height=xaxis_beltpath_height, width=xaxis_beltpath_
             translate([0,0,z*(xaxis_rod_distance/2)])
             {
                 // x smooth rods
-                translate([width/2, 0,0])
+                translate([width/2+.1,0,0])
                 cylindera(h=width/2,d=xaxis_rod_d, orient=[1,0,0], align=[1,0,0]);
 
-                screw_cut(nut=MHexNutM4, h=100, orient=[1,0,0], align=[1,0,0]);
+                screw_cut(nut=MHexNutM4, h=16*mm, with_nut=false, orient=[1,0,0], align=[1,0,0]);
 
-                translate([width/2-1*mm, 0,0])
-                hull()
-                {
-                    rotate([90,0,0])
-                    translate([0,0,-1])
-                    screw_nut(MHexNutM4, tolerance=1.15, orient=[1,0,0], align=[-1,0,0]);
-
-                    translate([0,-10,0])
-                    rotate([90,0,0])
-                    screw_nut(MHexNutM4, tolerance=1.15, orient=[1,0,0], align=[-1,0,0]);
-                }
-
+                translate([6*mm,0,0])
+                nut_trap_cut(nut=MHexNutM4, screw_l=16*mm, trap_axis=[0,-1,0], orient=[1,0,0], $show_vit=false);
             }
         }
 
