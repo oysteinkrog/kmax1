@@ -87,7 +87,7 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
         extrasize = with_motor?0*mm:0*mm;
         extrasize_align = 1;
 
-       hull()
+        hull()
         {
             xaxis_end_body(with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top);
 
