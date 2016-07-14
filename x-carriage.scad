@@ -6,6 +6,7 @@ use <thing_libutils/linear-extrusion.scad>;
 use <thing_libutils/bearing.scad>
 use <thing_libutils/metric-screw.scad>
 use <thing_libutils/gears.scad>
+use <thing_libutils/timing-belts.scad>
 include <thing_libutils/gears-data.scad>
 
 include <config.scad>
@@ -1245,6 +1246,11 @@ if(false)
     x_carriage_withmounts(show_vitamins=true);
 
     x_carriage_extruder(show_vitamins=true);
+
+    for(z=[-1,1])
+    for(z=xaxis_beltpath_z_offsets)
+    translate([-main_width/2, xaxis_carriage_thickness, z])
+    belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
 
     /*for(offset=[0,1])*/
     /*translate([offset*60,0,0])*/
