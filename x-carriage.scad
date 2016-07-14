@@ -148,7 +148,7 @@ module x_carriage(mode=undef, quad=false, beltpath_offset=0)
                 for(z=[-1,1])
                 {
                     translate([x*extruder_motor_holedist/2,-extruder_offset_a[1],z*extruder_motor_holedist/2])
-                    cylindera(d=extruder_b_mount_thickness, h=xaxis_carriage_thickness, orient=[0,1,0], align=[0,-1,0], round_radius=2);
+                    cylindera(d=extruder_b_mount_dia, h=xaxis_carriage_thickness, orient=[0,1,0], align=[0,-1,0], round_radius=2);
                 }
             }
 
@@ -823,7 +823,7 @@ module x_carriage_withmounts(show_vitamins=false, beltpath_offset=0)
                 {
                     if(x!=1||z!=-1)
                     translate([x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2])
-                    cylindera(d=extruder_b_mount_thickness, h=extruder_offset_a[1], orient=[0,1,0], align=[0,1,0], round_radius=2);
+                    cylindera(d=extruder_b_mount_dia, h=extruder_offset_a[1], orient=[0,1,0], align=[0,1,0], round_radius=2);
                 }
             }
         }
