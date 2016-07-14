@@ -1,15 +1,14 @@
 use <thing_libutils/metric-screw.scad>
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
-include <thing_libutils/transforms.scad>;
-include <thing_libutils/attach.scad>;
+use <thing_libutils/transforms.scad>;
+use <thing_libutils/attach.scad>;
 use <thing_libutils/linear-extrusion.scad>;
 include <thing_libutils/timing-belts.scad>;
 
 include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
 
-include <misc.scad>
 /*include <extruder-direct.scad>*/
 include <x-axis-end.scad>
 include <x-carriage.scad>
