@@ -21,7 +21,7 @@ xaxis_carriage_mount_screws = ThreadM4;
 
 xaxis_carriage_conn = [[0, -xaxis_bearing[1]/2 - xaxis_carriage_bearing_offset_y,0], [0,0,0]];
 
-xaxis_carriage_beltfasten_w = 12*mm;
+xaxis_carriage_beltfasten_w = 8*mm;
 xaxis_carriage_beltfasten_dist = xaxis_carriage_beltfasten_w/2+2*mm;
 
 xaxis_carriage_thickness = xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_y;
