@@ -1179,7 +1179,6 @@ explode=[0,0,0];
 
 module x_carriage_full(show_vitamins=true)
 {
-    /*color(color_xcarriage)*/
     x_carriage_withmounts(show_vitamins=show_vitamins);
 
     x_carriage_extruder(show_vitamins=show_vitamins);
@@ -1190,48 +1189,50 @@ module x_carriage_extruder(show_vitamins=false, with_sensormount=false)
     translate(extruder_offset)
     {
         translate([explode[0],explode[1],explode[2]])
-        color(color_extruder)
         translate(extruder_offset_a)
         {
             extruder_a();
+            if(show_vitamins)
             extruder_a(part="vit");
         }
 
         translate([explode[0],-explode[1],explode[2]])
-        color(color_extruder)
         {
             difference()
             {
                 extruder_b(part="pos", with_sensormount=with_sensormount);
 
                 extruder_b(part="neg", with_sensormount=with_sensormount);
+
+                /*translate([0,-21,0])*/
+                /*cubea([1000,1000,1000], align=[0,-1,0]);*/
             }
         }
 
+        if(show_vitamins)
         translate([explode[0],-explode[1],explode[2]])
         extruder_b(part="vit", with_sensormount=with_sensormount);
 
         translate([explode[0],-explode[1],explode[2]])
-        color(color_guidler)
         translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
         attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
         {
             extruder_guidler(show_extras=true);
         }
 
-        /*[>translate([explode[0],-explode[1],explode[2]])<]*/
-        /*[>translate([-95,53,20])<]*/
-        /*[>rotate([-152,0,0])<]*/
-        /*[>import("stl/E3D_40_mm_Duct.stl");<]*/
+        translate([explode[0],-explode[1],explode[2]])
+        translate([-95,53,20])
+        rotate([-152,0,0])
+        import("stl/E3D_40_mm_Duct.stl");
 
-        /*[>translate([explode[0],-explode[1],explode[2]])<]*/
-        /*[>translate([-123.5,78.5,-54])<]*/
-        /*[>rotate([0,0,-90])<]*/
-        /*[>import("stl/E3D_30_mm_Duct.stl");<]*/
+        translate([explode[0],-explode[1],explode[2]])
+        translate([-123.5,78.5,-54])
+        rotate([0,0,-90])
+        import("stl/E3D_30_mm_Duct.stl");
 
-        /*translate([explode[0],-explode[1],explode[2]])*/
-        /*color(color_hotend)*/
-        /*x_extruder_hotend();*/
+        translate([explode[0],-explode[1],explode[2]])
+        color(color_hotend)
+        x_extruder_hotend();
 
         translate([explode[0],-explode[1],explode[2]])
         //filament path
