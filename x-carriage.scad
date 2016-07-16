@@ -471,12 +471,12 @@ module hotmount_clamp(part=undef)
     }
     else if(part=="pos")
     {
-        translate([0, -extruder_b_size[1]-extruder_filapath_offset[1], 0])
+        translate([0, -hotmount_clamp_offset-extruder_filapath_offset[1], 0])
         translate([0, 0, 0-hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
         {
             rcubea([hotmount_clamp_w[0], hotmount_clamp_thickness, hotmount_clamp_height], align=[0,1,0]);
         }
-        translate([0, -extruder_b_size[1]-extruder_filapath_offset[1], 0])
+        translate([0, -hotmount_clamp_offset-extruder_filapath_offset[1], 0])
         translate([0, 0, 0-hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
         {
             rcubea([hotmount_clamp_w[1], hotmount_d_h[1][0], hotmount_clamp_height], align=[0,1,0]);
@@ -487,7 +487,7 @@ module hotmount_clamp(part=undef)
         hotend_cut(extend_cut = false);
 
         // clamp mount screw holes
-        translate([0, -extruder_b_size[1]-extruder_filapath_offset[1], 0])
+        translate([0, -hotmount_clamp_offset-extruder_filapath_offset[1], 0])
         translate([0, 0, 0-hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
         for(i=[-1,1])
         translate([i*hotmount_clamp_screws_dist, 0, 0])
@@ -498,14 +498,14 @@ module hotmount_clamp(part=undef)
 module hotmount_clamp_cut()
 {
     // clamp mount screw holes
-    translate([0, -extruder_b_size[1]-extruder_filapath_offset[1], 0])
+    translate([0, -hotmount_clamp_offset-extruder_filapath_offset[1], 0])
     translate([0, 0, 0-hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
     for(i=[-1,1])
     translate([i*hotmount_clamp_screws_dist, 0, 0])
     screw_cut(nut=extruder_hotmount_clamp_thread, h=30*mm, nut_offset=0*mm, head_embed=false, orient=[0,1,0], align=[0,1,0]);
 
     // hotmount clamp cutout
-    translate([0, -extruder_b_size[1]-extruder_filapath_offset[1], 0])
+    translate([0, -hotmount_clamp_offset-extruder_filapath_offset[1], 0])
     translate([0, 0, 0-hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
     {
         rcubea([hotmount_clamp_w[0], hotmount_clamp_thickness, hotmount_clamp_height], align=[0,1,0], extrasize=[0,100,0], extrasize_align=[0,-1,0]);
@@ -518,12 +518,7 @@ module hotmount_clamp_cut()
     hotend_cut(extend_cut = true);
 }
 
-// main house
-extruder_b_size=[
-    hobbed_gear_d_outer+5*mm,
-    abs(extruder_filapath_offset[1])+hobbed_gear_h/2+extruder_b_bearing[2]+4*mm,
-    hobbed_gear_d_outer+5*mm
-];
+hotmount_clamp_offset = abs(extruder_filapath_offset[1])+hobbed_gear_h/2+extruder_b_bearing[2]+4*mm;
 
 module extruder_b(part=undef, with_sensormount=true)
 {
