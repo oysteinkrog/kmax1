@@ -1,3 +1,5 @@
+include <thing_libutils/system.scad>;
+include <thing_libutils/units.scad>;
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
 use <thing_libutils/transforms.scad>;
@@ -408,8 +410,35 @@ module extruder_a(part=undef)
                 }
             }
             rotate([0,extruder_motor_mount_angle,0])
+            {
                 translate([0,-1*mm,0])
-                %motor(extruder_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+                {
+                    %motor(extruder_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+
+                    // motor heatsink
+                    translate([0,lookup(NemaLengthMedium, extruder_motor)+2*mm,0])
+                    {
+                        w = lookup(NemaSideSize, extruder_motor);
+                        color([.5,.5,.5])
+                        cubea([40*mm,11*mm,40*mm], align=[0,1,0]);
+
+                        // fan
+                        color([.9,.9,.9])
+                        translate([0,11*mm,0])
+                        {
+                            difference()
+                            {
+                                cubea([40*mm,10*mm,40*mm], align=YAXIS);
+                                cylindera(d=38*mm, h=10*mm+.1, orient=YAXIS, align=[0,-1,0]);
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+
         }
     }
 }
