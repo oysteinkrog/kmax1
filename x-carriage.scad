@@ -658,7 +658,7 @@ module extruder_b(part=undef, with_sensormount=true)
                             // cut for guidler bearing
                             translate(extruder_guidler_mount_off)
                             translate(-[-guidler_mount_off[1],0,guidler_mount_off[2]])
-                            cylindera(d=guidler_bearing[1], h=guidler_w_cut_inner, orient=[0,1,0], align=[0,0,0]);
+                            cylindera(d=guidler_bearing[1]+2*mm, h=guidler_w_cut_inner, orient=[0,1,0], align=[0,0,0]);
 
                             // cut for guidler
                             translate(extruder_guidler_mount_off)
