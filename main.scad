@@ -17,16 +17,16 @@ include <y-axis-carriage-bearing-mount.scad>
 include <y-axis-carriage-belt-clamp.scad>
 include <y-axis-idler.scad>
 include <z-axis-motor-mount.scad>
-include <gantry-upper-connector.scad>
-include <gantry-lower-connector.scad>
+use <gantry-upper-connector.scad>
+use <gantry-lower-connector.scad>
 include <psu.scad>
 use <rod-clamps.scad>
 
-use <scad-utils/trajectory.scad>
-use <scad-utils/trajectory_path.scad>
-use <scad-utils/transformations.scad>
-use <scad-utils/shapes.scad>
-use <list-comprehension-demos/skin.scad>
+/*use <scad-utils/trajectory.scad>*/
+/*use <scad-utils/trajectory_path.scad>*/
+/*use <scad-utils/transformations.scad>*/
+/*use <scad-utils/shapes.scad>*/
+/*use <list-comprehension-demos/skin.scad>*/
 
 axis_range_x=[0*mm,200*mm];
 axis_pos_x = axis_range_x[0];
