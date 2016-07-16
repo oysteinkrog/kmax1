@@ -180,29 +180,3 @@ color_extrusion = "DimGray";
 color_rods = "CornflowerBlue";
 color_part = "DarkRed";
 color_gantry_connectors = "OliveDrab";
-
-// GT2 
-// there is bunch of GT2 belts with different tooth-to-tooth distance
-// this one is most common in reprap world
-// adjust to your needs.
-belt_width = 6.5;
-belt_tooth_distance = 2;
-belt_tooth_ratio = 0.5;
-belt_thickness = 0.8;
-
-//T2.5
-//belt_tooth_distance = 2.5;
-//belt_tooth_ratio = 0.5;
-
-//T5 (strongly discouraged)
-//belt_tooth_distance = 5;
-//belt_tooth_ratio = 0.75;
-
-//HTD3
-//belt_tooth_distance = 3;
-//belt_tooth_ratio = 0.75;
-
-//MXL
-//belt_tooth_distance = 2.032;
-//belt_tooth_ratio = 0.64;
-
