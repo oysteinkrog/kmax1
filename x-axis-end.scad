@@ -102,8 +102,8 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
         translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
         translate(xaxis_endstop_screw_offset)
         for(y=[-1,1])
-        translate([-5*mm,y*9.5*mm/2,-3*mm])
-        nut_trap_cut(nut=MHexNutM3, screw_l=6*mm, trap_axis=[1,0,0], orient=[0,0,1], align=[0,0,-1]);
+        translate([-5*mm,y*9.5*mm/2,-2*mm])
+        nut_trap_cut(nut=MHexNutM3, screw_l=6*mm, screw_l_extra=0*mm, trap_axis=[-1,0,0], orient=[0,0,1], align=[0,0,-1]);
 
         xaxis_end_beltpath(height=xaxis_beltpath_height+v_sum(v_abs(xaxis_beltpath_z_offsets)));
 
@@ -135,7 +135,7 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
         x_rod_stop = stop_x_rods ? xaxis_end_rod_stop : 0;
         for(z=[-1,1])
         translate([-xaxis_end_xz_rod_overlap-.1+x_rod_stop,0,z*(xaxis_rod_distance/2)])
-        cylindera(h=wx_+xaxis_end_xz_rod_overlap-x_rod_stop+.2,d=xaxis_rod_d, orient=[1,0,0], align=[1,0,0]);
+        cylindera(h=wx_+xaxis_end_xz_rod_overlap-x_rod_stop+.2,d=xaxis_rod_d+.2*mm, orient=[1,0,0], align=[1,0,0]);
 
         if(with_motor)
         {
@@ -297,7 +297,7 @@ module xaxis_end_idlerholder(height=xaxis_beltpath_height, width=xaxis_beltpath_
             {
                 // x smooth rods
                 translate([width/2+.1,0,0])
-                cylindera(h=width/2,d=xaxis_rod_d, orient=[1,0,0], align=[1,0,0]);
+                cylindera(h=width/2,d=xaxis_rod_d+.2*mm, orient=[1,0,0], align=[1,0,0]);
 
                 screw_cut(nut=MHexNutM4, h=16*mm, with_nut=false, orient=[1,0,0], align=[1,0,0]);
 
@@ -363,7 +363,7 @@ if(false)
         color(color_rods)
         for(z=[-1,1])
             translate([xaxis_rod_offset_x,xaxis_zaxis_distance_y,z*(xaxis_rod_distance/2)])
-                cylindera(h=xaxis_rod_l,d=xaxis_rod_d+.1, orient=[1,0,0]);
+                cylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
 
         for(x=[-1,1])
         {
