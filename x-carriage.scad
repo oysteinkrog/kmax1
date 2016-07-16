@@ -8,6 +8,7 @@ use <thing_libutils/metric-screw.scad>
 use <thing_libutils/gears.scad>
 use <thing_libutils/timing-belts.scad>
 include <thing_libutils/gears-data.scad>
+include <thing_libutils/metric-knurlnut-data.scad>
 
 include <config.scad>
 
