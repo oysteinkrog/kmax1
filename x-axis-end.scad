@@ -8,7 +8,7 @@ use <thing_libutils/metric-screw.scad>
 
 motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
-xaxis_end_motor_offset=[xaxis_end_motorsize/2+5*mm,motor_mount_wall_thick-2*mm,0];
+xaxis_end_motor_offset=[xaxis_end_motorsize/2+7*mm,motor_mount_wall_thick-2*mm,0];
 xaxis_end_wz = xaxis_rod_distance+zaxis_bearing[2]+5*mm;
 
 // overlap of the X and Z rods
