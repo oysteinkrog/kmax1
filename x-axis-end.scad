@@ -5,6 +5,7 @@ include <config.scad>
 include <thing_libutils/misc.scad>
 include <thing_libutils/bearing.scad>
 use <thing_libutils/metric-screw.scad>
+use <thing_libutils/timing-belts.scad>
 
 motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
@@ -367,6 +368,13 @@ if(false)
 
 if(false)
 {
+    zrod_offset = zmotor_mount_rod_offset_x;
+    for(z=[-1,1])
+    for(z=xaxis_beltpath_z_offsets)
+    translate([0,0,xaxis_end_wz/2])
+    translate([-main_width/2-zrod_offset+xaxis_end_motor_offset[0], xaxis_zaxis_distance_y, z])
+    belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
+
     translate([0, xaxis_zaxis_distance_y, 0])
     {
         for(x=[-1,1])
