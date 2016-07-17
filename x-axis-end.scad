@@ -87,16 +87,24 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false)
     }
 }
 
-module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_motor=false, nut_top=false, show_nut=false, show_rods=false, show_bearings=false)
+module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, show_motor=false, nut_top=false, show_nut=false, show_rods=false, show_bearings=false)
 {
     nut_h = zaxis_nut[4];
     wx = zaxis_bearing[1]/2+zaxis_nut[1];
     wx_ = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : wx;
-    difference()
-    {
-        extrasize = with_motor?0*mm:0*mm;
-        extrasize_align = 1;
+    extrasize = with_motor?0*mm:0*mm;
+    extrasize_align = 1;
 
+    if(part==undef)
+    {
+        difference()
+        {
+            xaxis_end(part="pos", with_motor=with_motor, stop_x_rods=stop_x_rods, beltpath_index=beltpath_index, show_motor=show_motor, nut_top=nut_top, show_nut=show_nut, show_rods=show_rods, show_bearings=show_bearings);
+            xaxis_end(part="neg", with_motor=with_motor, stop_x_rods=stop_x_rods, beltpath_index=beltpath_index, show_motor=show_motor, nut_top=nut_top, show_nut=show_nut, show_rods=show_rods, show_bearings=show_bearings);
+        }
+    }
+    else if(part=="pos")
+    {
         hull()
         {
             xaxis_end_body(with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top);
@@ -107,7 +115,9 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
                 projection(cut=false)
                 xaxis_end_body(with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top);
         }
-
+    }
+    else if(part=="neg")
+    {
         //endstop mount screw cuts
         translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
         translate(xaxis_endstop_screw_offset)
@@ -204,62 +214,64 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
             }
         }
     }
-
-    if(with_motor && show_motor)
+    else if(part=="vit")
     {
-        translate([0,0,xaxis_beltpath_z_offsets[beltpath_index]])
-        translate(xaxis_end_motor_offset)
+        if(with_motor && show_motor)
         {
-            // 1mm due to motor offset
-            translate([0,-1*mm,0])
+            translate([0,0,xaxis_beltpath_z_offsets[beltpath_index]])
+            translate(xaxis_end_motor_offset)
             {
-                // 1mm between pulley and motor
+                // 1mm due to motor offset
                 translate([0,-1*mm,0])
-                    pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);
-                motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+                {
+                    // 1mm between pulley and motor
+                    translate([0,-1*mm,0])
+                        pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);
+                    motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+                }
             }
         }
-    }
 
-    //endstop
-    %if($show_vit)
-    {
-        translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
+        //endstop
+        %if($show_vit)
         {
-            difference()
+            translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
             {
-                rcubea(xaxis_endstop_size, align=[-1,0,1]);
+                difference()
+                {
+                    rcubea(xaxis_endstop_size, align=[-1,0,1]);
 
-                translate(xaxis_endstop_screw_offset)
-                for(y=[-1,1])
-                translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size[2]])
-                screw_cut(nut=MHexNutM3, h=10*mm, orient=[0,0,-1], align=[0,0,-1]);
+                    translate(xaxis_endstop_screw_offset)
+                    for(y=[-1,1])
+                    translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size[2]])
+                    screw_cut(nut=MHexNutM3, h=10*mm, orient=[0,0,-1], align=[0,0,-1]);
+                }
             }
         }
-    }
 
-    %if(show_nut)
-    {
-        mirror([0,0,nut_top?1:0])
-        translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2-zaxis_nut[3]])
-        xaxis_end_znut();
-    }
+        %if(show_nut)
+        {
+            mirror([0,0,nut_top?1:0])
+            translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2-zaxis_nut[3]])
+            xaxis_end_znut();
+        }
 
 
-    %if(show_rods)
-    {
-        for(z=[-1,1])
+        %if(show_rods)
+        {
+            for(z=[-1,1])
+                translate([0,0,z*xaxis_rod_distance/2])
+                translate([0, -xaxis_zaxis_distance_y, 0])
+                cylindera(d=zaxis_rod_d, h=zaxis_rod_l, orient=[0,0,1]);
+        }
+
+        %if(show_bearings)
+        {
+            for(z=[-1,1])
             translate([0,0,z*xaxis_rod_distance/2])
             translate([0, -xaxis_zaxis_distance_y, 0])
-            cylindera(d=zaxis_rod_d, h=zaxis_rod_l, orient=[0,0,1]);
-    }
-
-    %if(show_bearings)
-    {
-        for(z=[-1,1])
-        translate([0,0,z*xaxis_rod_distance/2])
-        translate([0, -xaxis_zaxis_distance_y, 0])
-        bearing(zaxis_bearing);
+            bearing(zaxis_bearing);
+        }
     }
 }
 
@@ -387,7 +399,10 @@ if(false)
                 translate([0, xaxis_zaxis_distance_y, 0])
                 translate([x*zmotor_mount_rod_offset_x, 0, 0])
                 mirror([max(0,x),0,0])
-                xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
+                {
+                    xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
+                    xaxis_end(part="vit", with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
+                }
 
                 translate([x*95, xaxis_zaxis_distance_y, 0])
                 mirror([0,0,max(0,x)])
@@ -413,7 +428,10 @@ if(false)
         for(x=[-1,1])
         translate([x*55,0,xaxis_end_wz/2])
         mirror([max(0,x),0,0])
-        xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false);
+        {
+            xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false);
+            xaxis_end(part="vit", with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false);
+        }
 
         for(x=[-1,1])
         translate([0,0,xaxis_end_wz/2])
