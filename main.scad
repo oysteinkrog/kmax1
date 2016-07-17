@@ -72,11 +72,16 @@ module x_axis()
         for(x=[-1,1])
         {
             translate([x*(main_width/2), 0, 0])
+            translate([0, xaxis_zaxis_distance_y, 0])
+            translate([x*zmotor_mount_rod_offset_x, 0, 0])
             {
-                translate([0, xaxis_zaxis_distance_y, 0])
-                translate([x*zmotor_mount_rod_offset_x, 0, 0])
                 mirror([max(0,x),0,0])
                 xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
+
+                translate([x*25, 0, 0])
+                mirror([0,0,max(0,x)])
+                mirror([max(0,x),0,0])
+                xaxis_end_idlerholder();
             }
         }
     }
