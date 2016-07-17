@@ -148,19 +148,7 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
                 round_d=1.1*lookup(NemaRoundExtrusionDiameter, xaxis_motor);
                 translate([0, .1, 0])
                 translate([0,1,0])
-
-                union()
-                {
-                    cylindera(d=round_d, h=motor_mount_wall_thick, orient=[0,1,0], align=[0,1,0]);
-                    rotate([0,45,0])
-                    difference()
-                    {
-                        cubea([round_d, motor_mount_wall_thick, round_d], align=[0,-1,0]);
-
-                        cubea([round_d, motor_mount_wall_thick, round_d/2], align=[0,-1,-1]);
-                        cubea([round_d/2, motor_mount_wall_thick, round_d], align=[1,-1,0]);
-                    }
-                }
+                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=[0,0,1], orient=[0,1,0], align=[0,-1,0], roll=90, truncate=0);
 
                 // motor axle
                 translate([0, .1, 0])
