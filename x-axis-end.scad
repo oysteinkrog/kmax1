@@ -21,59 +21,69 @@ xaxis_end_rod_stop = 10*mm;
 xaxis_endstop_size = [10.3*mm, 20*mm, 6.3*mm];
 xaxis_endstop_screw_offset = [-1.8*mm, 0*mm, 0*mm];
 
-module xaxis_end_body(with_motor, beltpath_index=0, nut_top=false)
+module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false)
 {
     nut_h = zaxis_nut[4];
     wx = zaxis_bearing[1]/2+zaxis_nut[1];
     wx_ = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : wx;
+    bearing_sizey= zaxis_bearing[1]+10*mm;
 
-    /*%rcubea([wx_, xaxis_rod_d*2, xaxis_end_wz], rounding_radius=3, align=[with_motor?1:-1,0,0]);*/
-
-    if(with_motor)
-    translate([0,0,xaxis_beltpath_z_offsets[beltpath_index]])
-    translate(xaxis_end_motor_offset)
-    rcubea([xaxis_end_motorsize, motor_mount_wall_thick, xaxis_end_motorsize], rounding_radius=3, align=[0,-1,0]);
-
-    // nut mount
-    mirror([0,0,nut_top?1:0])
-    translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2])
+    if(part==undef)
     {
-        union()
+        difference()
         {
-            difference()
-            {
-                cylindera(h=zaxis_nut[4], d=zaxis_nut[1], align=[0,0,1], round_radius=2);
-                translate([0,-zaxis_nut[0]/2-1*mm,0])
-                cubea([zaxis_nut[4]*2,zaxis_nut[4]+.2,zaxis_nut[4]+.2], align=[0,-1,1]);
-            }
+            xaxis_end_body(part="pos", with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top);
+            xaxis_end_body(part="neg", with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top);
+        }
+    }
+    else if(part=="pos")
+    {
+        if(with_motor)
+        translate([0,0,xaxis_beltpath_z_offsets[beltpath_index]])
+        translate(xaxis_end_motor_offset)
+        rcubea([xaxis_end_motorsize, motor_mount_wall_thick, xaxis_end_motorsize], rounding_radius=3, align=[0,-1,0]);
+
+        // nut mount
+        mirror([0,0,nut_top?1:0])
+        translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2])
+        {
+            cylindera(h=zaxis_nut[4], d=zaxis_nut[1], align=[0,0,1], round_radius=2);
 
             // lead screw
             // ensure some support for the leadscrew cutout all the way to the top
             cylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=[0,0,1], round_radius=2);
         }
-    }
 
-    // x axis rod holders
-    xaxis_rod_d_support = xaxis_rod_d+5*mm;
-    for(z=[-1,1])
-    translate([-xaxis_end_xz_rod_overlap,0,z*(xaxis_rod_distance/2)])
-    cylindera(h=wx_+xaxis_end_xz_rod_overlap, d=xaxis_rod_d_support, orient=[1,0,0], align=[1,0,0], round_radius=2);
+        // x axis rod holders
+        xaxis_rod_d_support = xaxis_rod_d+5*mm;
+        for(z=[-1,1])
+        translate([-xaxis_end_xz_rod_overlap,0,z*(xaxis_rod_distance/2)])
+        cylindera(h=wx_+xaxis_end_xz_rod_overlap, d=xaxis_rod_d_support, orient=[1,0,0], align=[1,0,0], round_radius=2);
 
-    translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
-    {
-        rcubea(xaxis_endstop_size, align=[-1,0,-1]);
-    }
-
-    // support around z axis bearings
-    translate([0, -xaxis_zaxis_distance_y, 0])
-    {
-        difference()
+        translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
         {
-            sizey= zaxis_bearing[1]+10*mm;
-            cylindera(h=xaxis_end_wz,d=sizey, orient=[0,0,1], align=[0,0,0], round_radius=2);
-            translate([0,0,.1])
-            cubea([sizey/2+.1, sizey+.2, xaxis_end_wz+.4], orient=[0,0,1], align=[-1,0,0]);
+            rcubea(xaxis_endstop_size, align=[-1,0,-1]);
         }
+
+        // support around z axis bearings
+        translate([0, -xaxis_zaxis_distance_y, 0])
+        cylindera(h=xaxis_end_wz,d=bearing_sizey, orient=[0,0,1], align=[0,0,0], round_radius=2);
+    }
+    else if(part=="neg")
+    {
+        // cut support around z axis bearings
+        translate([0, -xaxis_zaxis_distance_y, 0])
+        translate([0,0,.1])
+        cubea([bearing_sizey/2+.1, bearing_sizey+.2, xaxis_end_wz+.4], orient=[0,0,1], align=[-1,0,0]);
+
+        // cut away some of nut mount support
+        mirror([0,0,nut_top?1:0])
+        translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2])
+        translate([0,-zaxis_nut[0]/2-1*mm,0])
+        cubea([zaxis_nut[4]*2,zaxis_nut[4]+.2,zaxis_nut[4]+.2], align=[0,-1,1]);
+    }
+    else if(part=="vit")
+    {
     }
 }
 
@@ -95,7 +105,7 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
             translate([0,0,-xaxis_end_wz/2])
                 linear_extrude(1)
                 projection(cut=false)
-                xaxis_end_body(with_motor);
+                xaxis_end_body(with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top);
         }
 
         //endstop mount screw cuts
