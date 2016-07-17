@@ -47,7 +47,13 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false)
         mirror([0,0,nut_top?1:0])
         translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2])
         {
-            cylindera(h=zaxis_nut[4], d=zaxis_nut[1], align=[0,0,1], round_radius=2);
+            // main nut support
+            cylindera(h=zaxis_nut[4], d=zaxis_nut[0]+5*mm, align=[0,0,1], round_radius=2);
+
+            // nut screw holes support
+            for(x=[-1,1])
+            translate([x*zaxis_nut[5], 0, 0])
+            cylindera(h=zaxis_nut[4], d=lookup(ThreadSize, zaxis_nut[6])+5*mm, align=[0,0,1], round_radius=2);
 
             // lead screw
             // ensure some support for the leadscrew cutout all the way to the top
@@ -75,12 +81,6 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false)
         translate([0, -xaxis_zaxis_distance_y, 0])
         translate([0,0,.1])
         cubea([bearing_sizey/2+.1, bearing_sizey+.2, xaxis_end_wz+.4], orient=[0,0,1], align=[-1,0,0]);
-
-        // cut away some of nut mount support
-        mirror([0,0,nut_top?1:0])
-        translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2])
-        translate([0,-zaxis_nut[0]/2-1*mm,0])
-        cubea([zaxis_nut[4]*2,zaxis_nut[4]+.2,zaxis_nut[4]+.2], align=[0,-1,1]);
     }
     else if(part=="vit")
     {
@@ -208,8 +208,8 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
                     cylindera(h=lookup(NemaFrontAxleLength,zaxis_motor), d=zaxis_nut[2]*1.5, align=[0,0,1]);
 
                     for(i=[-1,1])
-                    translate([i*13.5*mm, 0, -zaxis_nut[3]])
-                    screw_cut(thread=ThreadM3, h=16*mm, with_nut=false, orient=[0,0,1], align=[0,0,1]);
+                    translate([i*zaxis_nut[5], 0, -zaxis_nut[3]])
+                    screw_cut(thread=zaxis_nut[5], h=16*mm, with_nut=false, orient=[0,0,1], align=[0,0,1]);
                 }
             }
         }

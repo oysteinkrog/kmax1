@@ -140,8 +140,8 @@ zaxis_motor = dict_replace_multiple(Nema17,
 zmotor_w = lookup(NemaSideSize,zaxis_motor);
 zmotor_h = lookup(NemaLengthLong,zaxis_motor);
 
-// inner_d, outer_d, thread, outer_h, full_h
-zaxis_nut = [20*mm, 36*mm, 8*mm, 5*mm, 23*mm];
+// inner_d, outer_d, thread, outer_h, full_h, screw_dist, screw_thread
+zaxis_nut = [20*mm, 36*mm, 8*mm, 5*mm, 23*mm, 13.5*mm, ThreadM3];
 
 zaxis_motor_offset_z = 10*mm;
 zmotor_mount_thickness = 5;
