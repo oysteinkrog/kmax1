@@ -158,7 +158,7 @@ module xaxis_end(with_motor=false, stop_x_rods=false, beltpath_index=0, show_mot
                 // bearing for offloading force on motor shaft
                 translate([0, -2.5*mm-xaxis_pulley[1]-.1, 0])
                 scale(1.03)
-                bearing(bearing_MR105, override_h=6*mm, orient=[0,1,0], align=[0,-1,0]);
+                cylindera(d=bearing_MR105[1], h=6*mm, orient=[0,1,0], align=[0,-1,0]);
 
                 xaxis_motor_thread=ThreadM3;
                 xaxis_motor_nut=MHexNutM3;
