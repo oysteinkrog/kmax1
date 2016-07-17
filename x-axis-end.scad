@@ -342,8 +342,8 @@ if(false)
             zrod_offset = zmotor_mount_rod_offset_x;
             for(z=[-1,1])
             for(z=xaxis_beltpath_z_offsets)
-            translate([-main_width/2-zrod_offset+xaxis_end_motor_offset[0], xaxis_zaxis_distance_y, z])
-            belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
+            translate([-z*3*mm, xaxis_zaxis_distance_y, z])
+            belt_path(5*mm+main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[0,0,0]);
         }
 
         /*translate([axis_pos_x,0,0])*/
@@ -370,7 +370,8 @@ if(false)
                 mirror([max(0,x),0,0])
                 xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
 
-                translate([x*110, 0, 0])
+                translate([x*95, xaxis_zaxis_distance_y, 0])
+                mirror([0,0,max(0,x)])
                 mirror([max(0,x),0,0])
                 xaxis_end_idlerholder();
             }
