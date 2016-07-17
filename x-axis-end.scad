@@ -49,7 +49,7 @@ module xaxis_end_body(with_motor, beltpath_index=0, nut_top=false)
 
             // lead screw
             // ensure some support for the leadscrew cutout all the way to the top
-            /*cylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=[0,0,1]);*/
+            cylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=[0,0,1], round_radius=2);
         }
     }
 
