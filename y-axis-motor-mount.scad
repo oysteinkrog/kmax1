@@ -4,7 +4,7 @@ include <MCAD/motors.scad>
 use <thing_libutils/shapes.scad>
 include <thing_libutils/attach.scad>
 include <config.scad>
-include <pulley.scad>
+include <thing_libutils/pulley.scad>
 
 yaxis_motor_mount_conn = [[0,0,+extrusion_size/2+yaxis_motor_offset_z],[1,0,0]];
 yaxis_motor_mount_conn_motor = [[+yaxis_motor_offset_x, 0,+extrusion_size/2+yaxis_motor_offset_z],[0,0,1]];

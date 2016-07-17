@@ -1,5 +1,5 @@
 include <MCAD/stepper.scad>
-include <pulley.scad>
+include <thing_libutils/pulley.scad>
 include <thing_libutils/bearing_data.scad>
 include <thing_libutils/metric-thread-data.scad>
 include <thing_libutils/metric-hexnut-data.scad>

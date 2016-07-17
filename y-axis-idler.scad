@@ -1,7 +1,7 @@
 use <thing_libutils/metric-screw.scad>
 include <thing_libutils/attach.scad>
 include <config.scad>
-include <pulley.scad>
+include <thing_libutils/pulley.scad>
 
 yaxis_idler_conn = [[-extrusion_size/2, 0, 0], [-1,0,0]];
 
