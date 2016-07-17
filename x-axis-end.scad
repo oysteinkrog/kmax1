@@ -262,18 +262,28 @@ module xaxis_end_beltpath(height, width=xaxis_beltpath_width, length = 1000)
     teardrop(h=length, d=width, orient=[1,0,0], roll=-180*min(0,z), truncate=.5);
 }
 
-module xaxis_end_idlerholder(height=xaxis_beltpath_height, width=xaxis_beltpath_width, length=10, beltpath_index=0)
+module xaxis_end_idlerholder(part, width=xaxis_beltpath_width, length=10, beltpath_index=0)
 {
     width = 20*mm;
 
-    difference()
+    if(part==undef)
+    {
+        difference()
+        {
+            xaxis_end_idlerholder(part="pos", width=xaxis_beltpath_width, length=length, beltpath_index=beltpath_index);
+            xaxis_end_idlerholder(part="neg", width=xaxis_beltpath_width, length=length, beltpath_index=beltpath_index);
+        }
+    }
+    else if(part=="pos")
     {
         union()
         {
             /*translate([10*mm, 0,0])*/
             rcubea([width, xaxis_idler_pulley[0]+8*mm, xaxis_rod_distance+xaxis_rod_d*2], align=[1,0,0]);
         }
-
+    }
+    else if(part=="neg")
+    {
         for(z=[-1,1])
         {
             translate([0,0,z*(xaxis_rod_distance/2)])
@@ -297,8 +307,11 @@ module xaxis_end_idlerholder(height=xaxis_beltpath_height, width=xaxis_beltpath_
             translate([width/2,0,0])
                 cylindera(d=lookup(ThreadSize, ThreadM5), h=100, orient=[0,1,0]);
 
-            xaxis_end_beltpath();
+            xaxis_end_beltpath(height=xaxis_beltpath_height_holders);
         }
+    }
+    else if(part=="vit")
+    {
     }
 }
 
