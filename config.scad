@@ -89,7 +89,7 @@ xaxis_beltpath_z_offset_pulley = xaxis_pulley_inner_d/2;
 /*xaxis_beltpath_z_offsets = [xaxis_beltpath_z_offset_pulley];*/
 xaxis_beltpath_z_offsets = [-2*mm-xaxis_beltpath_z_offset_pulley, 2*mm+xaxis_beltpath_z_offset_pulley];
 xaxis_beltpath_height_body = xaxis_pulley_inner_d/2+v_sum(v_abs(xaxis_beltpath_z_offsets))+3*mm;
-xaxis_beltpath_height_holders = xaxis_pulley_inner_d+2*mm;
+xaxis_beltpath_height_holders = xaxis_pulley_inner_d+xaxis_beltpath_z_offsets[0]+3*mm;
 
 xaxis_carriage_bearing_offset_y = ziptie_thickness+3*mm;
 xaxis_carriage_beltpath_offset_y = xaxis_carriage_bearing_offset_y+xaxis_bearing[1]/2;

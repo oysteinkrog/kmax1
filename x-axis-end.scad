@@ -276,10 +276,17 @@ module xaxis_end_idlerholder(part, width=xaxis_beltpath_width, length=10, beltpa
     }
     else if(part=="pos")
     {
-        union()
+        hull()
         {
-            /*translate([10*mm, 0,0])*/
-            rcubea([width, xaxis_idler_pulley[0]+8*mm, xaxis_rod_distance+xaxis_rod_d*2], align=[1,0,0]);
+            // support for x smooth rods
+            for(z=[-1,1])
+            translate([0,0,z*(xaxis_rod_distance/2)])
+            cylindera(h=width, d=xaxis_rod_d+4*mm, orient=[1,0,0], align=[1,0,0], round_radius=2);
+
+            // extra support for pulley
+            translate([0,0,-xaxis_beltpath_z_offsets[max(0,beltpath_index)]])
+            translate([width/2,0,0])
+            cylindera(h=8*mm+pulley_height(xaxis_idler_pulley), d=xaxis_idler_pulley[3], orient=[0,1,0], round_radius=2);
         }
     }
     else if(part=="neg")
@@ -312,6 +319,9 @@ module xaxis_end_idlerholder(part, width=xaxis_beltpath_width, length=10, beltpa
     }
     else if(part=="vit")
     {
+        %translate([0,0,-xaxis_beltpath_z_offsets[max(0,beltpath_index)]])
+        translate([width/2,0,0])
+        pulley(xaxis_idler_pulley, orient=[0,1,0]);
     }
 }
 
