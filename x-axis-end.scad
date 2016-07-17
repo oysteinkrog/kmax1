@@ -42,7 +42,7 @@ module xaxis_end_body(with_motor, beltpath_index=0, nut_top=false)
         {
             difference()
             {
-                cylindera(h=zaxis_nut[4], d=zaxis_nut[1], align=[0,0,1]);
+                cylindera(h=zaxis_nut[4], d=zaxis_nut[1], align=[0,0,1], round_radius=2);
                 translate([0,-zaxis_nut[0]/2-1*mm,0])
                 cubea([zaxis_nut[4]*2,zaxis_nut[4]+.2,zaxis_nut[4]+.2], align=[0,-1,1]);
             }
@@ -57,7 +57,7 @@ module xaxis_end_body(with_motor, beltpath_index=0, nut_top=false)
     xaxis_rod_d_support = xaxis_rod_d+5*mm;
     for(z=[-1,1])
     translate([-xaxis_end_xz_rod_overlap,0,z*(xaxis_rod_distance/2)])
-    cylindera(h=wx_+xaxis_end_xz_rod_overlap, d=xaxis_rod_d_support, orient=[1,0,0], align=[1,0,0]);
+    cylindera(h=wx_+xaxis_end_xz_rod_overlap, d=xaxis_rod_d_support, orient=[1,0,0], align=[1,0,0], round_radius=2);
 
     translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
     {
@@ -70,10 +70,9 @@ module xaxis_end_body(with_motor, beltpath_index=0, nut_top=false)
         difference()
         {
             sizey= zaxis_bearing[1]+10*mm;
-            cylindera(h=xaxis_end_wz,d=sizey, orient=[0,0,1], align=[0,0,0]);
+            cylindera(h=xaxis_end_wz,d=sizey, orient=[0,0,1], align=[0,0,0], round_radius=2);
             translate([0,0,.1])
             cubea([sizey/2+.1, sizey+.2, xaxis_end_wz+.4], orient=[0,0,1], align=[-1,0,0]);
-            /*#cubea([sizey+.1, sizey/2+.2, xaxis_end_wz+.4], orient=[0,0,1], align=[0,-1,0]);*/
         }
     }
 }
