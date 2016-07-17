@@ -5,6 +5,8 @@ include <thing_libutils/shapes.scad>
 pulley_2GT_20T_idler = [8.65*mm, undef, 12*mm, 18*mm, 1*mm, 5*mm];
 pulley_2GT_20T       = [8.65*mm, 16*mm, 12*mm, 16*mm, 1.15*mm, 5*mm];
 
+function pulley_height(pulley) = pulley[1]==undef?pulley[0]:pulley[1];
+
 module pulley(pulley=pulley_2GT_20T, flip=false, align=[0,0,0], orient = [0,0,1])
 {
     is_idler = pulley[1] == undef;
