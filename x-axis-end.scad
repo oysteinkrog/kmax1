@@ -125,7 +125,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
         translate([-5*mm,y*9.5*mm/2,-2*mm])
         nut_trap_cut(nut=MHexNutM3, screw_l=6*mm, screw_l_extra=0*mm, trap_axis=[-1,0,0], orient=[0,0,1], align=[0,0,-1]);
 
-        xaxis_end_beltpath(height=xaxis_beltpath_height_body);
+        xaxis_end_beltpath(height=xaxis_beltpath_height_body, width=xaxis_beltpath_width);
 
         // z smooth bearing mounts
         for(z=[-1,1])
@@ -275,12 +275,12 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
     }
 }
 
-module xaxis_end_beltpath(height, width=xaxis_beltpath_width, length = 1000)
+module xaxis_end_beltpath(height, width, length = 1000, align=[0,0,0], orient=[1,0,0])
 {
     hull()
     for(z=[-1,1])
     translate([0,0,z*height/2])
-    teardrop(h=length, d=width, orient=[1,0,0], roll=-180*min(0,z), truncate=.5);
+    teardrop(h=length, d=width, orient=orient, align=align, roll=-180*min(0,z), truncate=.5);
 }
 
 module xaxis_end_idlerholder(part, width=xaxis_beltpath_width, length=10, beltpath_index=0)
@@ -335,7 +335,7 @@ module xaxis_end_idlerholder(part, width=xaxis_beltpath_width, length=10, beltpa
             translate([width/2,0,0])
                 cylindera(d=lookup(ThreadSize, ThreadM5), h=100, orient=[0,1,0]);
 
-            xaxis_end_beltpath(height=xaxis_beltpath_height_holders);
+            xaxis_end_beltpath(height=xaxis_beltpath_height_holders, width=xaxis_beltpath_width);
         }
     }
     else if(part=="vit")
@@ -416,13 +416,6 @@ if(false)
 
 if(false)
 {
-    zrod_offset = zmotor_mount_rod_offset_x;
-    for(z=[-1,1])
-    for(z=xaxis_beltpath_z_offsets)
-    translate([0,0,xaxis_end_wz/2])
-    translate([-main_width/2-zrod_offset+xaxis_end_motor_offset[0], xaxis_zaxis_distance_y, z])
-    belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
-
     translate([0, xaxis_zaxis_distance_y, 0])
     {
         for(x=[-1,1])
@@ -434,7 +427,7 @@ if(false)
         }
 
         for(x=[-1,1])
-        translate([0,0,xaxis_end_wz/2])
+        /*translate([0,0,xaxis_end_wz/2])*/
         translate([x*45,25,0])
         translate([x*105,0,0])
         mirror([max(0,x),0,0])

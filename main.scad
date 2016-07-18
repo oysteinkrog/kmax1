@@ -32,7 +32,7 @@ axis_range_x=[0*mm,200*mm];
 axis_pos_x = axis_range_x[0];
 axis_range_y=[0*mm,200*mm];
 axis_pos_y = axis_range_y[0];
-axis_range_z=[98*mm,353*mm];
+axis_range_z=[90*mm,353*mm];
 axis_pos_z = axis_range_z[0];
 
 echo(str("Build area Z: " , axis_range_z[1]-axis_range_z[0] , " mm"));
@@ -52,9 +52,10 @@ module x_axis()
         }
 
         for(x=[-1,1])
-        translate([axis_pos_x+x*148,0,0])
+        translate([axis_pos_x+x*152,0,0])
         {
             // x carriage
+            mirror([min(0,-x),0,0])
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])
             {
                 x_carriage_withmounts(show_vitamins=true, beltpath_offset=x);
