@@ -12,6 +12,7 @@ module gantry_upper_connector()
             hull()
             {
                 // attach to z rod
+                translate(zaxis_rod_offset)
                 translate([zmotor_mount_rod_offset_x,0,0])
                 {
                     rcubea([gantry_connector_thickness, zmotor_mount_clamp_width, extrusion_size+gantry_connector_thickness], align=[-1,0,1]);
@@ -30,6 +31,7 @@ module gantry_upper_connector()
         }
 
         // cut out z rod mounting clamp nut traps and screw holes
+        translate(zaxis_rod_offset)
         translate([zmotor_mount_rod_offset_x, 0, extrusion_size/2])
         for(i=[-1,1])
         {
@@ -55,6 +57,7 @@ module gantry_upper_connector()
         }
 
         // cutout for z rod
+        translate(zaxis_rod_offset)
         translate([zmotor_mount_rod_offset_x,0,extrusion_size])
         cylindera(d=zaxis_rod_d*1.01, h=extrusion_size*3, align=[0,0,0], orient=[0,0,1]);
     }

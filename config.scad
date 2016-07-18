@@ -73,6 +73,7 @@ ziptie_bearing_distance=3*mm;
 xaxis_rod_distance = 60*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
+// relative to entire machine
 xaxis_rod_offset_x = 0*mm;
 xaxis_bearing=bearing_sf1_1010;
 /*xaxis_bearing=bearing_igus_rj4jp_01_10;*/
@@ -128,6 +129,8 @@ yaxis_carriage_size=[220*mm,220*mm,5*mm];
 
 zaxis_rod_d = 11.975*mm;
 zaxis_rod_l = 500*mm;
+// relative to entire machine
+zaxis_rod_offset = [0,-20*mm,0];
 zaxis_bearing=bearing_bronze_12_18_18;
 
 // Nema17 motor w/340mm long 8*mm leadscrew

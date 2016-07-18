@@ -250,6 +250,7 @@ module main()
     translate([0,0,-main_lower_dist_z/2])
     gantry_lower();
 
+    translate(-zaxis_rod_offset)
     gantry_upper();
 
     x_axis();
