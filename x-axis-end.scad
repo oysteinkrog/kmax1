@@ -9,7 +9,7 @@ use <thing_libutils/timing-belts.scad>
 
 motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
-xaxis_end_motor_offset=[xaxis_end_motorsize/2+7*mm,motor_mount_wall_thick-2*mm,0];
+xaxis_end_motor_offset=[xaxis_end_motorsize/2+zaxis_bearing[1]/2-1*mm,motor_mount_wall_thick-2*mm,0];
 xaxis_end_wz = xaxis_rod_distance+zaxis_bearing[2]+5*mm;
 
 // overlap of the X and Z rods
@@ -39,9 +39,17 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false)
     else if(part=="pos")
     {
         if(with_motor)
-        translate([0,0,xaxis_beltpath_z_offsets[beltpath_index]])
-        translate(xaxis_end_motor_offset)
-        rcubea([xaxis_end_motorsize, motor_mount_wall_thick, xaxis_end_motorsize], rounding_radius=3, align=[0,-1,0]);
+        {
+            screw_dist = lookup(NemaDistanceBetweenMountingHoles, xaxis_motor);
+            for(x=[-1,1])
+            for(z=[-1,1])
+            translate([0,0,xaxis_beltpath_z_offsets[beltpath_index]])
+            translate(xaxis_end_motor_offset)
+            {
+                translate([x*screw_dist/2, 0, z*screw_dist/2])
+                cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=[0,1,0], align=[0,-1,0], rounding_radius=2);
+            }
+        }
 
         // nut mount
         mirror([0,0,nut_top?1:0])
@@ -179,8 +187,6 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
                 scale(1.03)
                 cylindera(d=bearing_MR105[1], h=6*mm, orient=[0,1,0], align=[0,-1,0]);
 
-                xaxis_motor_thread=ThreadM3;
-                xaxis_motor_nut=MHexNutM3;
                 for(x=[-1,1])
                 for(z=[-1,1])
                 translate([0,-xaxis_end_motor_offset[1],0])

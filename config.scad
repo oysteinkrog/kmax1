@@ -96,6 +96,8 @@ xaxis_carriage_bearing_offset_y = ziptie_thickness+3*mm;
 xaxis_carriage_beltpath_offset_y = xaxis_carriage_bearing_offset_y+xaxis_bearing[1]/2;
 
 xaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);
+xaxis_motor_thread=ThreadM3;
+xaxis_motor_nut=MHexNutM3;
 
 yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
