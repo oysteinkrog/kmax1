@@ -177,7 +177,7 @@ module x_carriage(mode=undef, quad=false, beltpath_offset=0)
                 xaxis_rod_distance/2
         ])
         {
-            bearing_mount_holes(xaxis_bearing, orient=[1,0,0]);
+            bearing_mount_holes(bearing_type=xaxis_bearing, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
             cubea([xaxis_bearing[2]*2,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
         }
 
@@ -187,7 +187,7 @@ module x_carriage(mode=undef, quad=false, beltpath_offset=0)
                 xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y,
                 -xaxis_rod_distance/2])
         {
-            bearing_mount_holes(xaxis_bearing, orient=[1,0,0]);
+            bearing_mount_holes(bearing_type=xaxis_bearing, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
             cubea([xaxis_bearing[2]*2,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
         }
 

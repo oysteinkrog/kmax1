@@ -134,9 +134,9 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
             translate([0, -xaxis_zaxis_distance_y, 0])
             {
                 bearing_mount_holes(
-                        zaxis_bearing,
-                        ziptie_type,
-                        ziptie_bearing_distance,
+                        bearing_type=zaxis_bearing,
+                        ziptie_type=ziptie_type,
+                        ziptie_bearing_distance=ziptie_bearing_distance,
                         orient=[0,0,1],
                         with_zips=true,
                         show_zips=false

@@ -65,10 +65,10 @@ gantry_connector_thickness = 5;
 
 rod_fit_tolerance=1.01;
 
-ziptie_type = [1.2*mm, 2.8*mm];
+ziptie_type = [2*mm, 3*mm];
 ziptie_thickness = ziptie_type[0];
 ziptie_width = ziptie_type[1]+0.6*mm;
-ziptie_bearing_distance=3*mm;
+ziptie_bearing_distance = 3*mm;
 
 xaxis_rod_distance = 60*mm;
 xaxis_rod_d = 9.975*mm;
