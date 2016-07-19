@@ -692,20 +692,16 @@ module extruder_b(part=undef, with_sensormount=true)
                             // cut for guidler
                             translate(extruder_guidler_mount_off)
                             translate(-[-guidler_mount_off[1],0,guidler_mount_off[2]])
-                            cylindera(d=guidler_bearing[0]*1.5+1*mm, h=guidler_w_cut, orient=[0,1,0], align=[0,0,0]);
+                            cylindera(d=guidler_bearing[0]+4*mm, h=guidler_w_cut, orient=[0,1,0], align=[0,0,0]);
+
+                            guidler_pivot_r=pythag_hyp(abs(guidler_mount_off[1]),abs(guidler_mount_off[2]))+(guidler_bearing[1])/2;
 
                             // cutout pivot to make sure guidler can rotate out
-                            guidler_pivot_r=pythag_hyp(abs(guidler_mount_off[1]),abs(guidler_mount_off[2]))+(guidler_bearing[1])/2;
                             translate([0,-guidler_w_cut/2,0])
                             translate(extruder_guidler_mount_off)
                             translate([0,0,-guidler_mount_d/2])
                             rotate([0,90,90])
                             pie_slice(guidler_pivot_r, 130, 270, guidler_w_cut);
-
-                            /*translate([0,-guidler_w_cut/2,0])*/
-                            /*translate(extruder_guidler_mount_off)*/
-                            /*rotate([0,90,90])*/
-                            /*pie_slice(guidler_pivot_r+4*mm, 125, 270, guidler_w_cut);*/
                         }
                     }
                     translate(extruder_guidler_mount_off)
@@ -918,7 +914,7 @@ module x_extruder_hotend()
 
 }
 
-guidler_bearing = bearing_MR125;
+guidler_bearing = bearing_MR105;
 
 guidler_mount_off = [0,-guidler_bearing[1]/1.8, -guidler_bearing[1]/1.4];
 extruder_guidler_mount_off = [-.3*mm -guidler_mount_off[1]+hobbed_gear_d_outer/2+guidler_bearing[1]/2,0,guidler_mount_off[2]];
@@ -965,7 +961,7 @@ module extruder_guidler()
                 rcubea([guidler_w, guidler_d, guidler_h], align=[0,1,0]);
 
                 // guidler bearing bolt holder
-                cylindera(d=guidler_bearing[0]*1.5,h=guidler_w, orient=[1,0,0], round_radius=2);
+                cylindera(d=guidler_bearing[0]+2*mm,h=guidler_w, orient=[1,0,0], round_radius=2);
             }
 
             hull()
@@ -1009,9 +1005,11 @@ module extruder_guidler()
             cylindera(r=r,h=guidler_d+.2, align=[0,1,0], orient=[0,1,0]);
         }
 
+        bearing_cut_w = guidler_bearing[2]+1*mm;
+
         // port hole to see bearing
-        translate([0,-guidler_bearing[1]/2,0])
-        cubea([guidler_bearing[0]*1.1, 100, guidler_bearing[1]/2], align=[0,0,1]);
+        translate([0,-guidler_bearing[1]/2+2*mm,0])
+        cubea([bearing_cut_w, 100, guidler_bearing[1]/2+2*mm], align=[0,0,1]);
 
         // cutout middle mount point pivot
         translate([0,guidler_mount_off[1], guidler_mount_off[2]])
@@ -1030,8 +1028,7 @@ module extruder_guidler()
         }
 
         // guidler bearing cutout
-        cylindera(d=guidler_bearing[1]*1.1, h=guidler_bearing[2]*1.1, orient=[1,0,0]);
-
+        cylindera(d=guidler_bearing[1]+3*mm, h=guidler_bearing[2]+.5*mm, orient=[1,0,0]);
     }
 
     if(show_extras)
