@@ -435,7 +435,7 @@ if(false)
         for(x=[-1,1])
         /*translate([0,0,xaxis_end_wz/2])*/
         translate([x*45,25,0])
-        translate([x*105,0,0])
+        translate([x*-0,0,0])
         mirror([max(0,x),0,0])
         rotate([0,-90,0])
         xaxis_end_idlerholder(beltpath_index=max(0,x));
