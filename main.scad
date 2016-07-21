@@ -21,6 +21,7 @@ use <gantry-upper-connector.scad>
 use <gantry-lower-connector.scad>
 include <psu.scad>
 use <rod-clamps.scad>
+use <lcd2004.scad>
 
 /*use <scad-utils/trajectory.scad>*/
 /*use <scad-utils/trajectory_path.scad>*/
@@ -257,6 +258,11 @@ module main()
     x_axis();
     y_axis();
     z_axis();
+
+    translate([0,-main_depth/2,0])
+    translate([0,-extrusion_size/2,0])
+    translate([0,0,-main_lower_dist_z/2])
+    mount_lcd2004(show_gantry=true);
 
     if(!preview_mode)
     {

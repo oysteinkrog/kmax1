@@ -156,7 +156,7 @@ module lcd2004_extrusion_conn(part, orient=[0,0,1], align=[0,0,0])
     }
     else if(part=="pos")
     {
-        rcubea(size=s);
+        rcubea(size=s, rounding_radius=3);
     }
     else if(part=="neg")
     {
@@ -165,7 +165,7 @@ module lcd2004_extrusion_conn(part, orient=[0,0,1], align=[0,0,0])
     }
 }
 
-lcd2004_offset = [0, -35*mm,-5*mm];
+lcd2004_offset = [0, -34.2*mm,-5*mm];
 
 module mount_lcd2004(part, show_gantry=false)
 {
@@ -219,7 +219,6 @@ module mount_lcd2004(part, show_gantry=false)
             translate([0,0,-main_lower_dist_z/2])
             {
                 lcd2004_extrusion_conn(part=part, orient=[0,0,-1], align=[-x,0,1]);
-
             }
         }
 
