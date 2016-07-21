@@ -130,8 +130,11 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
         translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
         translate(xaxis_endstop_screw_offset)
         for(y=[-1,1])
-        translate([-5*mm,y*9.5*mm/2,-2*mm])
-        nut_trap_cut(nut=MHexNutM3, screw_l=6*mm, screw_l_extra=0*mm, trap_axis=[-1,0,0], orient=[0,0,1], align=[0,0,-1]);
+        translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size[2]])
+        {
+            screw_cut(nut=MHexNutM2_5, screw_l=6*mm, screw_l_extra=0*mm, embed_head=false, with_head=true, with_nut=false, orient=[0,0,-1], align=[0,0,-1]);
+            /*nut_trap_cut(nut=MHexNutM2_5, screw_l=6*mm, screw_l_extra=0*mm, trap_axis=[-1,0,0], orient=[0,0,1], align=[0,0,-1]);*/
+        }
 
         xaxis_end_beltpath(height=xaxis_beltpath_height_body, width=xaxis_beltpath_width);
 
@@ -250,7 +253,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
                     translate(xaxis_endstop_screw_offset)
                     for(y=[-1,1])
                     translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size[2]])
-                    screw_cut(nut=MHexNutM3, h=10*mm, orient=[0,0,-1], align=[0,0,-1]);
+                    screw(nut=MHexNutM2_5, h=6*mm, orient=[0,0,-1], align=[0,0,-1]);
                 }
             }
         }
