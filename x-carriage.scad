@@ -445,7 +445,8 @@ module extruder_a(part=undef)
 hotmount_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
 hotmount_outer_size_xy=max(vec_i(hotmount_d_h,0))+5*mm;
 hotmount_outer_size_h=max(vec_i(hotmount_d_h,1))+5*mm;
-hotmount_offset_h=-5*mm;
+// relative to hotend mount
+hotmount_clamp_offset = [0, 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2];
 
 // which side does hotend slide in (x-axis, i.e. -1 is left, 1 is right)
 hotmount_tolerance=1.05*mm;
@@ -622,8 +623,7 @@ module extruder_b(part=undef, with_sensormount=true)
             }
 
             // hotmount support
-            translate(extruder_filapath_offset)
-            translate([0,0,-hobbed_gear_d_outer/2 + hotmount_offset_h])
+            translate(hotend_mount_offset)
             {
                 rcubea([extruder_b_w, hotmount_outer_size_xy, hotmount_outer_size_h], align=[0,0,-1]);
 
@@ -632,8 +632,7 @@ module extruder_b(part=undef, with_sensormount=true)
             }
 
             /* support for clamp mount screw holes*/
-            translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
-            translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h])
+            translate(hotend_mount_offset)
             translate([0, 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
             for(x=[-1,1])
             {
@@ -782,8 +781,7 @@ module extruder_b(part=undef, with_sensormount=true)
         translate([-.1,-hobbed_gear_h/2-extruder_b_bearing[2]-.5*mm,0])
         cylindera(h=extruder_shaft_len+.2, d=extruder_shaft_d, orient=[0,1,0], align=[0,1,0]);
 
-        translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
-        translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h+.01])
+        translate(hotend_mount_offset)
         {
             hotend_cut(extend_cut=true);
             hotmount_clamp(part=part);
@@ -796,11 +794,11 @@ module extruder_b(part=undef, with_sensormount=true)
     }
     else if(part=="vit")
     {
+        translate(hotend_mount_offset)
+        hotmount_clamp();
+
         translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
         {
-            translate([hobbed_gear_d_inner/2,0,-hobbed_gear_d_outer/2 + hotmount_offset_h+.01])
-            hotmount_clamp();
-
             translate([-0.1,-hobbed_gear_h/2-extruder_b_bearing[2]-.5*mm,0])
             {
                 cylindera(h=extruder_shaft_len+.2, d=extruder_shaft_d, orient=[0,1,0], align=[0,1,0]);
@@ -900,14 +898,20 @@ module x_carriage_withmounts(show_vitamins=false, beltpath_offset=0)
     }
 }
 
+// as per E3D spec
+hotend_height = 63*mm;
+hotend_mount_offset = extruder_filapath_offset + [0,0,-hobbed_gear_d_outer/2 + -5*mm];
+hotend_mount_conn = [hotend_mount_offset, [0,0,1]];
+hotend_conn = [[0,21.475,0], [0,1,0]];
+
 module x_extruder_hotend()
 {
-    hotend_conn =[[0,0,27.8-hotmount_offset_h],[0,0,1]];
-    translate(extruder_filapath_offset)
-    attach([[0,0,0]], hotend_conn)
-        rotate([90,0,270])
-        %import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
+    import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
 
+    /*translate([0,-20,0])*/
+    /*translate(extruder_offset)*/
+    /*translate(hotend_mount_offset)*/
+    /*cubea([10,10,hotend_height], align=[0,0,-1]);*/
 }
 
 guidler_bearing = bearing_MR105;
@@ -1047,6 +1051,7 @@ module extruder_guidler(part, show_vit=false)
     }
 }
 
+module sensor_LJ12A3_mount(part=undef, height=10,thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
 module sensormount(part=undef, height=10,thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
 {
     align=[0,-1,0];
@@ -1265,9 +1270,13 @@ module x_carriage_extruder(show_vitamins=false, with_sensormount=false)
         rotate([0,0,-90])
         import("stl/E3D_30_mm_Duct.stl");
 
+
         translate([explode[0],-explode[1],explode[2]])
         color(color_hotend)
-        x_extruder_hotend();
+        attach(hotend_mount_conn, hotend_conn, roll=90)
+        {
+            x_extruder_hotend();
+        }
 
         translate([explode[0],-explode[1],explode[2]])
         //filament path
