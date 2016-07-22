@@ -22,6 +22,7 @@ use <gantry-lower-connector.scad>
 include <psu.scad>
 use <rod-clamps.scad>
 use <lcd2004.scad>
+use <power-panel-iec320.scad>
 
 /*use <scad-utils/trajectory.scad>*/
 /*use <scad-utils/trajectory_path.scad>*/
@@ -263,6 +264,12 @@ module main()
     translate([0,-extrusion_size/2,0])
     translate([0,0,-main_lower_dist_z/2])
     mount_lcd2004(show_gantry=true);
+
+    translate([-75*mm,0,0])
+    translate([0,main_depth/2,0])
+    translate([0,extrusion_size,0])
+    translate([0,0,-main_lower_dist_z/2-extrusion_size/2])
+    power_panel_iec320(orient=[0,-1,0], align=[0,1,0]);
 
     if(!preview_mode)
     {
