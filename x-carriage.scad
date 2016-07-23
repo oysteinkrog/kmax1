@@ -941,11 +941,21 @@ extruder_b_guidler_screw_offset_x = 2*mm;
 extruder_b_mount_thickness = 10*mm;
 extruder_b_mount_dia = 11*mm;
 
-module extruder_guidler()
+module extruder_guidler(part, show_vit=false)
 {
-    // everything inside this module is relative to the center of the 
-    // bearing (that clamps the filament)
-    difference()
+    if(part==undef)
+    {
+        difference()
+        {
+            extruder_guidler(part="pos");
+            extruder_guidler(part="neg");
+        }
+        if(show_vit)
+        {
+            extruder_guidler(part="vit");
+        }
+    }
+    else if(part=="pos")
     {
         union()
         {
@@ -988,7 +998,9 @@ module extruder_guidler()
 
             }
         }
-
+    }
+    else if(part=="neg")
+    {
         // cutouts for clamping screws
         for(i=[-1,1])
         translate([i*(guidler_screws_distance),guidler_mount_off[1]-guidler_mount_d/2, extruder_b_guidler_screw_offset_h])
@@ -1026,10 +1038,11 @@ module extruder_guidler()
         // guidler bearing cutout
         cylindera(d=guidler_bearing[1]+3*mm, h=guidler_bearing[2]+.5*mm, orient=[1,0,0]);
     }
-
-    if(show_extras)
+    else if(part=="vit")
     {
-        cylindera(d=guidler_bearing[1], h=guidler_bearing[2], orient=[1,0,0]);
+        bearing(guidler_bearing, orient=[1,0,0]);
+
+        // bearing bolt
         cylindera(d=guidler_bearing[0], h=guidler_bolt_h, orient=[1,0,0]);
     }
 }
@@ -1239,7 +1252,7 @@ module x_carriage_extruder(show_vitamins=false, with_sensormount=false)
         translate(extruder_filapath_offset-[hobbed_gear_d_inner/2,0,0])
         attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
         {
-            extruder_guidler(show_extras=true);
+            extruder_guidler(show_vit=true);
         }
 
         translate([explode[0],-explode[1],explode[2]])
@@ -1296,7 +1309,7 @@ if(false)
     /*guidler_conn_layflat = [ [0, guidler_mount_off[1]-guidler_mount_d/2, guidler_mount_off[2]],  [0,-1,0]]; */
     /*attach([[0*mm,0*mm,0],[0,0,-1]], guidler_conn_layflat)*/
     /*{*/
-        /*extruder_guidler(show_extras=false);*/
+        /*extruder_guidler(show_vit=false);*/
     /*}*/
 
     /*hotmount_clamp();*/
