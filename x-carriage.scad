@@ -108,6 +108,13 @@ echo("Extruder B main shaft length: ", extruder_shaft_len);
 extruder_hotmount_clamp_nut = MHexNutM3;
 extruder_hotmount_clamp_thread = ThreadM3;
 
+module xaxis_carriage_beltpath(height, width, length = 1000, align=[0,0,0], orient=[1,0,0])
+{
+    hull()
+    for(z=[-1,1])
+    translate([0,0,z*height/2])
+    cubea([length,width,width/2], align=align);
+}
 
 module x_carriage(mode=undef, quad=false, beltpath_offset=0)
 {
@@ -195,18 +202,7 @@ module x_carriage(mode=undef, quad=false, beltpath_offset=0)
         {
             difference()
             {
-                union()
-                {
-                    // belt path cutout
-                    rcubea([500,xaxis_beltpath_width*2,xaxis_beltpath_height_body], align=[0,1,0]);
-
-                    // belt path cutout
-                    for(z=xaxis_beltpath_z_offsets)
-                    translate([0, 0, z])
-                    {
-                        rcubea([500,xaxis_beltpath_width*2,xaxis_beltpath_height_body], align=[0,1,0]);
-                    }
-                }
+                xaxis_carriage_beltpath(height=xaxis_beltpath_height_body, width=xaxis_beltpath_width+10*mm, align=[0,1,0], orient=[1,0,0]);
 
                 // to connect belt
                 translate([0,-xaxis_beltpath_width,0])
