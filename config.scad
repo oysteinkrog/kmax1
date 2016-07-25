@@ -80,6 +80,7 @@ xaxis_bearing=bearing_sf1_1010;
 
 xaxis_pulley = pulley_2GT_20T;
 xaxis_pulley_inner_d = xaxis_pulley[2];
+xaxis_pulley_outer_d = xaxis_pulley[3];
 xaxis_idler_pulley = pulley_2GT_20T_idler;
 xaxis_idler_pulley_inner_d = xaxis_idler_pulley[2];
 xaxis_idler_pulley_outer_d = xaxis_idler_pulley[3];
@@ -89,8 +90,8 @@ xaxis_beltpath_width = max(xaxis_belt_width+3*mm, xaxis_pulley[0]+2*mm);
 xaxis_beltpath_z_offset_pulley = xaxis_pulley_inner_d/2;
 /*xaxis_beltpath_z_offsets = [xaxis_beltpath_z_offset_pulley];*/
 xaxis_beltpath_z_offsets = [-2*mm-xaxis_beltpath_z_offset_pulley, 2*mm+xaxis_beltpath_z_offset_pulley];
-xaxis_beltpath_height_body = xaxis_pulley_inner_d/2+v_sum(v_abs(xaxis_beltpath_z_offsets))+3*mm;
-xaxis_beltpath_height_holders = xaxis_pulley_inner_d+xaxis_beltpath_z_offsets[0]+3*mm;
+xaxis_beltpath_height_body = xaxis_pulley_outer_d/2+v_sum(v_abs(xaxis_beltpath_z_offsets))+3*mm;
+xaxis_beltpath_height_holders = max(xaxis_idler_pulley[3], xaxis_pulley_inner_d+xaxis_beltpath_z_offsets[0]+3*mm);
 
 xaxis_carriage_bearing_offset_y = ziptie_thickness+3*mm;
 xaxis_carriage_beltpath_offset_y = xaxis_carriage_bearing_offset_y+xaxis_bearing[1]/2;

@@ -416,7 +416,10 @@ if(false)
                 translate([x*95, xaxis_zaxis_distance_y, 0])
                 mirror([0,0,max(0,x)])
                 mirror([max(0,x),0,0])
-                xaxis_end_idlerholder();
+                {
+                    xaxis_end_idlerholder();
+                    xaxis_end_idlerholder(part="vit");
+                }
             }
         }
     }
