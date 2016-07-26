@@ -242,7 +242,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
         }
 
         //endstop
-        %if($show_vit)
+        if($show_vit)
         {
             translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
             {
@@ -258,7 +258,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
             }
         }
 
-        %if(show_nut)
+        if(show_nut)
         {
             mirror([0,0,nut_top?1:0])
             translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2-zaxis_nut[3]])
@@ -266,7 +266,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
         }
 
 
-        %if(show_rods)
+        if(show_rods)
         {
             for(z=[-1,1])
                 translate([0,0,z*xaxis_rod_distance/2])
@@ -274,7 +274,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=false, beltpath_index=0, sh
                 cylindera(d=zaxis_rod_d, h=zaxis_rod_l, orient=[0,0,1]);
         }
 
-        %if(show_bearings)
+        if(show_bearings)
         {
             for(z=[-1,1])
             translate([0,0,z*xaxis_rod_distance/2])
@@ -349,7 +349,7 @@ module xaxis_end_idlerholder(part, width=xaxis_beltpath_width, length=10, beltpa
     }
     else if(part=="vit")
     {
-        %translate([0,0,-xaxis_beltpath_z_offsets[max(0,beltpath_index)]])
+        translate([0,0,-xaxis_beltpath_z_offsets[max(0,beltpath_index)]])
         translate([width/2,0,0])
         pulley(xaxis_idler_pulley, orient=[0,1,0]);
     }
