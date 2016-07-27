@@ -24,7 +24,8 @@ xaxis_carriage_mount_screws = ThreadM4;
 
 xaxis_carriage_conn = [[0, -xaxis_bearing[1]/2 - xaxis_carriage_bearing_offset_y,0], [0,0,0]];
 
-xaxis_carriage_beltfasten_w = 8*mm;
+xaxis_carriage_beltfasten_w = 11*mm;
+xaxis_carriage_beltfasten_h = 4*mm;
 xaxis_carriage_beltfasten_dist = xaxis_carriage_beltfasten_w/2+2*mm;
 
 xaxis_carriage_thickness = xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_y;
@@ -170,7 +171,7 @@ module x_carriage(mode=undef, beltpath_offset=0)
             z=xaxis_beltpath_z_offsets[beltpath_offset];
             translate([x*xaxis_carriage_beltfasten_dist, 0, z-sign(z)*(xaxis_beltpath_z_offset_pulley+1*mm)])
             {
-                rcubea([xaxis_carriage_beltfasten_w,xaxis_beltpath_width*2,xaxis_beltpath_height_body/4], align=[0,1,sign(z)]);
+                rcubea([xaxis_carriage_beltfasten_w,xaxis_beltpath_width*2,xaxis_carriage_beltfasten_h], align=[0,1,sign(z)]);
             }
         }
     }
@@ -209,7 +210,7 @@ module x_carriage(mode=undef, beltpath_offset=0)
                     z=xaxis_beltpath_z_offsets[beltpath_offset];
                     translate([x*xaxis_carriage_beltfasten_dist, 0, z-sign(z)*(xaxis_beltpath_z_offset_pulley+1*mm)])
                     {
-                        rcubea([xaxis_carriage_beltfasten_w,xaxis_beltpath_width*2,xaxis_beltpath_height_body/4], align=[0,1,sign(z)]);
+                        rcubea([xaxis_carriage_beltfasten_w,xaxis_beltpath_width*2,xaxis_carriage_beltfasten_h], align=[0,1,sign(z)]);
                     }
                 }
             }
