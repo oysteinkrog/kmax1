@@ -256,7 +256,7 @@ module extruder_gear_small()
 module extruder_gear_big(align=[0,0,0], orient=[0,0,1])
 {
     total_h = extruder_gear_big_h[0]+extruder_gear_big_h[1];
-    size_align([extruder_gear_big_PD, extruder_gear_big_PD, total_h], align=align, orient=orient)
+    size_align([extruder_gear_big_PD, extruder_gear_big_PD, total_h], align=align, orient=orient, orient_ref=[0,0,1])
     translate([0,0,-extruder_gear_big_h[0] + total_h/2])
     difference()
     {
@@ -278,16 +278,16 @@ module extruder_a_motor_mount_cut(motor=Nema17, h=10*mm)
     // round dia
     translate([0, .1, 0])
     {
-        cylindera(d=1.1*lookup(NemaRoundExtrusionDiameter, motor), h=2*mm, orient=[0,1,0], align=[0,1,0]);
+        cylindera(d=1.1*lookup(NemaRoundExtrusionDiameter, motor), h=2*mm, orient=[0,1,0], align=[0,-1,0]);
 
         translate([0,-2*mm+.1,0])
-        cylindera(d1=1.1*lookup(NemaRoundExtrusionDiameter, motor),d2=lookup(NemaRoundExtrusionDiameter, motor)*mm/1.5, h=h/2, orient=[0,1,0], align=[0,1,0]);
+        cylindera(d1=1.1*lookup(NemaRoundExtrusionDiameter, motor),d2=lookup(NemaRoundExtrusionDiameter, motor)*mm/1.5, h=h/2, orient=[0,1,0], align=[0,-1,0]);
 
         translate([0,-2*mm+.1-h/2+.1,0])
-        cylindera(d=0.5*lookup(NemaRoundExtrusionDiameter, motor), h=h/2, orient=[0,1,0], align=[0,1,0]);
+        cylindera(d=0.5*lookup(NemaRoundExtrusionDiameter, motor), h=h/2, orient=[0,1,0], align=[0,-1,0]);
 
         // motor axle
-        cylindera(d=1.2*lookup(NemaAxleDiameter, motor), h=lookup(NemaFrontAxleLength, motor)+2*mm, orient=[0,1,0], align=[0,1,0]);
+        cylindera(d=1.2*lookup(NemaAxleDiameter, motor), h=lookup(NemaFrontAxleLength, motor)+2*mm, orient=[0,1,0], align=[0,-1,0]);
     }
 
     motor_thread=ThreadM3;
@@ -326,10 +326,20 @@ module extruder_a(part=undef)
                 for(z=[-1,1])
                 translate([(extruder_motor_holedist/2)*x,0,(extruder_motor_holedist/2)*z])
                 rotate([0,x*extruder_motor_mount_angle,0])
-                rcubea([side/2,extruder_a_h,side/2], align=[0,1,0]);
+                cylindera(d=extruder_b_mount_dia, h=extruder_a_h, orient=[0,1,0], align=[0,1,0]);
             }
+
+            // support round big gear, needed?
+            /*translate(extruder_gear_big_offset)*/
+            /*cylindera(d=extruder_gear_big_OD+2*mm+5*mm, h=extruder_a_h, orient=[0,1,0], align=[0,1,0], round_radius=2);*/
+
+            // support around bearing
+            translate([0,extruder_a_h,0])
+            translate([0,-extruder_gear_motor_dist,0])
             translate(extruder_gear_big_offset)
-            cylindera(d=extruder_gear_big_OD+2*mm+5*mm, h=extruder_a_h, orient=[0,1,0], align=[0,1,0], round_radius=2);
+            translate(extruder_a_bearing_offset_y)
+            scale(1.02)
+            cylindera(d=extruder_a_bearing[1]+5*mm, h=extruder_a_bearing[2], orient=[0,1,0], align=[0,-1,0]);
         }
     }
     else if(part=="support")
@@ -343,19 +353,19 @@ module extruder_a(part=undef)
     else if(part=="neg")
     {
         //cutouts for access to small gear tightscrew
-        for(i=[-1,1])
-            rotate([0,i*extruder_motor_mount_angle,0])
-                translate([0,0,lookup(NemaSideSize, extruder_motor)/2])
-                translate([0,extruder_a_h,0])
-                cylindera(d=15*mm, h=lookup(NemaSideSize, extruder_motor)/2, orient=[0,0,1], align=[0,0,-1]);
+        for(i=[-1:1])
+        rotate([0,i*90,0])
+        translate([0,0,lookup(NemaSideSize, extruder_motor)/2])
+        translate([0,extruder_a_h,0])
+        teardrop(d=17*mm, h=lookup(NemaSideSize, extruder_motor)/2, orient=[0,0,1], roll=90, align=[0,0,-1]);
 
         //cutouts for access to big gear tightscrew
-        translate(extruder_gear_big_offset)
-            translate([0,extruder_gear_big_h[0],0])
-            translate([1,extruder_gear_big_h[1]/2+1*mm,0])
-            for(i=[0:6])
-                rotate([0,20+i*-35,0])
-                    cylindera(d=9*mm, h=1000, orient=[1,0,0], align=[-1,0,0]);
+        /*translate(extruder_gear_big_offset)*/
+        /*translate([0,extruder_gear_big_h[0],0])*/
+        /*translate([1,extruder_gear_big_h[1]/2+1*mm,0])*/
+        /*for(i=[0:6])*/
+        /*rotate([0,20+i*-35,0])*/
+        /*teardrop(d=9*mm, h=1000, orient=[1,0,0], align=[-1,0,0], roll=90);*/
 
         translate([0,extruder_a_h,0])
         {
@@ -365,20 +375,15 @@ module extruder_a(part=undef)
                 // big gear cutout
                 translate([0,-between_bearing_and_gear,0])
                 translate([0,-extruder_a_bearing[2],0])
-                translate([0,-extruder_gear_big_h[1],0])
                 {
-                    translate([0,2*mm,0])
-                        cylindera(d=extruder_gear_big_OD+2*mm, h=extruder_a_h+.2, orient=[0,1,0], align=[0,1,0]);
-
-                    translate([0,-.1,0])
-                        cylindera(d=10.25*mm+2*mm, h=extruder_gear_big_h[1]+.2*mm, orient=[0,1,0], align=[0,-1,0]);
+                    cylindera(d=extruder_gear_big_OD+5*mm, h=extruder_a_h+.2, orient=[0,1,0], align=[0,-1,0]);
                 }
 
-                cylindera(d=extruder_shaft_d+1*mm, h=extruder_a_h+.2, orient=[0,1,0], align=[0,1,0]);
+                cylindera(d=extruder_shaft_d+1*mm, h=extruder_a_h+.2, orient=[0,1,0], align=[0,-1,0]);
 
                 translate(extruder_a_bearing_offset_y)
                 scale(1.02)
-                cylindera(d=extruder_a_bearing[1], h=10*mm, orient=[0,1,0], align=[0,1,0]);
+                cylindera(d=extruder_a_bearing[1], h=1000*mm, orient=[0,1,0], align=[0,-1,0]);
             }
 
             rotate([0,-extruder_motor_mount_angle,0])
@@ -396,6 +401,10 @@ module extruder_a(part=undef)
                 // big gear
                 translate(extruder_gear_big_offset)
                 {
+                    translate([0,-between_bearing_and_gear,0])
+                    translate([0,-extruder_a_bearing[2],0])
+                    extruder_gear_big(orient=-YAXIS, align=-YAXIS);
+
                     // bearing
                     translate(extruder_a_bearing_offset_y)
                     bearing(extruder_a_bearing, orient=[0,1,0], align=[0,-1,0]);
