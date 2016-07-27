@@ -75,7 +75,8 @@ xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
 // relative to entire machine
 xaxis_rod_offset_x = 0*mm;
-xaxis_bearing=bearing_sf1_1010;
+xaxis_bearing=bearing_bronze_10_16_12;
+xaxis_bearing_bottom=bearing_bronze_10_16_18;
 /*xaxis_bearing=bearing_igus_rj4jp_01_10;*/
 
 xaxis_pulley = pulley_2GT_20T;

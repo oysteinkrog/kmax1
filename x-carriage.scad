@@ -116,11 +116,10 @@ module xaxis_carriage_beltpath(height, width, length = 1000, align=[0,0,0], orie
     cubea([length,width,width/2], align=align);
 }
 
-module x_carriage(mode=undef, quad=false, beltpath_offset=0)
+module x_carriage(mode=undef, beltpath_offset=0)
 {
     top_width = xaxis_bearing[2]*2 + xaxis_carriage_bearing_distance + 2*xaxis_carriage_padding;
-    bottom_width = quad ? top_width : xaxis_bearing[2] + 2*xaxis_carriage_padding;
-
+    bottom_width = xaxis_bearing_bottom[2] + 2*xaxis_carriage_padding;
 
     if(mode==undef)
     {
@@ -136,13 +135,13 @@ module x_carriage(mode=undef, quad=false, beltpath_offset=0)
         {
             // top bearings
             translate([0,0,xaxis_rod_distance/2])
-                rcubea([top_width, xaxis_carriage_thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+            rcubea([top_width, xaxis_carriage_thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
             /*rcubea([top_width,xaxis_carriage_thickness,xaxis_rod_distance/2], align=[0,1,0]);*/
 
             // bottom bearing
             translate([0,0,-xaxis_rod_distance/2])
-                rcubea([bottom_width, xaxis_carriage_thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+            rcubea([bottom_width, xaxis_carriage_thickness, xaxis_bearing_bottom[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
             /// support for extruder mount
             translate(extruder_offset)
@@ -188,14 +187,13 @@ module x_carriage(mode=undef, quad=false, beltpath_offset=0)
             cubea([xaxis_bearing[2]*2,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
         }
 
-        for(i=quad?[-1,1]:[0])
         translate([
-                i*(xaxis_bearing[2]/2+xaxis_carriage_bearing_distance/2),
-                xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y,
+                0,
+                xaxis_bearing_bottom[1]/2+xaxis_carriage_bearing_offset_y,
                 -xaxis_rod_distance/2])
         {
-            bearing_mount_holes(bearing_type=xaxis_bearing, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
-            cubea([xaxis_bearing[2]*2,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
+            bearing_mount_holes(bearing_type=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
+            cubea([xaxis_bearing_bottom[2]*2,xaxis_bearing_bottom[1]/2+10,xaxis_bearing_bottom[1]+1*mm], align=[0,1,0]);
         }
 
         translate([0,xaxis_carriage_beltpath_offset_y+.1-xaxis_beltpath_width/2,0])
@@ -227,13 +225,12 @@ module x_carriage(mode=undef, quad=false, beltpath_offset=0)
         ])
             bearing(xaxis_bearing, orient=[1,0,0]);
 
-        for(i=quad?[-1,1]:[0])
         translate([
-                i*(xaxis_bearing[2]/2+xaxis_carriage_bearing_distance/2),
-                xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_y,
+                0,
+                xaxis_bearing_bottom[1]/2 + xaxis_carriage_bearing_offset_y,
                 -xaxis_rod_distance/2
         ])
-            bearing(xaxis_bearing, orient=[1,0,0]);
+            bearing(xaxis_bearing_bottom, orient=[1,0,0]);
     }
 }
 
