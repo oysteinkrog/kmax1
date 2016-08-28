@@ -2,6 +2,7 @@ include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
 
 use <thing_libutils/shapes.scad>
+use <thing_libutils/metric-screw.scad>
 
 include <config.scad>
 include <rod-clamps.scad>
@@ -87,12 +88,9 @@ module zaxis_motor_mount(show_motor=false)
         // cut out z rod mounting clamp nut traps
         for(i=[-1,1])
         {
-            translate([zmotor_mount_rod_offset_x-7, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
+            translate([zmotor_mount_rod_offset_x-5, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
             {
-                cubea([zmotor_mount_clamp_nut_thick*1.3, zmotor_mount_clamp_nut_dia*1.1, zmotor_mount_clamp_nut_dia*1.01], extrasize=[0,0,zmotor_mount_thickness_h], extrasize_align=[0,0,1]);
-
-                translate([-zmotor_mount_clamp_nut_thick*1.3/2,0,0])
-                cylindera(d=zmotor_mount_clamp_thread_dia, h=20, orient=[1,0,0], align=[1,0,0]);
+                #nut_trap_cut(nut=zmotor_mount_clamp_nut, h=10, head_embed=false, trap_h=10, screw_l_extra=2*mm, trap_axis=[0,0,1], orient=[1,0,0], align=[0,0,0]);
             }
         }
 
