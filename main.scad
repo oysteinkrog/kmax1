@@ -80,11 +80,6 @@ module x_axis()
             {
                 mirror([max(0,x),0,0])
                 xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
-
-                translate([x*25, 0, 0])
-                mirror([0,0,max(0,x)])
-                mirror([max(0,x),0,0])
-                xaxis_end_idlerholder();
             }
         }
     }
