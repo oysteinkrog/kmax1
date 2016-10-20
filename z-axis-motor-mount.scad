@@ -23,37 +23,37 @@ module zaxis_motor_mount(show_motor=false)
                 union()
                 {
                     // top plate
-                    cubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
+                    rcubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
                     translate([zmotor_mount_rod_offset_x, 0, 0])
                     {
-                        cubea([gantry_connector_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
+                        rcubea([gantry_connector_thickness+5, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
                     }
 
                     // reinforcement plate between motor and extrusion
-                    cubea([zmotor_mount_thickness, zmotor_w, zmotor_h], align=[1,0,-1]);
+                    rcubea([zmotor_mount_thickness, zmotor_w+2, zmotor_h], align=[1,0,-1], extrasize=[0,0,2], extrasize_align=[0,0,1]);
 
                     // top extrusion mount plate
                     translate([0, 0,-extrusion_size-zaxis_motor_offset_z])
-                        cubea([zmotor_mount_thickness, zmotor_mount_width, extrusion_size], align=[1,0,1]);
+                        rcubea([zmotor_mount_thickness, zmotor_mount_width, extrusion_size], align=[1,0,1]);
 
                     // bottom extrusion mount plate
                     translate([0, 0, -main_lower_dist_z-extrusion_size-zaxis_motor_offset_z])
-                        cubea([zmotor_mount_thickness, zmotor_w, extrusion_size], align=[1,0,1]);
+                        rcubea([zmotor_mount_thickness, zmotor_w+2, extrusion_size], align=[1,0,1]);
 
                     // side triangles
                     for(i=[-1,1])
                     {
-                        translate([zmotor_mount_thickness, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
+                        translate([zmotor_mount_thickness, i*((zmotor_w/2)+zmotor_mount_thickness/2), 2])
                             triangle(
                                     zmotor_mount_rod_offset_x-zmotor_mount_thickness,
-                                    main_lower_dist_z+extrusion_size+zaxis_motor_offset_z,
+                                    main_lower_dist_z+extrusion_size+zaxis_motor_offset_z+2,
                                     depth=zmotor_mount_thickness,
                                     align=[1,0,-1],
                                     orient=[1,0,0]
                                     );
 
-                        translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 0])
-                            cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h], align=[1,0,-1]);
+                        translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 2])
+                            cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h+2], align=[1,0,-1]);
                     }
 
                 }
@@ -90,7 +90,7 @@ module zaxis_motor_mount(show_motor=false)
         {
             translate([zmotor_mount_rod_offset_x-5, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
             {
-                #nut_trap_cut(nut=zmotor_mount_clamp_nut, h=10, head_embed=false, trap_h=10, screw_l_extra=2*mm, trap_axis=[0,0,1], orient=[1,0,0], align=[0,0,0]);
+                nut_trap_cut(nut=zmotor_mount_clamp_nut, h=10, head_embed=false, trap_h=10, screw_l_extra=2*mm, trap_axis=[0,0,1], orient=[1,0,0], align=[0,0,0]);
             }
         }
 
@@ -105,18 +105,21 @@ module zaxis_motor_mount(show_motor=false)
     }
 }
 
-/*print = true;*/
-/*if(print)*/
-/*{*/
-    /*rotate([0,-90,0])*/
-        /*zaxis_motor_mount();*/
+/*if(false)*/
+/*zaxis_motor_mount();*/
 
-    /*translate([-25,0,zmotor_mount_thickness_h/2])*/
-        /*mount_rod_clamp_half(*/
-                /*rod_d=zaxis_rod_d,*/
-                /*screw_dist=zmotor_mount_clamp_dist,*/
-                /*thick=5,*/
-                /*base_thick=5,*/
-                /*width=zmotor_mount_thickness_h,*/
-                /*thread=zmotor_mount_clamp_thread);*/
-/*}*/
+print = false;
+if(print)
+{
+    rotate([0,-90,0])
+        zaxis_motor_mount();
+
+    translate([-25,0,zmotor_mount_thickness_h/2])
+        mount_rod_clamp_half(
+                rod_d=zaxis_rod_d,
+                screw_dist=zmotor_mount_clamp_dist,
+                thick=5,
+                base_thick=5,
+                width=zmotor_mount_thickness_h,
+                thread=zmotor_mount_clamp_thread);
+}
