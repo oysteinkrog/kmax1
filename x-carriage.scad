@@ -81,7 +81,7 @@ extruder_b_mount_offsets=[
 
 extruder_a_bearing_offset_y = [0,-.5*mm,0];
 
-extruder_motor_mount_angle = 0;
+extruder_motor_mount_angle = 45;
 
 // dist between gear and motor
 extruder_gear_motor_dist = .5*mm;
@@ -92,7 +92,7 @@ extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_moto
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
-extruder_offset = [-extruder_filapath_offset[0],0,17*mm];
+extruder_offset = [-extruder_filapath_offset[0],0,21.5*mm];
 extruder_offset_a = -extruder_gear_big_offset+[
     0,
     xaxis_bearing[1] + xaxis_carriage_bearing_offset_y + .2*mm,
@@ -108,12 +108,12 @@ echo("Extruder B main shaft length: ", extruder_shaft_len);
 extruder_hotmount_clamp_nut = MHexNutM3;
 extruder_hotmount_clamp_thread = ThreadM3;
 
-module xaxis_carriage_beltpath(height, width, length = 1000, align=[0,0,0], orient=[1,0,0])
+module xaxis_carriage_beltpath(height, width, length = 1000, orient=[1,0,0])
 {
     hull()
     for(z=[-1,1])
     translate([0,0,z*height/2])
-    cubea([length,width,width/2], align=align);
+    cubea([length,width,width/2], align=[0,1,-z]);
 }
 
 module x_carriage(mode=undef, beltpath_offset=0)
@@ -162,6 +162,13 @@ module x_carriage(mode=undef, beltpath_offset=0)
                 }
             }
 
+            /*if(with_sensor_SN04_mount)*/
+            /*{*/
+                /*translate(extruder_offset)*/
+                /*translate(extruder_b_sensor_SN04_mount_offset)*/
+                /*translate(sensor_SN04_mount_offset)*/
+                /*cubea([sensor_SN04_size[0], 5*mm, 10*mm], align=[0,1,0]);*/
+            /*}*/
         }
 
         // to connect belt
@@ -200,7 +207,7 @@ module x_carriage(mode=undef, beltpath_offset=0)
         {
             difference()
             {
-                xaxis_carriage_beltpath(height=xaxis_beltpath_height_body, width=xaxis_beltpath_width+10*mm, align=[0,1,0], orient=[1,0,0]);
+                xaxis_carriage_beltpath(height=xaxis_beltpath_height_body, width=xaxis_beltpath_width+10*mm, orient=[1,0,0]);
 
                 // to connect belt
                 translate([0,-xaxis_beltpath_width,0])
@@ -352,6 +359,7 @@ module extruder_a(part=undef)
     else if(part=="neg")
     {
         //cutouts for access to small gear tightscrew
+        rotate([0,extruder_motor_mount_angle,0])
         for(i=[-1:1])
         rotate([0,i*90,0])
         translate([0,0,lookup(NemaSideSize, extruder_motor)/2])
@@ -523,7 +531,7 @@ module hotmount_clamp(part=undef)
         translate([0, 0, 0-hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
         for(i=[-1,1])
         translate([i*hotmount_clamp_screws_dist, 0, 0])
-        screw_cut(nut=extruder_hotmount_clamp_thread, h=30*mm, nut_offset=0*mm, head_embed=false, orient=[0,1,0], align=[0,1,0]);
+        screw_cut(thread=extruder_hotmount_clamp_thread, h=30*mm, nut_offset=0*mm, head_embed=false, orient=[0,1,0], align=[0,1,0]);
     }
 }
 
@@ -534,7 +542,7 @@ module hotmount_clamp_cut()
     translate([0, 0, 0-hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
     for(i=[-1,1])
     translate([i*hotmount_clamp_screws_dist, 0, 0])
-    screw_cut(nut=extruder_hotmount_clamp_thread, h=30*mm, nut_offset=0*mm, head_embed=false, orient=[0,1,0], align=[0,1,0]);
+    screw_cut(thread=extruder_hotmount_clamp_thread, h=30*mm, nut_offset=0*mm, head_embed=false, orient=[0,1,0], align=[0,1,0]);
 
     // hotmount clamp cutout
     translate([0, -hotmount_clamp_offset-extruder_filapath_offset[1], 0])
@@ -1058,6 +1066,9 @@ module extruder_guidler(part, show_vit=false)
 }
 
 module sensor_LJ12A3_mount(part=undef, height=10,thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
+{
+}
+
 module sensormount(part=undef, height=10,thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
 {
     align=[0,-1,0];
@@ -1220,8 +1231,8 @@ color_filament = [0,0,0, alpha];
 /*extruder_b_sensormount_offset=[35,-7,-41];*/
 extruder_b_sensormount_offset=[-25,-7,-41];
 
-explode=[0,0,0];
-/*explode=[0,10,0];*/
+/*explode=[0,0,0];*/
+explode=[0,10,0];
 
 module x_carriage_full(show_vitamins=true)
 {
@@ -1266,20 +1277,19 @@ module x_carriage_extruder(show_vitamins=false, with_sensormount=false)
             extruder_guidler(show_vit=true);
         }
 
-        translate([explode[0],-explode[1],explode[2]])
-        translate([-95,53,20])
-        rotate([-152,0,0])
-        import("stl/E3D_40_mm_Duct.stl");
+        /*translate([explode[0],-explode[1],explode[2]])*/
+        /*translate([-95,53,20])*/
+        /*rotate([-152,0,0])*/
+        /*import("stl/E3D_40_mm_Duct.stl");*/
 
-        translate([explode[0],-explode[1],explode[2]])
-        translate([-123.5,78.5,-54])
-        rotate([0,0,-90])
-        import("stl/E3D_30_mm_Duct.stl");
-
+        /*translate([explode[0],-explode[1],explode[2]])*/
+        /*translate([-123.5,78.5,-54])*/
+        /*rotate([0,0,-90])*/
+        /*import("stl/E3D_30_mm_Duct.stl");*/
 
         translate([explode[0],-explode[1],explode[2]])
         color(color_hotend)
-        attach(hotend_mount_conn, hotend_conn, roll=90)
+        attach(hotend_mount_conn, hotend_conn, roll=-90)
         {
             x_extruder_hotend();
         }
