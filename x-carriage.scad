@@ -21,6 +21,9 @@ xaxis_carriage_mount_offset_z = 0*mm;
 xaxis_carriage_teeth_height=xaxis_belt_width*1.5;
 xaxis_carriage_mount_screws = ThreadM4;
 
+xaxis_carriage_top_width = xaxis_bearing[2]*xaxis_bearings_top + xaxis_carriage_bearing_distance*(xaxis_bearings_top-1) + xaxis_carriage_padding*2;
+xaxis_carriage_bottom_width = xaxis_bearing_bottom[2]*xaxis_bearings_bottom + xaxis_carriage_bearing_distance*(xaxis_bearings_bottom-1) + 2*xaxis_carriage_padding;
+
 xaxis_carriage_conn = [[0, -xaxis_bearing[1]/2 - xaxis_carriage_bearing_offset_y,0], [0,0,0]];
 
 xaxis_carriage_beltfasten_w = 11*mm;
@@ -118,8 +121,8 @@ module xaxis_carriage_beltpath(height, width, length = 1000, orient=[1,0,0])
 
 module x_carriage(mode=undef, beltpath_offset=0)
 {
-    top_width = xaxis_bearing[2]*2 + xaxis_carriage_bearing_distance + 2*xaxis_carriage_padding;
-    bottom_width = xaxis_bearing_bottom[2] + 2*xaxis_carriage_padding;
+    top_width = xaxis_bearing[2]*xaxis_bearings_top + xaxis_carriage_bearing_distance*(xaxis_bearings_top-1) + xaxis_carriage_padding*2;
+    bottom_width = xaxis_bearing_bottom[2]*xaxis_bearings_bottom + xaxis_carriage_bearing_distance*(xaxis_bearings_top-1) + 2*xaxis_carriage_padding;
 
     if(mode==undef)
     {
@@ -183,24 +186,29 @@ module x_carriage(mode=undef, beltpath_offset=0)
     }
     else if(mode=="neg")
     {
-        for(i=[-1,1])
-        translate([
-                i*(xaxis_bearing[2]/2+xaxis_carriage_bearing_distance/2),
-                xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y, 
-                xaxis_rod_distance/2
-        ])
+        for(x=[-1,1])
         {
-            bearing_mount_holes(bearing_type=xaxis_bearing, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
-            cubea([xaxis_bearing[2]*2,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
-        }
+            dist_top = (xaxis_bearings_top-1) * (xaxis_carriage_bearing_distance+xaxis_bearing[2])/2;
+            translate([
+                    x*dist_top,
+                    xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y,
+                    xaxis_rod_distance/2
+            ])
+            {
+                bearing_mount_holes(bearing_type=xaxis_bearing, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
+                cubea([xaxis_bearing[2]*2,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
+            }
 
-        translate([
-                0,
-                xaxis_bearing_bottom[1]/2+xaxis_carriage_bearing_offset_y,
-                -xaxis_rod_distance/2])
-        {
-            bearing_mount_holes(bearing_type=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
-            cubea([xaxis_bearing_bottom[2]*2,xaxis_bearing_bottom[1]/2+10,xaxis_bearing_bottom[1]+1*mm], align=[0,1,0]);
+            dist_bot = (xaxis_bearings_bottom-1) * (xaxis_carriage_bearing_distance+xaxis_bearing[2])/2;
+            for(x=[-1,1])
+            translate([
+                    x*dist_bot,
+                    xaxis_bearing_bottom[1]/2+xaxis_carriage_bearing_offset_y,
+                    -xaxis_rod_distance/2])
+            {
+                bearing_mount_holes(bearing_type=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
+                cubea([xaxis_bearing_bottom[2]*2,xaxis_bearing_bottom[1]/2+10,xaxis_bearing_bottom[1]+1*mm], align=[0,1,0]);
+            }
         }
 
         translate([0,xaxis_carriage_beltpath_offset_y+.1-xaxis_beltpath_width/2,0])
@@ -225,19 +233,23 @@ module x_carriage(mode=undef, beltpath_offset=0)
     else if(mode=="vit")
     {
         for(x=[-1,1])
-        translate([
-                x*(xaxis_carriage_bearing_distance+xaxis_bearing[2])/2,
+        {
+            dist_top = (xaxis_bearings_top-1) * (xaxis_carriage_bearing_distance+xaxis_bearing[2])/2;
+            translate([
+                x*dist_top,
                 xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_y,
                 xaxis_rod_distance/2
-        ])
+            ])
             bearing(xaxis_bearing, orient=[1,0,0]);
 
-        translate([
-                0,
+            dist_bot = (xaxis_bearings_bottom-1) * (xaxis_carriage_bearing_distance+xaxis_bearing[2])/2;
+            translate([
+                x*dist_bot,
                 xaxis_bearing_bottom[1]/2 + xaxis_carriage_bearing_offset_y,
                 -xaxis_rod_distance/2
-        ])
+            ])
             bearing(xaxis_bearing_bottom, orient=[1,0,0]);
+        }
     }
 }
 
