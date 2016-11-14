@@ -53,10 +53,14 @@ module x_axis()
             belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
         }
 
+        // x carriage
         for(x=[-1,1])
-        translate([axis_pos_x+x*152,0,0])
+        translate([axis_pos_x+x*151,0,0])
         {
-            // x carriage
+            xo = x==-1? 255*mm : 0*mm;
+
+            translate([xo,0,0])
+
             mirror([min(0,-x),0,0])
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])
             {
