@@ -260,11 +260,6 @@ module main()
     y_axis();
     z_axis();
 
-    translate([0,-main_depth/2,0])
-    translate([0,-extrusion_size/2,0])
-    translate([0,0,-main_lower_dist_z/2])
-    mount_lcd2004(show_gantry=true);
-
     translate([-75*mm,0,0])
     translate([0,main_depth/2,0])
     translate([0,extrusion_size,0])
@@ -273,6 +268,11 @@ module main()
 
     if(!preview_mode)
     {
+        translate([0,-main_depth/2,0])
+        translate([0,-extrusion_size/2,0])
+        translate([0,0,-main_lower_dist_z/2])
+        mount_lcd2004(show_gantry=true);
+
         for(x=[-1,1])
         translate([x*(main_width/2-extrusion_size),main_depth/2,-main_lower_dist_z-extrusion_size])
         {
