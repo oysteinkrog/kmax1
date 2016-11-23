@@ -121,9 +121,6 @@ module xaxis_carriage_beltpath(height, width, length = 1000, orient=[1,0,0])
 
 module x_carriage(mode=undef, beltpath_offset=0)
 {
-    top_width = xaxis_bearing[2]*xaxis_bearings_top + xaxis_carriage_bearing_distance*(xaxis_bearings_top-1) + xaxis_carriage_padding*2;
-    bottom_width = xaxis_bearing_bottom[2]*xaxis_bearings_bottom + xaxis_carriage_bearing_distance*(xaxis_bearings_top-1) + 2*xaxis_carriage_padding;
-
     if(mode==undef)
     {
         difference()
@@ -138,13 +135,13 @@ module x_carriage(mode=undef, beltpath_offset=0)
         {
             // top bearings
             translate([0,0,xaxis_rod_distance/2])
-            rcubea([top_width, xaxis_carriage_thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+            rcubea([xaxis_carriage_top_width, xaxis_carriage_thickness, xaxis_bearing[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
-            /*rcubea([top_width,xaxis_carriage_thickness,xaxis_rod_distance/2], align=[0,1,0]);*/
+            /*rcubea([xaxis_carriage_top_width,xaxis_carriage_thickness,xaxis_rod_distance/2], align=[0,1,0]);*/
 
             // bottom bearing
             translate([0,0,-xaxis_rod_distance/2])
-            rcubea([bottom_width, xaxis_carriage_thickness, xaxis_bearing_bottom[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
+            rcubea([xaxis_carriage_bottom_width, xaxis_carriage_thickness, xaxis_bearing_bottom[1]+xaxis_carriage_padding+ziptie_bearing_distance*2], align=[0,1,0]);
 
             /// support for extruder mount
             translate(extruder_offset)
@@ -970,6 +967,8 @@ extruder_b_guidler_screw_offset_x = 2*mm;
 
 extruder_b_mount_thickness = 10*mm;
 extruder_b_mount_dia = 7*mm;
+
+x_carriage_w = max(xaxis_carriage_top_width, xaxis_carriage_bottom_width, sqrt(2)*(extruder_motor_holedist+extruder_b_mount_dia));
 
 module extruder_guidler(part, show_vit=false)
 {

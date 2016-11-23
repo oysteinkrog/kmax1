@@ -30,8 +30,10 @@ use <power-panel-iec320.scad>
 /*use <scad-utils/shapes.scad>*/
 /*use <list-comprehension-demos/skin.scad>*/
 
-axis_range_x=[0*mm,200*mm];
-axis_pos_x = axis_range_x[0];
+// x carriage
+axis_range_x_ = main_width/2 + zmotor_mount_rod_offset_x - xaxis_end_width(true) - x_carriage_w/2;
+axis_range_x = [-1,1] * axis_range_x_;
+
 axis_range_y=[0*mm,200*mm];
 axis_pos_y = axis_range_y[0];
 axis_range_z=[90*mm,353*mm];
@@ -53,13 +55,12 @@ module x_axis()
             belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
         }
 
-        // x carriage
-        for(x=[-1,1])
-        translate([axis_pos_x+x*151,0,0])
-        {
-            xo = x==-1? 255*mm : 0*mm;
 
-            translate([xo,0,0])
+
+        for(x=axis_range_x)
+        translate([x,0,0])
+        {
+            /*#cubea(size=[x_carriage_w,10,100]);*/
 
             mirror([min(0,-x),0,0])
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])

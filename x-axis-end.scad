@@ -16,11 +16,11 @@ xaxis_end_wz = xaxis_rod_distance+zaxis_bearing[2]+5*mm;
 xaxis_endstop_size = [10.3*mm, 20*mm, 6.3*mm];
 xaxis_endstop_screw_offset = [-1.8*mm, 0*mm, 0*mm];
 
+function xaxis_end_width(with_motor) = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : zaxis_bearing[1]/2+zaxis_nut[1];
+
 module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xrod_adjustment=false)
 {
     nut_h = zaxis_nut[4];
-    wx = zaxis_bearing[1]/2+zaxis_nut[1];
-    wx_ = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : wx;
     bearing_sizey = zaxis_bearing[1] + 5*mm;
 
     xaxis_end_xrod_offset_z = xaxis_rod_l/2 - (main_width/2 + zmotor_mount_rod_offset_x);
@@ -72,7 +72,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         translate([0,0,z*(xaxis_rod_distance/2)])
         cylindera(h=xaxis_rod_l_support, d=xaxis_rod_d_support, orient=[1,0,0], align=[-1,0,0], round_radius=2);
 
-        translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
+        translate([xaxis_end_width(with_motor),0,(xaxis_rod_distance/2)+xaxis_rod_d])
         {
             rcubea(xaxis_endstop_size, align=[-1,0,-1]);
         }
@@ -103,7 +103,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         {
             xoff = - xaxis_end_xrod_offset_z -(with_xrod_adjustment?6:0)*mm;
             translate([xoff,0,0])
-            cylindera(h=abs(xoff)+wx_+1,d=xaxis_rod_d+.5*mm, orient=[1,0,0], align=[1,0,0]);
+            cylindera(h=abs(xoff)+xaxis_end_width(with_motor)+1,d=xaxis_rod_d+.5*mm, orient=[1,0,0], align=[1,0,0]);
 
             if(with_xrod_adjustment)
             {
@@ -120,8 +120,6 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
 module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, show_motor=false, nut_top=false, show_nut=false, show_rods=false, show_bearings=false, with_xrod_adjustment=false)
 {
     nut_h = zaxis_nut[4];
-    wx = zaxis_bearing[1]/2+zaxis_nut[1];
-    wx_ = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : wx;
     extrasize = with_motor?0*mm:0*mm;
     extrasize_align = 1;
 
@@ -159,7 +157,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         }
 
         //endstop mount screw cuts
-        translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
+        translate([xaxis_end_width(with_motor),0,(xaxis_rod_distance/2)+xaxis_rod_d])
         translate(xaxis_endstop_screw_offset)
         for(y=[-1,1])
         translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size[2]])
@@ -270,7 +268,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         //endstop
         if($show_vit)
         {
-            translate([wx_,0,(xaxis_rod_distance/2)+xaxis_rod_d])
+            translate([xaxis_end_width(with_motor),0,(xaxis_rod_distance/2)+xaxis_rod_d])
             {
                 difference()
                 {
