@@ -131,7 +131,8 @@ yaxis_idler_pulley_offset_y = yaxis_idler_mount_thickness + yaxis_pulley_inner_d
 yaxis_idler_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
 yaxis_idler_offset_z = 10*mm;
 
-yaxis_carriage_size=[220*mm,220*mm,5*mm];
+yaxis_carriage_size = [220*mm,220*mm,5*mm];
+printbed_size = [213*mm,213*mm,3*mm];
 
 zaxis_rod_d = 11.975*mm;
 zaxis_rod_l = 500*mm;

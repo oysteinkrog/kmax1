@@ -160,26 +160,28 @@ module y_axis()
 
         attach(yaxis_carriage_bearing_mount_conn_bearing, [[0,axis_pos_y,0],[0,0,1]])
         {
-            /*translate([x*yaxis_carriage_size[0]/2, y*(yaxis_carriage_size[1]-16*mm)/2, 0])*/
-            // y axis plate
+            yaxis_carriage_size_inner = [32*mm,32*mm,0];
+
+            // y axis plate "arms"
             for(x=[-1,1])
             for(y=[-1,1])
             hull()
             {
-                translate([x*yaxis_carriage_size[0]/2, y*(yaxis_carriage_size[1])/2, 0])
+                translate([x*yaxis_carriage_size[0]/2, y*yaxis_carriage_size[1]/2, 0])
                 {
                     cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
                 }
-                translate([x*(yaxis_carriage_size[0]/2-16*mm), y*(yaxis_carriage_size[1]/2-16*mm), 0])
+                translate([x*(yaxis_carriage_size[0]/2-yaxis_carriage_size_inner[0]/2), y*(yaxis_carriage_size[1]/2-yaxis_carriage_size_inner[1]/2*mm), 0])
                 {
                     cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
                 }
             }
 
-            cubea([yaxis_carriage_size[0]-16*mm*2,yaxis_carriage_size[1]-16*mm*2, yaxis_carriage_size[2]], align=[0,0,1]);
+            // y axis plate
+            cubea(yaxis_carriage_size - yaxis_carriage_size_inner, align=[0,0,1]);
 
             translate([0,0,10*mm])
-                cubea(yaxis_carriage_size, align=[0,0,1]);
+                cubea(printbed_size, align=[0,0,1]);
         }
     }
 
