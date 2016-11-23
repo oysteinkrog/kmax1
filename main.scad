@@ -32,7 +32,9 @@ use <power-panel-iec320.scad>
 
 // x carriage
 axis_range_x_ = main_width/2 + zmotor_mount_rod_offset_x - xaxis_end_width(true) - x_carriage_w/2;
-axis_range_x = [-1,1] * axis_range_x_;
+axis_range_x = [-1* axis_range_x_,-1*axis_range_x_+x_carriage_w];
+axis_printrange_x = [-1/2, 1/2] * printbed_size[0];
+axis_x_parked = [true, false];
 
 axis_range_y=[0*mm,200*mm];
 axis_pos_y = axis_range_y[0];
@@ -57,17 +59,19 @@ module x_axis()
 
 
 
-        for(x=axis_range_x)
-        translate([x,0,0])
+        for(x=[0:len(axis_range_x)-1])
         {
             /*#cubea(size=[x_carriage_w,10,100]);*/
 
-            mirror([min(0,-x),0,0])
+            pos = axis_x_parked[x] ? axis_range_x[x] : -axis_printrange_x[x];
+
+            translate([pos,0,0])
+            mirror([x==0?0:1,0,0])
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])
             {
                 x_carriage_withmounts(show_vitamins=true, beltpath_offset=x);
 
-                x_carriage_extruder(show_vitamins=true, with_sensormount=x<=0);
+                x_carriage_extruder(show_vitamins=true, with_sensormount=x==0);
             }
         }
 
