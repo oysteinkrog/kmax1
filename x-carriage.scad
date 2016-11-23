@@ -14,7 +14,7 @@ include <thing_libutils/metric-knurlnut-data.scad>
 
 include <config.scad>
 
-xaxis_carriage_bearing_distance = 20*mm;
+xaxis_carriage_bearing_distance = xaxis_rod_distance/2;
 xaxis_carriage_padding = 1*mm;
 xaxis_carriage_mount_distance = xaxis_carriage_bearing_distance+5*mm;
 xaxis_carriage_mount_offset_z = 0*mm;
