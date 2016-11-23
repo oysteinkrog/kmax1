@@ -44,10 +44,10 @@ filament_d                  = 1.75*mm;
 filament_r                  = filament_d/2;
 
 
-main_width = 340*mm;
+main_width = 420*mm;
 main_depth = 420*mm;
 main_height = 400*mm;
-main_upper_width = 420*mm;
+main_upper_width = 500*mm;
 
 extrusion_size = 20*mm;
 extrusion_thread = ThreadM5;
