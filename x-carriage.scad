@@ -883,7 +883,7 @@ module x_carriage_withmounts(show_vitamins=false, beltpath_offset=0)
         // rod between extruder part A and B
         translate(extruder_offset)
         {
-            cylindera(h=100*mm, d=extruder_shaft_d+2*mm, orient=[0,1,0], align=[0,0,0]);
+            cylindera(h=100*mm, d=extruder_shaft_d+5*mm, orient=[0,1,0], align=[0,0,0]);
         }
 
         // extruder A mount cutout
