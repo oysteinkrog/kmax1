@@ -405,31 +405,33 @@ module gantry_lower()
 
 module enclosure()
 {
-    w=60*cm;
-    h=60*cm;
-    d=60*cm;
+    // inner
+    w=56*cm;
+    h=56*cm;
+    d=58*cm;
     wallthick=2*cm;
     backthick=0.5*cm;
 
-    translate([0, 0, h/2])
+    translate([0, 0, h/2+wallthick])
     {
         // left/right walls
         for(x=[-1,1])
-            translate([x*w/2,0,0])
-                cubea([wallthick,d,h], align=[-x, 0, 0]);
+        translate([x*w/2,0,0])
+        cubea([wallthick,d,h], align=[x, 0, 0]);
 
         // back plate
         translate([0,d/2,0])
-            cubea([w,backthick,h], align=[0,-1, 0]);
+        cubea([w,backthick,h], align=[0,-1, 0]);
 
         // top/bottom plate
         for(z=[-1,1])
         translate([0,0,z*h/2])
-            cubea([w-wallthick*2,d,wallthick], align=[0,0, -z]);
+        cubea([w+wallthick*2,d,wallthick], align=[0,0, z]);
     }
 }
 
-translate([0, 0, main_lower_dist_z+extrusion_size*2])
+feet_height = 8*mm;
+translate([0, 0, main_lower_dist_z+extrusion_size*2+feet_height])
 main();
 
 /*psu();*/
