@@ -8,7 +8,7 @@ use <thing_libutils/metric-screw.scad>
 use <thing_libutils/timing-belts.scad>
 
 motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
-xaxis_end_pulley_offset = -15*mm;
+xaxis_end_pulley_offset = 39*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
 xaxis_end_motor_offset=[xaxis_end_motorsize/2+zaxis_bearing[1]/2+1*mm,motor_mount_wall_thick-2*mm,0];
 xaxis_end_wz = xaxis_rod_distance+zaxis_bearing[2]+5*mm;
