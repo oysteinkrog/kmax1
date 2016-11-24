@@ -185,7 +185,7 @@ zaxis_rod_screw_distance_x = max(zaxis_nut_mount_outer, zaxis_rod_d/2 + zmotor_w
 zmotor_mount_rod_offset_x = zmotor_w/2+zaxis_rod_screw_distance_x+zmotor_mount_motor_offset;
 
 // z screw offset from lower extrusion (outer)
-zmotor_mount_screw_offset_x = zmotor_mount_rod_offset_x - zaxis_rod_screw_distance_x ;
+zmotor_mount_screw_offset_x = zmotor_mount_rod_offset_x - zaxis_rod_screw_distance_x;
 
 color_extrusion = "DimGray";
 color_rods = "CornflowerBlue";
