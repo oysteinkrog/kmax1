@@ -241,7 +241,7 @@ module z_axis()
             {
                 // z rods
                 color(color_rods)
-                translate([0,0,zaxis_motor_offset_z-50])
+                translate([0,0,zaxis_motor_offset_z-80*mm])
                     cylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=[0,0,1]);
 
                 for(z=[-1,1])
