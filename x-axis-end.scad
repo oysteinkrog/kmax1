@@ -152,8 +152,10 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         for(z=[-1,1])
         translate([xaxis_end_pulley_offset,0,-xaxis_beltpath_z_offsets[max(0,beltpath_index)]])
         {
-            translate([0, -xaxis_beltpath_width/2 - 5*mm, 0])
-            screw_cut(nut=MHexNutM5, h=xaxis_beltpath_width+13*mm, with_nut=true, orient=[0,1,0], align=[0,1,0]);
+            translate([0, -xaxis_beltpath_width/2 - 7*mm, 0])
+            {
+                screw_cut(nut=MHexNutM5, h=xaxis_beltpath_width+13*mm, with_nut=true, orient=[0,1,0], align=[0,1,0]);
+            }
         }
 
         //endstop mount screw cuts
@@ -249,7 +251,9 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
     }
     else if(part=="vit")
     {
-        if(with_motor && show_motor)
+        xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
+
+        if(with_motor)
         {
             translate([0,0,xaxis_beltpath_z_offsets[beltpath_index]])
             translate(xaxis_end_motor_offset)
@@ -259,8 +263,12 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 {
                     // 1mm between pulley and motor
                     translate([0,-1*mm,0])
-                        pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);
-                    motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+                    pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);
+
+                    if(show_motor)
+                    {
+                        motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+                    }
                 }
             }
         }
@@ -279,6 +287,16 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                     translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size[2]])
                     screw(nut=MHexNutM2_5, h=6*mm, orient=[0,0,-1], align=[0,0,-1]);
                 }
+            }
+        }
+
+        // belt idler pulley screw
+        for(z=[-1,1])
+        translate([xaxis_end_pulley_offset,0,-xaxis_beltpath_z_offsets[max(0,beltpath_index)]])
+        {
+            translate([0, -xaxis_beltpath_width/2 - 7*mm, 0])
+            {
+                screw(nut=MHexNutM5, h=25*mm, with_nut=true, orient=[0,1,0], align=[0,1,0]);
             }
         }
 
