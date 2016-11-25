@@ -96,7 +96,7 @@ xaxis_beltpath_z_offsets = [-2*mm-xaxis_beltpath_z_offset_pulley, 2*mm+xaxis_bel
 xaxis_beltpath_height_body = xaxis_pulley_outer_d/2+3*mm+v_sum(v_abs(xaxis_beltpath_z_offsets))+5*mm;
 xaxis_beltpath_height_holders = max(xaxis_pulley_outer_d+2*mm, xaxis_pulley_inner_d+xaxis_beltpath_z_offsets[0]+3*mm);
 
-xaxis_carriage_bearing_offset_y = ziptie_thickness+3*mm;
+xaxis_carriage_bearing_offset_y = ziptie_thickness+1*mm;
 xaxis_carriage_beltpath_offset_y = xaxis_carriage_bearing_offset_y+xaxis_bearing[1]/2;
 
 xaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);
