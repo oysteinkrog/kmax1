@@ -14,7 +14,7 @@ include <thing_libutils/metric-knurlnut-data.scad>
 
 include <config.scad>
 
-xaxis_carriage_bearing_distance = xaxis_rod_distance/2;
+xaxis_carriage_bearing_distance = xaxis_rod_distance/sqrt(2);
 xaxis_carriage_padding = 1*mm;
 xaxis_carriage_mount_distance = xaxis_carriage_bearing_distance+5*mm;
 xaxis_carriage_mount_offset_z = 0*mm;
@@ -98,7 +98,7 @@ extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_moto
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
-extruder_offset = [-extruder_filapath_offset[0],0,21.5*mm];
+extruder_offset = [-extruder_filapath_offset[0]+5,0,21.5*mm];
 extruder_offset_a = -extruder_gear_big_offset+[
     0,
     xaxis_bearing[1] + xaxis_carriage_bearing_offset_y + .2*mm,
