@@ -48,7 +48,7 @@ module x_axis()
     // x axis
     translate([0,0,axis_pos_z])
     {
-        if(!preview_mode)
+        if(!$preview_mode)
         {
             zrod_offset = zmotor_mount_rod_offset_x;
             for(z=[-1,1])
@@ -118,7 +118,7 @@ module y_axis()
 
     translate([yaxis_belt_path_offset_x,0,yaxis_belt_path_offset_z])
     {
-        if(!preview_mode)
+        if(!$preview_mode)
         {
             translate([0,main_depth/2-yaxis_motor_offset_x,0])
             {
@@ -272,7 +272,7 @@ module main()
     translate([0,0,-main_lower_dist_z/2-extrusion_size/2])
     power_panel_iec320(orient=[0,-1,0], align=[0,1,0]);
 
-    if(!preview_mode)
+    if(!$preview_mode)
     {
         translate([0,-main_depth/2,0])
         translate([0,-extrusion_size/2,0])
@@ -312,7 +312,7 @@ module gantry_upper()
         for(x=[-1,1])
         translate([x*(main_width/2), 0, 0])
         {
-            if(preview_mode)
+            if($preview_mode)
             {
                 cubea(size=[extrusion_size, extrusion_size, main_height], align=[-x,0,1]);
             }
@@ -324,7 +324,7 @@ module gantry_upper()
 
         translate([0, 0, main_height])
         {
-            if(preview_mode)
+            if($preview_mode)
             {
                 cubea(size=[main_upper_width, extrusion_size, extrusion_size], align=[0,0,1]);
             }
@@ -360,7 +360,7 @@ module gantry_lower()
             for(y=[-1,1])
             translate([0, y*(main_depth/2), 0])
             {
-                if(preview_mode)
+                if($preview_mode)
                 {
                     cubea([main_width, extrusion_size, extrusion_size], align=[0,y,-1]);
                 }
@@ -373,7 +373,7 @@ module gantry_lower()
             for(x=[-1,1])
             translate([x*(main_width/2), 0, 0])
             {
-                if(preview_mode)
+                if($preview_mode)
                 {
                     cubea([extrusion_size, main_depth, extrusion_size], align=[-x,0,-1]);
                 }

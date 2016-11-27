@@ -362,7 +362,7 @@ if(false)
     // x axis
     /*translate([0,0,axis_pos_z])*/
     {
-        /*if(!preview_mode)*/
+        /*if(!$preview_mode)*/
         {
             zrod_offset = zmotor_mount_rod_offset_x;
             for(z=[-1,1])

@@ -27,7 +27,7 @@ if(false)
 /*$show_vit=true;*/
 
 // enable preview model (faster openscad)
-preview_mode=true;
+$preview_mode=true;
 
 extrusion_height            = 0.4*mm;
 

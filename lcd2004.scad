@@ -115,7 +115,7 @@ module gantry_lower()
             for(y=[-1,1])
             translate([0, y*(main_depth/2), 0])
             {
-                if(preview_mode)
+                if($preview_mode)
                 {
                     cubea([main_width, extrusion_size, extrusion_size], align=[0,y,-1]);
                 }
@@ -128,7 +128,7 @@ module gantry_lower()
             for(x=[-1,1])
             translate([x*(main_width/2), 0, 0])
             {
-                if(preview_mode)
+                if($preview_mode)
                 {
                     cubea([extrusion_size, main_depth, extrusion_size], align=[-x,0,-1]);
                 }
