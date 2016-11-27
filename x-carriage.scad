@@ -122,17 +122,17 @@ module xaxis_carriage_beltpath(height, width, length = 1000, orient=[1,0,0])
     cubea([length,width,width/2], align=[0,1,-z]);
 }
 
-module x_carriage(mode=undef, beltpath_offset=0)
+module x_carriage(part=undef, beltpath_offset=0)
 {
-    if(mode==undef)
+    if(part==undef)
     {
         difference()
         {
-            x_carriage(mode="pos");
-            x_carriage(mode="neg");
+            x_carriage(part="pos");
+            x_carriage(part="neg");
         }
     }
-    else if(mode=="pos")
+    else if(part=="pos")
     {
         hull()
         {
@@ -184,7 +184,7 @@ module x_carriage(mode=undef, beltpath_offset=0)
             }
         }
     }
-    else if(mode=="neg")
+    else if(part=="neg")
     {
         for(x=[-1,1])
         {
@@ -230,7 +230,7 @@ module x_carriage(mode=undef, beltpath_offset=0)
             }
         }
     }
-    else if(mode=="vit")
+    else if(part=="vit")
     {
         for(x=[-1,1])
         {
@@ -856,11 +856,11 @@ module x_carriage_withmounts(show_vitamins=false, beltpath_offset=0)
         /*hull()*/
         union()
         {
-            /*x_carriage(mode="pos");*/
+            /*x_carriage(part="pos");*/
 
             union()
             {
-                x_carriage(mode="pos", beltpath_offset=beltpath_offset);
+                x_carriage(part="pos", beltpath_offset=beltpath_offset);
             }
 
             // extruder A mount
@@ -878,7 +878,7 @@ module x_carriage_withmounts(show_vitamins=false, beltpath_offset=0)
             }
         }
 
-        x_carriage(mode="neg", beltpath_offset=beltpath_offset);
+        x_carriage(part="neg", beltpath_offset=beltpath_offset);
 
         // rod between extruder part A and B
         translate(extruder_offset)
@@ -921,7 +921,7 @@ module x_carriage_withmounts(show_vitamins=false, beltpath_offset=0)
 
     if(show_vitamins)
     {
-        x_carriage(mode="vit");
+        x_carriage(part="vit");
     }
 }
 
