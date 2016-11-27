@@ -4,7 +4,8 @@ use <thing_libutils/misc.scad>;
 use <thing_libutils/transforms.scad>;
 use <thing_libutils/attach.scad>;
 use <thing_libutils/linear-extrusion.scad>;
-include <thing_libutils/timing-belts.scad>;
+use <thing_libutils/timing-belts.scad>;
+include <thing_libutils/timing-belts-data.scad>;
 
 include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
@@ -48,16 +49,12 @@ module x_axis()
     // x axis
     translate([0,0,axis_pos_z])
     {
-        if(!$preview_mode)
-        {
-            zrod_offset = zmotor_mount_rod_offset_x;
-            for(z=[-1,1])
-            for(z=xaxis_beltpath_z_offsets)
-            translate([-main_width/2-zrod_offset+xaxis_end_motor_offset[0], xaxis_zaxis_distance_y, z])
-            belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
-        }
-
-
+        zrod_offset = zmotor_mount_rod_offset_x;
+        for(z=[-1,1])
+        for(z=xaxis_beltpath_z_offsets)
+        translate([-main_width/2-zrod_offset+xaxis_end_motor_offset[0], xaxis_zaxis_distance_y, z])
+        rotate([90,0,0])
+        belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
 
         for(x=[0:len(axis_range_x)-1])
         {

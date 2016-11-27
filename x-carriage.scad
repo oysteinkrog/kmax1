@@ -1321,7 +1321,16 @@ if(false)
 {
     x_carriage_withmounts(show_vitamins=true);
 
-    x_carriage_extruder(show_vitamins=true);
+            translate([0, 0, 0])
+            for(z=xaxis_beltpath_z_offsets)
+            translate(ZAXIS*z)
+            translate(sign(z)*-xaxis_pulley_inner_d/2*ZAXIS)
+            mirror([0,0,sign(z)<1?1:0])
+            {
+                beltpath(part="neg", with_tensioner=sign(z)==x);
+            }
+        }
+    }
 
     for(z=[-1,1])
     for(z=xaxis_beltpath_z_offsets)

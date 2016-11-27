@@ -4,6 +4,7 @@ include <thing_libutils/bearing_data.scad>
 include <thing_libutils/metric-thread-data.scad>
 include <thing_libutils/metric-hexnut-data.scad>
 include <thing_libutils/misc.scad>
+include <thing_libutils/timing-belts-data.scad>
 
 e=0.01;
 
@@ -88,6 +89,7 @@ xaxis_idler_pulley = pulley_2GT_20T_idler;
 xaxis_idler_pulley_inner_d = xaxis_idler_pulley[2];
 xaxis_idler_pulley_outer_d = xaxis_idler_pulley[3];
 
+xaxis_belt = TimingBelt_GT2_2;
 xaxis_belt_width = 6*mm;
 xaxis_beltpath_width = max(xaxis_belt_width+3*mm, xaxis_pulley[0]+2*mm);
 xaxis_beltpath_z_offset_pulley = xaxis_pulley_inner_d/2;
