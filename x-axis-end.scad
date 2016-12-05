@@ -337,7 +337,7 @@ module xaxis_end_beltpath(height, width, length = 1000, align=[0,0,0], orient=[1
     hull()
     for(z=[-1,1])
     translate([0,0,z*height/2])
-    teardrop(h=length, d=width, orient=orient, align=align, roll=-180*min(0,z), truncate=.5);
+    teardrop(h=length, d=width, orient=orient, align=align, roll=-180*min(0,z), truncate=1);
 }
 
 module xaxis_end_znut()
