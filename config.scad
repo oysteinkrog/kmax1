@@ -6,29 +6,26 @@ include <thing_libutils/metric-hexnut-data.scad>
 include <thing_libutils/misc.scad>
 include <thing_libutils/timing-belts-data.scad>
 
-e=0.01;
+e=0.01*mm;
+
+// high quality etc
+is_build = false;
 
 // minimum size of a fragment
 // resolution of any round object (segment length)
 // Because of this variable very small circles have a smaller number of fragments than specified using $fa. 
 // The default value is 2.
-$fs = 2;
+$fs = is_build ? 0.5 : 2;
 
 // minimum angle for a fragment.
 // The default value is 12 (i.e. 30 fragments for a full circle)
-$fa = 12;
+$fa = is_build ? 4 : 12;
 
-//hq
-if(false)
-{
-    $fs= 0.5;
-    $fa = 4;
-}
-
-/*$show_vit=true;*/
+$show_vit = is_build ? false : true;
 
 // enable preview model (faster openscad)
-$preview_mode=true;
+$preview_mode = is_build ? false : true;
+
 
 extrusion_height            = 0.4*mm;
 
