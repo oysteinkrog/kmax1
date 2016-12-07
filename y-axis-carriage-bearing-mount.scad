@@ -6,7 +6,7 @@ yaxis_carriage_bearing_mount_bottom_thick = 3;
 yaxis_carriage_bearing_mount_conn_bottom = [[0,0,0], [0,0,1]];
 yaxis_carriage_bearing_mount_conn_bearing = [[0,0,yaxis_carriage_bearing_mount_bottom_thick+yaxis_bearing[1]/2], [0,0,1]];
 
-module yaxis_carriage_bearing_mount(show_bearing=false, show_zips=false)
+module yaxis_carriage_bearing_mount(show_bearing=false)
 {
     // x distance of holes
     screw_dx=28;
@@ -39,8 +39,8 @@ module yaxis_carriage_bearing_mount(show_bearing=false, show_zips=false)
             ziptie_type=ziptie_type,
             ziptie_bearing_distance=ziptie_bearing_distance,
             orient=[0,1,0],
-            ziptie_dist=4,
-            show_zips=show_zips);
+            ziptie_dist=4
+            );
     }
 
     %if(show_bearing)

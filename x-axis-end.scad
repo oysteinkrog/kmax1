@@ -182,7 +182,6 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                         ziptie_bearing_distance=ziptie_bearing_distance,
                         orient=[0,0,1],
                         with_zips=true,
-                        show_zips=false
                         );
                 /*hull()*/
                 /*{*/

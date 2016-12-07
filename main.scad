@@ -154,7 +154,7 @@ module y_axis()
             {
                 attach([[0,y*(yaxis_bearing_distance_y/2)-axis_pos_y,0],[0,0,-1]], yaxis_carriage_bearing_mount_conn_bearing)
                 {
-                    yaxis_carriage_bearing_mount(show_bearing=true, show_zips=true);
+                    yaxis_carriage_bearing_mount(show_bearing=true);
                 }
             }
         }
