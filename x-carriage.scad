@@ -99,7 +99,7 @@ extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_moto
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
-extruder_offset = [-extruder_filapath_offset[0]+6*mm, 0, 22*mm];
+extruder_offset = [-extruder_filapath_offset[0]+6*mm, 0, 24*mm];
 extruder_offset_a = -extruder_gear_big_offset+[
     0,
     xaxis_bearing[1] + xaxis_carriage_bearing_offset_y + .2*mm,

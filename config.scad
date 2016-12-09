@@ -68,7 +68,7 @@ ziptie_thickness = ziptie_type[0];
 ziptie_width = ziptie_type[1]+0.6*mm;
 ziptie_bearing_distance = 3*mm;
 
-xaxis_rod_distance = 60*mm;
+xaxis_rod_distance = 65*mm;
 xaxis_rod_d = 9.975*mm;
 xaxis_rod_l = 500*mm;
 // relative to entire machine
