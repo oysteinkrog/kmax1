@@ -76,6 +76,11 @@ module power_panel_iec320(align=[0,0,0], orient=[0,0,-1])
     }
 }
 
+module part_power_panel_iec320()
+{
+    power_panel_iec320() ;
+}
+
 if(false)
 {
     power_panel_iec320() ;
