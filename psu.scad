@@ -113,14 +113,6 @@ module psu_a_extrusion_bracket_back()
     }
 }
 
-/*psu_a();*/
-
-/*translate([0, -psu_a_screw_dist_y/2, 0])*/
-/*psu_a_extrusion_bracket_side();*/
-
-/*translate([0, psu_a_screw_dist_y/2, 0])*/
-/*psu_a_extrusion_bracket_back();*/
-
 module psu_b(align=[0,0,0])
 {
     {
@@ -196,6 +188,34 @@ module psu_b_extrusion_bracket_back()
                 cylindera(d=extrusion_thread_dia, h=psu_mount_bottom_height*2, align=[0,0,-1]);
     }
 }
+
+module part_psu_a_extrusion_bracket_side()
+{
+    psu_a_extrusion_bracket_side();
+}
+
+module part_psu_a_extrusion_bracket_back()
+{
+    psu_a_extrusion_bracket_back();
+}
+
+module part_psu_b_extrusion_bracket_side()
+{
+    psu_b_extrusion_bracket_side();
+}
+
+module part_psu_b_extrusion_bracket_back()
+{
+    psu_b_extrusion_bracket_back();
+}
+
+/*psu_a();*/
+
+/*translate([0, -psu_a_screw_dist_y/2, 0])*/
+/*psu_a_extrusion_bracket_side();*/
+
+/*translate([0, psu_a_screw_dist_y/2, 0])*/
+/*psu_a_extrusion_bracket_back();*/
 
 /*psu_b();*/
 
