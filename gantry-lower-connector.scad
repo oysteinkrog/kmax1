@@ -43,4 +43,11 @@ module gantry_lower_connector()
     }
 }
 
+module part_gantry_lower_connector()
+{
+    /*rotate([0,90,0])*/
+    rotate([90,0,0])
+    gantry_lower_connector();
+}
+
 /*gantry_lower_connector();*/

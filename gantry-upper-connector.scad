@@ -63,5 +63,11 @@ module gantry_upper_connector()
     }
 }
 
+module part_gantry_upper_connector()
+{
+    rotate([0,180,0])
+    gantry_upper_connector();
+}
+
 /*rotate([0,180,0])*/
 /*gantry_upper_connector();*/
