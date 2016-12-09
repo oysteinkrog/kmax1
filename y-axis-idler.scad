@@ -182,7 +182,7 @@ yaxis_idler_pulleyblock_conn_print = [[-yaxis_idler_pulleyblock_lenfrompulley, y
 // the idler pulley block mounting point (mounting point in idler frame)
 yaxis_idler_conn_pulleyblock = [[extrusion_size/2+yaxis_idler_mount_thickness, 0, extrusion_size/2+yaxis_belt_path_offset_z], [1,0,0]];
 
-module print_yaxis_idler()
+module part_y_idler()
 {
     attach([[0,0,0], [0,0,-1]], yaxis_idler_conn)
     {
@@ -191,7 +191,7 @@ module print_yaxis_idler()
 }
 
 
-module print_yaxis_idler_pulleyblock()
+module part_y_idler_pulleyblock()
 {
     attach([[0,0,0], [0,0,-1]], yaxis_idler_pulleyblock_conn_print)
     {
