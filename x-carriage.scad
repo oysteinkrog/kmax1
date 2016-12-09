@@ -1,5 +1,10 @@
+include <config.scad>
 include <thing_libutils/system.scad>;
 include <thing_libutils/units.scad>;
+include <thing_libutils/timing-belts.scad>
+include <thing_libutils/gears-data.scad>
+include <thing_libutils/metric-knurlnut-data.scad>
+
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
 use <thing_libutils/transforms.scad>;
@@ -8,11 +13,6 @@ use <thing_libutils/linear-extrusion.scad>;
 use <thing_libutils/bearing.scad>
 use <thing_libutils/metric-screw.scad>
 use <thing_libutils/gears.scad>
-include <thing_libutils/timing-belts.scad>
-include <thing_libutils/gears-data.scad>
-include <thing_libutils/metric-knurlnut-data.scad>
-
-include <config.scad>
 
 xaxis_carriage_bearing_distance = xaxis_rod_distance/sqrt(2);
 xaxis_carriage_padding = 1*mm;
@@ -80,8 +80,8 @@ extruder_b_mount_offsets=[
     /*[extruder_filapath_offset[0]+1*(extruder_b_w/2+4*mm)-5*mm,0,-25*mm],*/
     /*[extruder_filapath_offset[0]-4*mm,0,44.5*mm-15*mm]*/
 
-    [extruder_filapath_offset[0]-1*(extruder_b_w/2+4*mm),0,-21*mm],
-    [extruder_filapath_offset[0]+1*(extruder_b_w/2+4*mm),0,-21*mm],
+    [extruder_filapath_offset[0]-1*(extruder_b_w/2+4*mm),0,-13*mm],
+    [extruder_filapath_offset[0]+1*(extruder_b_w/2+4*mm),0,-13*mm],
     [extruder_filapath_offset[0]-4*mm,0,35*mm-15*mm]
 ];
 
@@ -98,7 +98,7 @@ extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_moto
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
-extruder_offset = [-extruder_filapath_offset[0]+5,0,21.5*mm];
+extruder_offset = [-extruder_filapath_offset[0]+6*mm, 0, 22*mm];
 extruder_offset_a = -extruder_gear_big_offset+[
     0,
     xaxis_bearing[1] + xaxis_carriage_bearing_offset_y + .2*mm,
@@ -114,15 +114,7 @@ echo("Extruder B main shaft length: ", extruder_shaft_len);
 extruder_hotmount_clamp_nut = MHexNutM3;
 extruder_hotmount_clamp_thread = ThreadM3;
 
-module xaxis_carriage_beltpath(height, width, length = 1000, orient=[1,0,0])
-{
-    hull()
-    for(z=[-1,1])
-    translate([0,0,z*height/2])
-    cubea([length,width,width/2], align=[0,1,-z]);
-}
-
-module x_carriage(part=undef, beltpath_offset=0)
+module x_carriage(part=undef, beltpath_sign=1)
 {
     if(part==undef)
     {
@@ -172,15 +164,13 @@ module x_carriage(part=undef, beltpath_offset=0)
                 /*translate(sensor_SN04_mount_offset)*/
                 /*cubea([sensor_SN04_size[0], 5*mm, 10*mm], align=[0,1,0]);*/
             /*}*/
-        }
 
-        // to connect belt
-        for(x=[-1,1])
-        {
-            z=xaxis_beltpath_z_offsets[beltpath_offset];
-            translate([x*xaxis_carriage_beltfasten_dist, 0, z-sign(z)*(xaxis_beltpath_z_offset_pulley+1*mm)])
+            for(z=xaxis_beltpath_z_offsets)
+            translate([0, xaxis_carriage_beltpath_offset_y, z])
+            mirror([0,0,sign(z)<1?1:0])
+            mirror([1,0,0])
             {
-                rcubea([xaxis_carriage_beltfasten_w,xaxis_beltpath_width*2,xaxis_carriage_beltfasten_h], align=[0,1,sign(z)]);
+                beltpath(part=part, with_tensioner=beltpath_sign==sign(z));
             }
         }
     }
@@ -196,7 +186,7 @@ module x_carriage(part=undef, beltpath_offset=0)
             ])
             {
                 bearing_mount_holes(bearing_type=xaxis_bearing, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
-                cubea([xaxis_bearing[2]*2,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
+                cubea([xaxis_bearing[2]+2*mm,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
             }
 
             dist_bot = (xaxis_bearings_bottom-1) * (xaxis_carriage_bearing_distance+xaxis_bearing[2])/2;
@@ -207,27 +197,16 @@ module x_carriage(part=undef, beltpath_offset=0)
                     -xaxis_rod_distance/2])
             {
                 bearing_mount_holes(bearing_type=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
-                cubea([xaxis_bearing_bottom[2]*2,xaxis_bearing_bottom[1]/2+10,xaxis_bearing_bottom[1]+1*mm], align=[0,1,0]);
+                cubea([xaxis_bearing_bottom[2]*2*mm,xaxis_bearing_bottom[1]/2+10,xaxis_bearing_bottom[1]+1*mm], align=[0,1,0]);
             }
         }
 
-        translate([0,xaxis_carriage_beltpath_offset_y+.1-xaxis_beltpath_width/2,0])
+        for(z=xaxis_beltpath_z_offsets)
+        translate([0, xaxis_carriage_beltpath_offset_y, z])
+        mirror([0,0,sign(z)<1?1:0])
+        mirror([1,0,0])
         {
-            difference()
-            {
-                xaxis_carriage_beltpath(height=xaxis_beltpath_height_body, width=xaxis_beltpath_width+10*mm, orient=[1,0,0]);
-
-                // to connect belt
-                translate([0,-xaxis_beltpath_width,0])
-                for(x=[-1,1])
-                {
-                    z=xaxis_beltpath_z_offsets[beltpath_offset];
-                    translate([x*xaxis_carriage_beltfasten_dist, 0, z-sign(z)*(xaxis_beltpath_z_offset_pulley+1*mm)])
-                    {
-                        rcubea([xaxis_carriage_beltfasten_w,xaxis_beltpath_width*2,xaxis_carriage_beltfasten_h], align=[0,1,sign(z)]);
-                    }
-                }
-            }
+            beltpath(part=part, with_tensioner=beltpath_sign==sign(z));
         }
     }
     else if(part=="vit")
@@ -591,6 +570,45 @@ module extruder_b(part=undef, with_sensormount=true)
             translate(pos)
             cylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=[0,1,0], align=[0,-1,0], round_radius=2);
 
+            // hobbed gear bearing support
+            translate(extruder_b_bearing_offset)
+            cylindera(d=extruder_b_bearing[1]+5*mm, h=extruder_b_bearing[2]+3*mm, orient=[0,1,0], align=[0,-1,0], round_radius=2);
+
+            // hotmount support
+            translate(hotend_mount_offset)
+            {
+                rcubea([extruder_b_w, hotmount_outer_size_xy, hotmount_outer_size_h], align=[0,0,-1]);
+
+                translate([0,-extruder_b_drivegear_offset[1],0])
+                rcubea([extruder_b_w, abs(extruder_b_drivegear_offset[1]), hotmount_outer_size_h], align=[0,-1,-1]);
+            }
+
+            // guidler screw nuts support
+            translate(extruder_b_drivegear_offset)
+            translate([extruder_b_guidler_screw_offset_x, 0, extruder_b_guidler_screw_offset_h])
+            {
+                for(i=[-1,1])
+                translate([0,i*(guidler_screws_distance),  0])
+                cylindera(h=house_guidler_screw_h, d=guidler_screws_mount_d, orient=[1,0,0], round_radius=2);
+            }
+
+            // support for clamp mount screw holes
+            translate(hotend_mount_offset)
+            translate([0, 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
+            for(x=[-1,1])
+            {
+                translate([x*hotmount_clamp_screws_dist, 0, 0])
+                cylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread)+6*mm, h=extruder_b_w, orient=[0,1,0]);
+            }
+        }
+
+        // mount onto carriage
+        hull()
+        {
+            for(pos=extruder_b_mount_offsets)
+            translate(pos)
+            cylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=[0,1,0], align=[0,-1,0], round_radius=2);
+
             if(with_sensormount)
             intersection()
             {
@@ -654,7 +672,7 @@ module extruder_b(part=undef, with_sensormount=true)
                 rcubea([extruder_b_w, abs(extruder_b_drivegear_offset[1]), hotmount_outer_size_h], align=[0,-1,-1]);
             }
 
-            /* support for clamp mount screw holes*/
+            // support for clamp mount screw holes
             translate(hotend_mount_offset)
             translate([0, 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
             for(x=[-1,1])
@@ -849,19 +867,27 @@ module extruder_b(part=undef, with_sensormount=true)
 }
 
 // Final part
-module x_carriage_withmounts(show_vitamins=false, beltpath_offset=0)
+module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
 {
-    difference()
+    if(part==undef)
+    {
+        difference()
+        {
+            x_carriage_withmounts(part="pos", show_vitamins=show_vitamins, beltpath_sign=beltpath_sign);
+            x_carriage_withmounts(part="neg", show_vitamins=show_vitamins, beltpath_sign=beltpath_sign);
+        }
+
+        if(show_vitamins)
+        {
+            x_carriage(part="vit");
+        }
+    }
+    else if(part=="pos")
     {
         /*hull()*/
-        union()
+        /*union()*/
         {
-            /*x_carriage(part="pos");*/
-
-            union()
-            {
-                x_carriage(part="pos", beltpath_offset=beltpath_offset);
-            }
+            x_carriage(part=part, beltpath_sign=beltpath_sign);
 
             // extruder A mount
             translate(extruder_offset)
@@ -877,8 +903,10 @@ module x_carriage_withmounts(show_vitamins=false, beltpath_offset=0)
                 }
             }
         }
-
-        x_carriage(part="neg", beltpath_offset=beltpath_offset);
+    }
+    else if(part=="neg")
+    {
+        x_carriage(part=part, beltpath_sign=beltpath_sign);
 
         // rod between extruder part A and B
         translate(extruder_offset)
@@ -917,11 +945,6 @@ module x_carriage_withmounts(show_vitamins=false, beltpath_offset=0)
                 screw_cut(nut=MKnurlInsertNutM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
             }
         }
-    }
-
-    if(show_vitamins)
-    {
-        x_carriage(part="vit");
     }
 }
 
@@ -1215,6 +1238,135 @@ module e3d_heatsink_duct()
     }
 }
 
+module beltpath(part, with_tensioner=true)
+{
+    belt_t2 = belt_t2_thickness(xaxis_belt) + .2*mm;
+    tension_screw_nut = MHexNutM3;
+    tension_screw_thread = ThreadM3;
+    tension_screw_dia = lookup(ThreadSize, tension_screw_thread);
+    angle_screw_thread = ThreadM4;
+    angle_screw_dia = 3.25*mm;
+    width = max(xaxis_carriage_top_width,55*mm);
+    height = belt_t2*8;
+
+    if(part==undef)
+    {
+        difference()
+        {
+            beltpath("pos", with_tensioner=with_tensioner);
+            beltpath("neg", with_tensioner=with_tensioner);
+        }
+    }
+    else if(part=="pos")
+    {
+        translate([0, -xaxis_carriage_beltpath_offset_y, 0])
+        rcubea([width, xaxis_carriage_thickness, height], align=[0,1,0]);
+
+        rcubea([width, xaxis_belt_width, height], extrasize=[0,angle_screw_dia+3*mm,0], extrasize_align=-YAXIS);
+    }
+    else if(part=="neg")
+    {
+        translate(-xaxis_pulley_inner_d/2*ZAXIS)
+        {
+            if(with_tensioner)
+            {
+                translate([0,0,belt_t2/4])
+                cubea([1000, xaxis_belt_width+.1, belt_t2]);
+
+                /*translate([0,0,angle_screw_dia/2])*/
+                {
+                    hull()
+                    {
+                        for(i=[-1,1])
+                        translate(i*11*mm*XAXIS)
+                        cylindera(d=angle_screw_dia+belt_t2, h=xaxis_belt_width+.1, orient=YAXIS);
+                    }
+
+                    hull()
+                    {
+                        /*translate(*8*mm*XAXIS)*/
+                        for(i=[-1,1])
+                        translate(i*10*mm*XAXIS)
+                        translate(-xaxis_belt_width*YAXIS)
+                        cylindera(d=angle_screw_dia+.2, h=10000, orient=YAXIS, align=YAXIS);
+                    }
+
+                    translate([0,-xaxis_belt_width,0])
+                    {
+                        // cut for angle screw
+                        translate(-1*2*mm*YAXIS)
+                        translate(-1*11*mm*XAXIS)
+                        cylindera(d=angle_screw_dia+.2*mm, h=1000, orient=XAXIS, align=XAXIS);
+
+                        translate(-1*11*mm*XAXIS)
+                        nut_trap_cut(nut=tension_screw_nut, orient=-XAXIS, trap_axis=YAXIS);
+
+                        // cut for tension screw
+                        translate(-1*25*mm*XAXIS)
+                        /*translate(-width/2*XAXIS)*/
+                        screw_cut(nut=tension_screw_nut, h=25*mm, with_head=true, head_embed=true, with_nut=false, orient=XAXIS, align=XAXIS);
+                    }
+                }
+
+            }
+            else
+            {
+                cubea([1000, xaxis_belt_width+3*mm, belt_t2*1.5]);
+            }
+
+            translate(xaxis_pulley_inner_d*ZAXIS)
+            cubea([1000, xaxis_belt_width+3*mm, belt_t2*1.5]);
+        }
+    }
+    else if(part=="vit")
+    {
+        translate(-xaxis_pulley_inner_d/2*ZAXIS)
+        if(with_tensioner)
+        {
+            // 90 angle metal screw
+            translate([0,0,angle_screw_dia/2])
+            {
+                translate([0,-angle_screw_dia/2,0])
+                cylindera(d=angle_screw_dia+.2*mm, h=25*mm, orient=XAXIS, align=XAXIS);
+                cylindera(d=angle_screw_dia+.2*mm, h=5*mm, orient=YAXIS, align=YAXIS+XAXIS);
+
+                /*translate([0,-xaxis_belt_width,0])*/
+                /*{*/
+                    /*translate(-1*11*mm*XAXIS)*/
+                    /*#screw(thread=tension_screw_thread, orient=XAXIS, align=-XAXIS);*/
+                /*}*/
+            }
+        }
+    }
+}
+
+module test_beltpath(x)
+{
+    difference()
+    {
+        for(z=xaxis_beltpath_z_offsets)
+        translate([0, xaxis_carriage_beltpath_offset_y, z])
+        mirror([0,0,sign(z)<1?1:0])
+        {
+            beltpath(part="pos", with_tensioner=sign(z)==x);
+        }
+
+        for(z=xaxis_beltpath_z_offsets)
+        translate([0, xaxis_carriage_beltpath_offset_y, z])
+        mirror([0,0,sign(z)<1?1:0])
+        {
+            beltpath(part="neg", with_tensioner=sign(z)==x);
+        }
+    }
+
+    /*for(z=xaxis_beltpath_z_offsets)*/
+    /*translate([0, xaxis_carriage_beltpath_offset_y, z])*/
+    /*mirror([0,0,sign(z)<1?1:0])*/
+    /*{*/
+        /*%beltpath(part="vit", with_tensioner=sign(z)==x);*/
+    /*}*/
+}
+
 // flip for printing
 /*e3d_heatsink_duct();*/
 
@@ -1225,7 +1377,7 @@ extruder_conn_guidler = [ extruder_guidler_mount_off, [0,1,0]];
 extruder_guidler_conn_mount = [ guidler_mount_off,  [1,0,0]];
 extruder_guidler_roll = 45;
 
-    if(false)
+if(false)
 attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
 {
     extruder_guidler(show_extras=true);
@@ -1319,28 +1471,30 @@ module x_carriage_extruder(show_vitamins=false, with_sensormount=false)
 
 if(false)
 {
-    x_carriage_withmounts(show_vitamins=true);
+    /*for(x=[-1])*/
+    for(x=[-1,1])
+    /*rotate([90,0,0])*/
+    translate(x*40*mm*XAXIS)
+    mirror([x<0?0:1,0,0])
+    {
+        x_carriage_withmounts(show_vitamins=false, beltpath_sign=x);
 
-            translate([0, 0, 0])
-            for(z=xaxis_beltpath_z_offsets)
-            translate(ZAXIS*z)
-            translate(sign(z)*-xaxis_pulley_inner_d/2*ZAXIS)
-            mirror([0,0,sign(z)<1?1:0])
-            {
-                beltpath(part="neg", with_tensioner=sign(z)==x);
-            }
-        }
+        x_carriage_extruder(show_vitamins=true, with_sensormount=x<0);
+
+        /*mirror([x>0?0:1,0,0])*/
+        /*test_beltpath(x=x);*/
     }
 
-    for(z=[-1,1])
-    for(z=xaxis_beltpath_z_offsets)
-    translate([-main_width/2, xaxis_carriage_thickness, z])
-    belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
+    /*for(z=[-1,1])*/
+    /*for(z=xaxis_beltpath_z_offsets)*/
+    /*translate([-main_width/2, xaxis_carriage_beltpath_offset_y, z])*/
+    /*rotate([90,0,0])*/
+    /*belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);*/
 
     /*for(offset=[0,1])*/
     /*translate([offset*60,0,0])*/
     /*rotate([90,0,0])*/
-    /*x_carriage_withmounts(show_vitamins=false, beltpath_offset=offset);*/
+    /*x_carriage_withmounts(show_vitamins=false, beltpath_sign=offset);*/
 
     rotate([-90,0,0])
     {

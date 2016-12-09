@@ -109,6 +109,9 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
             {
                 translate([-xaxis_rod_l_support+5*mm,0,0])
                 nut_trap_cut(nut=MHexNutM4, trap_axis=YAXIS, orient=-XAXIS, align=XAXIS);
+
+                translate([-xaxis_rod_l_support-7*mm,0,0])
+                cylindera(d=10, h=10, orient=XAXIS);
             }
         }
     }
@@ -181,7 +184,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                         ziptie_type=ziptie_type,
                         ziptie_bearing_distance=ziptie_bearing_distance,
                         orient=[0,0,1],
-                        with_zips=true,
+                        with_zips=true
                         );
                 /*hull()*/
                 /*{*/
@@ -355,7 +358,6 @@ module xaxis_end_znut()
 }
 
 
-include <thing_libutils/misc.scad>;
 if(false)
 {
     // x axis
@@ -364,10 +366,16 @@ if(false)
         /*if(!$preview_mode)*/
         {
             zrod_offset = zmotor_mount_rod_offset_x;
-            for(z=[-1,1])
-            for(z=xaxis_beltpath_z_offsets)
-            translate([-z*3*mm, xaxis_zaxis_distance_y, z])
-            belt_path(5*mm+main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[0,0,0]);
+            for(x=[-1,1])
+            {
+                z=xaxis_beltpath_z_offsets[x<0?0:x];
+                xo = x>0?xaxis_end_pulley_offset:xaxis_end_motor_offset[0];
+                xw = x<0?xaxis_end_pulley_offset:xaxis_end_motor_offset[0];
+                translate([-main_width/2-xo/2, xaxis_zaxis_distance_y, z])
+                rotate([90,0,0])
+                color("black")
+                belt_path(main_width+xw, 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
+            }
         }
 
         /*translate([axis_pos_x,0,0])*/
@@ -415,7 +423,7 @@ if(false)
         translate([x*55,0,xaxis_end_wz/2])
         mirror([max(0,x),0,0])
         {
-            xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=x==1);
+            xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=true);
             /*xaxis_end(part="vit", with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false);*/
         }
     }
