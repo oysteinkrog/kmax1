@@ -50,7 +50,7 @@ module yaxis_carriage_bearing_mount(show_bearing=false)
     }
 }
 
-if(false)
+module part_y_carriage_bearing_mount()
 {
     c1=[[0,0,0],[0,0,1]];
     attach(c1,yaxis_carriage_bearing_mount_conn_bottom)
