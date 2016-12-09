@@ -1066,6 +1066,10 @@ module extruder_guidler(part, show_vit=false)
         for(i=[-1,1])
         translate([i*(guidler_screws_distance),guidler_mount_off[1]-guidler_mount_d/2, extruder_b_guidler_screw_offset_h])
         {
+            // offset for spring
+            translate(7*mm*-YAXIS)
+            screw_cut(thread=guidler_screws_thread, h=40*mm, orient=YAXIS, align=YAXIS);
+
             r= guidler_screws_thread_dia/2*1.1;
             cubea([r*2,guidler_d+.2,r], align=[0,1,0]);
             for(v=[-1,1])
@@ -1084,11 +1088,11 @@ module extruder_guidler(part, show_vit=false)
         translate([0,guidler_mount_off[1], guidler_mount_off[2]])
         cylindera(d=guidler_mount_d+2*mm,h=guidler_mount_w+1*mm, orient=[1,0,0]);
 
-        // mount bolt hole
-        translate([0,guidler_mount_off[1], guidler_mount_off[2]])
-        cylindera(d=lookup(ThreadSize, guidler_screws_thread),h=100, orient=[1,0,0]);
+        // mount screw hole
+        translate([-guidler_w/2,guidler_mount_off[1], guidler_mount_off[2]])
+        screw_cut(thread=guidler_screws_thread, h=16*mm, orient=XAXIS, align=XAXIS);
 
-        // guidler bearing bolt holder cutout
+        // guidler bearing screw holder cutout
         union()
         {
             cubea([guidler_bolt_h*1.05+2*e,guidler_bearing[0]*1.05,guidler_bearing[0]*1.05],align=[0,1,0]);
