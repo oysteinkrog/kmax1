@@ -425,3 +425,19 @@ if(false)
         xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=true);
     }
 }
+
+module part_x_end_right()
+{
+    x=1;
+    translate([0,0,xaxis_end_wz/2])
+    mirror([max(0,x),0,0])
+    xaxis_end(with_motor=true, beltpath_index=max(0,x), with_xrod_adjustment=true);
+}
+
+module part_x_end_left()
+{
+    x=-1;
+    translate([0,0,xaxis_end_wz/2])
+    mirror([max(0,x),0,0])
+    xaxis_end(with_motor=true, beltpath_index=max(0,x), with_xrod_adjustment=true);
+}
