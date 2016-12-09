@@ -39,9 +39,11 @@ module yaxis_belt_holder()
     }
 }
 
-/*conn = [[0,0,0],[0,0,1]];*/
-/*attach(conn, yaxis_belt_mount_conn)*/
-/*{*/
-    /*#connector(yaxis_belt_mount_conn);*/
-    /*yaxis_belt_holder();*/
-/*}*/
+module part_y_carriage_belt_holder()
+{
+    conn = [[0,0,0],[0,0,1]];
+    attach(conn, yaxis_belt_mount_conn)
+    {
+        yaxis_belt_holder();
+    }
+}
