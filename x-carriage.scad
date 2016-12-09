@@ -1469,11 +1469,67 @@ module x_carriage_extruder(show_vitamins=false, with_sensormount=false)
     }
 }
 
+module part_x_carriage_left()
+{
+    rotate([0,0,180])
+    rotate([90,0,0])
+    x_carriage_withmounts(beltpath_sign=-1);
+}
+
+module part_x_carriage_left_extruder_a()
+{
+    rotate([-90,0,0])
+    extruder_a();
+}
+
+module part_x_carriage_left_extruder_b()
+{
+    rotate([-90,0,0])
+    extruder_b(with_sensormount=true);
+}
+
+module part_x_carriage_right()
+{
+    rotate([0,0,180])
+    rotate([90,0,0])
+    mirror([1,0,0])
+    x_carriage_withmounts(beltpath_sign=1);
+}
+
+module part_x_carriage_right_extruder_a()
+{
+    rotate([-90,0,0])
+    mirror([1,0,0])
+    extruder_a();
+}
+
+module part_x_carriage_right_extruder_b()
+{
+    rotate([-90,0,0])
+    mirror([1,0,0])
+    extruder_b(with_sensormount=false);
+}
+
+module part_x_carriage_hotmount_clamp()
+{
+    translate([0, 0, hotmount_d_h[1][1]/2])
+    translate([0, 0, 0+hotmount_d_h[0][1]+hotmount_d_h[1][1]/2])
+    hotmount_clamp();
+}
+
+module part_x_carriage_extruder_guidler()
+{
+    guidler_conn_layflat = [ [0, guidler_mount_off[1]-guidler_mount_d/2, guidler_mount_off[2]],  [0,-1,0]]; 
+    attach([[0*mm,0*mm,0],[0,0,-1]], guidler_conn_layflat)
+    {
+        extruder_guidler(show_vit=false);
+    }
+}
+
 if(false)
 {
     /*for(x=[-1])*/
     for(x=[-1,1])
-    /*rotate([90,0,0])*/
     translate(x*40*mm*XAXIS)
     mirror([x<0?0:1,0,0])
     {
@@ -1496,24 +1552,11 @@ if(false)
     /*rotate([90,0,0])*/
     /*x_carriage_withmounts(show_vitamins=false, beltpath_sign=offset);*/
 
-    rotate([-90,0,0])
+    for(x=[-1,1])
+    translate([x*200,0,0])
+    translate([0, xaxis_carriage_beltpath_offset_y, 0])
+    mirror([max(0,x),0,0])
     {
-        /*extruder_a();*/
-
-        /*extruder_a(part="support");*/
-        /*%extruder_a(part="vit");*/
+        xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=true);
     }
-
-    rotate([-90,0,0])
-    {
-        /*extruder_b(with_sensormount=true);*/
-    }
-
-    /*guidler_conn_layflat = [ [0, guidler_mount_off[1]-guidler_mount_d/2, guidler_mount_off[2]],  [0,-1,0]]; */
-    /*attach([[0*mm,0*mm,0],[0,0,-1]], guidler_conn_layflat)*/
-    /*{*/
-        /*extruder_guidler(show_vit=false);*/
-    /*}*/
-
-    /*hotmount_clamp();*/
 }
