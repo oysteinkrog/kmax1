@@ -1,4 +1,5 @@
 include <config.scad>
+include <x-axis-end.scad>
 include <thing_libutils/system.scad>;
 include <thing_libutils/units.scad>;
 include <thing_libutils/timing-belts.scad>
@@ -1541,11 +1542,11 @@ if(false)
         /*test_beltpath(x=x);*/
     }
 
-    /*for(z=[-1,1])*/
-    /*for(z=xaxis_beltpath_z_offsets)*/
-    /*translate([-main_width/2, xaxis_carriage_beltpath_offset_y, z])*/
-    /*rotate([90,0,0])*/
-    /*belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);*/
+    for(z=[-1,1])
+    for(z=xaxis_beltpath_z_offsets)
+    translate([-main_width/2, xaxis_carriage_beltpath_offset_y, z])
+    rotate([90,0,0])
+    belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
 
     /*for(offset=[0,1])*/
     /*translate([offset*60,0,0])*/
