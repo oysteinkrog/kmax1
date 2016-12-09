@@ -105,21 +105,21 @@ module zaxis_motor_mount(show_motor=false)
     }
 }
 
-/*if(false)*/
-/*zaxis_motor_mount();*/
-
-print = false;
-if(print)
+module part_z_motor_mount()
 {
     rotate([0,-90,0])
-        zaxis_motor_mount();
-
-    translate([-25,0,zmotor_mount_thickness_h/2])
-        mount_rod_clamp_half(
-                rod_d=zaxis_rod_d,
-                screw_dist=zmotor_mount_clamp_dist,
-                thick=5,
-                base_thick=5,
-                width=zmotor_mount_thickness_h,
-                thread=zmotor_mount_clamp_thread);
+    zaxis_motor_mount();
 }
+
+module part_z_motor_mount_clamp()
+{
+    translate([0,0,zmotor_mount_thickness_h/2])
+    mount_rod_clamp_half(
+            rod_d=zaxis_rod_d,
+            screw_dist=zmotor_mount_clamp_dist,
+            thick=5,
+            base_thick=5,
+            width=zmotor_mount_thickness_h,
+            thread=zmotor_mount_clamp_thread);
+}
+
