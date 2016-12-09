@@ -259,9 +259,7 @@ module mount_lcd2004(part, show_gantry=false)
 
 }
 
-/*$show_vit=true;*/
-
-/*if(false)*/
+module part_lcd2004_mount()
 {
     rotate([90+mount_lcd2004_mount_angle,0,0])
     translate(-lcd2004_offset)
