@@ -56,8 +56,6 @@ module x_axis()
         rotate([90,0,0])
         belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
 
-
-
         for(x=[0:len(axis_range_x)-1])
         {
             /*#cubea(size=[x_carriage_w,10,100]);*/
@@ -117,13 +115,9 @@ module y_axis()
 
     translate([yaxis_belt_path_offset_x,0,yaxis_belt_path_offset_z])
     {
-        if(!$preview_mode)
+        translate([0,main_depth/2-yaxis_motor_offset_x,0])
         {
-            translate([0,main_depth/2-yaxis_motor_offset_x,0])
-            {
-                /*cubea([10,main_depth-yaxis_motor_offset_x,10], align=[0,-1,0]);*/
-                belt_path(main_depth-yaxis_motor_offset_x-yaxis_idler_pulley_offset_y, 6, yaxis_pulley_inner_d, align=[0,-1,0], orient=[0,1,0]);
-            }
+            belt_path(main_depth-yaxis_motor_offset_x-yaxis_idler_pulley_offset_y, 6, yaxis_pulley_inner_d, align=[0,-1,0], orient=[0,1,0]);
         }
     }
 
