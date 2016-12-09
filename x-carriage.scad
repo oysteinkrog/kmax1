@@ -890,6 +890,10 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
         {
             x_carriage(part=part, beltpath_sign=beltpath_sign);
 
+            // endstop bumper
+            translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2])
+            rcubea(size=xaxis_endstop_size, align=YAXIS+ZAXIS+XAXIS);
+
             // extruder A mount
             translate(extruder_offset)
             translate(extruder_offset_a)
