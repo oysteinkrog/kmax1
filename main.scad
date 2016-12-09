@@ -32,10 +32,10 @@ use <power-panel-iec320.scad>
 /*use <list-comprehension-demos/skin.scad>*/
 
 // x carriage
-axis_range_x_ = main_width/2 + zmotor_mount_rod_offset_x - xaxis_end_width(true) - x_carriage_w/2;
-axis_range_x = [-1* axis_range_x_,-1*axis_range_x_+x_carriage_w];
+axis_range_x_ = main_width/2 + zmotor_mount_rod_offset_x - xaxis_end_width(true) - x_carriage_w/2 - .5*mm;
+axis_range_x = [-1,1] *  axis_range_x_;
 axis_printrange_x = [-1/2, 1/2] * printbed_size[0];
-axis_x_parked = [true, false];
+axis_x_parked = [false, true];
 
 axis_range_y=[0*mm,200*mm];
 axis_pos_y = axis_range_y[0];
