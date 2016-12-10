@@ -8,7 +8,7 @@ use <thing_libutils/metric-screw.scad>
 use <thing_libutils/timing-belts.scad>
 
 motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
-xaxis_end_pulley_offset = 39*mm;
+xaxis_end_pulley_offset = 41*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
 xaxis_end_motor_offset=[xaxis_end_motorsize/2+zaxis_bearing[1]/2+1*mm,motor_mount_wall_thick-2*mm,0];
 xaxis_end_wz = xaxis_rod_distance+zaxis_bearing[2]+2*mm;
@@ -209,7 +209,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 round_d=1.1*lookup(NemaRoundExtrusionDiameter, xaxis_motor);
                 translate([0, .1, 0])
                 translate([0,1,0])
-                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=[0,0,1], orient=[0,1,0], align=[0,-1,0], roll=90, truncate=0);
+                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=[0,0,1], orient=[0,1,0], align=[0,-1,0], roll=90, truncate=0.9);
 
                 // motor axle
                 translate([0, .1, 0])
