@@ -53,6 +53,8 @@ extrusion_thread_dia = lookup(ThreadSize, extrusion_thread);
 extrusion_nut = NutHexM5;
 extrusion_nut_dia = lookup(NutWidthMax, extrusion_nut);
 
+extrusion_mount_thread = ThreadM4;
+
 // for tapped ends
 extrusion_end_nut = NutHexM6;
 
@@ -164,7 +166,7 @@ zmotor_mount_width = zmotor_w+zmotor_mount_thickness*2 + zmotor_mount_thread_dia
 zmotor_mount_h = main_lower_dist_z+extrusion_size+zaxis_motor_offset_z;
 
 zmotor_mount_clamp_dist = zaxis_rod_d*2.5;
-zmotor_mount_clamp_thread = ThreadM4;
+zmotor_mount_clamp_thread = extrusion_mount_thread;
 zmotor_mount_clamp_nut = NutHexM4;
 zmotor_mount_clamp_thread_dia = lookup(ThreadSize, zmotor_mount_clamp_thread);
 zmotor_mount_clamp_nut_dia = lookup(NutWidthMin, zmotor_mount_clamp_nut);
