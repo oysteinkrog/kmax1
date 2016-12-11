@@ -1,5 +1,5 @@
 include <config.scad>
-include <x-axis-end.scad>
+include <x-end.scad>
 include <thing_libutils/system.scad>;
 include <thing_libutils/units.scad>;
 include <thing_libutils/timing-belts.scad>

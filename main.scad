@@ -11,13 +11,13 @@ include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
 
 /*include <extruder-direct.scad>*/
-include <x-axis-end.scad>
+include <x-end.scad>
 include <x-carriage.scad>
-include <y-axis-motor-mount.scad>
-include <y-axis-carriage-bearing-mount.scad>
-include <y-axis-carriage-belt-clamp.scad>
-include <y-axis-idler.scad>
-include <z-axis-motor-mount.scad>
+include <y-motor-mount.scad>
+include <y-carriage-bearing-mount.scad>
+include <y-carriage-belt-clamp.scad>
+include <y-idler.scad>
+include <z-motor-mount.scad>
 use <gantry-upper-connector.scad>
 use <gantry-lower-connector.scad>
 include <psu.scad>
