@@ -1,5 +1,5 @@
 include <config.scad>
-include <thing_libutils/metric-screw.scad>
+include <thing_libutils/screws.scad>
 
 module gantry_upper_connector()
 {

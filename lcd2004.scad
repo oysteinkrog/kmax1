@@ -1,5 +1,5 @@
 use <thing_libutils/linear-extrusion.scad>
-use <thing_libutils/metric-screw.scad>
+use <thing_libutils/screws.scad>
 include <config.scad>
 
 // wall thickness

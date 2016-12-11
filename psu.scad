@@ -1,7 +1,7 @@
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
-include <thing_libutils/metric-thread-data.scad>;
-include <thing_libutils/metric-hexnut-data.scad>;
+include <thing_libutils/thread-data.scad>;
+include <thing_libutils/thread-data.scad>;
 
 include <config.scad>
 

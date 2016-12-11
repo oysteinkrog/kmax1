@@ -1,8 +1,8 @@
 include <MCAD/stepper.scad>
 include <thing_libutils/pulley.scad>
 include <thing_libutils/bearing_data.scad>
-include <thing_libutils/metric-thread-data.scad>
-include <thing_libutils/metric-hexnut-data.scad>
+include <thing_libutils/thread-data.scad>
+include <thing_libutils/nut-data.scad>
 include <thing_libutils/misc.scad>
 include <thing_libutils/timing-belts-data.scad>
 
@@ -50,11 +50,11 @@ main_upper_width = 500*mm;
 extrusion_size = 20*mm;
 extrusion_thread = ThreadM5;
 extrusion_thread_dia = lookup(ThreadSize, extrusion_thread);
-extrusion_nut = MHexNutM5;
-extrusion_nut_dia = lookup(MHexNutWidthMax, extrusion_nut);
+extrusion_nut = NutHexM5;
+extrusion_nut_dia = lookup(NutWidthMax, extrusion_nut);
 
 // for tapped ends
-extrusion_end_nut = MHexNutM6;
+extrusion_end_nut = NutHexM6;
 
 main_lower_dist_z = 80*mm;
 main_upper_dist_y = 160*mm;
@@ -100,7 +100,7 @@ xaxis_carriage_beltpath_offset_y = xaxis_carriage_bearing_offset_y+xaxis_bearing
 
 xaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);
 xaxis_motor_thread=ThreadM3;
-xaxis_motor_nut=MHexNutM3;
+xaxis_motor_nut=NutHexM3;
 
 yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
@@ -165,10 +165,10 @@ zmotor_mount_h = main_lower_dist_z+extrusion_size+zaxis_motor_offset_z;
 
 zmotor_mount_clamp_dist = zaxis_rod_d*2.5;
 zmotor_mount_clamp_thread = ThreadM4;
-zmotor_mount_clamp_nut = MHexNutM4;
+zmotor_mount_clamp_nut = NutHexM4;
 zmotor_mount_clamp_thread_dia = lookup(ThreadSize, zmotor_mount_clamp_thread);
-zmotor_mount_clamp_nut_dia = lookup(MHexNutWidthMin, zmotor_mount_clamp_nut);
-zmotor_mount_clamp_nut_thick = lookup(MHexNutThickness, zmotor_mount_clamp_nut);
+zmotor_mount_clamp_nut_dia = lookup(NutWidthMin, zmotor_mount_clamp_nut);
+zmotor_mount_clamp_nut_thick = lookup(NutThickness, zmotor_mount_clamp_nut);
 zmotor_mount_clamp_width = zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*3;
 
 xaxis_zaxis_distance_y_ = max(xaxis_rod_d/2 + zaxis_bearing[1]/2, zaxis_nut[1]/2 - xaxis_rod_d/2);

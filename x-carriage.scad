@@ -4,7 +4,7 @@ include <thing_libutils/system.scad>;
 include <thing_libutils/units.scad>;
 include <thing_libutils/timing-belts.scad>
 include <thing_libutils/gears-data.scad>
-include <thing_libutils/metric-knurlnut-data.scad>
+include <thing_libutils/nut-knurl-data.scad>
 
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
@@ -12,7 +12,7 @@ use <thing_libutils/transforms.scad>;
 use <thing_libutils/attach.scad>;
 use <thing_libutils/linear-extrusion.scad>;
 use <thing_libutils/bearing.scad>
-use <thing_libutils/metric-screw.scad>
+use <thing_libutils/screws.scad>
 use <thing_libutils/gears.scad>
 
 xaxis_carriage_bearing_distance = xaxis_rod_distance/sqrt(2) - 5*mm;
@@ -112,7 +112,7 @@ extruder_shaft_len = extruder_shaft_len_b+extruder_a_h+extruder_offset_a[1];
 
 echo("Extruder B main shaft length: ", extruder_shaft_len);
 
-extruder_hotmount_clamp_nut = MHexNutM3;
+extruder_hotmount_clamp_nut = NutHexM3;
 extruder_hotmount_clamp_thread = ThreadM3;
 
 module x_carriage(part=undef, beltpath_sign=1)
@@ -289,7 +289,7 @@ module extruder_a_motor_mount_cut(motor=Nema17, h=10*mm)
     }
 
     motor_thread=ThreadM3;
-    motor_nut=MHexNutM3;
+    motor_nut=NutHexM3;
     for(x=[-1,1])
     for(z=[-1,1])
     translate([x*screw_dist/2, -h, z*screw_dist/2])
@@ -459,7 +459,7 @@ hotmount_tolerance=1.05*mm;
 
 // hotmount clamp screws distance from center
 hotmount_clamp_thread = ThreadM3;
-hotmount_clamp_nut = MKnurlInsertNutM3_5_42;
+hotmount_clamp_nut = NutKnurlInsertM3_5_42;
 
 hotmount_clamp_screw_dia = lookup(ThreadSize, hotmount_clamp_thread);
 hotmount_clamp_screws_dist = hotmount_d_h[1][1] + 1.2*hotmount_clamp_screw_dia;
@@ -690,7 +690,7 @@ module extruder_b(part=undef, with_sensormount=true)
         for(pos=extruder_b_mount_offsets)
         translate(pos)
         translate([0, -extruder_b_mount_thick, 0])
-        screw_cut(nut=MKnurlInsertNutM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
+        screw_cut(nut=NutKnurlInsertM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
 
         // drive gear window cutout
         translate(extruder_b_drivegear_offset)
@@ -931,7 +931,7 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
             translate([x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2])
             translate([0,.1,0])
             screw_cut(
-                    nut=MHexNutM3,
+                    nut=NutHexM3,
                     h=extruder_offset_a[1]+.2,
                     head_embed=true,
                     with_nut=false,
@@ -947,7 +947,7 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
             for(pos=extruder_b_mount_offsets)
             translate(pos)
             {
-                screw_cut(nut=MKnurlInsertNutM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
+                screw_cut(nut=NutKnurlInsertM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
             }
         }
     }
@@ -985,7 +985,7 @@ guidler_h=7;
 guidler_extra_h_up=guidler_bearing[1]/2+hotmount_clamp_screw_dia/2;
 
 guidler_screws_thread = ThreadM3;
-guidler_screws_nut = MHexNutM3;
+guidler_screws_nut = NutHexM3;
 guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
 guidler_screws_distance=4*mm;
 guidler_screws_mount_d = guidler_screws_thread_dia*2+5*mm;
@@ -1250,7 +1250,7 @@ module e3d_heatsink_duct()
 module beltpath(part, with_tensioner=true)
 {
     belt_t2 = belt_t2_thickness(xaxis_belt) + .2*mm;
-    tension_screw_nut = MHexNutM3;
+    tension_screw_nut = NutHexM3;
     tension_screw_thread = ThreadM3;
     tension_screw_dia = lookup(ThreadSize, tension_screw_thread);
     angle_screw_thread = ThreadM4;

@@ -1,4 +1,4 @@
-use <thing_libutils/metric-screw.scad>
+use <thing_libutils/screws.scad>
 include <thing_libutils/attach.scad>
 include <config.scad>
 include <thing_libutils/pulley.scad>
@@ -9,9 +9,9 @@ yidler_w = 2*yaxis_idler_pulley_inner_d;
 yaxis_idler_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
 
 yaxis_idler_mount_tightscrew_dia = lookup(ThreadSize, ThreadM4);
-yaxis_idler_mount_tightscrew_hexnut = MHexNutM4;
-yaxis_idler_mount_tightscrew_hexnut_dia = lookup(MHexNutWidthMax, yaxis_idler_mount_tightscrew_hexnut);
-yaxis_idler_mount_tightscrew_hexnut_thick = lookup(MHexNutThickness, yaxis_idler_mount_tightscrew_hexnut);
+yaxis_idler_mount_tightscrew_hexnut = NutHexM4;
+yaxis_idler_mount_tightscrew_hexnut_dia = lookup(NutWidthMax, yaxis_idler_mount_tightscrew_hexnut);
+yaxis_idler_mount_tightscrew_hexnut_thick = lookup(NutThickness, yaxis_idler_mount_tightscrew_hexnut);
 
 yidler_mount_width = yidler_w+yaxis_idler_mount_thickness*2 + yaxis_idler_mount_thread_dia*3;
 
@@ -114,7 +114,7 @@ module yaxis_idler()
 }
 
 yaxis_idler_tightscrew_dist = 10*mm;
-yaxis_idler_pulley_nut = MHexNutM5;
+yaxis_idler_pulley_nut = NutHexM5;
 yaxis_idler_pulley_thread = ThreadM5;
 yaxis_idler_pulley_thread_dia = lookup(ThreadSize, yaxis_idler_pulley_thread);
 yaxis_idler_pulleyblock_supportsize = yaxis_idler_pulley_outer_d*1.2;

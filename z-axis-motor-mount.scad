@@ -2,7 +2,7 @@ include <MCAD/stepper.scad>
 include <MCAD/motors.scad>
 
 use <thing_libutils/shapes.scad>
-use <thing_libutils/metric-screw.scad>
+use <thing_libutils/screws.scad>
 
 include <config.scad>
 include <rod-clamps.scad>
