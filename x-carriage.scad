@@ -4,7 +4,6 @@ include <thing_libutils/system.scad>;
 include <thing_libutils/units.scad>;
 include <thing_libutils/timing-belts.scad>
 include <thing_libutils/gears-data.scad>
-include <thing_libutils/nut-knurl-data.scad>
 
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
@@ -459,7 +458,7 @@ hotmount_tolerance=1.05*mm;
 
 // hotmount clamp screws distance from center
 hotmount_clamp_thread = ThreadM3;
-hotmount_clamp_nut = NutKnurlInsertM3_5_42;
+hotmount_clamp_nut = NutKnurlM3_5_42;
 
 hotmount_clamp_screw_dia = lookup(ThreadSize, hotmount_clamp_thread);
 hotmount_clamp_screws_dist = hotmount_d_h[1][1] + 1.2*hotmount_clamp_screw_dia;
@@ -690,7 +689,7 @@ module extruder_b(part=undef, with_sensormount=true)
         for(pos=extruder_b_mount_offsets)
         translate(pos)
         translate([0, -extruder_b_mount_thick, 0])
-        screw_cut(nut=NutKnurlInsertM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
+        screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
 
         // drive gear window cutout
         translate(extruder_b_drivegear_offset)
@@ -947,7 +946,7 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
             for(pos=extruder_b_mount_offsets)
             translate(pos)
             {
-                screw_cut(nut=NutKnurlInsertM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
+                screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
             }
         }
     }
