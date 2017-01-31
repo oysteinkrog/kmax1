@@ -5,10 +5,10 @@ use <thing_libutils/transforms.scad>;
 use <thing_libutils/attach.scad>;
 use <thing_libutils/linear-extrusion.scad>;
 use <thing_libutils/timing-belts.scad>;
-include <thing_libutils/timing-belts-data.scad>;
+/*include <thing_libutils/timing-belts-data.scad>;*/
 
-include <MCAD/stepper.scad>
-include <MCAD/motors.scad>
+/*include <MCAD/stepper.scad>*/
+/*include <MCAD/motors.scad>*/
 
 /*include <extruder-direct.scad>*/
 include <x-end.scad>
@@ -20,7 +20,7 @@ include <y-idler.scad>
 include <z-motor-mount.scad>
 use <gantry-upper-connector.scad>
 use <gantry-lower-connector.scad>
-include <psu.scad>
+use <psu.scad>
 use <rod-clamps.scad>
 use <lcd2004.scad>
 use <power-panel-iec320.scad>
