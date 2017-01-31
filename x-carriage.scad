@@ -98,10 +98,10 @@ extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_moto
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
-extruder_offset = [-extruder_filapath_offset[0]+6*mm, 0, 24*mm];
+extruder_offset = [-extruder_filapath_offset[0]+6*mm, 0, 24.5*mm];
 extruder_offset_a = -extruder_gear_big_offset+[
     0,
-    xaxis_bearing[1] + xaxis_carriage_bearing_offset_y + .2*mm,
+    xaxis_bearing[1] + xaxis_carriage_bearing_offset_y + 2*mm,
     0];
 
 // shaft from big gear to hobbed gear
@@ -1319,11 +1319,11 @@ module beltpath(part, with_tensioner=true)
             }
             else
             {
-                cubea([1000, xaxis_belt_width+3*mm, belt_t2*1.5]);
+                cubea([1000, xaxis_belt_width+3*mm, belt_t2*1.8], extrasize=[0,0,1*mm], extrasize_align=ZAXIS);
             }
 
             translate(xaxis_pulley_inner_d*ZAXIS)
-            cubea([1000, xaxis_belt_width+3*mm, belt_t2*1.5]);
+            cubea([1000, xaxis_belt_width+3*mm, belt_t2*2]);
         }
     }
     else if(part=="vit")
