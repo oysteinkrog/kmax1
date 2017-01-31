@@ -130,10 +130,11 @@ module y_axis()
 
     translate([0,0,yaxis_bearing[0]/2])
     {
+        // y smooth rod clamps to frame
         for(x=[-1,1])
         for(y=[-1,1])
         {
-            attach([[x*(yaxis_rod_distance/2),y*(main_depth/2+extrusion_size/2),0],[0,0,1]],mount_rod_clamp_conn_rod)
+            attach([[x*(yaxis_rod_distance/2),y*(main_depth/2+extrusion_size/2),0],ZAXIS],mount_rod_clamp_conn_rod)
             {
                 mount_rod_clamp_full(rod_d=zaxis_rod_d, thick=4, width=extrusion_size, thread=zmotor_mount_clamp_thread, orient=[0,1,0]);
             }
