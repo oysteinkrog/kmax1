@@ -351,7 +351,7 @@ module extruder_a(part=undef)
     {
         //cutouts for access to small gear tightscrew
         rotate([0,extruder_motor_mount_angle,0])
-        for(i=[-1:1])
+        for(i=[-1:0])
         rotate([0,i*90,0])
         translate([0,0,lookup(NemaSideSize, extruder_motor)/2])
         translate([0,extruder_a_h,0])
