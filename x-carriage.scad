@@ -946,7 +946,7 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
             for(pos=extruder_b_mount_offsets)
             translate(pos)
             {
-                screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=[0,1,0], align=[0,1,0]);
+                screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=false, orient=[0,1,0], align=[0,1,0]);
             }
         }
     }
