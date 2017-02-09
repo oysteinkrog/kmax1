@@ -1,4 +1,5 @@
 OPENSCAD="C:/Program Files/OpenSCAD/openscad.com"
+OPENSCAD_FLAGS="--enable=assert"
 
 SCAD_FILES = $(wildcard *.scad)
 
@@ -17,7 +18,7 @@ $(BUILDDIR)/$2.scad: $1 | dir_build dir_output
 
 $(OUTPUTDIR)/$2.stl: $(BUILDDIR)/$2.scad
 	@echo Building $2
-	@$(OPENSCAD) -m make -D is_build=true -o $(OUTPUTDIR)/$2.stl -d $(BUILDDIR)/$2.deps $(BUILDDIR)/$2.scad
+	@$(OPENSCAD) $(OPENSCAD_FLAGS) -m make -D is_build=true -o $(OUTPUTDIR)/$2.stl -d $(BUILDDIR)/$2.deps $(BUILDDIR)/$2.scad
 
 .PHONY: all
 all:: $(OUTPUTDIR)/$2.stl
