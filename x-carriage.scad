@@ -1017,7 +1017,7 @@ extruder_b_guidler_screw_offset_h = 15*mm + guidler_screws_thread_dia -6*mm;
 extruder_b_guidler_screw_offset_x = 2*mm;
 
 extruder_b_mount_thickness = 10*mm;
-extruder_b_mount_dia = 7*mm;
+extruder_b_mount_dia = 10*mm;
 
 x_carriage_w = max(xaxis_carriage_top_width, xaxis_carriage_bottom_width, sqrt(2)*(extruder_motor_holedist+extruder_b_mount_dia));
 
