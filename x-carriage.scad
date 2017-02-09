@@ -85,6 +85,9 @@ extruder_b_mount_offsets=[
     [extruder_filapath_offset[0]-4*mm,0,35*mm-15*mm]
 ];
 
+/*extruder_b_sensormount_offset=[35,-7,-41];*/
+extruder_b_sensormount_offset=[-25,-7,-41];
+
 extruder_a_bearing_offset_y = [0,-.5*mm,0];
 
 extruder_motor_mount_angle = 45;
@@ -614,7 +617,7 @@ module extruder_b(part=undef, with_sensormount=true)
             {
                 translate(extruder_b_sensormount_offset)
                 translate(-[0,extruder_b_sensormount_offset[1],0])
-                sensormount(part);
+                sensormount(part, align=-YAXIS);
                 cubea([1000,extruder_b_mount_thick,1000], align=[0,-1,0]);
             }
         }
@@ -627,14 +630,14 @@ module extruder_b(part=undef, with_sensormount=true)
             linear_extrude(1)
                 projection()
                 rotate([90,0,0])
-                sensormount(part);
+                sensormount(part, align=-YAXIS);
 
             rotate([90,0,0])
                 translate(-[0,extruder_b_sensormount_offset[1],0])
-                sensormount(part);
+                sensormount(part, align=-YAXIS);
 
             rotate([90,0,0])
-                sensormount(part);
+                sensormount(part, align=-YAXIS);
         }
 
         hull()
@@ -834,12 +837,27 @@ module extruder_b(part=undef, with_sensormount=true)
 
         if(with_sensormount)
         translate(extruder_b_sensormount_offset)
-            sensormount(part);
+            sensormount(part, align=-YAXIS);
     }
     else if(part=="vit")
     {
+        /*// debug to ensure sensor/hotend positions are correct*/
+        /*if(false)*/
+        translate(-80*ZAXIS)
+        {
+            translate(v_xy(hotend_mount_offset))
+            {
+                cylindera();
+
+                translate(sensormount_sensor_hotend_offset)
+                cylindera();
+            }
+        }
+
         translate(hotend_mount_offset)
-        hotmount_clamp();
+        {
+            hotmount_clamp();
+        }
 
         translate(extruder_b_bearing_offset)
         {
@@ -862,7 +880,9 @@ module extruder_b(part=undef, with_sensormount=true)
 
         if(with_sensormount)
         translate(extruder_b_sensormount_offset)
-            sensormount(part);
+        {
+            sensormount(part, align=-YAXIS);
+        }
     }
 }
 
@@ -1111,42 +1131,46 @@ module extruder_guidler(part, show_vit=false)
     }
 }
 
-module sensor_LJ12A3_mount(part=undef, height=10,thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
+module sensor_LJ12A3_mount(part=undef, height=10,sensormount_thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
 {
 }
 
-module sensormount(part=undef, height=10,thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
-{
-    align=[0,-1,0];
+sensor_diameter=12;
+sensormount_thickness=5;
+sensormount_OD_cut = 0*mm;
+sensormount_OD = sensor_diameter+2*sensormount_thickness;
+sensormount_h_ = 10;
+sensormount_size = [sensormount_OD,sensormount_OD-2*sensormount_OD_cut,sensormount_h_];
 
-    OD_cut = 0*mm;
-    OD = sensor_diameter+2*thickness;
-    h_ = height;
+sensormount_sensor_hotend_offset = v_xy(extruder_b_sensormount_offset) - v_y(sensormount_size/2) - v_xy(hotend_mount_offset);
+echo("Sensor mount offset", sensormount_sensor_hotend_offset);
+
+module sensormount(part=undef, screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],align=[0,0,0])
+{
     sensor_h = v_sum(sensor_height,2);
 
-    size_align(size=[OD,OD-2*OD_cut,h_], align=align, orient=[0,0,1])
+    size_align(size=sensormount_size, align=align, orient=[0,0,1])
     {
-
         if(part == "pos")
         {
             //Sensor mount
-            cylindera(d=OD, h=h_);
-            cubea([OD,OD/2,h_], align=[0,1,0]);
+            cylindera(d=sensormount_OD, h=sensormount_h_);
+            cubea([sensormount_OD,sensormount_OD/2,sensormount_h_], align=[0,1,0]);
         }
 
         else if(part == "neg")
         {
-            translate([0,0,h_/2])
-            cylindera(d=OD+1*mm, h=sensor_h, align=[0,0,1]);
+            translate([0,0,sensormount_h_/2])
+            cylindera(d=sensormount_OD+1*mm, h=sensor_h, align=[0,0,1]);
 
-            cylindera(d=sensor_diameter+0,5, h=h_+.2);
+            cylindera(d=sensor_diameter+0,5, h=sensormount_h_+.2);
 
-            translate([0,0,-h_/2])
-            cylindera(d=OD+1*mm, h=sensor_h, align=[0,0,-1]);
+            translate([0,0,-sensormount_h_/2])
+            cylindera(d=sensormount_OD+1*mm, h=sensor_h, align=[0,0,-1]);
 
             for(y=[-1,1])
-                translate([0,y*OD/2, 0])
-                    cubea([sensor_diameter+thickness*2,OD_cut,h_+2*e],[0,-y,0]);
+                translate([0,y*sensormount_OD/2, 0])
+                    cubea([sensor_diameter+sensormount_thickness*2,sensormount_OD_cut,sensormount_h_+2*e],[0,-y,0]);
         }
         else if(part == "vit")
         {
@@ -1402,9 +1426,6 @@ color_extruder = [0.2,0.6,0.9, alpha];
 color_guidler = [0.4,0.5,0.8, alpha];
 color_filament = [0,0,0, alpha];
                 // belt path cutout
-
-/*extruder_b_sensormount_offset=[35,-7,-41];*/
-extruder_b_sensormount_offset=[-25,-7,-41];
 
 explode=[0,0,0];
 /*explode=[0,10,0];*/
