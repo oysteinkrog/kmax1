@@ -248,55 +248,6 @@ module z_axis()
 
 }
 
-module main()
-{
-    translate([0,0,-main_lower_dist_z/2])
-    gantry_lower();
-
-    translate(-zaxis_rod_offset)
-    gantry_upper();
-
-    x_axis();
-    y_axis();
-    z_axis();
-
-    translate([-75*mm,0,0])
-    translate([0,main_depth/2,0])
-    translate([0,extrusion_size,0])
-    translate([0,0,-main_lower_dist_z/2-extrusion_size/2])
-    power_panel_iec320(orient=[0,-1,0], align=[0,1,0]);
-
-    if(!$preview_mode)
-    {
-        translate([0,-main_depth/2,0])
-        translate([0,-extrusion_size/2,0])
-        translate([0,0,-main_lower_dist_z/2])
-        mount_lcd2004(show_gantry=true);
-
-        for(x=[-1,1])
-        translate([x*(main_width/2-extrusion_size),main_depth/2,-main_lower_dist_z-extrusion_size])
-        {
-            translate([-x*psu_a_w/2, -psu_a_d/2, psu_a_h/2])
-            {
-                psu_a();
-
-                mirror([x==-1?1:0,0,0])
-                    translate([0, -psu_a_screw_dist_y/2, 0])
-                    psu_a_extrusion_bracket_side();
-
-                translate([0, psu_a_screw_dist_y/2, 0])
-                    psu_a_extrusion_bracket_back();
-            }
-        }
-
-        translate([0,-main_depth/2,-main_lower_dist_z-extrusion_size])
-            translate([-100,100,0])
-            rotate([0,0,270])
-            import("stl/RAMPS1_4.STL");
-    }
-}
-
-
 module gantry_upper()
 {
     color(color_extrusion)
@@ -423,6 +374,56 @@ module enclosure()
         cubea([w+wallthick*2,d,wallthick], align=[0,0, z]);
     }
 }
+
+module main()
+{
+    translate([0,0,-main_lower_dist_z/2])
+    gantry_lower();
+
+    translate(-zaxis_rod_offset)
+    gantry_upper();
+
+    x_axis();
+    y_axis();
+    z_axis();
+
+    translate([-75*mm,0,0])
+    translate([0,main_depth/2,0])
+    translate([0,extrusion_size,0])
+    translate([0,0,-main_lower_dist_z/2-extrusion_size/2])
+    power_panel_iec320(orient=[0,-1,0], align=[0,1,0]);
+
+    if(!$preview_mode)
+    {
+        translate([0,-main_depth/2,0])
+        translate([0,-extrusion_size/2,0])
+        translate([0,0,-main_lower_dist_z/2])
+        mount_lcd2004(show_gantry=true);
+
+        for(x=[-1,1])
+        translate([x*(main_width/2-extrusion_size),main_depth/2,-main_lower_dist_z-extrusion_size])
+        {
+            translate([-x*psu_a_w/2, -psu_a_d/2, psu_a_h/2])
+            {
+                psu_a();
+
+                mirror([x==-1?1:0,0,0])
+                    translate([0, -psu_a_screw_dist_y/2, 0])
+                    psu_a_extrusion_bracket_side();
+
+                translate([0, psu_a_screw_dist_y/2, 0])
+                    psu_a_extrusion_bracket_back();
+            }
+        }
+
+        translate([0,-main_depth/2,-main_lower_dist_z-extrusion_size])
+            translate([-100,100,0])
+            rotate([0,0,270])
+            import("stl/RAMPS1_4.STL");
+    }
+}
+
+
 
 feet_height = 8*mm;
 translate([0, 0, main_lower_dist_z+extrusion_size*2+feet_height])
