@@ -14,7 +14,7 @@ xaxis_end_motor_offset=[xaxis_end_motorsize/2+zaxis_bearing[1]/2+1*mm,motor_moun
 xaxis_end_wz = xaxis_rod_distance+zaxis_bearing[2]+2*mm;
 
 xaxis_endstop_size = [10.3*mm, 20*mm, 6.3*mm];
-xaxis_endstop_screw_offset = [-1.8*mm, 0*mm, 0*mm];
+xaxis_endstop_screw_offset = [-2.45*mm, 0*mm, 0*mm];
 
 function xaxis_end_width(with_motor) = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : zaxis_bearing[1]/2+zaxis_nut[1];
 
