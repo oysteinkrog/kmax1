@@ -42,7 +42,15 @@ axis_pos_y = axis_range_y[0];
 axis_range_z=[90*mm,353*mm];
 axis_pos_z = axis_range_z[0];
 
+echo(str("Axis range X: " , axis_range_x[0], " ", axis_range_x[1]," mm"));
+echo(str("Axis range Y: " , axis_range_y[0], " ", axis_range_y[1]," mm"));
+echo(str("Axis range Z: " , axis_range_z[0], " ", axis_range_z[1]," mm"));
+
 echo(str("Build area Z: " , axis_range_z[1]-axis_range_z[0] , " mm"));
+
+home_offset_x0 = axis_range_x[0] - axis_printrange_x[0] + v_x(extruder_filapath_offset)[0];
+echo(str("Home offset X0: " , home_offset_x0));
+echo(str("Tool offset X: " , axis_range_x_+x_carriage_w/2));
 
 module x_axis()
 {
