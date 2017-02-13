@@ -160,14 +160,6 @@ module x_carriage(part=undef, beltpath_sign=1)
                 }
             }
 
-            /*if(with_sensor_SN04_mount)*/
-            /*{*/
-                /*translate(extruder_offset)*/
-                /*translate(extruder_b_sensor_SN04_mount_offset)*/
-                /*translate(sensor_SN04_mount_offset)*/
-                /*cubea([sensor_SN04_size[0], 5*mm, 10*mm], align=[0,1,0]);*/
-            /*}*/
-
             for(z=xaxis_beltpath_z_offsets)
             translate([0, xaxis_carriage_beltpath_offset_y, z])
             mirror([0,0,sign(z)<1?1:0])
@@ -909,9 +901,17 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
         {
             x_carriage(part=part, beltpath_sign=beltpath_sign);
 
-            // endstop bumper
-            translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2])
-            rcubea(size=xaxis_endstop_size, align=YAXIS+ZAXIS+XAXIS);
+            // endstop bumper for physical switch endstop
+            if(xaxis_endstop_type == "SWITCH")
+            {
+                translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2])
+                rcubea(size=xaxis_endstop_size_switch, align=YAXIS+ZAXIS+XAXIS);
+            }
+            else if(xaxis_endstop_type == "SN04")
+            {
+                translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2-2*mm])
+                rcubea(size=[20*mm,xaxis_endstop_size_SN04[1]+4*mm,xaxis_endstop_size_SN04[2]], align=YAXIS+ZAXIS+XAXIS);
+            }
 
             // extruder A mount
             translate(extruder_offset)
@@ -968,6 +968,16 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
             {
                 screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=false, orient=[0,1,0], align=[0,1,0]);
             }
+        }
+
+        // endstop bumper for physical switch endstop
+        if(xaxis_endstop_type == "SWITCH")
+        {
+        }
+        else if(xaxis_endstop_type == "SN04")
+        {
+            translate([-xaxis_carriage_top_width/2,xaxis_endstop_size_SN04[1]/2+4*mm,xaxis_end_wz/2+8.5*mm-2*mm])
+            screw_cut(nut=NutHexM4, h=16*mm, head_embed=true, with_nut=false, orient=XAXIS, align=ZAXIS+XAXIS);
         }
     }
 }
