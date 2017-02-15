@@ -465,7 +465,7 @@ hotmount_clamp_w = [
 ];
 hotmount_clamp_height = hotmount_d_h[1][1];
 
-module hotend_cut(extend_cut=false)
+module hotend_cut(extend_cut=false, extend_cut_amount = extruder_b_w/2+1)
 {
     // cutout of j-head/e3d heatsink mount
     heights=vec_i(hotmount_d_h,1);
@@ -479,7 +479,7 @@ module hotend_cut(extend_cut=false)
             cylindera(d=d,h=h,align=[0,0,1]);
             if(extend_cut)
             {
-                cubea([extruder_b_w/2+1,d,h],align=[0,-1,1]);
+                cubea([d, extend_cut_amount, h], align=-YAXIS+ZAXIS);
             }
         }
     }
