@@ -251,7 +251,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 for(x=[-1,1])
                 for(z=[-1,1])
                 translate([0,-xaxis_end_motor_offset[1],0])
-                translate([x*screw_dist/2, -(xaxis_beltpath_width/2+4*mm), z*screw_dist/2])
+                translate([x*screw_dist/2, -(xaxis_beltpath_width/2+3*mm), z*screw_dist/2])
                 {
                     screw_cut(xaxis_motor_nut, h=25, with_nut=false, orient=[0,1,0], align=[0,1,0]);
                 }
