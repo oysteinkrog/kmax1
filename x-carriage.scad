@@ -1155,7 +1155,29 @@ sensormount_size = [sensormount_OD,sensormount_OD-2*sensormount_OD_cut,sensormou
 sensormount_sensor_hotend_offset = v_xy(extruder_b_sensormount_offset) - v_y(sensormount_size/2) - v_xy(hotend_mount_offset);
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
 
-module sensormount(part=undef, screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],align=[0,0,0])
+module sensormount(part=undef, align=[0,0,0])
+{
+    /*sensormount_cylinder(part=part, align=align);*/
+    if(part == "pos")
+    {
+        cubea();
+    }
+    else if(part == "neg")
+    {
+        cubea(s=[11,11,11]);
+    }
+    if(part == "vit")
+    {
+        %translate([-6,2,5])
+        /*rotate(ZAXIS*-90 + XAXIS*180)*/
+        /*rotate(XAXIS*180)*/
+        rotate(XAXIS*90)
+        rotate(ZAXIS*180)
+        import("stl/SN04-N_Inductive_Proximity_Sensor_3528_0.stl");
+    }
+}
+
+module sensormount_cylinder(part=undef, screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],align=[0,0,0])
 {
     sensor_h = v_sum(sensor_height,2);
 
