@@ -253,6 +253,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 translate([0,-xaxis_end_motor_offset[1],0])
                 translate([x*screw_dist/2, -(xaxis_beltpath_width/2+3*mm), z*screw_dist/2])
                 {
+                    if(!(x==1 && z == (beltpath_index==0?1:-1)))
                     screw_cut(xaxis_motor_nut, h=25, with_nut=false, orient=[0,1,0], align=[0,1,0]);
                 }
             }
