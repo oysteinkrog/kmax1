@@ -986,7 +986,7 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
 hotend_height = 63*mm;
 hotend_mount_offset = extruder_filapath_offset + [0,0,-extruder_drivegear_d_outer/2 + -5*mm];
 hotend_mount_conn = [hotend_mount_offset, [0,0,1]];
-hotend_conn = [[0,21.475,0], [0,1,0]];
+hotend_conn = [[0,21.3,0], [0,1,0]];
 
 module x_extruder_hotend()
 {
