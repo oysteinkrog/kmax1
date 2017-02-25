@@ -293,7 +293,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
 
                     for(i=[-1,1])
                     translate([i*zaxis_nut[5], 0, -zaxis_nut[3]])
-                    screw_cut(thread=zaxis_nut[6], h=20*mm, with_nut=false, orient=ZAXIS, align=ZAXIS);
+                    screw_cut(thread=zaxis_nut[6], h=16*mm, with_nut=false, orient=ZAXIS, align=ZAXIS);
                 }
             }
         }
