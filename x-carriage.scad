@@ -46,11 +46,15 @@ gear_13t_mod05 =[
 [GearTeeth, 13]
 ];
 
-// 13t metal gear and 60t metal gear
+gear_20t_mod05 =[
+[GearMod, 0.5],
+[GearTeeth, 20]
+];
+
 extruder_gear_small = gear_13t_mod05;
 extruder_gear_big = gear_60t_mod05;
 
-extruder_gears_distance=calc_gears_center_distance(gear_60t_mod05,gear_13t_mod05);
+extruder_gears_distance=calc_gears_center_distance(extruder_gear_small,extruder_gear_big);
 extruder_gear_small_PD = calc_gear_PD(extruder_gear_small);
 extruder_gear_big_PD = calc_gear_PD(extruder_gear_big);
 extruder_gear_big_OD = calc_gear_OD(extruder_gear_big);
