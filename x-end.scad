@@ -20,6 +20,8 @@ xaxis_endstop_size_SN04 = [34.15*mm, 18.15*mm, 17.8*mm];
 xaxis_endstop_screw_offset_SN04 = [-27.5*mm, 0*mm, 0*mm];
 xaxis_endstop_offset_SN04 = [-3*mm, 0*mm, 0*mm];
 
+xaxis_z_bearing_mount_dir = XAXIS;
+
 function xaxis_end_width(with_motor) = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : zaxis_bearing[1]/2+zaxis_nut[1];
 
 module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xrod_adjustment=false)
@@ -95,7 +97,15 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
 
         // support around z axis bearings
         translate([0, -xaxis_zaxis_distance_y, 0])
-        cylindera(h=xaxis_end_wz,d=bearing_sizey, orient=[0,0,1], align=[0,0,0], round_radius=2);
+        {
+            d=bearing_sizey+4*mm;
+            h=xaxis_end_wz;
+            difference()
+            {
+                cylindera(h=h, d=d, orient=[0,0,1], align=[0,0,0], round_radius=2);
+                cubea(size=[d,d,h], orient=[0,0,1], align=-xaxis_z_bearing_mount_dir, round_radius=2);
+            }
+        }
 
         // belt idler screw cut support
         for(z=[-1,1])
@@ -111,7 +121,12 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         // cut support around z axis bearings
         translate([0, -xaxis_zaxis_distance_y, 0])
         translate([0,0,.1])
-        cubea([bearing_sizey+.1, bearing_sizey+.2, xaxis_end_wz+.4], orient=[0,0,1], align=[0,-1,0]);
+        {
+            d=bearing_sizey+2*mm;
+            h=xaxis_end_wz+5;
+            cubea(size=[d,d,h], orient=[0,0,1], align=-xaxis_z_bearing_mount_dir, round_radius=2);
+            /*cubea([bearing_sizey+.1, bearing_sizey+.2, xaxis_end_wz+10], orient=[0,0,1], align=[0,-1,0]);*/
+        }
 
         // x smooth rods
         for(z=[-1,1])
