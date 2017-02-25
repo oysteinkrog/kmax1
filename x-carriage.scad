@@ -14,7 +14,7 @@ use <thing_libutils/bearing.scad>
 use <thing_libutils/screws.scad>
 use <thing_libutils/gears.scad>
 
-xaxis_carriage_bearing_distance = xaxis_rod_distance/sqrt(2) - 5*mm;
+xaxis_carriage_bearing_distance = (xaxis_rod_distance - 2*xaxis_bearing[3])/sqrt(2);
 xaxis_carriage_padding = 1*mm;
 xaxis_carriage_mount_distance = xaxis_carriage_bearing_distance+5*mm;
 xaxis_carriage_mount_offset_z = 0*mm;
