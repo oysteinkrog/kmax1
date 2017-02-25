@@ -247,10 +247,6 @@ module z_axis()
                 translate([0,0,zaxis_motor_offset_z-80*mm])
                     cylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=[0,0,1]);
 
-                for(z=[-1,1])
-                    translate([0,0,axis_pos_z-z*xaxis_rod_distance/2])
-                        bearing(zaxis_bearing);
-
             }
         }
     }
