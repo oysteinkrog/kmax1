@@ -36,6 +36,8 @@ extruder_drivegear_d_outer = 12.65*mm;
 extruder_drivegear_d_inner = 11.5*mm;
 extruder_drivegear_h = 11*mm;
 
+xaxis_endstop_SN04_pos = [-xaxis_carriage_top_width/2,0,xaxis_end_wz/2] + v_z(xaxis_endstop_size_SN04)/2;
+
 gear_60t_mod05 =[
 [GearMod, 0.5],
 [GearTeeth, 60]
@@ -171,6 +173,26 @@ module x_carriage(part=undef, beltpath_sign=1)
             {
                 beltpath(part=part, with_tensioner=beltpath_sign==sign(z));
             }
+
+            // endstop bumper for physical switch endstop
+            translate([0,xaxis_carriage_beltpath_offset_y,0])
+            if(xaxis_endstop_type == "SWITCH")
+            {
+                translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2])
+                rcubea(size=xaxis_endstop_size_switch, align=YAXIS+ZAXIS+XAXIS);
+            }
+            else if(xaxis_endstop_type == "SN04")
+            {
+                translate(xaxis_endstop_SN04_pos)
+                {
+                    hull()
+                    {
+                       cylindera(d=12*mm, h=20*mm, orient=XAXIS, align=XAXIS);
+                        /*rcubea(size=[20*mm,xaxis_endstop_size_SN04[1]+4*mm,xaxis_endstop_size_SN04[2]], align=YAXIS+ZAXIS+XAXIS);*/
+                    }
+                }
+            }
+
         }
     }
     else if(part=="neg")
@@ -905,18 +927,6 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
         {
             x_carriage(part=part, beltpath_sign=beltpath_sign);
 
-            // endstop bumper for physical switch endstop
-            if(xaxis_endstop_type == "SWITCH")
-            {
-                translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2])
-                rcubea(size=xaxis_endstop_size_switch, align=YAXIS+ZAXIS+XAXIS);
-            }
-            else if(xaxis_endstop_type == "SN04")
-            {
-                translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2-2*mm])
-                rcubea(size=[20*mm,xaxis_endstop_size_SN04[1]+4*mm,xaxis_endstop_size_SN04[2]], align=YAXIS+ZAXIS+XAXIS);
-            }
-
             // extruder A mount
             translate(extruder_offset)
             translate(extruder_offset_a)
@@ -975,13 +985,15 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
         }
 
         // endstop bumper for physical switch endstop
+        translate([0,xaxis_carriage_beltpath_offset_y,0])
         if(xaxis_endstop_type == "SWITCH")
         {
         }
         else if(xaxis_endstop_type == "SN04")
         {
-            translate([-xaxis_carriage_top_width/2,xaxis_endstop_size_SN04[1]/2+4*mm,xaxis_end_wz/2+8.5*mm-2*mm])
-            screw_cut(nut=NutHexM4, h=16*mm, head_embed=true, with_nut=false, orient=XAXIS, align=ZAXIS+XAXIS);
+            translate(xaxis_endstop_SN04_pos)
+            /*translate([-xaxis_carriage_top_width/2,xaxis_endstop_size_SN04[1]/2+4*mm,xaxis_end_wz/2+8.5*mm-2*mm])*/
+            screw_cut(nut=NutHexM4, h=16*mm, head_embed=true, with_nut=false, orient=XAXIS, align=XAXIS);
         }
     }
 }
@@ -1339,7 +1351,7 @@ module beltpath(part, with_tensioner=true)
             if(with_tensioner)
             {
                 translate([0,0,belt_t2/4])
-                cubea([1000, xaxis_belt_width+.1, belt_t2]);
+                cubea(size=[1000, xaxis_belt_width+.1, belt_t2], extrasize=1000*Y, extrasize_align=Y);
 
                 /*translate([0,0,angle_screw_dia/2])*/
                 {
@@ -1347,7 +1359,7 @@ module beltpath(part, with_tensioner=true)
                     {
                         for(i=[-1,1])
                         translate(i*11*mm*XAXIS)
-                        cylindera(d=angle_screw_dia+belt_t2, h=xaxis_belt_width+.1, orient=YAXIS);
+                        cylindera(d=angle_screw_dia+belt_t2, h=xaxis_belt_width+.1, orient=YAXIS, extra_h=1000, extra_align=Y);
                     }
 
                     hull()
@@ -1367,7 +1379,7 @@ module beltpath(part, with_tensioner=true)
                         cylindera(d=angle_screw_dia+.2*mm, h=1000, orient=XAXIS, align=XAXIS);
 
                         translate(-1*11*mm*XAXIS)
-                        nut_trap_cut(nut=tension_screw_nut, orient=-XAXIS, trap_axis=YAXIS);
+                        nut_trap_cut(nut=tension_screw_nut, trap_h=1000, orient=-XAXIS, trap_axis=YAXIS);
 
                         // cut for tension screw
                         translate(-1*25*mm*XAXIS)

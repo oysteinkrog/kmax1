@@ -79,19 +79,20 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         translate([0,0,z*(xaxis_rod_distance/2)])
         cylindera(h=xaxis_rod_l_support, d=xaxis_rod_d_support, orient=[1,0,0], align=[-1,0,0], round_radius=2);
 
+        // endstops mount support
         /*if(xaxis_endstop_type == "SWITCH")*/
         {
-            translate([xaxis_end_width(with_motor),0,(xaxis_rod_distance/2)+xaxis_rod_d])
+            translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
             {
-                rcubea(xaxis_endstop_size_switch, align=[-1,0,-1]);
+                rcubea(xaxis_endstop_size_switch, align=-XAXIS-ZAXIS);
             }
         }
         /*else if(xaxis_endstop_type == "SN04")*/
         {
-            translate([xaxis_end_width(with_motor),0,(xaxis_rod_distance/2)+xaxis_rod_d])
+            translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
             {
                 translate(xaxis_endstop_offset_SN04)
-                rcubea(xaxis_endstop_size_SN04, align=[-1,0,-1]);
+                rcubea(xaxis_endstop_size_SN04, align=-XAXIS-ZAXIS);
             }
         }
 
@@ -100,10 +101,10 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         {
             d=bearing_sizey+4*mm;
             h=xaxis_end_wz;
-            difference()
+            intersection()
             {
-                cylindera(h=h, d=d, orient=[0,0,1], align=[0,0,0], round_radius=2);
-                cubea(size=[d,d,h], orient=[0,0,1], align=-xaxis_z_bearing_mount_dir, round_radius=2);
+                rcylindera(h=h, d=d, orient=[0,0,1], align=[0,0,0]);
+                rcubea(size=[d,d,h], orient=[0,0,1], align=xaxis_z_bearing_mount_dir);
             }
         }
 
@@ -196,7 +197,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         //endstop mount screw cuts
         /*if(xaxis_endstop_type == "SWITCH")*/
         {
-            translate([xaxis_end_width(with_motor),0,(xaxis_rod_distance/2)+xaxis_rod_d])
+            translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
             translate(xaxis_endstop_screw_offset_switch)
             for(y=[-1,1])
             translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size_switch[2]])
@@ -206,7 +207,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         }
         /*else if(xaxis_endstop_type == "SN04")*/
         {
-            translate([xaxis_end_width(with_motor),0,(xaxis_rod_distance/2)+xaxis_rod_d])
+            translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
             translate(xaxis_endstop_screw_offset_SN04)
             for(y=[-1,1])
             translate([-0*mm,y*10.5*mm/2,xaxis_endstop_size_SN04[2]])
@@ -327,28 +328,24 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         {
             /*if(xaxis_endstop_type == "SWITCH")*/
             {
-                translate([xaxis_end_width(with_motor),0,(xaxis_rod_distance/2)+xaxis_rod_d])
+                translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
+                difference()
                 {
-                    difference()
-                    {
-                        rcubea(xaxis_endstop_size_switch, align=[-1,0,1]);
+                    rcubea(xaxis_endstop_size_switch, align=[-1,0,1]);
 
-                        translate(xaxis_endstop_screw_offset_switch)
-                        for(y=[-1,1])
-                        translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size_switch[2]])
-                        screw(nut=NutHexM2_5, h=6*mm, orient=[0,0,-1], align=[0,0,-1]);
-                    }
+                    translate(xaxis_endstop_screw_offset_switch)
+                    for(y=[-1,1])
+                    translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size_switch[2]])
+                    screw(nut=NutHexM2_5, with_nut=false, h=10*mm, orient=[0,0,-1], align=[0,0,-1]);
                 }
             }
             /*else if(xaxis_endstop_type == "SN04")*/
             {
-                translate([xaxis_end_width(with_motor),0,(xaxis_rod_distance/2)+xaxis_rod_d])
-                {
-                    translate(xaxis_endstop_offset_SN04)
-                    translate([-36,-9,0])
-                    rotate(ZAXIS*-90)
-                    import("stl/SN04-N_Inductive_Proximity_Sensor_3528_0.stl");
-                }
+                translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
+                translate(xaxis_endstop_offset_SN04)
+                translate([-36,-9,0])
+                rotate(ZAXIS*-90)
+                import("stl/SN04-N_Inductive_Proximity_Sensor_3528_0.stl");
             }
         }
 
