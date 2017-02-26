@@ -37,7 +37,7 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
             /*hull()*/
             {
                 // cylinder around rod
-                cylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0], round_radius=2);
+                rcylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
 
                 // base
                 rcubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=[1,0,0]);
@@ -110,7 +110,7 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
             {
                 // cylinder around rod
                 translate([rod_d/2,0,0])
-                cylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0], round_radius=2);
+                rcylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
 
                 // base
                 /*translate([-rod_d/2,0,0])*/
