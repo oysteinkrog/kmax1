@@ -62,22 +62,22 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2])
         {
             // main nut support
-            cylindera(h=zaxis_nut[4], d=zaxis_nut[0]+5*mm, align=[0,0,1], round_radius=2);
+            rcylindera(h=zaxis_nut[4], d=zaxis_nut[0]+5*mm, align=[0,0,1]);
 
             // nut screw holes support
             for(x=[-1,1])
             translate([x*zaxis_nut[5], 0, 0])
-            cylindera(h=zaxis_nut[4], d=lookup(ThreadSize, zaxis_nut[6])+5*mm, align=[0,0,1], round_radius=2);
+            rcylindera(h=zaxis_nut[4], d=lookup(ThreadSize, zaxis_nut[6])+5*mm, align=[0,0,1]);
 
             // lead screw
             // ensure some support for the leadscrew cutout all the way to the top
-            /*cylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=[0,0,1], round_radius=2);*/
+            /*rcylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=[0,0,1]);*/
         }
 
         // x axis rod holders
         for(z=[-1,1])
         translate([0,0,z*(xaxis_rod_distance/2)])
-        cylindera(h=xaxis_rod_l_support, d=xaxis_rod_d_support, orient=[1,0,0], align=[-1,0,0], round_radius=2);
+        rcylindera(h=xaxis_rod_l_support, d=xaxis_rod_d_support, orient=[1,0,0], align=[-1,0,0]);
 
         // endstops mount support
         /*if(xaxis_endstop_type == "SWITCH")*/
@@ -125,7 +125,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         {
             d=bearing_sizey+2*mm;
             h=xaxis_end_wz+5;
-            cubea(size=[d,d,h], orient=[0,0,1], align=-xaxis_z_bearing_mount_dir, round_radius=2);
+            rcubea(size=[d,d,h], orient=[0,0,1], align=-xaxis_z_bearing_mount_dir);
             /*cubea([bearing_sizey+.1, bearing_sizey+.2, xaxis_end_wz+10], orient=[0,0,1], align=[0,-1,0]);*/
         }
 
