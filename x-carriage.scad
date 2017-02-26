@@ -184,13 +184,7 @@ module x_carriage(part=undef, beltpath_sign=1)
             else if(xaxis_endstop_type == "SN04")
             {
                 translate(xaxis_endstop_SN04_pos)
-                {
-                    hull()
-                    {
-                       rcylindera(d=12*mm, h=20*mm, orient=XAXIS, align=XAXIS);
-                        /*rcubea(size=[20*mm,xaxis_endstop_size_SN04[1]+4*mm,xaxis_endstop_size_SN04[2]], align=YAXIS+ZAXIS+XAXIS);*/
-                    }
-                }
+                rcylindera(d=12*mm, h=20*mm, orient=XAXIS, align=XAXIS);
             }
 
         }
@@ -992,8 +986,7 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
         else if(xaxis_endstop_type == "SN04")
         {
             translate(xaxis_endstop_SN04_pos)
-            /*translate([-xaxis_carriage_top_width/2,xaxis_endstop_size_SN04[1]/2+4*mm,xaxis_end_wz/2+8.5*mm-2*mm])*/
-            screw_cut(nut=NutHexM4, h=16*mm, head_embed=true, with_nut=false, orient=XAXIS, align=XAXIS);
+            screw_cut(nut=NutHexM5, h=10*mm, head_embed=true, with_nut=false, orient=XAXIS, align=XAXIS);
         }
     }
 }
