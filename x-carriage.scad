@@ -162,7 +162,7 @@ module x_carriage(part=undef, beltpath_sign=1)
                 for(z=[-1,1])
                 {
                     translate([x*extruder_motor_holedist/2,-extruder_offset_a[1],z*extruder_motor_holedist/2])
-                    cylindera(d=extruder_b_mount_dia, h=xaxis_carriage_thickness, orient=[0,1,0], align=[0,1,0], round_radius=2);
+                    rcylindera(d=extruder_b_mount_dia, h=xaxis_carriage_thickness, orient=[0,1,0], align=[0,1,0], round_radius=2);
                 }
             }
 
@@ -187,7 +187,7 @@ module x_carriage(part=undef, beltpath_sign=1)
                 {
                     hull()
                     {
-                       cylindera(d=12*mm, h=20*mm, orient=XAXIS, align=XAXIS);
+                       rcylindera(d=12*mm, h=20*mm, orient=XAXIS, align=XAXIS);
                         /*rcubea(size=[20*mm,xaxis_endstop_size_SN04[1]+4*mm,xaxis_endstop_size_SN04[2]], align=YAXIS+ZAXIS+XAXIS);*/
                     }
                 }
@@ -344,12 +344,12 @@ module extruder_a(part=undef)
                 for(z=[-1,1])
                 translate([(extruder_motor_holedist/2)*x,0,(extruder_motor_holedist/2)*z])
                 rotate([0,x*extruder_motor_mount_angle,0])
-                cylindera(d=extruder_b_mount_dia, h=extruder_a_h, orient=[0,1,0], align=[0,1,0]);
+                rcylindera(d=extruder_b_mount_dia, h=extruder_a_h, orient=[0,1,0], align=[0,1,0]);
             }
 
             // support round big gear, needed?
             /*translate(extruder_gear_big_offset)*/
-            /*cylindera(d=extruder_gear_big_OD+2*mm+5*mm, h=extruder_a_h, orient=[0,1,0], align=[0,1,0], round_radius=2);*/
+            /*rcylindera(d=extruder_gear_big_OD+2*mm+5*mm, h=extruder_a_h, orient=[0,1,0], align=[0,1,0], round_radius=2);*/
 
             // support around bearing
             translate([0,extruder_a_h,0])
@@ -357,7 +357,7 @@ module extruder_a(part=undef)
             translate(extruder_gear_big_offset)
             translate(extruder_a_bearing_offset_y)
             scale(1.02)
-            cylindera(d=extruder_a_bearing[1]+5*mm, h=extruder_a_bearing[2], orient=[0,1,0], align=[0,-1,0]);
+            rcylindera(d=extruder_a_bearing[1]+5*mm, h=extruder_a_bearing[2], orient=[0,1,0], align=[0,-1,0]);
         }
     }
     else if(part=="support")
