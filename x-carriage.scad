@@ -151,7 +151,7 @@ module x_carriage(part=undef, beltpath_sign=1)
             translate(extruder_offset)
             for(pos=extruder_b_mount_offsets)
             translate(pos)
-            rcylinder(r=4*mm, align=[0,1,0], orient=[0,1,0]);
+            rcylindera(r=4*mm, align=[0,1,0], orient=[0,1,0]);
 
             // extruder A mount
             translate(extruder_offset)
