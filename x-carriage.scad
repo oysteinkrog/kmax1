@@ -162,7 +162,7 @@ module x_carriage(part=undef, beltpath_sign=1)
                 for(z=[-1,1])
                 {
                     translate([x*extruder_motor_holedist/2,-extruder_offset_a[1],z*extruder_motor_holedist/2])
-                    rcylindera(d=extruder_b_mount_dia, h=xaxis_carriage_thickness, orient=[0,1,0], align=[0,1,0], round_radius=2);
+                    rcylindera(d=extruder_b_mount_dia, h=xaxis_carriage_thickness, orient=[0,1,0], align=[0,1,0]);
                 }
             }
 
@@ -349,7 +349,7 @@ module extruder_a(part=undef)
 
             // support round big gear, needed?
             /*translate(extruder_gear_big_offset)*/
-            /*rcylindera(d=extruder_gear_big_OD+2*mm+5*mm, h=extruder_a_h, orient=[0,1,0], align=[0,1,0], round_radius=2);*/
+            /*rcylindera(d=extruder_gear_big_OD+2*mm+5*mm, h=extruder_a_h, orient=[0,1,0], align=[0,1,0]);*/
 
             // support around bearing
             translate([0,extruder_a_h,0])
@@ -589,11 +589,11 @@ module extruder_b(part=undef, with_sensormount=true)
         {
             for(pos=extruder_b_mount_offsets)
             translate(pos)
-            cylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=[0,1,0], align=[0,-1,0], round_radius=2);
+            rcylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=[0,1,0], align=[0,-1,0]);
 
             // hobbed gear bearing support
             translate(extruder_b_bearing_offset)
-            cylindera(d=extruder_b_bearing[1]+5*mm, h=extruder_b_bearing[2]+2*mm, orient=YAXIS, align=YAXIS, round_radius=2);
+            rcylindera(d=extruder_b_bearing[1]+5*mm, h=extruder_b_bearing[2]+2*mm, orient=YAXIS, align=YAXIS);
 
             // hotmount support
             translate(hotend_mount_offset)
@@ -610,7 +610,7 @@ module extruder_b(part=undef, with_sensormount=true)
             {
                 for(i=[-1,1])
                 translate([0,i*(guidler_screws_distance),  0])
-                cylindera(h=house_guidler_screw_h, d=guidler_screws_mount_d, orient=[1,0,0], round_radius=2);
+                rcylindera(h=house_guidler_screw_h, d=guidler_screws_mount_d, orient=[1,0,0]);
             }
 
             // support for clamp mount screw holes
@@ -619,7 +619,7 @@ module extruder_b(part=undef, with_sensormount=true)
             for(x=[-1,1])
             {
                 translate([x*hotmount_clamp_screws_dist, 0, 0])
-                cylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread)+6*mm, h=extruder_b_w, orient=[0,1,0]);
+                rcylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread)+6*mm, h=extruder_b_w, orient=[0,1,0]);
             }
         }
 
@@ -628,7 +628,7 @@ module extruder_b(part=undef, with_sensormount=true)
         {
             for(pos=extruder_b_mount_offsets)
             translate(pos)
-            cylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=[0,1,0], align=[0,-1,0], round_radius=2);
+            rcylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=[0,1,0], align=[0,-1,0]);
 
             if(with_sensormount)
             intersection()
@@ -662,11 +662,11 @@ module extruder_b(part=undef, with_sensormount=true)
         {
             // hobbed gear support
             translate(extruder_b_drivegear_offset)
-            cylindera(d=extruder_drivegear_d_outer+5*mm, h=abs(extruder_b_drivegear_offset[1])+extruder_drivegear_h/2, orient=[0,1,0], align=[0,0,0], round_radius=2);
+            rcylindera(d=extruder_drivegear_d_outer+5*mm, h=abs(extruder_b_drivegear_offset[1])+extruder_drivegear_h/2, orient=[0,1,0], align=[0,0,0]);
 
             // hobbed gear bearing support
             translate(extruder_b_bearing_offset)
-            cylindera(d=extruder_b_bearing[1]+5*mm, h=extruder_b_bearing[2]+2*mm, orient=YAXIS, align=YAXIS, round_radius=2);
+            rcylindera(d=extruder_b_bearing[1]+5*mm, h=extruder_b_bearing[2]+2*mm, orient=YAXIS, align=YAXIS);
 
             // guidler screw nuts support
             translate(extruder_b_drivegear_offset)
@@ -674,14 +674,14 @@ module extruder_b(part=undef, with_sensormount=true)
             {
                 for(i=[-1,1])
                 translate([0,i*(guidler_screws_distance),  0])
-                cylindera(h=house_guidler_screw_h, d=guidler_screws_mount_d, orient=[1,0,0], round_radius=2);
+                rcylindera(h=house_guidler_screw_h, d=guidler_screws_mount_d, orient=[1,0,0]);
             }
 
             // guidler mount
             translate(extruder_b_drivegear_offset)
             translate(extruder_guidler_mount_off)
             {
-                cylindera(d=guidler_mount_d, h=guidler_mount_w, orient=[0,1,0]);
+                rcylindera(d=guidler_mount_d, h=guidler_mount_w, orient=[0,1,0]);
             }
 
             // hotmount support
@@ -699,7 +699,7 @@ module extruder_b(part=undef, with_sensormount=true)
             for(x=[-1,1])
             {
                 translate([x*hotmount_clamp_screws_dist, 0, 0])
-                cylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread)+6*mm, h=extruder_b_w, orient=[0,1,0]);
+                rcylindera(d=lookup(ThreadSize, extruder_hotmount_clamp_thread)+6*mm, h=extruder_b_w, orient=[0,1,0]);
             }
         }
 
@@ -937,7 +937,7 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
                 {
                     if(x!=1||z!=-1)
                     translate([x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2])
-                    cylindera(d=extruder_b_mount_dia, h=extruder_offset_a[1], orient=[0,1,0], align=[0,-1,0], round_radius=2);
+                    rcylindera(d=extruder_b_mount_dia, h=extruder_offset_a[1], orient=[0,1,0], align=[0,-1,0]);
                 }
             }
         }
@@ -1073,7 +1073,7 @@ module extruder_guidler(part, show_vit=false)
                 rcubea([guidler_w, guidler_d, guidler_h], align=[0,1,0]);
 
                 // guidler bearing bolt holder
-                cylindera(d=guidler_bearing[0]+2*mm,h=guidler_w, orient=[1,0,0], round_radius=2);
+                rcylindera(d=guidler_bearing[0]+2*mm,h=guidler_w, orient=[1,0,0]);
             }
 
             hull()
@@ -1084,7 +1084,7 @@ module extruder_guidler(part, show_vit=false)
 
                 // guidler mount point
                 translate([0,guidler_mount_off[1], guidler_mount_off[2]])
-                cylindera(d=guidler_mount_d,h=guidler_w, orient=[1,0,0], round_radius=2);
+                rcylindera(d=guidler_mount_d,h=guidler_w, orient=[1,0,0]);
             }
 
             hull()
@@ -1096,11 +1096,11 @@ module extruder_guidler(part, show_vit=false)
                 // guidler screws mount
                 for(i=[-1,1])
                 translate([i*(guidler_screws_distance),guidler_mount_off[1]-guidler_mount_d/2, extruder_b_guidler_screw_offset_h])
-                cylindera(r=guidler_screws_thread_dia/2*3,h=guidler_d, align=[0,1,0], orient=[0,1,0], round_radius=2);
+                rcylindera(r=guidler_screws_thread_dia/2*3,h=guidler_d, align=[0,1,0], orient=[0,1,0]);
 
                 // tab above screw mount, for easier open
                 translate([0,guidler_mount_off[1]-guidler_mount_d/2, extruder_b_guidler_screw_offset_h+guidler_screws_thread_dia/2*3])
-                cylindera(r=5*mm,h=guidler_d/2, align=[0,1,0], orient=[0,1,0], round_radius=2);
+                rcylindera(r=5*mm,h=guidler_d/2, align=[0,1,0], orient=[0,1,0]);
 
             }
         }
