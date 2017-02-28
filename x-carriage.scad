@@ -191,6 +191,7 @@ module x_carriage(part=undef, beltpath_sign=1)
     }
     else if(part=="neg")
     {
+        // bearing mount top
         for(x=[-1,1])
         {
             dist_top = (xaxis_bearings_top-1) * (xaxis_carriage_bearing_distance+xaxis_bearing[2])/2;
@@ -201,17 +202,48 @@ module x_carriage(part=undef, beltpath_sign=1)
             ])
             {
                 bearing_mount_holes(bearing_type=xaxis_bearing, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
+            }
+        }
+
+        // bearing mount top cutout
+        hull()
+        for(x=[-1,1])
+        {
+            dist_top = (xaxis_bearings_top-1) * (xaxis_carriage_bearing_distance+xaxis_bearing[2])/2;
+            translate([
+                    x*dist_top,
+                    xaxis_bearing[1]/2+xaxis_carriage_bearing_offset_y,
+                    xaxis_rod_distance/2
+            ])
+            {
                 cubea([xaxis_bearing[2]+2*mm,xaxis_bearing[1]/2+10,xaxis_bearing[1]+1*mm], align=[0,1,0]);
             }
+        }
 
+
+        // bearing mount bottom
+        for(x=[-1,1])
+        {
             dist_bot = (xaxis_bearings_bottom-1) * (xaxis_carriage_bearing_distance+xaxis_bearing[2])/2;
-            for(x=[-1,1])
             translate([
                     x*dist_bot,
                     xaxis_bearing_bottom[1]/2+xaxis_carriage_bearing_offset_y,
                     -xaxis_rod_distance/2])
             {
                 bearing_mount_holes(bearing_type=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=[1,0,0]);
+            }
+        }
+
+        // bearing mount bottom cutout
+        hull()
+        for(x=[-1,1])
+        {
+            dist_bot = (xaxis_bearings_bottom-1) * (xaxis_carriage_bearing_distance+xaxis_bearing[2])/2;
+            translate([
+                    x*dist_bot,
+                    xaxis_bearing_bottom[1]/2+xaxis_carriage_bearing_offset_y,
+                    -xaxis_rod_distance/2])
+            {
                 cubea([xaxis_bearing_bottom[2]*2*mm,xaxis_bearing_bottom[1]/2+10,xaxis_bearing_bottom[1]+1*mm], align=[0,1,0]);
             }
         }
