@@ -127,7 +127,7 @@ module y_axis()
     {
         translate([0,main_depth/2-yaxis_motor_offset_x,0])
         {
-            rotate(YAXIS*90)
+            rotate(Y*90)
             belt_path(main_depth-yaxis_motor_offset_x-yaxis_idler_pulley_offset_y, 6, yaxis_pulley_inner_d, align=[0,-1,0], orient=Y);
         }
     }
@@ -145,7 +145,7 @@ module y_axis()
         for(x=[-1,1])
         for(y=[-1,1])
         {
-            attach([[x*(yaxis_rod_distance/2),y*(main_depth/2+extrusion_size/2),0],ZAXIS],mount_rod_clamp_conn_rod)
+            attach([[x*(yaxis_rod_distance/2),y*(main_depth/2+extrusion_size/2),0],Z],mount_rod_clamp_conn_rod)
             {
                 mount_rod_clamp_full(rod_d=zaxis_rod_d, thick=4, width=extrusion_size, thread=zmotor_mount_clamp_thread, orient=Y);
             }

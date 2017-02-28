@@ -32,7 +32,7 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
     else if(part=="pos")
     {
         s=[outer_d, base_thick_, width];
-        size_align(size=s, align=align, orient=orient, orient_ref=ZAXIS)
+        size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         {
             /*hull()*/
@@ -48,7 +48,7 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
     else if(part=="neg")
     {
         s=[outer_d, base_thick_, width];
-        size_align(size=s, align=align, orient=orient, orient_ref=ZAXIS)
+        size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         {
             // cut bottom of cylinder
@@ -58,21 +58,21 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
             for(i=[-1,1])
             translate([0, i*screw_dist_/2, 0])
             {
-                screw_cut(thread=thread, orient=-XAXIS);
+                screw_cut(thread=thread, orient=-X);
             }
 
             // cut rod
-            translate(-clamp_tolerance*XAXIS)
+            translate(-clamp_tolerance*X)
             cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
         }
     }
     else if(part=="vit")
     {
         s=[outer_d, base_thick_, width];
-        size_align(size=s, align=align, orient=orient, orient_ref=ZAXIS)
+        size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         {
-            translate(-clamp_tolerance*XAXIS)
+            translate(-clamp_tolerance*X)
             cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
         }
     }
@@ -104,7 +104,7 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
     }
     else if(part=="pos")
     {
-        size_align(size=s, align=align, orient=orient, orient_ref=ZAXIS)
+        size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         {
             /*hull()*/
@@ -121,26 +121,26 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
     }
     else if(part=="neg")
     {
-        size_align(size=s, align=align, orient=orient, orient_ref=ZAXIS)
+        size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         {
             // cut bottom of cylinder
-            /*translate(-rod_d/2*XAXIS)*/
+            /*translate(-rod_d/2*X)*/
             cubea([outer_d/2, screw_dist_+thread_dia*2.5+.1, width+1], align=[-1,0,0]);
 
             // cut clamp screw holes
             for(i=[-1,1])
             translate([0, i*screw_dist_/2, 0])
             {
-                screw_cut(thread=thread, orient=-XAXIS);
+                screw_cut(thread=thread, orient=-X);
             }
 
             // cut rod
             translate([rod_d/2,0,0])
-            translate(-clamp_tolerance*XAXIS)
+            translate(-clamp_tolerance*X)
             hull()
             {
-                stack(axis=-XAXIS, dist=100)
+                stack(axis=-X, dist=100)
                 {
                     cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
                     cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
@@ -150,10 +150,10 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
     }
     else if(part=="vit")
     {
-        %size_align(size=s, align=align, orient=orient, orient_ref=ZAXIS)
+        %size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         translate([rod_d/2,0,0])
-        translate(-clamp_tolerance*XAXIS)
+        translate(-clamp_tolerance*X)
         cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
     }
 }
@@ -162,7 +162,7 @@ if(false)
 {
     /*$show_vit=false;*/
     /*$preview_mode=false;*/
-    stack(axis=ZAXIS, dist=50)
+    stack(axis=Z, dist=50)
     {
         mount_rod_clamp_half(rod_d=yaxis_rod_d,  width=extrusion_size, thick=4, thread=ThreadM5, align_obj="mount");
         mount_rod_clamp_full(rod_d=yaxis_rod_d,  width=extrusion_size, thick=4, thread=ThreadM5, align_obj="mount");
