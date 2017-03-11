@@ -16,7 +16,7 @@ module mount_lcd2004_parts(
     )
 {
 
-    size_align(size=[lcd2004_width,lcd2004_depth,height], align=align, orient=orient, orient_ref=[0,0,1], roll=roll, extra_roll=extra_roll, extra_roll_orient=extra_roll_orient)
+    size_align(size=[lcd2004_width,lcd2004_depth,height], align=align, orient=orient, orient_ref=Z, roll=roll, extra_roll=extra_roll, extra_roll_orient=extra_roll_orient)
     if(part==undef)
     {
         difference()
@@ -31,7 +31,7 @@ module mount_lcd2004_parts(
         rcubea(size=[lcd2004_width,lcd2004_depth,height], rounding_radius=3, align=[1,1,1]);
     }
     else if(part=="neg")
-    mirror([0,1,0])
+    mirror(Y)
     translate([-lcd2004_width/2,-lcd2004_depth/2,-height/2])
     translate([lcd2004_wall_thick,lcd2004_wall_thick,0])
     {
@@ -49,15 +49,15 @@ module mount_lcd2004_parts(
 
         // Switch axis
         translate([137,35,-2]) 
-        cylindera(r=8/2, h=19, align=[0,0,1]);
+        cylindera(r=8/2, h=19, align=Z);
 
         // buzzer
         translate([130+13.5/2,8+39+12.5/2,-2]) 
-        cylindera(r=12.5/2, h=19, align=[0,0,1]);
+        cylindera(r=12.5/2, h=19, align=Z);
 
         // reset switch
         translate([137,16,-2]) 
-        cylindera(r=2, h=19, align=[0,0,1]);
+        cylindera(r=2, h=19, align=Z);
 
         // buzzer/switch/reset
         translate([116,8,2]) 
@@ -77,19 +77,19 @@ module mount_lcd2004_parts(
 
         // Screw hole for PCB
         translate([0+2.9,8+2.5,3]) 
-        cylindera(r=2.5/2, h=6, align=[0,0,1]);
+        cylindera(r=2.5/2, h=6, align=Z);
 
         // Screw hole for PCB
         translate([151-2.7,8+2.5,3]) 
-        cylindera(r=2.5/2, h=6, align=[0,0,1]);
+        cylindera(r=2.5/2, h=6, align=Z);
 
         // Screw hole for PCB
         translate([0+2.9,8+55.5-2.5,3]) 
-        cylindera(r=2.5/2, h=6, align=[0,0,1]);
+        cylindera(r=2.5/2, h=6, align=Z);
 
         // Screw hole for PCB
         translate([151-2.7,8+55.5-2.5,3]) 
-        cylindera(r=2.5/2, h=6, align=[0,0,1]);
+        cylindera(r=2.5/2, h=6, align=Z);
 
         // LCD pin header
         translate([14.5+8,60-5,2])
@@ -121,7 +121,7 @@ module gantry_lower()
                 }
                 else
                 {
-                    linear_extrusion(h=main_width, align=[0,y,-1], orient=[1,0,0]);
+                    linear_extrusion(h=main_width, align=[0,y,-1], orient=X);
                 }
             }
 
@@ -134,7 +134,7 @@ module gantry_lower()
                 }
                 else
                 {
-                    linear_extrusion(h=main_depth, align=[-x,0,-1], orient=[0,1,0]);
+                    linear_extrusion(h=main_depth, align=[-x,0,-1], orient=Y);
                 }
             }
         }
@@ -142,10 +142,10 @@ module gantry_lower()
 }
 
 lcd2004_mount_thickness = 5*mm;
-module lcd2004_extrusion_conn(part, orient=[0,0,1], align=[0,0,0])
+module lcd2004_extrusion_conn(part, orient=Z, align=N)
 {
     s = [extrusion_size, extrusion_size, lcd2004_mount_thickness];
-    size_align(size=s, orient=orient, orient_ref=[0,0,1], align=align)
+    size_align(size=s, orient=orient, orient_ref=Z, align=align)
     if(part==undef)
     {
         difference()
@@ -161,7 +161,7 @@ module lcd2004_extrusion_conn(part, orient=[0,0,1], align=[0,0,0])
     else if(part=="neg")
     {
         translate([0,0,-lcd2004_mount_thickness/2])
-        screw_cut(nut=extrusion_nut, with_nut=true, nut_cut_h=30, with_head=true, head_cut_h=30, length=12*mm, align=[0,0,1], orient=[0,0,1]);
+        screw_cut(nut=extrusion_nut, with_nut=true, nut_cut_h=30, with_head=true, head_cut_h=30, length=12*mm, align=Z, orient=Z);
     }
 }
 
@@ -185,7 +185,7 @@ module mount_lcd2004(part, show_gantry=false)
             translate([x*(lcd2004_width/2+extrusion_size),0,0])
             {
                 translate([0,0,main_lower_dist_z/2-extrusion_size])
-                lcd2004_extrusion_conn(part=part, orient=[0,0,1], align=[-x,0,-1]);
+                lcd2004_extrusion_conn(part=part, orient=Z, align=[-x,0,-1]);
             }
 
             for(x=[-1,1])
@@ -197,7 +197,7 @@ module mount_lcd2004(part, show_gantry=false)
 
             translate(lcd2004_offset)
             rotate([-mount_lcd2004_mount_angle,0,0])
-            mount_lcd2004_parts(part=part, orient=[0,1,0], align=[0,1,0]);
+            mount_lcd2004_parts(part=part, orient=Y, align=Y);
 
         }
         if(show_gantry)
@@ -214,7 +214,7 @@ module mount_lcd2004(part, show_gantry=false)
         translate([x*(lcd2004_width/2+extrusion_size),0,0])
         {
             translate([0,0,main_lower_dist_z/2-extrusion_size])
-            lcd2004_extrusion_conn(part=part, orient=[0,0,1], align=[-x,0,-1]);
+            lcd2004_extrusion_conn(part=part, orient=Z, align=[-x,0,-1]);
 
             translate([0,0,-main_lower_dist_z/2])
             {
@@ -233,14 +233,14 @@ module mount_lcd2004(part, show_gantry=false)
         translate(lcd2004_offset)
         rotate([-mount_lcd2004_mount_angle,0,0])
         {
-            mount_lcd2004_parts(part=part, orient=[0,1,0], align=[0,1,0]);
+            mount_lcd2004_parts(part=part, orient=Y, align=Y);
 
             translate([0,1000+5,0])
             rotate([90,0,0])
             linear_extrude(height=1000)
             projection(cut=false)
             rotate([-90,0,0])
-            mount_lcd2004_parts(part=part, orient=[0,1,0], align=[0,1,0]);
+            mount_lcd2004_parts(part=part, orient=Y, align=Y);
         }
 
         translate(lcd2004_offset)
@@ -250,7 +250,7 @@ module mount_lcd2004(part, show_gantry=false)
         linear_extrude(height=1000)
         projection(cut=false)
         rotate([-90,0,0])
-        mount_lcd2004_parts(part=part, orient=[0,1,0], align=[0,1,0]);
+        mount_lcd2004_parts(part=part, orient=Y, align=Y);
 
         translate([0,main_depth/2,0])
         translate([0,extrusion_size/2,0])

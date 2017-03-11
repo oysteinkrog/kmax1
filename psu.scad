@@ -28,7 +28,7 @@ psu_b_screw_thread_dia = lookup(ThreadSize, psu_b_screw_thread);
 psu_mount_bottom_height = 4*mm;
 
 
-module psu_a(align=[0,0,0], detailed_model=true)
+module psu_a(align=N, detailed_model=true)
 {
     if(detailed_model)
     {
@@ -49,13 +49,13 @@ module psu_a(align=[0,0,0], detailed_model=true)
                 for(y=[-1,1])
                     for(z=[-1,1])
                         translate([x*(psu_a_w/2+1), y*(psu_a_screw_dist_y/2), z*psu_a_screw_side_dist_z/2])
-                            cylindera(d=psu_a_screw_thread_dia, h=0.5*cm, orient=[1,0,0], align=[-x,0,0]);
+                            cylindera(d=psu_a_screw_thread_dia, h=0.5*cm, orient=X, align=[-x,0,0]);
 
             // screw holes, bottom
             for(x=[-1,1])
                 for(y=[-1,1])
                     translate([x*(psu_a_screw_bottom_dist_x/2), y*(psu_a_screw_dist_y/2), -psu_a_h/2-1])
-                        cylindera(d=psu_a_screw_thread_dia, h=1*cm, orient=[0,0,1], align=[0,0,1]);
+                        cylindera(d=psu_a_screw_thread_dia, h=1*cm, orient=Z, align=Z);
         }
     }
 }
@@ -113,7 +113,7 @@ module psu_a_extrusion_bracket_back()
     }
 }
 
-module psu_b(align=[0,0,0])
+module psu_b(align=N)
 {
     {
         size_align([psu_b_w,psu_b_d,psu_b_h], align)
@@ -126,13 +126,13 @@ module psu_b(align=[0,0,0])
                 /*for(y=[-1,1])*/
                     /*for(z=[-1,1])*/
                         /*translate([x*(psu_b_w/2+1), y*(psu_b_screw_dist_y/2), z*psu_b_screw_side_dist_z/2])*/
-                            /*cylindera(d=psu_b_screw_thread_dia, h=0.5*cm, orient=[1,0,0], align=[-x,0,0]);*/
+                            /*cylindera(d=psu_b_screw_thread_dia, h=0.5*cm, orient=X, align=[-x,0,0]);*/
 
             // screw holes, bottom
             for(x=[-1,1])
                 for(y=[-1,1])
                     translate([x*(psu_b_screw_bottom_dist_x/2), psu_b_screw_offset_y+y*(psu_b_screw_dist_y/2), -psu_b_h/2-1])
-                        cylindera(d=psu_b_screw_thread_dia, h=1*cm, orient=[0,0,1], align=[0,0,1]);
+                        cylindera(d=psu_b_screw_thread_dia, h=1*cm, orient=Z, align=Z);
         }
     }
 }

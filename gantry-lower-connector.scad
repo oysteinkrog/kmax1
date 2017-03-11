@@ -39,7 +39,7 @@ module gantry_lower_connector()
         // front nuts
         for(z=[-1,1])
         translate([-width/2-thick,-extrusion_size-thick,z*main_lower_dist_z/2])
-        screw_cut(nut=extrusion_nut, h=thick+.1, with_nut=false, orient=[0,1,0], align=[0,1,0]);
+        screw_cut(nut=extrusion_nut, h=thick+.1, with_nut=false, orient=Y, align=Y);
     }
 }
 

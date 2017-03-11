@@ -1,9 +1,10 @@
+include <thing_libutils/system.scad>
 include <thing_libutils/attach.scad>
 include <thing_libutils/shapes.scad>
 include <thing_libutils/screws.scad>
 include <config.scad>
 
-mount_rod_clamp_conn_rod = [[0,0,0],XAXIS];
+mount_rod_clamp_conn_rod = [N,XAXIS];
 
 module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=undef, base_thick=undef, thread=ThreadM4, align, orient, align_obj = "rod")
 {
@@ -14,7 +15,7 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
     base_thick_=base_thick==undef?thick_*1.2:base_thick;
     clamp_tolerance = 0.5*mm;
 
-    pos_offset = align_obj == "mount" ? [0,0,0] : [0,0,0];
+    pos_offset = align_obj == "mount" ? N : N;
 
     if(part==undef)
     {
@@ -37,10 +38,10 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
             /*hull()*/
             {
                 // cylinder around rod
-                rcylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
+                rcylindera(d=outer_d, h=width, orient=Z, align=N);
 
                 // base
-                rcubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=[1,0,0]);
+                rcubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=X);
             }
         }
     }
@@ -62,7 +63,7 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
 
             // cut rod
             translate(-clamp_tolerance*XAXIS)
-            cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=[0,0,1]);
+            cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
         }
     }
     else if(part=="vit")
@@ -72,7 +73,7 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
         translate(pos_offset)
         {
             translate(-clamp_tolerance*XAXIS)
-            cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=[0,0,1]);
+            cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
         }
     }
 }
@@ -86,7 +87,7 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
     base_thick_=base_thick==undef?thick_*1.2:base_thick;
     clamp_tolerance = 0.5*mm;
 
-    pos_offset = align_obj == "mount" ? [0,0,0] : [-rod_d/2,0,0];
+    pos_offset = align_obj == "mount" ? N : [-rod_d/2,0,0];
 
     s=[base_thick_, screw_dist_+thread_dia*2.5, width];
     if(part==undef)
@@ -110,11 +111,11 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
             {
                 // cylinder around rod
                 translate([rod_d/2,0,0])
-                rcylindera(d=outer_d, h=width, orient=[0,0,1], align=[0,0,0]);
+                rcylindera(d=outer_d, h=width, orient=Z, align=N);
 
                 // base
                 /*translate([-rod_d/2,0,0])*/
-                rcubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=[1,0,0]);
+                rcubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=X);
             }
         }
     }
@@ -141,8 +142,8 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
             {
                 stack(axis=-XAXIS, dist=100)
                 {
-                    cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=[0,0,1]);
-                    cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=[0,0,1]);
+                    cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
+                    cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
                 }
             }
         }
@@ -153,7 +154,7 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
         translate(pos_offset)
         translate([rod_d/2,0,0])
         translate(-clamp_tolerance*XAXIS)
-        cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=[0,0,1]);
+        cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
     }
 }
 

@@ -53,7 +53,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
             translate(xaxis_end_motor_offset)
             {
                 translate([x*screw_dist/2, 0, z*screw_dist/2])
-                cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=[0,1,0], align=[0,-1,0], rounding_radius=2);
+                cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=Y, align=[0,-1,0], rounding_radius=2);
             }
         }
 
@@ -62,22 +62,22 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         translate([zaxis_rod_screw_distance_x, -xaxis_zaxis_distance_y, -xaxis_end_wz/2])
         {
             // main nut support
-            rcylindera(h=zaxis_nut[4], d=zaxis_nut[0]+5*mm, align=[0,0,1]);
+            rcylindera(h=zaxis_nut[4], d=zaxis_nut[0]+5*mm, align=Z);
 
             // nut screw holes support
             for(x=[-1,1])
             translate([x*zaxis_nut[5], 0, 0])
-            rcylindera(h=zaxis_nut[4], d=lookup(ThreadSize, zaxis_nut[6])+5*mm, align=[0,0,1]);
+            rcylindera(h=zaxis_nut[4], d=lookup(ThreadSize, zaxis_nut[6])+5*mm, align=Z);
 
             // lead screw
             // ensure some support for the leadscrew cutout all the way to the top
-            /*rcylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=[0,0,1]);*/
+            /*rcylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=Z);*/
         }
 
         // x axis rod holders
         for(z=[-1,1])
         translate([0,0,z*(xaxis_rod_distance/2)])
-        rcylindera(h=xaxis_rod_l_support, d=xaxis_rod_d_support, orient=[1,0,0], align=[-1,0,0]);
+        rcylindera(h=xaxis_rod_l_support, d=xaxis_rod_d_support, orient=X, align=[-1,0,0]);
 
         // endstops mount support
         /*if(xaxis_endstop_type == "SWITCH")*/
@@ -103,8 +103,8 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
             h=xaxis_end_wz;
             intersection()
             {
-                rcylindera(h=h, d=d, orient=[0,0,1], align=[0,0,0]);
-                rcubea(size=[d,d,h], orient=[0,0,1], align=xaxis_z_bearing_mount_dir);
+                rcylindera(h=h, d=d, orient=Z, align=N);
+                rcubea(size=[d,d,h], orient=Z, align=xaxis_z_bearing_mount_dir);
             }
         }
 
@@ -125,8 +125,8 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         {
             d=bearing_sizey+2*mm;
             h=xaxis_end_wz+5;
-            rcubea(size=[d,d,h], orient=[0,0,1], align=-xaxis_z_bearing_mount_dir);
-            /*cubea([bearing_sizey+.1, bearing_sizey+.2, xaxis_end_wz+10], orient=[0,0,1], align=[0,-1,0]);*/
+            rcubea(size=[d,d,h], orient=Z, align=-xaxis_z_bearing_mount_dir);
+            /*cubea([bearing_sizey+.1, bearing_sizey+.2, xaxis_end_wz+10], orient=Z, align=[0,-1,0]);*/
         }
 
         // x smooth rods
@@ -135,7 +135,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         {
             xoff = - xaxis_end_xrod_offset_z -(with_xrod_adjustment?6:0)*mm;
             translate([xoff,0,0])
-            cylindera(h=abs(xoff)+xaxis_end_width(with_motor)+1,d=xaxis_rod_d+.5*mm, orient=[1,0,0], align=[1,0,0]);
+            cylindera(h=abs(xoff)+xaxis_end_width(with_motor)+1,d=xaxis_rod_d+.5*mm, orient=X, align=X);
 
             if(with_xrod_adjustment)
             {
@@ -190,7 +190,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         {
             translate([0, -xaxis_beltpath_width/2 - 7*mm, 0])
             {
-                screw_cut(nut=NutHexM5, h=xaxis_beltpath_width+13*mm, with_nut=true, orient=[0,1,0], align=[0,1,0]);
+                screw_cut(nut=NutHexM5, h=xaxis_beltpath_width+13*mm, with_nut=true, orient=Y, align=Y);
             }
         }
 
@@ -253,17 +253,17 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
             {
                 round_d=1.1*lookup(NemaRoundExtrusionDiameter, xaxis_motor);
                 translate([0, .1, 0])
-                translate([0,1,0])
-                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=[0,0,1], orient=[0,1,0], align=[0,-1,0], roll=90, truncate=0.9);
+                translate(Y)
+                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=Z, orient=Y, align=[0,-1,0], roll=90, truncate=0.9);
 
                 // motor axle
                 translate([0, .1, 0])
-                cylindera(d=1.2*lookup(NemaAxleDiameter, xaxis_motor), h=lookup(NemaFrontAxleLength, xaxis_motor)+3*mm, orient=[0,1,0], align=[0,1,0]);
+                cylindera(d=1.2*lookup(NemaAxleDiameter, xaxis_motor), h=lookup(NemaFrontAxleLength, xaxis_motor)+3*mm, orient=Y, align=Y);
 
                 // bearing for offloading force on motor shaft
                 translate([0, -2.5*mm-xaxis_pulley[1]-.1, 0])
                 scale(1.03)
-                cylindera(d=bearing_MR105[1], h=6*mm, orient=[0,1,0], align=[0,-1,0]);
+                cylindera(d=bearing_MR105[1], h=6*mm, orient=Y, align=[0,-1,0]);
 
                 for(x=[-1,1])
                 for(z=[-1,1])
@@ -271,7 +271,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 translate([x*screw_dist/2, -(xaxis_beltpath_width/2+3*mm), z*screw_dist/2])
                 {
                     if(!(x==1 && z == (beltpath_index==0?1:-1)))
-                    screw_cut(xaxis_motor_nut, h=25, with_nut=false, orient=[0,1,0], align=[0,1,0]);
+                    screw_cut(xaxis_motor_nut, h=25, with_nut=false, orient=Y, align=Y);
                 }
             }
 
@@ -286,11 +286,11 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 translate([0,0,-.1])
                 {
                     // nut
-                    cylindera(h=nut_h+1, d=zaxis_nut[0]*1.05, align=[0,0,1]);
+                    cylindera(h=nut_h+1, d=zaxis_nut[0]*1.05, align=Z);
 
                     // lead screw
                     translate([0,0,-.1])
-                    cylindera(h=lookup(NemaFrontAxleLength,zaxis_motor), d=zaxis_nut[2]*1.5, align=[0,0,1]);
+                    cylindera(h=lookup(NemaFrontAxleLength,zaxis_motor), d=zaxis_nut[2]*1.5, align=Z);
 
                     for(i=[-1,1])
                     translate([i*zaxis_nut[5], 0, -zaxis_nut[3]])
@@ -313,7 +313,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 {
                     // 1mm between pulley and motor
                     translate([0,-1*mm,0])
-                    pulley(xaxis_pulley, flip=false, orient=[0,1,0], align=[0,-1,0]);
+                    pulley(xaxis_pulley, flip=false, orient=Y, align=[0,-1,0]);
 
                     if(show_motor)
                     {
@@ -355,14 +355,14 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         {
             translate([0, -xaxis_beltpath_width/2 - 7*mm, 0])
             {
-                screw(nut=NutHexM5, h=25*mm, with_nut=true, orient=[0,1,0], align=[0,1,0]);
+                screw(nut=NutHexM5, h=25*mm, with_nut=true, orient=Y, align=Y);
             }
         }
 
         for(z=[-1,1])
         translate([xaxis_end_pulley_offset,0,-xaxis_beltpath_z_offsets[max(0,beltpath_index)]])
         {
-            pulley(xaxis_idler_pulley, orient=[0,1,0]);
+            pulley(xaxis_idler_pulley, orient=Y);
         }
 
         if(show_nut)
@@ -378,7 +378,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
             for(z=[-1,1])
                 translate([0,0,z*xaxis_rod_distance/2])
                 translate([0, -xaxis_zaxis_distance_y, 0])
-                cylindera(d=zaxis_rod_d, h=zaxis_rod_l, orient=[0,0,1]);
+                cylindera(d=zaxis_rod_d, h=zaxis_rod_l, orient=Z);
         }
 
         if(show_bearings)
@@ -391,7 +391,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
     }
 }
 
-module xaxis_end_beltpath(height, width, length = 1000, align=[0,0,0], orient=[1,0,0])
+module xaxis_end_beltpath(height, width, length = 1000, align=N, orient=X)
 {
     hull()
     for(z=[-1,1])
@@ -405,12 +405,12 @@ module xaxis_end_znut()
     {
         union()
         {
-            cylindera(d=zaxis_nut[1], h=zaxis_nut[3], orient=[0,0,1], align=[0,0,1]);
-            cylindera(d=zaxis_nut[0], h=zaxis_nut[4], orient=[0,0,1], align=[0,0,1]);
+            cylindera(d=zaxis_nut[1], h=zaxis_nut[3], orient=Z, align=Z);
+            cylindera(d=zaxis_nut[0], h=zaxis_nut[4], orient=Z, align=Z);
         }
 
         translate([0,0,-.1])
-        cylindera(d=zaxis_nut[2], h=zaxis_nut[4]+.2, orient=[0,0,1], align=[0,0,1]);
+        cylindera(d=zaxis_nut[2], h=zaxis_nut[4]+.2, orient=Z, align=Z);
     }
 }
 
@@ -431,14 +431,14 @@ if(false)
                 translate([-main_width/2-xo/2, xaxis_zaxis_distance_y, z])
                 rotate([90,0,0])
                 color("black")
-                belt_path(main_width+xw, 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
+                belt_path(main_width+xw, 6, xaxis_pulley_inner_d, orient=X, align=X);
             }
         }
 
         /*translate([axis_pos_x,0,0])*/
         /*{*/
             // x carriage
-            /*attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])*/
+            /*attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],N])*/
             /*{*/
                 /*x_carriage_full();*/
             /*}*/
@@ -448,12 +448,12 @@ if(false)
         color(color_rods)
         for(z=[-1,1])
         translate([xaxis_rod_offset_x,xaxis_zaxis_distance_y,z*(xaxis_rod_distance/2)])
-        cylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=[1,0,0]);
+        cylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=X);
 
         for(x=[-1,1])
         translate([x*(main_width/2), 0, 0])
         translate([x*(zmotor_mount_rod_offset_x),0,0])
-        cylindera(h=zaxis_rod_l,d=zaxis_rod_d, orient=ZAXIS, align=[0,0,0]);
+        cylindera(h=zaxis_rod_l,d=zaxis_rod_d, orient=ZAXIS, align=N);
 
         for(x=[-1,1])
         {

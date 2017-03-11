@@ -7,7 +7,7 @@ use <thing_libutils/screws.scad>
 include <config.scad>
 include <rod-clamps.scad>
 
-zmotor_mount_conn_motor=[[-zmotor_mount_motor_offset, 0, 0],[0,1,0]];
+zmotor_mount_conn_motor=[[-zmotor_mount_motor_offset, 0, 0],Y];
 
 module zaxis_motor_mount(show_motor=false)
 {
@@ -30,7 +30,7 @@ module zaxis_motor_mount(show_motor=false)
                     }
 
                     // reinforcement plate between motor and extrusion
-                    rcubea([zmotor_mount_thickness, zmotor_w+2, zmotor_h], align=[1,0,-1], extrasize=[0,0,2], extrasize_align=[0,0,1]);
+                    rcubea([zmotor_mount_thickness, zmotor_w+2, zmotor_h], align=[1,0,-1], extrasize=[0,0,2], extrasize_align=Z);
 
                     // top extrusion mount plate
                     translate([0, 0,-extrusion_size-zaxis_motor_offset_z])
@@ -49,7 +49,7 @@ module zaxis_motor_mount(show_motor=false)
                                     main_lower_dist_z+extrusion_size+zaxis_motor_offset_z+2,
                                     depth=zmotor_mount_thickness,
                                     align=[1,0,-1],
-                                    orient=[1,0,0]
+                                    orient=X
                                     );
 
                         translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 2])
@@ -65,12 +65,12 @@ module zaxis_motor_mount(show_motor=false)
                 // screw holes top
                 for(i=[-1,1])
                     translate([0, i*(zmotor_w/2+zmotor_mount_thread_dia*3), -extrusion_size])
-                        cylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia, orient=[1,0,0]);
+                        cylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia, orient=X);
 
                 // screw hole bottom
                 for(i=[0])
                     translate([0, i*(zmotor_w/2+zmotor_mount_thread_dia*3), -extrusion_size-main_lower_dist_z])
-                        cylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia,align=[0,0,0], orient=[1,0,0]);
+                        cylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia,align=N, orient=X);
             }
 
         }
@@ -83,20 +83,20 @@ module zaxis_motor_mount(show_motor=false)
 
         // cut out z rod
         translate([zmotor_mount_rod_offset_x, 0, 0])
-            cylindera(d=zaxis_rod_d*rod_fit_tolerance, h=100, orient=[0,0,1]);
+            cylindera(d=zaxis_rod_d*rod_fit_tolerance, h=100, orient=Z);
 
         // cut out z rod mounting clamp nut traps
         for(i=[-1,1])
         {
             translate([zmotor_mount_rod_offset_x-5, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
             {
-                nut_trap_cut(nut=zmotor_mount_clamp_nut, h=10, head_embed=false, trap_h=10, screw_l_extra=2*mm, trap_axis=[0,0,1], orient=[1,0,0], align=[0,0,0]);
+                nut_trap_cut(nut=zmotor_mount_clamp_nut, h=10, head_embed=false, trap_h=10, screw_l_extra=2*mm, trap_axis=Z, orient=X, align=N);
             }
         }
 
         %if(show_motor)
         {
-            attach([[lookup(NemaSideSize,zaxis_motor)/2,0,0],[0,0,0]],zmotor_mount_conn_motor)
+            attach([[lookup(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
             {
                 // z motor/leadscrews
                 motor(zaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);

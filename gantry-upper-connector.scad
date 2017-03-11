@@ -21,12 +21,12 @@ module gantry_upper_connector()
                 // connect upper gantry
                 translate([upper_gantry_width_diff, 0, 0])
                     translate([0,0,extrusion_size/2])
-                    rcubea([gantry_connector_thickness,main_upper_dist_y+extrusion_size,extrusion_size], align=[1,0,0], extrasize=[0,0,gantry_connector_thickness], extrasize_align=[0,0,1]);
+                    rcubea([gantry_connector_thickness,main_upper_dist_y+extrusion_size,extrusion_size], align=X, extrasize=[0,0,gantry_connector_thickness], extrasize_align=Z);
             }
 
             translate([upper_gantry_width_diff, 0, 0])
                 translate([0,0,extrusion_size])
-                rcubea([extrusion_size*2,main_upper_dist_y+extrusion_size,gantry_connector_thickness], align=[-1,0,1], extrasize=[gantry_connector_thickness,0,0], extrasize_align=[1,0,0]);
+                rcubea([extrusion_size*2,main_upper_dist_y+extrusion_size,gantry_connector_thickness], align=[-1,0,1], extrasize=[gantry_connector_thickness,0,0], extrasize_align=X);
 
         }
 
@@ -59,7 +59,7 @@ module gantry_upper_connector()
         // cutout for z rod
         translate(zaxis_rod_offset)
         translate([zmotor_mount_rod_offset_x,0,extrusion_size])
-        cylindera(d=zaxis_rod_d*1.01, h=extrusion_size*3, align=[0,0,0], orient=[0,0,1]);
+        cylindera(d=zaxis_rod_d*1.01, h=extrusion_size*3, align=N, orient=Z);
     }
 }
 

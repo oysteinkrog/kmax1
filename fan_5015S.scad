@@ -40,7 +40,7 @@ module fan_5015S(part)
             {
                 for(pos=fan_5015S_screwpos)
                 translate([pos[0], pos[1], 0])
-                cylindera(d=8*mm, h=fan_5015S_Z, align=[0,0,1]);
+                cylindera(d=8*mm, h=fan_5015S_Z, align=Z);
             }
         }
     }
@@ -51,7 +51,7 @@ module fan_5015S(part)
         {
             for(pos=fan_5015S_screwpos)
             translate([pos[0], pos[1], 0])
-            cylindera(d=3.3*mm, h=fan_5015S_Z+.1, align=[0,0,1]);
+            cylindera(d=3.3*mm, h=fan_5015S_Z+.1, align=Z);
         }
     }
 }

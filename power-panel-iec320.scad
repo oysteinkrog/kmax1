@@ -40,7 +40,7 @@ power_panel_iec320_hole_vspace = main_lower_dist_z;
 
 mount_hole_d = 5*mm;
 
-module power_panel_iec320(align=[0,0,0], orient=[0,0,-1])
+module power_panel_iec320(align=N, orient=[0,0,-1])
 {
     s = [power_panel_iec320_width,power_panel_iec320_height,power_panel_iec320_thickness];
     size_align(size=s, align=align, orient=orient, orient_ref=[0,0,-1])
@@ -72,7 +72,7 @@ module power_panel_iec320(align=[0,0,0], orient=[0,0,-1])
         for (x = [-1,1])
         for (y = [-1,1])
         translate([x*(power_panel_iec320_width/2-power_panel_iec320_hole_hedge_w-mount_hole_d/2), y*(power_panel_iec320_hole_vspace/2), -s[2]/2])
-        screw_cut(nut=extrusion_nut, screw_l=12*mm, with_nut=false, align=[0,0,1], orient=[0,0,1]);
+        screw_cut(nut=extrusion_nut, screw_l=12*mm, with_nut=false, align=Z, orient=Z);
     }
 }
 

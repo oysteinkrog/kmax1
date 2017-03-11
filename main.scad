@@ -1,3 +1,5 @@
+include <config.scad>
+include <thing_libutils/system.scad>
 use <thing_libutils/screws.scad>
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
@@ -62,7 +64,7 @@ module x_axis()
         for(z=xaxis_beltpath_z_offsets)
         translate([-main_width/2-zrod_offset+xaxis_end_motor_offset[0], xaxis_zaxis_distance_y, z])
         rotate([90,0,0])
-        belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=[1,0,0], align=[1,0,0]);
+        belt_path(main_width+2*(zrod_offset)+xaxis_end_motor_offset[0], 6, xaxis_pulley_inner_d, orient=X, align=X);
 
         for(x=[0:len(axis_range_x)-1])
         {
@@ -72,7 +74,7 @@ module x_axis()
 
             translate([pos,0,0])
             mirror([x==0?0:1,0,0])
-            attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],[0,0,0]])
+            attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],N])
             {
                 x_carriage_withmounts(show_vitamins=true, beltpath_offset=x==0?-1:1);
 
@@ -84,7 +86,7 @@ module x_axis()
         color(color_rods)
         for(z=[-1,1])
             translate([xaxis_rod_offset_x,xaxis_zaxis_distance_y,z*(xaxis_rod_distance/2)])
-                cylindera(h=xaxis_rod_l,d=xaxis_rod_d+.1, orient=[1,0,0]);
+                cylindera(h=xaxis_rod_l,d=xaxis_rod_d+.1, orient=X);
 
         for(x=[-1,1])
         {
@@ -126,7 +128,7 @@ module y_axis()
         translate([0,main_depth/2-yaxis_motor_offset_x,0])
         {
             rotate(YAXIS*90)
-            belt_path(main_depth-yaxis_motor_offset_x-yaxis_idler_pulley_offset_y, 6, yaxis_pulley_inner_d, align=[0,-1,0], orient=[0,1,0]);
+            belt_path(main_depth-yaxis_motor_offset_x-yaxis_idler_pulley_offset_y, 6, yaxis_pulley_inner_d, align=[0,-1,0], orient=Y);
         }
     }
 
@@ -145,7 +147,7 @@ module y_axis()
         {
             attach([[x*(yaxis_rod_distance/2),y*(main_depth/2+extrusion_size/2),0],ZAXIS],mount_rod_clamp_conn_rod)
             {
-                mount_rod_clamp_full(rod_d=zaxis_rod_d, thick=4, width=extrusion_size, thread=zmotor_mount_clamp_thread, orient=[0,1,0]);
+                mount_rod_clamp_full(rod_d=zaxis_rod_d, thick=4, width=extrusion_size, thread=zmotor_mount_clamp_thread, orient=Y);
             }
         }
 
@@ -154,7 +156,7 @@ module y_axis()
         translate([x*(yaxis_rod_distance/2), 0, 0])
         {
             color(color_rods)
-            cylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=[0,1,0]);
+            cylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=Y);
 
             for(y=[-1,1])
             {
@@ -165,7 +167,7 @@ module y_axis()
             }
         }
 
-        attach(yaxis_carriage_bearing_mount_conn_bearing, [[0,axis_pos_y,0],[0,0,1]])
+        attach(yaxis_carriage_bearing_mount_conn_bearing, [[0,axis_pos_y,0],Z])
         {
             yaxis_carriage_size_inner = [32*mm,32*mm,0];
 
@@ -185,10 +187,10 @@ module y_axis()
             }
 
             // y axis plate
-            cubea(yaxis_carriage_size - yaxis_carriage_size_inner, align=[0,0,1]);
+            cubea(yaxis_carriage_size - yaxis_carriage_size_inner, align=Z);
 
             translate([0,0,10*mm])
-                cubea(printbed_size, align=[0,0,1]);
+                cubea(printbed_size, align=Z);
         }
     }
 
@@ -245,7 +247,7 @@ module z_axis()
                 // z rods
                 color(color_rods)
                 translate([0,0,zaxis_motor_offset_z-80*mm])
-                    cylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=[0,0,1]);
+                    cylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=Z);
 
             }
         }
@@ -268,7 +270,7 @@ module gantry_upper()
             }
             else
             {
-                linear_extrusion(h=main_height, align=[-x,0,1], orient=[0,0,1]);
+                linear_extrusion(h=main_height, align=[-x,0,1], orient=Z);
             }
         }
 
@@ -276,11 +278,11 @@ module gantry_upper()
         {
             if($preview_mode)
             {
-                cubea(size=[main_upper_width, extrusion_size, extrusion_size], align=[0,0,1]);
+                cubea(size=[main_upper_width, extrusion_size, extrusion_size], align=Z);
             }
             else
             {
-                linear_extrusion(h=main_upper_width, align=[0,0,1], orient=[1,0,0]);
+                linear_extrusion(h=main_upper_width, align=Z, orient=X);
             }
         }
     }
@@ -316,7 +318,7 @@ module gantry_lower()
                 }
                 else
                 {
-                    linear_extrusion(h=main_width, align=[0,y,-1], orient=[1,0,0]);
+                    linear_extrusion(h=main_width, align=[0,y,-1], orient=X);
                 }
             }
 
@@ -329,7 +331,7 @@ module gantry_lower()
                 }
                 else
                 {
-                    linear_extrusion(h=main_depth, align=[-x,0,-1], orient=[0,1,0]);
+                    linear_extrusion(h=main_depth, align=[-x,0,-1], orient=Y);
                 }
             }
         }
@@ -396,7 +398,7 @@ module main()
     translate([0,main_depth/2,0])
     translate([0,extrusion_size,0])
     translate([0,0,-main_lower_dist_z/2-extrusion_size/2])
-    power_panel_iec320(orient=[0,-1,0], align=[0,1,0]);
+    power_panel_iec320(orient=[0,-1,0], align=Y);
 
     if(!$preview_mode)
     {
