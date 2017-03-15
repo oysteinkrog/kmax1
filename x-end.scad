@@ -173,16 +173,9 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
     }
     else if(part=="pos")
     {
-        hull()
-        {
-            xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
-
-            // projection against z, ensure easy print
-            translate([0,0,-xaxis_end_wz/2])
-                linear_extrude(1)
-                projection(cut=false)
-                xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
-        }
+        // projection against z, ensure easy print
+        proj_extrude_axis(axis=Z, offset=-xaxis_end_wz/2)
+        xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
     }
     else if(part=="neg")
     {
