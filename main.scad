@@ -133,13 +133,13 @@ module y_axis()
     }
 
     color(color_part)
-    translate([0,-axis_pos_y,yaxis_bearing[0]/2])
+    translate([0,-axis_pos_y,get(LinearBearingInnerDiameter, yaxis_bearing)/2])
     attach(yaxis_carriage_bearing_mount_conn_bearing, yaxis_belt_mount_conn)
     {
         yaxis_belt_holder();
     }
 
-    translate([0,0,yaxis_bearing[0]/2])
+    translate([0,0,get(LinearBearingInnerDiameter, yaxis_bearing)/2])
     {
         // y smooth rod clamps to frame
         for(x=[-1,1])
@@ -162,7 +162,8 @@ module y_axis()
             {
                 attach([[0,y*(yaxis_bearing_distance_y/2)-axis_pos_y,0],[0,0,-1]], yaxis_carriage_bearing_mount_conn_bearing)
                 {
-                    yaxis_carriage_bearing_mount(show_bearing=true);
+                    yaxis_carriage_bearing_mount();
+                    %yaxis_carriage_bearing_mount(part="vit");
                 }
             }
         }

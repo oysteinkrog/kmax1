@@ -1,13 +1,14 @@
+include <config.scad>
 include <thing_libutils/system.scad>
 include <thing_libutils/attach.scad>
-include <config.scad>
-use <thing_libutils/bearing.scad>
+include <thing_libutils/bearing-linear-data.scad>
+use <thing_libutils/bearing-linear.scad>
 
 yaxis_carriage_bearing_mount_bottom_thick = 3;
 yaxis_carriage_bearing_mount_conn_bottom = [N, Z];
-yaxis_carriage_bearing_mount_conn_bearing = [[0,0,yaxis_carriage_bearing_mount_bottom_thick+yaxis_bearing[1]/2], Z];
+yaxis_carriage_bearing_mount_conn_bearing = [[0,0,yaxis_carriage_bearing_mount_bottom_thick+get(LinearBearingOuterDiameter,yaxis_bearing)/2], Z];
 
-module yaxis_carriage_bearing_mount(show_bearing=false)
+module yaxis_carriage_bearing_mount(part)
 {
     // x distance of holes
     screw_dx=28;
@@ -18,36 +19,42 @@ module yaxis_carriage_bearing_mount(show_bearing=false)
     carriage_plate_thread_d=lookup(ThreadSize, carriage_plate_thread);
 
     width = screw_dx+carriage_plate_thread_d*2;
-    depth = max(yaxis_bearing[1], screw_dx+carriage_plate_thread_d*2);
-    /*height = yaxis_bearing[1]/2+yaxis_carriage_bearing_mount_bottom_thick;*/
+    bearing_OD = get(LinearBearingOuterDiameter, yaxis_bearing);
+    depth = max(bearing_OD, screw_dx+carriage_plate_thread_d*2);
     height = 5+yaxis_carriage_bearing_mount_bottom_thick;
 
-    difference()
+    if(part==U)
     {
-        union()
+        difference()
         {
-            rcubea ([width, depth, height], align=Z);
+            yaxis_carriage_bearing_mount(part="pos");
+            yaxis_carriage_bearing_mount(part="neg");
         }
+    }
+    else if(part=="pos")
+    {
+        rcubea ([width, depth, height], align=Z);
+    }
+    else if(part=="neg")
+    {
+        for(x=[-1,1])
+        for(y=[-1,1])
+        translate ([x*screw_dx/2, y*screw_dy/2, -1]) 
+        cylindera(d=carriage_plate_thread_d, h=height+2, align=Z);
 
-        translate ([+screw_dx/2, +screw_dy/2, -1]) cylindera(d=carriage_plate_thread_d, h=height+2, align=Z);
-        translate ([+screw_dx/2, -screw_dy/2, -1]) cylindera(d=carriage_plate_thread_d, h=height+2, align=Z);
-        translate ([-screw_dx/2, +screw_dy/2, -1]) cylindera(d=carriage_plate_thread_d, h=height+2, align=Z);
-        translate ([-screw_dx/2, -screw_dy/2, -1]) cylindera(d=carriage_plate_thread_d, h=height+2, align=Z);
-
-        translate([0,0,yaxis_bearing[1]/2+yaxis_carriage_bearing_mount_bottom_thick])
-        bearing_mount_holes(
-            bearing_type=yaxis_bearing,
+        translate([0,0,bearing_OD/2+yaxis_carriage_bearing_mount_bottom_thick])
+        linear_bearing_mount(
+            bearing=yaxis_bearing,
             ziptie_type=ziptie_type,
             ziptie_bearing_distance=ziptie_bearing_distance,
             orient=Y,
             ziptie_dist=4
             );
     }
-
-    %if(show_bearing)
+    else if(part=="vit")
     {
-        translate([0,0,yaxis_bearing[1]/2+yaxis_carriage_bearing_mount_bottom_thick])
-        bearing(yaxis_bearing, orient=Y);
+        translate([0,0,bearing_OD/2+yaxis_carriage_bearing_mount_bottom_thick])
+        linear_bearing(yaxis_bearing, orient=Y);
     }
 }
 
