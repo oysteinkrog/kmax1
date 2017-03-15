@@ -5,6 +5,8 @@ include <thing_libutils/units.scad>;
 include <thing_libutils/timing-belts.scad>
 include <thing_libutils/gears-data.scad>
 
+use <belt_fastener.scad>;
+
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
 use <thing_libutils/transforms.scad>;
@@ -171,7 +173,16 @@ module x_carriage(part=undef, beltpath_sign=1)
             mirror([0,0,sign(z)<1?1:0])
             mirror(X)
             {
-                beltpath(part=part, with_tensioner=beltpath_sign==sign(z));
+                proj_extrude_axis(axis=-Y)
+                belt_fastener(
+                   part=part,
+                   width=55*mm,
+                   belt=xaxis_belt,
+                   belt_width=xaxis_belt_width,
+                   belt_dist=xaxis_pulley_inner_d/2,
+                   thick=xaxis_carriage_thickness,
+                   with_tensioner=beltpath_sign==sign(z)
+                   );
             }
 
             // endstop bumper for physical switch endstop
@@ -253,7 +264,12 @@ module x_carriage(part=undef, beltpath_sign=1)
         mirror([0,0,sign(z)<1?1:0])
         mirror(X)
         {
-            beltpath(part=part, with_tensioner=beltpath_sign==sign(z));
+            belt_fastener(part=part,
+                belt=xaxis_belt,
+                belt_width=xaxis_belt_width,
+                belt_dist=xaxis_pulley_inner_d/2,
+                thick=xaxis_carriage_thickness,
+                with_tensioner=beltpath_sign==sign(z));
         }
     }
     else if(part=="vit")
@@ -1341,135 +1357,6 @@ module e3d_heatsink_duct()
 
         // TODO; clearance for extruder mounting bolt
     }
-}
-
-module beltpath(part, with_tensioner=true)
-{
-    belt_t2 = belt_t2_thickness(xaxis_belt) + .2*mm;
-    tension_screw_nut = NutHexM3;
-    tension_screw_thread = ThreadM3;
-    tension_screw_dia = lookup(ThreadSize, tension_screw_thread);
-    angle_screw_thread = ThreadM4;
-    angle_screw_dia = 3.25*mm;
-    width = max(xaxis_carriage_top_width,55*mm);
-    height = belt_t2*8;
-
-    if(part==undef)
-    {
-        difference()
-        {
-            beltpath("pos", with_tensioner=with_tensioner);
-            beltpath("neg", with_tensioner=with_tensioner);
-        }
-    }
-    else if(part=="pos")
-    {
-        translate([0, -xaxis_carriage_beltpath_offset_y, 0])
-        rcubea([width, xaxis_carriage_thickness, height], align=Y);
-
-        rcubea([width, xaxis_belt_width, height], extrasize=[0,angle_screw_dia+3*mm,0], extrasize_align=-Y);
-    }
-    else if(part=="neg")
-    {
-        translate(-xaxis_pulley_inner_d/2*Z)
-        {
-            if(with_tensioner)
-            {
-                translate([0,0,belt_t2/4])
-                cubea(size=[1000, xaxis_belt_width+.1, belt_t2], extrasize=1000*Y, extrasize_align=Y);
-
-                /*translate([0,0,angle_screw_dia/2])*/
-                {
-                    hull()
-                    {
-                        for(i=[-1,1])
-                        translate(i*11*mm*X)
-                        cylindera(d=angle_screw_dia+belt_t2, h=xaxis_belt_width+.1, orient=Y);
-                    }
-
-                    hull()
-                    {
-                        /*translate(*8*mm*X)*/
-                        for(i=[-1,1])
-                        translate(i*10*mm*X)
-                        translate(-xaxis_belt_width*Y)
-                        cylindera(d=angle_screw_dia+.2, h=10000, orient=Y, align=Y);
-                    }
-
-                    translate([0,-xaxis_belt_width,0])
-                    {
-                        // cut for angle screw
-                        translate(-1*2*mm*Y)
-                        translate(-1*11*mm*X)
-                        cylindera(d=angle_screw_dia+.2*mm, h=1000, orient=X, align=X);
-
-                        translate(-1*11*mm*X)
-                        nut_trap_cut(nut=tension_screw_nut, orient=-X, trap_axis=Y);
-
-                        // cut for tension screw
-                        translate(-1*25*mm*X)
-                        /*translate(-width/2*X)*/
-                        screw_cut(nut=tension_screw_nut, h=25*mm, with_head=true, head_embed=true, with_nut=false, orient=X, align=X);
-                    }
-                }
-
-            }
-            else
-            {
-                cubea([1000, xaxis_belt_width+3*mm, belt_t2*1.8], extrasize=[0,0,1*mm], extrasize_align=Z);
-            }
-
-            translate(xaxis_pulley_inner_d*Z)
-            cubea([1000, xaxis_belt_width+3*mm, belt_t2*2]);
-        }
-    }
-    else if(part=="vit")
-    {
-        translate(-xaxis_pulley_inner_d/2*Z)
-        if(with_tensioner)
-        {
-            // 90 angle metal screw
-            translate([0,0,angle_screw_dia/2])
-            {
-                translate([0,-angle_screw_dia/2,0])
-                cylindera(d=angle_screw_dia+.2*mm, h=25*mm, orient=X, align=X);
-                cylindera(d=angle_screw_dia+.2*mm, h=5*mm, orient=Y, align=Y+X);
-
-                /*translate([0,-xaxis_belt_width,0])*/
-                /*{*/
-                    /*translate(-1*11*mm*X)*/
-                    /*#screw(thread=tension_screw_thread, orient=X, align=-X);*/
-                /*}*/
-            }
-        }
-    }
-}
-
-module test_beltpath(x)
-{
-    difference()
-    {
-        for(z=xaxis_beltpath_z_offsets)
-        translate([0, xaxis_carriage_beltpath_offset_y, z])
-        mirror([0,0,sign(z)<1?1:0])
-        {
-            beltpath(part="pos", with_tensioner=sign(z)==x);
-        }
-
-        for(z=xaxis_beltpath_z_offsets)
-        translate([0, xaxis_carriage_beltpath_offset_y, z])
-        mirror([0,0,sign(z)<1?1:0])
-        {
-            beltpath(part="neg", with_tensioner=sign(z)==x);
-        }
-    }
-
-    /*for(z=xaxis_beltpath_z_offsets)*/
-    /*translate([0, xaxis_carriage_beltpath_offset_y, z])*/
-    /*mirror([0,0,sign(z)<1?1:0])*/
-    /*{*/
-        /*%beltpath(part="vit", with_tensioner=sign(z)==x);*/
-    /*}*/
 }
 
 // flip for printing
