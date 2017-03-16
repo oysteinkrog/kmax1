@@ -13,7 +13,7 @@ use <thing_libutils/bearing-linear.scad>
 motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
 xaxis_end_pulley_offset = 41*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);
-xaxis_end_motor_offset=[xaxis_end_motorsize/2+zaxis_bearing[1]/2+1*mm,motor_mount_wall_thick-2*mm,0];
+xaxis_end_motor_offset=[xaxis_end_motorsize/2+zaxis_bearing_OD/2+1*mm,motor_mount_wall_thick-2*mm,0];
 xaxis_end_wz = xaxis_rod_distance+xaxis_rod_d+10*mm;
 
 xaxis_endstop_size_switch = [10.3*mm, 20*mm, 6.3*mm];
@@ -25,12 +25,12 @@ xaxis_endstop_offset_SN04 = [-3*mm, 0*mm, 0*mm];
 
 xaxis_z_bearing_mount_dir = X;
 
-function xaxis_end_width(with_motor) = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : zaxis_bearing[1]/2+zaxis_nut[1];
+function xaxis_end_width(with_motor) = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : zaxis_bearing_OD/2+zaxis_nut[1];
 
 module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xrod_adjustment=false)
 {
     nut_h = zaxis_nut[4];
-    bearing_sizey = zaxis_bearing[1] + 5*mm;
+    bearing_sizey = zaxis_bearing_OD + 5*mm;
 
     xaxis_end_xrod_offset_z = xaxis_rod_l/2 - (main_width/2 + zmotor_mount_rod_offset_x);
     xaxis_rod_d_support = xaxis_rod_d+5*mm;
@@ -217,27 +217,18 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         xaxis_end_beltpath(height=xaxis_beltpath_height_body, width=xaxis_beltpath_width);
 
         // z smooth bearing mounts
+        translate(-xaxis_zaxis_distance_y*Y)
         for(z=[-1,1])
+        translate(z*(xaxis_end_wz/2-2*mm)*Z)
         {
-            translate([0,0,z*(xaxis_end_wz/2-2*mm)])
-            translate([0, -xaxis_zaxis_distance_y, 0])
-            {
-                bearing_mount_holes(
-                        bearing_type=zaxis_bearing,
-                        ziptie_type=ziptie_type,
-                        ziptie_bearing_distance=ziptie_bearing_distance,
-                        orient=Z,
-                        align=[0,0,-z],
-                        with_zips=true
-                        );
-                /*hull()*/
-                /*{*/
-                    /*cylindera(d=zaxis_bearing[1],h=xaxis_end_wz);*/
-
-                    /*translate([-5*cm,0,0])*/
-                    /*cylindera(d=zaxis_bearing[1],h=xaxis_end_wz);*/
-                /*}*/
-            }
+            linear_bearing_mount(
+                bearing=zaxis_bearing,
+                ziptie_type=ziptie_type,
+                ziptie_bearing_distance=ziptie_bearing_distance,
+                orient=Z,
+                align=-z*Z,
+                with_zips=true
+                );
         }
 
         if(with_motor)
@@ -377,20 +368,6 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 translate([0,0,z*xaxis_rod_distance/2])
                 translate([0, -xaxis_zaxis_distance_y, 0])
                 cylindera(d=zaxis_rod_d, h=zaxis_rod_l, orient=Z);
-        }
-
-        if(show_bearings)
-        {
-            /*for(z=[-1,1])*/
-            /*translate([0,0,z*xaxis_rod_distance/2])*/
-            /*translate([0, -xaxis_zaxis_distance_y, 0])*/
-            /*bearing(zaxis_bearing);*/
-
-            translate([0, -xaxis_zaxis_distance_y, 0])
-            translate(-Z*xaxis_end_wz/2)
-            {
-                linear_bearing(bearing=LinearBearingLMH12L, align=Z, offset_flange=true);
-            }
         }
     }
 }

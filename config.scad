@@ -149,7 +149,15 @@ zaxis_rod_d = 11.975*mm;
 zaxis_rod_l = 500*mm;
 // relative to entire machine
 zaxis_rod_offset = [0,-20*mm,0];
-zaxis_bearing=bearing_bronze_12_18_18;
+zaxis_bearing= [
+    [LinearBearingModel, "PSM121818"],
+    [LinearBearingInnerDiameter, 12*mm],
+    [LinearBearingOuterDiameter, 18*mm],
+    [LinearBearingLength, 18*mm],
+];
+zaxis_bearing_ID=get(LinearBearingInnerDiameter,zaxis_bearing);
+zaxis_bearing_OD=get(LinearBearingOuterDiameter,zaxis_bearing);
+zaxis_bearing_L=get(LinearBearingLength,zaxis_bearing);
 
 // Nema17 motor w/340mm long 8*mm leadscrew
 zaxis_motor = dict_replace_multiple(Nema17,
@@ -183,7 +191,7 @@ zmotor_mount_clamp_nut_dia = lookup(NutWidthMin, zmotor_mount_clamp_nut);
 zmotor_mount_clamp_nut_thick = lookup(NutThickness, zmotor_mount_clamp_nut);
 zmotor_mount_clamp_width = zmotor_mount_clamp_dist+zmotor_mount_clamp_thread_dia*3;
 
-xaxis_zaxis_distance_y_ = max(xaxis_rod_d/2 + zaxis_bearing[1]/2, zaxis_nut[1]/2 - xaxis_rod_d/2);
+xaxis_zaxis_distance_y_ = max(xaxis_rod_d/2 + zaxis_bearing_OD/2, zaxis_nut[1]/2 - xaxis_rod_d/2);
 xaxis_zaxis_distance_y = xaxis_zaxis_distance_y_ + ziptie_type[0]+.5*mm + 1*mm;
 
 zaxis_nut_mount_outer = zaxis_nut[1]/2 + zaxis_rod_d/2 + 1*mm;
