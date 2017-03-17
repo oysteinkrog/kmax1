@@ -174,7 +174,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
     else if(part=="pos")
     {
         // projection against z, ensure easy print
-        proj_extrude_axis(axis=Z, offset=-xaxis_end_wz/2)
+        proj_extrude_axis(axis=Z, offset=xaxis_end_wz/2)
         xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
     }
     else if(part=="neg")
@@ -242,7 +242,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 round_d=1.1*lookup(NemaRoundExtrusionDiameter, xaxis_motor);
                 translate([0, .1, 0])
                 translate(Y)
-                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=Z, orient=Y, align=[0,-1,0], roll=90, truncate=0.9);
+                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=Z, orient=Y, align=-Y, roll=0, truncate=0.9);
 
                 // motor axle
                 translate([0, .1, 0])
@@ -410,7 +410,6 @@ if(false)
                 xo = x>0?xaxis_end_pulley_offset:xaxis_end_motor_offset[0];
                 xw = x<0?xaxis_end_pulley_offset:xaxis_end_motor_offset[0];
                 translate([-main_width/2-xo/2, xaxis_zaxis_distance_y, z])
-                rotate([90,0,0])
                 color("black")
                 belt_path(main_width+xw, 6, xaxis_pulley_inner_d, orient=X, align=X);
             }

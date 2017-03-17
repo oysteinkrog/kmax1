@@ -1524,7 +1524,7 @@ if(false)
     for(z=[-1,1])
     for(z=xaxis_beltpath_z_offsets)
     translate([-main_width/2, xaxis_carriage_beltpath_offset_y, z])
-    rotate([90,0,0])
+    rotate(90*X)
     belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=X, align=X);
 
     /*for(offset=[0,1])*/
