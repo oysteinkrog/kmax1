@@ -173,13 +173,12 @@ module x_carriage(part=undef, beltpath_sign=1)
             mirror([0,0,sign(z)<1?1:0])
             mirror(X)
             {
-                proj_extrude_axis(axis=-Y)
                 belt_fastener(
                    part=part,
                    width=55*mm,
                    belt=xaxis_belt,
                    belt_width=xaxis_belt_width,
-                   belt_dist=xaxis_pulley_inner_d/2,
+                   belt_dist=xaxis_pulley_inner_d,
                    thick=xaxis_carriage_thickness,
                    with_tensioner=beltpath_sign==sign(z)
                    );
@@ -264,12 +263,15 @@ module x_carriage(part=undef, beltpath_sign=1)
         mirror([0,0,sign(z)<1?1:0])
         mirror(X)
         {
-            belt_fastener(part=part,
-                belt=xaxis_belt,
-                belt_width=xaxis_belt_width,
-                belt_dist=xaxis_pulley_inner_d/2,
-                thick=xaxis_carriage_thickness,
-                with_tensioner=beltpath_sign==sign(z));
+            belt_fastener(
+               part=part,
+               width=55*mm,
+               belt=xaxis_belt,
+               belt_width=xaxis_belt_width,
+               belt_dist=xaxis_pulley_inner_d,
+               thick=xaxis_carriage_thickness,
+               with_tensioner=beltpath_sign==sign(z)
+               );
         }
     }
     else if(part=="vit")
