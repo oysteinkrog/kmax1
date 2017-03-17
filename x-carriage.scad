@@ -628,7 +628,7 @@ module extruder_b(part=undef, with_sensormount=true)
     }
     else if(part=="pos")
     {
-        // mount onto carriage
+        // main body
         hull()
         {
             for(pos=extruder_b_mount_offsets)
@@ -668,38 +668,28 @@ module extruder_b(part=undef, with_sensormount=true)
         }
 
         // mount onto carriage
+        if(with_sensormount)
         hull()
         {
             for(pos=extruder_b_mount_offsets)
             translate(pos)
             rcylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=Y, align=[0,-1,0]);
 
-            if(with_sensormount)
             intersection()
             {
                 translate(extruder_b_sensormount_offset)
-                translate(-[0,extruder_b_sensormount_offset[1],0])
+                proj_extrude_axis(axis=Y, offset=extruder_b_sensormount_offset[1])
                 sensormount(part, align=-Y);
+
                 cubea([1000,extruder_b_mount_thick,1000], align=[0,-1,0]);
             }
         }
 
         if(with_sensormount)
         translate(extruder_b_sensormount_offset)
-        rotate([-90,0,0])
-        hull()
         {
-            linear_extrude(1)
-                projection()
-                rotate([90,0,0])
-                sensormount(part, align=-Y);
-
-            rotate([90,0,0])
-                translate(-[0,extruder_b_sensormount_offset[1],0])
-                sensormount(part, align=-Y);
-
-            rotate([90,0,0])
-                sensormount(part, align=-Y);
+            proj_extrude_axis(axis=Y, offset=extruder_b_sensormount_offset[1]+1)
+            sensormount(part, align=-Y);
         }
 
         hull()
@@ -899,7 +889,7 @@ module extruder_b(part=undef, with_sensormount=true)
 
         if(with_sensormount)
         translate(extruder_b_sensormount_offset)
-            sensormount(part, align=-Y);
+        sensormount(part, align=-Y);
     }
     else if(part=="vit")
     {
@@ -1216,24 +1206,24 @@ echo("Sensor mount offset", sensormount_sensor_hotend_offset);
 
 module sensormount(part=undef, align=N)
 {
-    /*sensormount_cylinder(part=part, align=align);*/
-    if(part == "pos")
-    {
-        cubea();
-    }
-    else if(part == "neg")
-    {
-        cubea(s=[11,11,11]);
-    }
-    if(part == "vit")
-    {
-        %translate([-6,2,5])
-        /*rotate(Z*-90 + X*180)*/
-        /*rotate(X*180)*/
-        rotate(X*90)
-        rotate(Z*180)
-        import("stl/SN04-N_Inductive_Proximity_Sensor_3528_0.stl");
-    }
+    sensormount_cylinder(part=part, align=align);
+    /*if(part == "pos")*/
+    /*{*/
+        /*cubea();*/
+    /*}*/
+    /*else if(part == "neg")*/
+    /*{*/
+        /*cubea(s=[11,11,11]);*/
+    /*}*/
+    /*if(part == "vit")*/
+    /*{*/
+        /*%translate([-6,2,5])*/
+        /*[>rotate(Z*-90 + X*180)<]*/
+        /*[>rotate(X*180)<]*/
+        /*rotate(X*90)*/
+        /*rotate(Z*180)*/
+        /*import("stl/SN04-N_Inductive_Proximity_Sensor_3528_0.stl");*/
+    /*}*/
 }
 
 module sensormount_cylinder(part=undef, screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],align=N)
@@ -1246,7 +1236,6 @@ module sensormount_cylinder(part=undef, screws_spacing=21,screw_offset=[1,0],scr
         {
             //Sensor mount
             cylindera(d=sensormount_OD, h=sensormount_h_);
-            cubea([sensormount_OD,sensormount_OD/2,sensormount_h_], align=Y);
         }
 
         else if(part == "neg")
@@ -1260,8 +1249,8 @@ module sensormount_cylinder(part=undef, screws_spacing=21,screw_offset=[1,0],scr
             cylindera(d=sensormount_OD+1*mm, h=sensor_h, align=[0,0,-1]);
 
             for(y=[-1,1])
-                translate([0,y*sensormount_OD/2, 0])
-                    cubea([sensor_diameter+sensormount_thickness*2,sensormount_OD_cut,sensormount_h_+2*e],[0,-y,0]);
+            translate([0,y*sensormount_OD/2, 0])
+            cubea([sensor_diameter+sensormount_thickness*2,sensormount_OD_cut,sensormount_h_+2*e],[0,-y,0]);
         }
         else if(part == "vit")
         {
