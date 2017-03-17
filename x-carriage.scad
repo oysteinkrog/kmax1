@@ -895,6 +895,7 @@ module extruder_b(part=undef, with_sensormount=true)
     {
         /*// debug to ensure sensor/hotend positions are correct*/
         /*if(false)*/
+        if(with_sensormount)
         translate(-80*Z)
         {
             translate(v_xy(hotend_mount_offset))
