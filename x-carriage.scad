@@ -173,6 +173,7 @@ module x_carriage(part=undef, beltpath_sign=1)
             mirror([0,0,sign(z)<1?1:0])
             mirror(X)
             {
+                proj_extrude_axis(axis=Y, offset=xaxis_carriage_beltpath_offset_y)
                 belt_fastener(
                    part=part,
                    width=55*mm,
