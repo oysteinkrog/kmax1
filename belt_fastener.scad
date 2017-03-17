@@ -82,7 +82,7 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
                         cylindera(d=angle_screw_dia+.3*mm, h=1000, orient=X, align=X);
 
                         translate(-1*11*mm*X)
-                        nut_trap_cut(nut=tension_screw_nut, screw_offset=3*mm, cut_screw=true, orient=-X, trap_axis=Y);
+                        nut_trap_cut(nut=tension_screw_nut, screw_offset=3*mm, cut_screw=true, orient=-X, trap_axis=-Y);
                     }
                 }
 
