@@ -1,5 +1,4 @@
 include <config.scad>
-include <thing_libutils/system.scad>
 use <thing_libutils/screws.scad>
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
@@ -7,31 +6,39 @@ use <thing_libutils/transforms.scad>;
 use <thing_libutils/attach.scad>;
 use <thing_libutils/linear-extrusion.scad>;
 use <thing_libutils/timing-belts.scad>;
-/*include <thing_libutils/timing-belts-data.scad>;*/
 
-/*include <MCAD/stepper.scad>*/
-/*include <MCAD/motors.scad>*/
+use <x-end.scad>
+include <x-end.h>
 
-/*include <extruder-direct.scad>*/
-include <x-end.scad>
-include <x-carriage.scad>
-include <y-motor-mount.scad>
-include <y-carriage-bearing-mount.scad>
-include <y-carriage-belt-clamp.scad>
-include <y-idler.scad>
-include <z-motor-mount.scad>
+use <x-carriage.scad>
+include <x-carriage.h>
+
+use <y-motor-mount.scad>
+include <y-motor-mount.h>
+
+use <y-carriage-bearing-mount.scad>
+include <y-carriage-bearing-mount.h>
+
+use <y-carriage-belt-clamp.scad>
+include <y-carriage-belt-clamp.h>
+
+use <y-idler.scad>
+include <y-idler.h>
+
+/*use <z-motor-mount.scad>*/
+/*include <z-motor-mount.h>*/
+
 use <gantry-upper-connector.scad>
 use <gantry-lower-connector.scad>
-use <psu.scad>
-use <rod-clamps.scad>
-use <lcd2004.scad>
-use <power-panel-iec320.scad>
 
-/*use <scad-utils/trajectory.scad>*/
-/*use <scad-utils/trajectory_path.scad>*/
-/*use <scad-utils/transformations.scad>*/
-/*use <scad-utils/shapes.scad>*/
-/*use <list-comprehension-demos/skin.scad>*/
+use <rod-clamps.scad>
+include <rod-clamps.h>
+
+/*use <psu.scad>*/
+/*include <psu.h>*/
+
+/*use <lcd2004.scad>*/
+/*use <power-panel-iec320.scad>*/
 
 // x carriage
 axis_range_x_ = main_width/2 + zmotor_mount_rod_offset_x - xaxis_end_width(true) - x_carriage_w/2 - .5*mm;

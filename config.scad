@@ -1,12 +1,15 @@
+include <thing_libutils/units.scad>
 include <thing_libutils/system.scad>
-include <MCAD/stepper.scad>
-include <thing_libutils/pulley.scad>
 include <thing_libutils/bearing_data.scad>
+include <thing_libutils/pulley.scad>
 include <thing_libutils/bearing-linear-data.scad>
 include <thing_libutils/thread-data.scad>
 include <thing_libutils/nut-data.scad>
-include <thing_libutils/misc.scad>
 include <thing_libutils/timing-belts-data.scad>
+
+include <MCAD/stepper.scad>
+
+use <thing_libutils/misc.scad>
 
 e=0.01*mm;
 
@@ -112,13 +115,7 @@ xaxis_endstop_type = "SN04";
 yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
 yaxis_rod_l = 500*mm;
-/*yaxis_bearing=bearing_igus_rj4jp_01_12;*/
-yaxis_bearing= [
-    [LinearBearingModel, "PSM121818"],
-    [LinearBearingInnerDiameter, 12*mm],
-    [LinearBearingOuterDiameter, 18*mm],
-    [LinearBearingLength, 18*mm],
-];
+yaxis_bearing = LinearBearingKH1228;
 yaxis_bearing_distance_y = 7*cm;
 
 yaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);

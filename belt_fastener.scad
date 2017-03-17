@@ -1,12 +1,7 @@
-include <config.scad>;
-include <thing_libutils/system.scad>;
-include <thing_libutils/thread-data.scad>;
-include <thing_libutils/nut-data.scad>;
-include <thing_libutils/pulley.scad>;
-include <thing_libutils/timing-belts-data.scad>;
+include <belt_fastener.h>
+
 use <thing_libutils/screws.scad>
 use <thing_libutils/timing-belts.scad>
-
 
 module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pulley_2GT_20T[2], width=55*mm, with_tensioner=true, align=U, orient=X)
 {

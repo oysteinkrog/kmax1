@@ -1,6 +1,11 @@
+include <thing_libutils/system.scad>
+include <thing_libutils/units.scad>
+
+include <config.scad>
+
 use <thing_libutils/linear-extrusion.scad>
 use <thing_libutils/screws.scad>
-include <config.scad>
+use <thing_libutils/transforms.scad>
 
 // wall thickness
 lcd2004_wall_thick=4;
@@ -266,7 +271,7 @@ module part_lcd2004_mount()
     mount_lcd2004();
 }
 
-if(false)
+/*if(false)*/
 {
     mount_lcd2004(show_gantry=true);
 }

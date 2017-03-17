@@ -1,10 +1,9 @@
-include <thing_libutils/system.scad>
-include <thing_libutils/attach.scad>
-include <thing_libutils/shapes.scad>
-include <thing_libutils/screws.scad>
-include <config.scad>
+include <rod-clamps.h>
 
-mount_rod_clamp_conn_rod = [N,XAXIS];
+use <thing_libutils/attach.scad>
+use <thing_libutils/shapes.scad>
+use <thing_libutils/screws.scad>
+use <thing_libutils/transforms.scad>
 
 module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=undef, base_thick=undef, thread=ThreadM4, align, orient, align_obj = "rod")
 {
