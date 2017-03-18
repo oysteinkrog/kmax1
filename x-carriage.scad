@@ -103,7 +103,7 @@ module x_carriage(part=undef, beltpath_sign=1)
     else if(part=="neg")
     {
         // bearing mount top
-        for(x=[-1,1])
+        for(x=spread(-1,1,xaxis_bearings_top))
         {
             dist_top = (xaxis_bearings_top-1) * (xaxis_carriage_bearing_distance+xaxis_bearing_top_L)/2;
             translate([
@@ -118,7 +118,7 @@ module x_carriage(part=undef, beltpath_sign=1)
 
         // bearing mount top cutout
         hull()
-        for(x=[-1,1])
+        for(x=spread(-1,1,xaxis_bearings_top))
         {
             dist_top = (xaxis_bearings_top-1) * (xaxis_carriage_bearing_distance+xaxis_bearing_top_L)/2;
             translate([
@@ -133,7 +133,7 @@ module x_carriage(part=undef, beltpath_sign=1)
 
 
         // bearing mount bottom
-        for(x=[-1,1])
+        for(x=spread(-1,1,xaxis_bearings_bottom))
         {
             dist_bot = (xaxis_bearings_bottom-1) * (xaxis_carriage_bearing_distance+xaxis_bearing_top_L)/2;
             translate([
@@ -147,7 +147,7 @@ module x_carriage(part=undef, beltpath_sign=1)
 
         // bearing mount bottom cutout
         hull()
-        for(x=[-1,1])
+        for(x=spread(-1,1,xaxis_bearings_bottom))
         {
             dist_bot = (xaxis_bearings_bottom-1) * (xaxis_carriage_bearing_distance+xaxis_bearing_top_L)/2;
             translate([
