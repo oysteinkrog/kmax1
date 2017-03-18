@@ -5,27 +5,36 @@ include <config.scad>
 include <thing_libutils/system.scad>;
 include <thing_libutils/units.scad>;
 include <thing_libutils/gears-data.scad>
+include <thing_libutils/bearing-linear-data.scad>
 include <x-end.h>
 
 use <thing_libutils/gears.scad>
 
-xaxis_carriage_bearing_distance = (xaxis_rod_distance - 2*xaxis_bearing[3])/sqrt(2);
+xaxis_bearing_top_ID = get(LinearBearingInnerDiameter, xaxis_bearing_top);
+xaxis_bearing_top_OD = get(LinearBearingOuterDiameter, xaxis_bearing_top);
+xaxis_bearing_top_L = get(LinearBearingLength, xaxis_bearing_top);
+
+xaxis_bearing_bottom_ID = get(LinearBearingInnerDiameter, xaxis_bearing_bottom);
+xaxis_bearing_bottom_OD = get(LinearBearingOuterDiameter, xaxis_bearing_bottom);
+xaxis_bearing_bottom_L = get(LinearBearingLength, xaxis_bearing_bottom);
+
+xaxis_carriage_bearing_distance = xaxis_rod_distance/sqrt(2);
 xaxis_carriage_padding = 1*mm;
 xaxis_carriage_mount_distance = xaxis_carriage_bearing_distance+5*mm;
 xaxis_carriage_mount_offset_z = 0*mm;
 xaxis_carriage_teeth_height=xaxis_belt_width*1.5;
 xaxis_carriage_mount_screws = ThreadM4;
 
-xaxis_carriage_top_width = xaxis_bearing[2]*xaxis_bearings_top + xaxis_carriage_bearing_distance*(xaxis_bearings_top-1) + xaxis_carriage_padding*2;
-xaxis_carriage_bottom_width = xaxis_bearing_bottom[2]*xaxis_bearings_bottom + xaxis_carriage_bearing_distance*(xaxis_bearings_bottom-1) + 2*xaxis_carriage_padding;
+xaxis_carriage_top_width = xaxis_bearing_top_L*xaxis_bearings_top + xaxis_carriage_bearing_distance*(xaxis_bearings_top-1) + xaxis_carriage_padding*2;
+xaxis_carriage_bottom_width = xaxis_bearing_bottom_L*xaxis_bearings_bottom + xaxis_carriage_bearing_distance*(xaxis_bearings_bottom-1) + 2*xaxis_carriage_padding;
 
-xaxis_carriage_conn = [[0, -xaxis_bearing[1]/2 - xaxis_carriage_bearing_offset_y,0], N];
+xaxis_carriage_conn = [[0, -xaxis_bearing_top_OD/2 - xaxis_carriage_bearing_offset_y,0], N];
 
 xaxis_carriage_beltfasten_w = 11*mm;
 xaxis_carriage_beltfasten_h = 4*mm;
 xaxis_carriage_beltfasten_dist = xaxis_carriage_beltfasten_w/2+2*mm;
 
-xaxis_carriage_thickness = xaxis_bearing[1]/2 + xaxis_carriage_bearing_offset_y;
+xaxis_carriage_thickness = xaxis_bearing_top_OD/2 + xaxis_carriage_bearing_offset_y;
 
 extruder_drivegear_d_outer = 12.65*mm;
 extruder_drivegear_d_inner = 11.5*mm;
@@ -105,7 +114,7 @@ extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 extruder_offset = [-extruder_filapath_offset[0]+6*mm, 0, 24.5*mm];
 extruder_offset_a = -extruder_gear_big_offset+[
     0,
-    xaxis_bearing[1] + xaxis_carriage_bearing_offset_y + 2*mm,
+    xaxis_bearing_top_OD + xaxis_carriage_bearing_offset_y + 2*mm,
     0];
 
 // shaft from big gear to hobbed gear

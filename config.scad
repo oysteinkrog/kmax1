@@ -82,9 +82,18 @@ xaxis_rod_l = 500*mm;
 xaxis_rod_offset_x = 0*mm;
 xaxis_bearings_top=2;
 xaxis_bearings_bottom=1;
-xaxis_bearing=bearing_bronze_10_16_12;
-xaxis_bearing_bottom=bearing_bronze_10_16_18;
-/*xaxis_bearing=bearing_igus_rj4jp_01_10;*/
+xaxis_bearing_top = [
+    [LinearBearingModel, "PSM101612"],
+    [LinearBearingInnerDiameter, 10*mm],
+    [LinearBearingOuterDiameter, 16*mm],
+    [LinearBearingLength, 12*mm],
+];
+xaxis_bearing_bottom = [
+    [LinearBearingModel, "PSM101618"],
+    [LinearBearingInnerDiameter, 10*mm],
+    [LinearBearingOuterDiameter, 16*mm],
+    [LinearBearingLength, 18*mm],
+];
 
 xaxis_pulley = pulley_2GT_20T;
 xaxis_pulley_inner_d = xaxis_pulley[2];
@@ -103,7 +112,7 @@ xaxis_beltpath_height_body = xaxis_pulley_outer_d/2+3*mm+v_sum(v_abs(xaxis_beltp
 xaxis_beltpath_height_holders = max(xaxis_pulley_outer_d+2*mm, xaxis_pulley_inner_d+xaxis_beltpath_z_offsets[0]+3*mm);
 
 xaxis_carriage_bearing_offset_y = ziptie_thickness+3*mm;
-xaxis_carriage_beltpath_offset_y = xaxis_carriage_bearing_offset_y+xaxis_bearing[1]/2;
+xaxis_carriage_beltpath_offset_y = xaxis_carriage_bearing_offset_y+get(LinearBearingOuterDiameter, xaxis_bearing_top)/2;
 
 xaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);
 xaxis_motor_thread=ThreadM3;
