@@ -103,61 +103,38 @@ module x_carriage(part=undef, beltpath_sign=1)
     else if(part=="neg")
     {
         // bearing mount top
-        for(x=spread(-1,1,xaxis_bearings_top))
+        for(x=spread(-xaxis_carriage_bearing_distance/2,xaxis_carriage_bearing_distance/2,xaxis_bearings_top))
         {
-            dist_top = (xaxis_bearings_top-1) * (xaxis_carriage_bearing_distance+xaxis_bearing_top_L)/2;
             translate([
-                    x*dist_top,
+                    x,
                     xaxis_bearing_top_OD/2+xaxis_carriage_bearing_offset_y,
                     xaxis_rod_distance/2
             ])
             {
-                linear_bearing_mount(bearing=xaxis_bearing_top, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X);
+                linear_bearing_mount(bearing=xaxis_bearing_top, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X);
             }
         }
 
         // bearing mount top cutout
-        hull()
-        for(x=spread(-1,1,xaxis_bearings_top))
-        {
-            dist_top = (xaxis_bearings_top-1) * (xaxis_carriage_bearing_distance+xaxis_bearing_top_L)/2;
-            translate([
-                    x*dist_top,
-                    xaxis_bearing_top_OD/2+xaxis_carriage_bearing_offset_y,
-                    xaxis_rod_distance/2
-            ])
-            {
-                cubea([xaxis_bearing_top_L+2*mm,xaxis_bearing_top_OD/2+10,xaxis_bearing_top_OD+1*mm], align=Y);
-            }
-        }
+        translate([0,xaxis_bearing_top_OD/2+xaxis_carriage_bearing_offset_y,xaxis_rod_distance/2])
+        cubea([1000,xaxis_bearing_top_OD/2+10,xaxis_bearing_top_OD+1*mm], align=Y);
 
 
         // bearing mount bottom
-        for(x=spread(-1,1,xaxis_bearings_bottom))
+        for(x=spread(-xaxis_carriage_bearing_distance/2,xaxis_carriage_bearing_distance/2,xaxis_bearings_bottom))
         {
-            dist_bot = (xaxis_bearings_bottom-1) * (xaxis_carriage_bearing_distance+xaxis_bearing_top_L)/2;
             translate([
-                    x*dist_bot,
+                    x,
                     xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y,
                     -xaxis_rod_distance/2])
             {
-                linear_bearing_mount(bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X);
+                linear_bearing_mount(bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X);
             }
         }
 
         // bearing mount bottom cutout
-        hull()
-        for(x=spread(-1,1,xaxis_bearings_bottom))
-        {
-            dist_bot = (xaxis_bearings_bottom-1) * (xaxis_carriage_bearing_distance+xaxis_bearing_top_L)/2;
-            translate([
-                    x*dist_bot,
-                    xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y,
-                    -xaxis_rod_distance/2])
-            {
-                cubea([xaxis_bearing_bottom_L*2*mm,xaxis_bearing_bottom_OD/2+10,xaxis_bearing_bottom_OD+1*mm], align=Y);
-            }
-        }
+        translate([0,xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y,-xaxis_rod_distance/2])
+        cubea([1000,xaxis_bearing_bottom_OD/2+10,xaxis_bearing_bottom_OD+1*mm], align=Y);
 
         for(z=xaxis_beltpath_z_offsets)
         translate([0, xaxis_carriage_beltpath_offset_y, z])
