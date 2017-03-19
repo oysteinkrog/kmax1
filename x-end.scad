@@ -224,7 +224,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 round_d=1.1*lookup(NemaRoundExtrusionDiameter, xaxis_motor);
                 translate([0, .1, 0])
                 translate(Y)
-                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=Z, orient=Y, align=-Y, roll=0, truncate=0.9);
+                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=Z, orient=Y, align=-Y, roll=90, truncate=0.9);
 
                 // motor axle
                 translate([0, .1, 0])
