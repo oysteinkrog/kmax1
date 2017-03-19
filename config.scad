@@ -135,6 +135,9 @@ ymotor_mount_thickness = 5;
 ymotor_mount_thickness_h = 5;
 yaxis_motor_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
 yaxis_motor_offset_z = -5*mm;
+
+yaxis_belt = TimingBelt_GT2_2;
+yaxis_belt_width = 6*mm;
 yaxis_belt_path_offset_x = -yaxis_pulley_inner_d/2;
 yaxis_belt_path_offset_z = yaxis_motor_offset_z + 10*mm;
 
