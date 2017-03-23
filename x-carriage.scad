@@ -227,11 +227,8 @@ module extruder_a(part=undef)
 
             // support around bearing
             translate([0,extruder_a_h,0])
-            translate([0,-extruder_gear_motor_dist,0])
             translate(extruder_gear_big_offset)
-            translate(extruder_a_bearing_offset_y)
-            scale(1.02)
-            rcylindera(d=extruder_a_bearing[1]+5*mm, h=extruder_a_bearing[2], orient=Y, align=[0,-1,0]);
+            rcylindera(d=extruder_a_bearing[1]+6*mm, h=extruder_a_bearing[2]-extruder_a_bearing_offset_y.y+1*mm, orient=Y, align=-Y);
         }
     }
     else if(part=="support")
