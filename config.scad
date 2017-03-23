@@ -118,8 +118,8 @@ xaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);
 xaxis_motor_thread=ThreadM3;
 xaxis_motor_nut=NutHexM3;
 
-/*xaxis_endstop_type = "SWITCH"*/
-xaxis_endstop_type = "SN04";
+xaxis_endstop_type = "SWITCH";
+/*xaxis_endstop_type = "SN04";*/
 
 yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;

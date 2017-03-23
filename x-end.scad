@@ -66,14 +66,14 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         rcylindera(h=xaxis_rod_l_support, d=xaxis_rod_d_support, orient=X, align=[-1,0,0]);
 
         // endstops mount support
-        /*if(xaxis_endstop_type == "SWITCH")*/
+        if(xaxis_endstop_type == "SWITCH")
         {
             translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
             {
                 rcubea(xaxis_endstop_size_switch, align=-XAXIS-ZAXIS);
             }
         }
-        /*else if(xaxis_endstop_type == "SN04")*/
+        else if(xaxis_endstop_type == "SN04")
         {
             translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
             {
@@ -172,7 +172,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         }
 
         //endstop mount screw cuts
-        /*if(xaxis_endstop_type == "SWITCH")*/
+        if(xaxis_endstop_type == "SWITCH")
         {
             translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
             translate(xaxis_endstop_screw_offset_switch)
@@ -182,7 +182,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 screw_cut(nut=NutHexM2_5, h=10*mm, embed_head=false, with_head=true, with_nut=false, orient=[0,0,-1], align=[0,0,-1]);
             }
         }
-        /*else if(xaxis_endstop_type == "SN04")*/
+        else if(xaxis_endstop_type == "SN04")
         {
             translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
             translate(xaxis_endstop_screw_offset_SN04)
@@ -315,7 +315,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         //endstop
         if($show_vit)
         {
-            /*if(xaxis_endstop_type == "SWITCH")*/
+            if(xaxis_endstop_type == "SWITCH")
             {
                 translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
                 difference()
@@ -328,7 +328,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                     screw(nut=NutHexM2_5, with_nut=false, h=10*mm, orient=[0,0,-1], align=[0,0,-1]);
                 }
             }
-            /*else if(xaxis_endstop_type == "SN04")*/
+            else if(xaxis_endstop_type == "SN04")
             {
                 translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
                 translate(xaxis_endstop_offset_SN04)
