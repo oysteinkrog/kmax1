@@ -30,6 +30,7 @@ module yaxis_carriage_bearing_mount(part)
             yaxis_carriage_bearing_mount(part="pos");
             yaxis_carriage_bearing_mount(part="neg");
         }
+        %yaxis_carriage_bearing_mount(part="vit");
     }
     else if(part=="pos")
     {
@@ -42,20 +43,21 @@ module yaxis_carriage_bearing_mount(part)
         translate ([x*screw_dx/2, y*screw_dy/2, -1]) 
         cylindera(d=carriage_plate_thread_d, h=height+2, align=Z);
 
-        translate([0,0,bearing_OD/2+yaxis_carriage_bearing_mount_bottom_thick])
-        linear_bearing_mount(
-            bearing=yaxis_bearing,
-            ziptie_type=ziptie_type,
-            ziptie_bearing_distance=ziptie_bearing_distance,
-            orient=Y,
-            ziptie_dist=4
-            );
     }
     else if(part=="vit")
     {
-        translate([0,0,bearing_OD/2+yaxis_carriage_bearing_mount_bottom_thick])
-        linear_bearing(yaxis_bearing, orient=Y);
     }
+
+    translate([0,0,bearing_OD/2+yaxis_carriage_bearing_mount_bottom_thick])
+    linear_bearing_mount(
+        part=part,
+        bearing=yaxis_bearing,
+        ziptie_type=ziptie_type,
+        ziptie_bearing_distance=ziptie_bearing_distance,
+        orient=Y,
+        ziptie_dist=4,
+        mount_dir_align=Z
+        );
 }
 
 module part_y_carriage_bearing_mount()
