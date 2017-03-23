@@ -84,58 +84,24 @@ module x_carriage(part=undef, beltpath_sign=1)
                    with_tensioner=beltpath_sign==sign(z)
                    );
             }
+        }
 
-            // endstop bumper for physical switch endstop
-            translate([0,xaxis_carriage_beltpath_offset_y,0])
-            if(xaxis_endstop_type == "SWITCH")
-            {
-                translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2])
-                rcubea(size=xaxis_endstop_size_switch, align=YAXIS+ZAXIS+XAXIS);
-            }
-            else if(xaxis_endstop_type == "SN04")
-            {
-                translate(xaxis_endstop_SN04_pos)
-                rcylindera(d=12*mm, h=20*mm, orient=XAXIS, align=XAXIS);
-            }
-
+        // endstop bumper for physical switch endstop
+        translate([0,xaxis_carriage_beltpath_offset_y,0])
+        if(xaxis_endstop_type == "SWITCH")
+        {
+            translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2])
+            rcubea(size=xaxis_endstop_size_switch, align=ZAXIS+XAXIS, extrasize=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2), extrasize_align=-Y);
+        }
+        else if(xaxis_endstop_type == "SN04")
+        {
+            translate(xaxis_endstop_SN04_pos)
+            /*proj_extrude_axis(axis=Y, offset=xaxis_carriage_beltpath_offset_y)*/
+            rcylindera(d=12*mm, h=20*mm, orient=XAXIS, align=XAXIS);
         }
     }
     else if(part=="neg")
     {
-        // bearing mount top
-        for(x=spread(-xaxis_carriage_bearing_distance/2,xaxis_carriage_bearing_distance/2,xaxis_bearings_top))
-        {
-            translate([
-                    x,
-                    xaxis_bearing_top_OD/2+xaxis_carriage_bearing_offset_y,
-                    xaxis_rod_distance/2
-            ])
-            {
-                linear_bearing_mount(bearing=xaxis_bearing_top, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X);
-            }
-        }
-
-        // bearing mount top cutout
-        translate([0,xaxis_bearing_top_OD/2+xaxis_carriage_bearing_offset_y,xaxis_rod_distance/2])
-        cubea([1000,xaxis_bearing_top_OD/2+10,xaxis_bearing_top_OD+1*mm], align=Y);
-
-
-        // bearing mount bottom
-        for(x=spread(-xaxis_carriage_bearing_distance/2,xaxis_carriage_bearing_distance/2,xaxis_bearings_bottom))
-        {
-            translate([
-                    x,
-                    xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y,
-                    -xaxis_rod_distance/2])
-            {
-                linear_bearing_mount(bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X);
-            }
-        }
-
-        // bearing mount bottom cutout
-        translate([0,xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y,-xaxis_rod_distance/2])
-        cubea([1000,xaxis_bearing_bottom_OD/2+10,xaxis_bearing_bottom_OD+1*mm], align=Y);
-
         for(z=xaxis_beltpath_z_offsets)
         translate([0, xaxis_carriage_beltpath_offset_y, z])
         mirror([0,0,sign(z)<1?1:0])
@@ -155,6 +121,16 @@ module x_carriage(part=undef, beltpath_sign=1)
     else if(part=="vit")
     {
     }
+
+    // bearing mount top
+    for(x=spread(-xaxis_carriage_bearing_distance/2,xaxis_carriage_bearing_distance/2,xaxis_bearings_top))
+    translate([x,xaxis_bearing_top_OD/2+xaxis_carriage_bearing_offset_y,xaxis_rod_distance/2])
+    linear_bearing_mount(part=part, bearing=xaxis_bearing_top, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X, mount_dir_align=Y);
+
+    // bearing mount bottom
+    for(x=spread(-xaxis_carriage_bearing_distance/2,xaxis_carriage_bearing_distance/2,xaxis_bearings_bottom))
+    translate([x,xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y,-xaxis_rod_distance/2])
+    linear_bearing_mount(part=part, bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X, mount_dir_align=Y);
 }
 
 module extruder_gear_small()
