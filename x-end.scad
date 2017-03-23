@@ -82,18 +82,6 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
             }
         }
 
-        // z axis bearing support
-        translate([0, -xaxis_zaxis_distance_y, 0])
-        {
-            d=bearing_sizey+4*mm;
-            h=xaxis_end_wz;
-            intersection()
-            {
-                rcylindera(h=h, d=d, orient=Z, align=N);
-                rcubea(size=[d,d,h], orient=Z, align=xaxis_z_bearing_mount_dir);
-            }
-        }
-
         // belt idler screw cut support
         for(z=[-1,1])
         for(y=[-1,1])
@@ -105,17 +93,6 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
     }
     else if(part=="neg")
     {
-        // cut support around z axis bearings
-        translate([0, -xaxis_zaxis_distance_y, 0])
-        translate([0,0,.1])
-        {
-            d=bearing_sizey+2*mm;
-            h=xaxis_end_wz+5;
-            rcubea(size=[d,d,h], orient=Z, align=-xaxis_z_bearing_mount_dir);
-            /*cubea([bearing_sizey+.1, bearing_sizey+.2, xaxis_end_wz+10], orient=Z, align=[0,-1,0]);*/
-        }
-
-        // x smooth rods
         for(z=[-1,1])
         translate([0,0*mm,z*(xaxis_rod_distance/2)])
         {
@@ -157,7 +134,28 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
     {
         // projection against z, ensure easy print
         proj_extrude_axis(axis=Z, offset=xaxis_end_wz/2)
-        xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
+        {
+            xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
+
+            // z smooth bearing mounts support
+            translate(-xaxis_zaxis_distance_y*Y)
+            translate(-Z*(xaxis_end_wz/2))
+            {
+                linear_bearing_mount(
+                    part=part,
+                    bearing=zaxis_bearing,
+                    ziptie_type=ziptie_type,
+                    ziptie_bearing_distance=ziptie_bearing_distance,
+                    orient=Z,
+                    align=Z,
+                    with_zips=true,
+                    offset_flange=true,
+                    mount_dir_align=xaxis_z_bearing_mount_dir,
+                    mount_style=xaxis_z_bearing_mount_style
+                    );
+            }
+
+        }
     }
     else if(part=="neg")
     {
@@ -198,18 +196,21 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
 
         xaxis_end_beltpath(height=xaxis_beltpath_height_body, width=xaxis_beltpath_width);
 
-        // z smooth bearing mounts
+        // z smooth bearing mounts cut
         translate(-xaxis_zaxis_distance_y*Y)
-        for(z=[-1,1])
-        translate(z*(xaxis_end_wz/2-2*mm)*Z)
+        translate(-Z*(xaxis_end_wz/2))
         {
             linear_bearing_mount(
+                part=part,
                 bearing=zaxis_bearing,
                 ziptie_type=ziptie_type,
                 ziptie_bearing_distance=ziptie_bearing_distance,
                 orient=Z,
-                align=-z*Z,
-                with_zips=true
+                align=Z,
+                with_zips=true,
+                offset_flange=true,
+                mount_dir_align=xaxis_z_bearing_mount_dir,
+                mount_style=xaxis_z_bearing_mount_style
                 );
         }
 
@@ -273,6 +274,23 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
     else if(part=="vit")
     {
         xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
+
+        translate(-xaxis_zaxis_distance_y*Y)
+        translate(-Z*(xaxis_end_wz/2))
+        {
+            linear_bearing_mount(
+                part=part,
+                bearing=zaxis_bearing,
+                ziptie_type=ziptie_type,
+                ziptie_bearing_distance=ziptie_bearing_distance,
+                orient=Z,
+                align=Z,
+                with_zips=true,
+                offset_flange=true,
+                mount_dir_align=xaxis_z_bearing_mount_dir,
+                mount_style=xaxis_z_bearing_mount_style
+                );
+        }
 
         if(with_motor)
         {
