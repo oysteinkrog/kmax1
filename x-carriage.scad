@@ -1107,57 +1107,6 @@ module e3d_heatsink_duct()
     }
 }
 
-explode=N;
-/*explode=[0,10,0];*/
-
-module x_carriage_full()
-{
-    x_carriage_withmounts();
-
-    x_carriage_extruder();
-}
-
-module x_carriage_extruder(with_sensormount=false)
-{
-    translate(extruder_offset)
-    {
-        translate([explode[0],explode[1],explode[2]])
-        translate(extruder_offset_a)
-        extruder_a();
-
-        translate([explode[0],-explode[1],explode[2]])
-        extruder_b();
-
-        translate([explode[0],-explode[1],explode[2]])
-        translate(extruder_b_drivegear_offset)
-        attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
-        extruder_guidler();
-
-        /*translate([explode[0],-explode[1],explode[2]])*/
-        /*translate([-95,53,20])*/
-        /*rotate([-152,0,0])*/
-        /*import("stl/E3D_40_mm_Duct.stl");*/
-
-        /*translate([explode[0],-explode[1],explode[2]])*/
-        /*translate([-123.5,78.5,-54])*/
-        /*rotate([0,0,-90])*/
-        /*import("stl/E3D_30_mm_Duct.stl");*/
-
-        translate([explode[0],-explode[1],explode[2]])
-        color(color_hotend)
-        attach(hotend_mount_conn, hotend_conn, roll=-90)
-        {
-            x_extruder_hotend();
-        }
-
-        translate([explode[0],-explode[1],explode[2]])
-        //filament path
-        color(color_filament)
-        translate(extruder_filapath_offset)
-        cylindera(h=1000, d=1.75*mm, orient=Z, align=N);
-    }
-}
-
 module part_x_carriage_left()
 {
     rotate([0,0,180])
@@ -1215,7 +1164,58 @@ module part_x_carriage_extruder_guidler()
     }
 }
 
-if(false)
+explode=N;
+/*explode=[0,10,0];*/
+
+module x_carriage_full()
+{
+    x_carriage_withmounts();
+
+    x_carriage_extruder();
+}
+
+module x_carriage_extruder(with_sensormount=false)
+{
+    translate(extruder_offset)
+    {
+        translate([explode[0],explode[1],explode[2]])
+        translate(extruder_offset_a)
+        extruder_a();
+
+        translate([explode[0],-explode[1],explode[2]])
+        extruder_b();
+
+        translate([explode[0],-explode[1],explode[2]])
+        translate(extruder_b_drivegear_offset)
+        attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
+        extruder_guidler();
+
+        /*translate([explode[0],-explode[1],explode[2]])*/
+        /*translate([-95,53,20])*/
+        /*rotate([-152,0,0])*/
+        /*import("stl/E3D_40_mm_Duct.stl");*/
+
+        /*translate([explode[0],-explode[1],explode[2]])*/
+        /*translate([-123.5,78.5,-54])*/
+        /*rotate([0,0,-90])*/
+        /*import("stl/E3D_30_mm_Duct.stl");*/
+
+        translate([explode[0],-explode[1],explode[2]])
+        color(color_hotend)
+        attach(hotend_mount_conn, hotend_conn, roll=-90)
+        {
+            x_extruder_hotend();
+        }
+
+        translate([explode[0],-explode[1],explode[2]])
+        //filament path
+        color(color_filament)
+        translate(extruder_filapath_offset)
+        cylindera(h=1000, d=1.75*mm, orient=Z, align=N);
+    }
+}
+
+/*if(false)*/
 {
     /*if(false)*/
     /*for(x=[-1])*/
@@ -1225,7 +1225,7 @@ if(false)
     {
         x_carriage_withmounts(beltpath_sign=x);
 
-        /*x_carriage_extruder(with_sensormount=x<0);*/
+        x_carriage_extruder(with_sensormount=x<0);
     }
 
     if(false)
