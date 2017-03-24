@@ -9,7 +9,7 @@ include <thing_libutils/pulley.scad>
 
 include <x-end.h>
 
-module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xrod_adjustment=false)
+module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xrod_adjustment=true)
 {
     nut_h = zaxis_nut[4];
     bearing_sizey = zaxis_bearing_OD + 5*mm;
@@ -63,7 +63,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         // x axis rod holders
         for(z=[-1,1])
         translate([0,0,z*(xaxis_rod_distance/2)])
-        rcylindera(h=xaxis_rod_l_support, d=xaxis_rod_d_support, orient=X, align=[-1,0,0]);
+        rcylindera(h=xaxis_end_width(with_motor), d=xaxis_rod_d_support, orient=X, align=X);
 
         // endstops mount support
         if(xaxis_endstop_type == "SWITCH")
@@ -102,10 +102,10 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
 
             if(with_xrod_adjustment)
             {
-                translate([-xaxis_rod_l_support+5*mm,0,0])
+                translate(X*5*mm)
                 nut_trap_cut(nut=NutHexM4, trap_axis=Y, orient=-X, align=X);
 
-                translate([-xaxis_rod_l_support-7*mm,0,0])
+                translate(X*-7*mm)
                 cylindera(d=10, h=10, orient=X);
             }
         }
