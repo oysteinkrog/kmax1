@@ -58,15 +58,11 @@ module x_carriage(part=undef, beltpath_sign=1)
             // extruder A mount
             translate(extruder_offset)
             translate(extruder_offset_a)
-            {
-                rotate([0,extruder_motor_mount_angle,0])
-                for(x=[-1,1])
-                for(z=[-1,1])
-                {
-                    translate([x*extruder_motor_holedist/2,-extruder_offset_a[1],z*extruder_motor_holedist/2])
-                    rcylindera(d=extruder_b_mount_dia, h=xaxis_carriage_thickness, orient=Y, align=Y);
-                }
-            }
+            translate(-Y*extruder_offset_a[1])
+            rotate([0,extruder_motor_mount_angle,0])
+            for(pos=extruder_a_mount_offsets)
+            translate(pos)
+            rcylindera(d=extruder_b_mount_dia, h=xaxis_carriage_thickness, orient=Y, align=Y);
 
             for(z=xaxis_beltpath_z_offsets)
             translate([0, xaxis_carriage_beltpath_offset_y, z])
@@ -133,7 +129,7 @@ module x_carriage(part=undef, beltpath_sign=1)
     linear_bearing_mount(part=part, bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X, mount_dir_align=Y);
 }
 
-module extruder_gear_small()
+module extruder_gear_small(orient, align)
 {
     difference()
     {
@@ -141,12 +137,12 @@ module extruder_gear_small()
         {
             hull()
             {
-                cylindera(d=extruder_gear_small_PD, h=7*mm, orient=Y, align=Y);
-                cylindera(d=10*mm, h= 3*mm, orient=Y, align=Y);
+                cylindera(d=extruder_gear_small_PD, h=7*mm, orient=orient, align=align);
+                cylindera(d=10*mm, h= 3*mm, orient=orient, align=align);
             }
-            cylindera(d=extruder_gear_small_PD, h=13*mm, orient=Y, align=Y);
+            cylindera(d=extruder_gear_small_PD, h=13*mm, orient=orient, align=align);
         }
-        cylindera(d=5*mm, h=13*mm+.1, orient=Y, align=Y);
+        cylindera(d=5*mm, h=13*mm+.1, orient=orient, align=align);
     }
 }
 
@@ -169,32 +165,65 @@ module extruder_gear_big(align=N, orient=Z)
 }
 
 
-module extruder_a_motor_mount_cut(motor=Nema17, h=10*mm)
+module extruder_a_motor_mount(part)
 {
-    // round dia
-    rotate([0,extruder_motor_mount_angle,0])
-    translate([0, .1, 0])
-    {
-        cylindera(d=1.1*lookup(NemaRoundExtrusionDiameter, motor), h=2*mm, orient=Y, align=[0,-1,0]);
-
-        translate([0,-2*mm+.1,0])
-        cylindera(d1=1.1*lookup(NemaRoundExtrusionDiameter, motor),d2=lookup(NemaRoundExtrusionDiameter, motor)*mm/1.5, h=h/2, orient=Y, align=[0,-1,0]);
-
-        translate([0,-2*mm+.1-h/2+.1,0])
-        cylindera(d=0.5*lookup(NemaRoundExtrusionDiameter, motor), h=h/2, orient=Y, align=[0,-1,0]);
-
-        // motor axle
-        cylindera(d=1.2*lookup(NemaAxleDiameter, motor), h=lookup(NemaFrontAxleLength, motor)+2*mm, orient=Y, align=[0,-1,0]);
-    }
-
     motor_thread=ThreadM3;
     motor_nut=NutHexM3;
 
-    translate(-h*Y)
-    rotate([0,extruder_motor_mount_angle,0])
-    for(pos=extruder_a_mount_offsets)
-    translate(pos)
-    screw_cut(nut=motor_nut, h=h, with_nut=false, orient=Y, align=Y);
+    if(part=="pos")
+    {
+        // mounts
+        rotate([0,extruder_motor_mount_angle,0])
+        for(pos=extruder_a_mount_offsets)
+        translate(pos)
+        rcylindera(d=extruder_b_mount_dia, h=extruder_a_h, orient=Y, align=Y);
+
+        // motor mounts support
+        // screws for mounting motor
+        hull()
+        translate(Y*extruder_a_h)
+        rotate([0,extruder_motor_mount_angle,0])
+        for(x=[-1,1])
+        for(z=[-1,1])
+        translate([x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2])
+        rcylindera(d=get(ThreadSize, motor_thread)+6*mm, h=extruder_a_base_h, orient=Y, align=-Y);
+    }
+    else if(part=="neg")
+    {
+        // round dia
+        rotate([0,extruder_motor_mount_angle,0])
+        translate([0,extruder_a_h,0])
+        translate([0, .1, 0])
+        {
+            cylindera(h=2*mm, d=1.1*lookup(NemaRoundExtrusionDiameter, extruder_motor), orient=Y, align=[0,-1,0]);
+
+            translate(-Y*(2*mm-0.01))
+            cylindera(h=extruder_a_h/2, d1=1.1*lookup(NemaRoundExtrusionDiameter, extruder_motor), d2=lookup(NemaRoundExtrusionDiameter, extruder_motor)*mm/1.5, orient=-Y, align=-Y);
+
+            translate([0,-2*mm+.1-extruder_a_h/2+.1,0])
+            cylindera(d=0.5*lookup(NemaRoundExtrusionDiameter, extruder_motor), h=extruder_a_h/2, orient=Y, align=[0,-1,0]);
+
+            // motor axle
+            cylindera(d=1.2*lookup(NemaAxleDiameter, extruder_motor), h=lookup(NemaFrontAxleLength, extruder_motor)+2*mm, orient=Y, align=[0,-1,0]);
+        }
+
+        rotate([0,extruder_motor_mount_angle,0])
+        for(pos=extruder_a_mount_offsets)
+        translate(pos)
+        screw_cut(nut=NutKnurlM3_3_42, h=6*mm, with_nut=false, head_embed=false, orient=Y, align=Y);
+
+        // screws for mounting motor
+        translate(-Y*3*mm)
+        translate(Y*extruder_a_h)
+        rotate([0,extruder_motor_mount_angle,0])
+        for(x=[-1,1])
+        for(z=[-1,1])
+        translate([x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2])
+        screw_cut(nut=motor_nut, h=6*mm, with_nut=false, head_embed=false, orient=Y, align=Y);
+    }
+    else if(part=="vit")
+    {
+    }
 }
 
 module extruder_a(part=undef)
@@ -207,48 +236,46 @@ module extruder_a(part=undef)
             extruder_a(part="pos");
             extruder_a(part="neg");
         }
-        %extruder_a(part="neg");
+        %extruder_a(part="vit");
     }
     else if(part=="pos")
     {
-        hull()
+        /*hull()*/
         {
-            side = 15*mm;
+            // create a base plate
             hull()
             {
-                rotate([0,extruder_motor_mount_angle,0])
-                for(pos=extruder_a_mount_offsets)
-                translate(pos)
-                rcylindera(d=extruder_b_mount_dia, h=extruder_a_h, orient=Y, align=Y);
+                intersection()
+                {
+                    extruder_a_motor_mount(part=part);
+                    translate([0,extruder_a_h,0])
+                    cubea(size=[1000,extruder_a_base_h,1000], align=-Y);
+                }
+                // support around bearing
+                translate([0,extruder_a_h,0])
+                translate(extruder_gear_big_offset)
+                rcylindera(d=extruder_a_bearing[1]+6*mm, h=extruder_a_base_h, orient=Y, align=-Y);
             }
+
+            extruder_a_motor_mount(part=part);
 
             // support round big gear, needed?
             /*translate(extruder_gear_big_offset)*/
             /*rcylindera(d=extruder_gear_big_OD+2*mm+5*mm, h=extruder_a_h, orient=Y, align=Y);*/
 
-            // support around bearing
-            translate([0,extruder_a_h,0])
-            translate(extruder_gear_big_offset)
-            rcylindera(d=extruder_a_bearing[1]+6*mm, h=extruder_a_bearing[2]-extruder_a_bearing_offset_y.y+1*mm, orient=Y, align=-Y);
         }
-    }
-    else if(part=="support")
-    {
-        translate([0,extruder_a_h,0])
-        translate(extruder_gear_big_offset)
-        translate([0,.1,0])
-        scale(1.5)
-        bearing(extruder_a_bearing, extra_h=.3*mm, orient=Y, align=[0,-1,0]);
     }
     else if(part=="neg")
     {
+        extruder_a_motor_mount(part=part);
+
         //cutouts for access to small gear tightscrew
-        rotate([0,extruder_motor_mount_angle,0])
-        for(i=[-1:0])
-        rotate([0,i*90,0])
-        translate([0,0,lookup(NemaSideSize, extruder_motor)/2])
-        translate([0,extruder_a_h,0])
-        teardrop(d=17*mm, h=lookup(NemaSideSize, extruder_motor)/2, orient=Z, roll=90, align=[0,0,-1]);
+        /*rotate([0,extruder_motor_mount_angle,0])*/
+        /*for(i=[-1,10])*/
+        /*rotate([0,i*90,0])*/
+        /*translate([0,0,lookup(NemaSideSize, extruder_motor)/2])*/
+        /*translate([0,extruder_a_h,0])*/
+        /*teardrop(d=17*mm, h=lookup(NemaSideSize, extruder_motor)/2, orient=Z, roll=90, align=[0,0,-1]);*/
 
         //cutouts for access to big gear tightscrew
         /*translate(extruder_gear_big_offset)*/
@@ -276,17 +303,18 @@ module extruder_a(part=undef)
                 scale(1.02)
                 cylindera(d=extruder_a_bearing[1], h=1000*mm, orient=Y, align=[0,-1,0]);
             }
-
-            extruder_a_motor_mount_cut(extruder_motor, h=extruder_a_h+1);
         }
     }
     else if(part=="vit")
     {
+        extruder_a_motor_mount(part=part);
+
         translate([0,extruder_a_h,0])
         {
             translate([0,-extruder_gear_motor_dist,0])
             {
-                extruder_gear_small();
+                translate(-Y*.5*mm)
+                extruder_gear_small(orient=Y, align=-Y);
 
                 // big gear
                 translate(extruder_gear_big_offset)
@@ -299,14 +327,14 @@ module extruder_a(part=undef)
                     translate(extruder_a_bearing_offset_y)
                     bearing(extruder_a_bearing, orient=Y, align=[0,-1,0]);
 
-                    cylindera(h=60*mm, d=extruder_shaft_d, orient=Y, align=[0,-1,0]);
+                    cylindera(h=extruder_shaft_len, d=extruder_shaft_d, orient=Y, align=[0,-1,0]);
                 }
             }
             rotate([0,extruder_motor_mount_angle,0])
             {
                 translate([0,-1*mm,0])
                 {
-                    %motor(extruder_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+                    motor(extruder_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
 
                     // motor heatsink
                     translate([0,lookup(NemaLengthMedium, extruder_motor)+2*mm,0])
@@ -739,6 +767,7 @@ module extruder_b(part=undef, with_sensormount=true)
         }
     }
 }
+
 // Final part
 module x_carriage_withmounts(part, beltpath_sign)
 {
@@ -784,20 +813,18 @@ module x_carriage_withmounts(part, beltpath_sign)
         translate(extruder_offset)
         translate(extruder_offset_a)
         translate(-[0,extruder_offset_a[1],0])
-        {
-            rotate([0,extruder_motor_mount_angle,0])
-            for(pos=extruder_a_mount_offsets)
-            translate(pos)
-            translate([0,.1,0])
-            screw_cut(
-                    nut=NutHexM3,
-                    h=extruder_offset_a[1]+.2,
-                    head_embed=true,
-                    with_nut=false,
-                    orient=Y,
-                    align=Y
-                    );
-        }
+        rotate([0,extruder_motor_mount_angle,0])
+        for(pos=extruder_a_mount_offsets)
+        translate(pos)
+        translate([0,.1,0])
+        screw_cut(
+            nut=NutHexM3,
+            h=extruder_offset_a[1]+.2,
+            head_embed=true,
+            with_nut=false,
+            orient=Y,
+            align=Y
+            );
 
         // extruder B mount cutout
         translate(extruder_offset)
@@ -1190,6 +1217,7 @@ module part_x_carriage_extruder_guidler()
 
 if(false)
 {
+    /*if(false)*/
     /*for(x=[-1])*/
     for(x=[-1,1])
     translate(x*40*mm*X)
@@ -1198,22 +1226,16 @@ if(false)
         x_carriage_withmounts(beltpath_sign=x);
 
         /*x_carriage_extruder(with_sensormount=x<0);*/
-
-        /*mirror([x>0?0:1,0,0])*/
-        /*test_beltpath(x=x);*/
     }
 
+    if(false)
     for(z=[-1,1])
     for(z=xaxis_beltpath_z_offsets)
     translate([-main_width/2, xaxis_carriage_beltpath_offset_y, z])
     rotate(90*X)
     belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=X, align=X);
 
-    /*for(offset=[0,1])*/
-    /*translate([offset*60,0,0])*/
-    /*rotate([90,0,0])*/
-    /*x_carriage_withmounts(beltpath_sign=offset);*/
-
+    if(false)
     for(x=[-1,1])
     translate([x*200,0,0])
     translate([0, xaxis_carriage_beltpath_offset_y, 0])

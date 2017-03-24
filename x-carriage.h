@@ -72,9 +72,11 @@ extruder_motor = dict_replace_multiple(Nema17,
         [NemaFrontAxleLength, 5*mm],
         ]);
 
-extruder_a_h = 13*mm;
-
 extruder_a_bearing = bearing_MR125;
+extruder_a_bearing_offset_y = [0,-.5*mm,0];
+extruder_a_h = 13*mm;
+extruder_a_base_h=extruder_a_bearing[2]-extruder_a_bearing_offset_y.y+1*mm;
+
 extruder_b_bearing = bearing_MR125;
 
 extruder_filapath_offset = [0, -20*mm, 0] + [extruder_drivegear_d_inner/2,0,0];
@@ -92,31 +94,28 @@ extruder_b_mount_offsets=[
 
     [extruder_filapath_offset[0]-1*(extruder_b_w/2+4*mm),0,-13*mm],
     [extruder_filapath_offset[0]+1*(extruder_b_w/2+4*mm),0,-13*mm],
-    [extruder_filapath_offset[0]-4*mm,0,35*mm-15*mm]
+    [0,0,35*mm-15*mm]
 ];
 
 /*extruder_b_sensormount_offset=[35,-7,-41];*/
 extruder_b_sensormount_offset=[-25,-7,-41];
 
-extruder_a_bearing_offset_y = [0,-.5*mm,0];
-
-extruder_motor_mount_angle = 45;
+extruder_motor_mount_angle = 0-180;
 
 // dist between gear and motor
 extruder_gear_motor_dist = .5*mm;
-extruder_motor_gear_offset_angle = -90;
+extruder_motor_gear_offset_angle = 90;
 extruder_motor_offset_x = cos(extruder_motor_gear_offset_angle) * extruder_gears_distance;
 extruder_motor_offset_z = sin(extruder_motor_gear_offset_angle) * extruder_gears_distance;
 extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_motor);
 
 extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
-if(x!=1||z!=-1)
-[x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2]
+[x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2]+[x*5,0,z<0?0:z*9]
 ];
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
-extruder_offset = [-extruder_filapath_offset[0]+6*mm, 0, 24.5*mm];
+extruder_offset = [-extruder_filapath_offset[0]+7*mm, 0, 22.5*mm];
 extruder_offset_a = -extruder_gear_big_offset+[
     0,
     xaxis_bearing_top_OD + xaxis_carriage_bearing_offset_y + 2*mm,

@@ -76,24 +76,14 @@ ziptie_width = ziptie_type[1]+0.6*mm;
 ziptie_bearing_distance = 3*mm;
 
 xaxis_rod_distance = 65*mm;
-xaxis_rod_d = 9.975*mm;
+xaxis_rod_d = 11.975*mm;
 xaxis_rod_l = 500*mm;
 // relative to entire machine
 xaxis_rod_offset_x = 0*mm;
 xaxis_bearings_top=2;
 xaxis_bearings_bottom=1;
-xaxis_bearing_top = [
-    [LinearBearingModel, "PSM101612"],
-    [LinearBearingInnerDiameter, 10*mm],
-    [LinearBearingOuterDiameter, 16*mm],
-    [LinearBearingLength, 12*mm],
-];
-xaxis_bearing_bottom = [
-    [LinearBearingModel, "PSM101618"],
-    [LinearBearingInnerDiameter, 10*mm],
-    [LinearBearingOuterDiameter, 16*mm],
-    [LinearBearingLength, 18*mm],
-];
+xaxis_bearing_top = LinearBearingKH1228;
+xaxis_bearing_bottom = xaxis_bearing_top;
 
 xaxis_pulley = pulley_2GT_20T;
 xaxis_pulley_inner_d = xaxis_pulley[2];
