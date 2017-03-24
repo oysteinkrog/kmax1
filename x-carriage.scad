@@ -207,6 +207,7 @@ module extruder_a(part=undef)
             extruder_a(part="pos");
             extruder_a(part="neg");
         }
+        %extruder_a(part="neg");
     }
     else if(part=="pos")
     {
@@ -364,6 +365,7 @@ module hotmount_clamp(part=undef)
             hotmount_clamp(part="pos");
             hotmount_clamp(part="neg");
         }
+        hotmount_clamp(part="vit");
     }
     else if(part=="pos")
     {
@@ -423,6 +425,7 @@ module extruder_b(part=undef, with_sensormount=true)
             extruder_b(part="pos", with_sensormount=with_sensormount);
             extruder_b(part="neg", with_sensormount=with_sensormount);
         }
+        extruder_b(part="vit", with_sensormount=with_sensormount);
     }
     else if(part=="pos")
     {
@@ -736,22 +739,18 @@ module extruder_b(part=undef, with_sensormount=true)
         }
     }
 }
-
 // Final part
-module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
+module x_carriage_withmounts(part, beltpath_sign)
 {
     if(part==undef)
     {
         difference()
         {
-            x_carriage_withmounts(part="pos", show_vitamins=show_vitamins, beltpath_sign=beltpath_sign);
-            x_carriage_withmounts(part="neg", show_vitamins=show_vitamins, beltpath_sign=beltpath_sign);
+            x_carriage_withmounts(part="pos", beltpath_sign=beltpath_sign);
+            x_carriage_withmounts(part="neg", beltpath_sign=beltpath_sign);
         }
 
-        if(show_vitamins)
-        {
-            x_carriage(part="vit");
-        }
+        %x_carriage_withmounts(part="vit", beltpath_sign=beltpath_sign);
     }
     else if(part=="pos")
     {
@@ -824,7 +823,7 @@ module x_carriage_withmounts(part, show_vitamins=false, beltpath_sign)
     }
 }
 
-module extruder_guidler(part, show_vit=false)
+module extruder_guidler(part)
 {
     if(part==undef)
     {
@@ -833,10 +832,7 @@ module extruder_guidler(part, show_vit=false)
             extruder_guidler(part="pos");
             extruder_guidler(part="neg");
         }
-        if(show_vit)
-        {
-            extruder_guidler(part="vit");
-        }
+        %extruder_guidler(part="vit");
     }
     else if(part=="pos")
     {
@@ -1087,48 +1083,28 @@ module e3d_heatsink_duct()
 explode=N;
 /*explode=[0,10,0];*/
 
-module x_carriage_full(show_vitamins=true)
+module x_carriage_full()
 {
-    x_carriage_withmounts(show_vitamins=show_vitamins);
+    x_carriage_withmounts();
 
-    x_carriage_extruder(show_vitamins=show_vitamins);
+    x_carriage_extruder();
 }
 
-module x_carriage_extruder(show_vitamins=false, with_sensormount=false)
+module x_carriage_extruder(with_sensormount=false)
 {
     translate(extruder_offset)
     {
         translate([explode[0],explode[1],explode[2]])
         translate(extruder_offset_a)
-        {
-            extruder_a();
-            if(show_vitamins)
-            extruder_a(part="vit");
-        }
+        extruder_a();
 
         translate([explode[0],-explode[1],explode[2]])
-        {
-            difference()
-            {
-                extruder_b(part="pos", with_sensormount=with_sensormount);
-
-                extruder_b(part="neg", with_sensormount=with_sensormount);
-
-                /*translate([0,-21,0])*/
-                /*cubea([1000,1000,1000], align=[0,-1,0]);*/
-            }
-        }
-
-        if(show_vitamins)
-        translate([explode[0],-explode[1],explode[2]])
-        extruder_b(part="vit", with_sensormount=with_sensormount);
+        extruder_b();
 
         translate([explode[0],-explode[1],explode[2]])
         translate(extruder_b_drivegear_offset)
         attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
-        {
-            extruder_guidler(show_vit=true);
-        }
+        extruder_guidler();
 
         /*translate([explode[0],-explode[1],explode[2]])*/
         /*translate([-95,53,20])*/
@@ -1208,7 +1184,7 @@ module part_x_carriage_extruder_guidler()
     guidler_conn_layflat = [ [0, guidler_mount_off[1]-guidler_mount_d/2, guidler_mount_off[2]],  [0,-1,0]]; 
     attach([[0*mm,0*mm,0],[0,0,-1]], guidler_conn_layflat)
     {
-        extruder_guidler(show_vit=false);
+        extruder_guidler();
     }
 }
 
@@ -1219,9 +1195,9 @@ if(false)
     translate(x*40*mm*X)
     mirror([x<0?0:1,0,0])
     {
-        x_carriage_withmounts(show_vitamins=false, beltpath_sign=x);
+        x_carriage_withmounts(beltpath_sign=x);
 
-        /*x_carriage_extruder(show_vitamins=true, with_sensormount=x<0);*/
+        /*x_carriage_extruder(with_sensormount=x<0);*/
 
         /*mirror([x>0?0:1,0,0])*/
         /*test_beltpath(x=x);*/
@@ -1236,7 +1212,7 @@ if(false)
     /*for(offset=[0,1])*/
     /*translate([offset*60,0,0])*/
     /*rotate([90,0,0])*/
-    /*x_carriage_withmounts(show_vitamins=false, beltpath_sign=offset);*/
+    /*x_carriage_withmounts(beltpath_sign=offset);*/
 
     for(x=[-1,1])
     translate([x*200,0,0])
