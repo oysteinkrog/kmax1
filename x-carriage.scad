@@ -51,8 +51,7 @@ module x_carriage(part=undef, beltpath_sign=1)
 
             /// support for extruder mount
             translate(extruder_offset)
-            for(pos=extruder_b_mount_offsets)
-            translate(pos)
+            position(extruder_b_mount_offsets)
             rcylindera(r=4*mm, align=Y, orient=Y);
 
             // extruder A mount
@@ -60,8 +59,7 @@ module x_carriage(part=undef, beltpath_sign=1)
             translate(extruder_offset_a)
             translate(-Y*extruder_offset_a[1])
             rotate([0,extruder_motor_mount_angle,0])
-            for(pos=extruder_a_mount_offsets)
-            translate(pos)
+            position(extruder_a_mount_offsets)
             rcylindera(d=extruder_b_mount_dia, h=xaxis_carriage_thickness, orient=Y, align=Y);
 
             for(z=xaxis_beltpath_z_offsets)
@@ -174,8 +172,7 @@ module extruder_a_motor_mount(part)
     {
         // mounts
         rotate([0,extruder_motor_mount_angle,0])
-        for(pos=extruder_a_mount_offsets)
-        translate(pos)
+        position(extruder_a_mount_offsets)
         rcylindera(d=extruder_b_mount_dia, h=extruder_a_h, orient=Y, align=Y);
 
         // motor mounts support
@@ -208,8 +205,7 @@ module extruder_a_motor_mount(part)
         }
 
         rotate([0,extruder_motor_mount_angle,0])
-        for(pos=extruder_a_mount_offsets)
-        translate(pos)
+        position(extruder_a_mount_offsets)
         screw_cut(nut=NutKnurlM3_3_42, h=6*mm, with_nut=false, head_embed=false, orient=Y, align=Y);
 
         // screws for mounting motor
@@ -460,8 +456,7 @@ module extruder_b(part=undef, with_sensormount=true)
         // main body
         hull()
         {
-            for(pos=extruder_b_mount_offsets)
-            translate(pos)
+            position(extruder_b_mount_offsets)
             rcylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=Y, align=[0,-1,0]);
 
             // hobbed gear bearing support
@@ -500,8 +495,7 @@ module extruder_b(part=undef, with_sensormount=true)
         if(with_sensormount)
         hull()
         {
-            for(pos=extruder_b_mount_offsets)
-            translate(pos)
+            position(extruder_b_mount_offsets)
             rcylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=Y, align=[0,-1,0]);
 
             intersection()
@@ -570,9 +564,8 @@ module extruder_b(part=undef, with_sensormount=true)
     else if(part=="neg")
     {
         // mount onto carriage
-        for(pos=extruder_b_mount_offsets)
-        translate(pos)
         translate([0, -extruder_b_mount_thick, 0])
+        position(extruder_b_mount_offsets)
         screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=Y, align=Y);
 
         // drive gear window cutout
@@ -793,8 +786,7 @@ module x_carriage_withmounts(part, beltpath_sign)
             translate(extruder_offset_a)
             {
                 rotate([0,extruder_motor_mount_angle,0])
-                for(pos=extruder_a_mount_offsets)
-                translate(pos)
+                position(extruder_a_mount_offsets)
                 rcylindera(d=extruder_b_mount_dia, h=extruder_offset_a[1], orient=Y, align=[0,-1,0]);
             }
         }
@@ -814,8 +806,7 @@ module x_carriage_withmounts(part, beltpath_sign)
         translate(extruder_offset_a)
         translate(-[0,extruder_offset_a[1],0])
         rotate([0,extruder_motor_mount_angle,0])
-        for(pos=extruder_a_mount_offsets)
-        translate(pos)
+        position(extruder_a_mount_offsets)
         translate([0,.1,0])
         screw_cut(
             nut=NutHexM3,
@@ -829,13 +820,8 @@ module x_carriage_withmounts(part, beltpath_sign)
         // extruder B mount cutout
         translate(extruder_offset)
         translate([0,-extruder_b_mount_thick,0])
-        {
-            for(pos=extruder_b_mount_offsets)
-            translate(pos)
-            {
-                screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=false, orient=Y, align=Y);
-            }
-        }
+        position(extruder_b_mount_offsets)
+        screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=false, orient=Y, align=Y);
 
         // endstop bumper for physical switch endstop
         translate([0,xaxis_carriage_beltpath_offset_y,0])
@@ -1183,7 +1169,7 @@ module x_carriage_extruder(with_sensormount=false)
         extruder_a();
 
         translate([explode[0],-explode[1],explode[2]])
-        extruder_b();
+        extruder_b(with_sensormount=with_sensormount);
 
         translate([explode[0],-explode[1],explode[2]])
         translate(extruder_b_drivegear_offset)
