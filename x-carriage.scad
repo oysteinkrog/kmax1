@@ -834,6 +834,10 @@ module x_carriage_withmounts(part, beltpath_sign)
             screw_cut(nut=NutHexM5, h=10*mm, head_embed=true, with_nut=false, orient=X, align=X);
         }
     }
+    else if(part=="vit")
+    {
+        x_carriage(part=part, beltpath_sign=beltpath_sign);
+    }
 }
 
 module extruder_guidler(part)
