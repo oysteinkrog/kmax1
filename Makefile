@@ -13,6 +13,7 @@ define def_parts
 include $(wildcard $(BUILDDIR)/*.deps)
 
 .SECONDARY: $(BUILDDIR)/$2.scad
+# define a new target for a temporary "build file" that only calls the part module
 $(BUILDDIR)/$2.scad: $1 | dir_build dir_output
 	@echo -n -e 'use <../$(1)>\npart_$(2)();' > $(BUILDDIR)/$2.scad
 
@@ -25,10 +26,13 @@ all:: $(OUTPUTDIR)/$2.stl
 endef
 
 define find_parts
+# use sed to find all openscad modules that begin with part_
 $(eval PARTS := $(shell  sed -n -e 's/^module part_\(.*\)().*/\1/p' $1))
+# define a new build target for each found part
 $(foreach part,$(PARTS),$(eval $(call def_parts,$1,$(part))))
 endef
 
+# Find all parts in all scad files
 $(foreach file,$(SCAD_FILES),$(eval $(call find_parts,$(file))))
 
 .PHONY: list
