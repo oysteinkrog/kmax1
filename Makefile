@@ -1,5 +1,18 @@
-OPENSCAD="C:/Program Files/OpenSCAD/openscad.com"
+#CPUS ?= $(getconf _NPROCESSORS_ONLN)
+CPUS ?= $(shell nproc)
+MAKEFLAGS += --jobs=$(CPUS)
+
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	OPENSCAD="openscad-nightly"
+endif
+ifeq ($(UNAME_S),MINGW64_NT-10.0)
+	OPENSCAD="C:/Program Files/OpenSCAD/openscad.com"
+endif
+
 OPENSCAD_FLAGS="--enable=assert"
+OPENSCADPATH=$(shell pwd)
 
 SCAD_FILES = $(wildcard *.scad)
 
@@ -15,11 +28,11 @@ include $(wildcard $(BUILDDIR)/*.deps)
 .SECONDARY: $(BUILDDIR)/$2.scad
 # define a new target for a temporary "build file" that only calls the part module
 $(BUILDDIR)/$2.scad: $1 | dir_build dir_output
-	@echo -n -e 'use <../$(1)>\npart_$(2)();' > $(BUILDDIR)/$2.scad
+	@/bin/echo -n -e 'use <../$(1)>\npart_$(2)();' > $(BUILDDIR)/$2.scad
 
 $(OUTPUTDIR)/$2.stl: $(BUILDDIR)/$2.scad
 	@echo Building $2
-	@$(OPENSCAD) $(OPENSCAD_FLAGS) -m make -D is_build=true -o $(OUTPUTDIR)/$2.stl -d $(BUILDDIR)/$2.deps $(BUILDDIR)/$2.scad
+	@OPENSCADPATH=$(OPENSCADPATH) $(OPENSCAD) $(OPENSCAD_FLAGS) -m make -D is_build=true -o $(OUTPUTDIR)/$2.stl -d $(BUILDDIR)/$2.deps $(BUILDDIR)/$2.scad
 
 .PHONY: all
 all:: $(OUTPUTDIR)/$2.stl
