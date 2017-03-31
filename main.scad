@@ -282,26 +282,12 @@ module gantry_upper()
         for(x=[-1,1])
         translate([x*(main_width/2), 0, 0])
         {
-            if($preview_mode)
-            {
-                cubea(size=[extrusion_size, extrusion_size, main_height], align=[-x,0,1]);
-            }
-            else
-            {
-                linear_extrusion(h=main_height, align=[-x,0,1], orient=Z);
-            }
+            linear_extrusion(h=main_height, align=[-x,0,1], orient=Z);
         }
 
         translate([0, 0, main_height])
         {
-            if($preview_mode)
-            {
-                cubea(size=[main_upper_width, extrusion_size, extrusion_size], align=Z);
-            }
-            else
-            {
-                linear_extrusion(h=main_upper_width, align=Z, orient=X);
-            }
+            linear_extrusion(h=main_upper_width, align=Z, orient=X);
         }
     }
 
@@ -330,27 +316,13 @@ module gantry_lower()
             for(y=[-1,1])
             translate([0, y*(main_depth/2), 0])
             {
-                if($preview_mode)
-                {
-                    cubea([main_width, extrusion_size, extrusion_size], align=[0,y,-1]);
-                }
-                else
-                {
-                    linear_extrusion(h=main_width, align=[0,y,-1], orient=X);
-                }
+                linear_extrusion(h=main_width, align=[0,y,-1], orient=X);
             }
 
             for(x=[-1,1])
             translate([x*(main_width/2), 0, 0])
             {
-                if($preview_mode)
-                {
-                    cubea([extrusion_size, main_depth, extrusion_size], align=[-x,0,-1]);
-                }
-                else
-                {
-                    linear_extrusion(h=main_depth, align=[-x,0,-1], orient=Y);
-                }
+                cubea([extrusion_size, main_depth, extrusion_size], align=[-x,0,-1]);
             }
         }
 
