@@ -63,3 +63,6 @@ dir_output:
 clean:
 	@rm -rf $(BUILDDIR)
 	@rm -rf $(OUTPUTDIR)
+
+gui:
+	@OPENSCADPATH=$(OPENSCADPATH) $(OPENSCAD) $(OPENSCAD_FLAGS)
