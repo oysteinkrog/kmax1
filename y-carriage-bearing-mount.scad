@@ -2,6 +2,7 @@ include <config.scad>
 include <thing_libutils/system.scad>
 include <thing_libutils/attach.scad>
 include <thing_libutils/bearing-linear-data.scad>
+include <thing_libutils/materials.scad>
 use <thing_libutils/bearing-linear.scad>
 
 yaxis_carriage_bearing_mount_bottom_thick = 3;
@@ -34,6 +35,7 @@ module yaxis_carriage_bearing_mount(part)
     }
     else if(part=="pos")
     {
+        material(Mat_Plastic)
         rcubea ([width, depth, height], align=Z);
     }
     else if(part=="neg")
