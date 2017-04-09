@@ -1,5 +1,6 @@
 include <y-idler.h>
 
+include <thing_libutils/materials.scad>
 use <thing_libutils/screws.scad>
 
 module yaxis_idler(part)
@@ -17,6 +18,7 @@ module yaxis_idler(part)
         yaxis_idler(part="vit");
     }
     else if(part=="pos")
+    material(Mat_Plastic)
     {
         // front plate
         tx(-extrusion_size/2)
@@ -105,6 +107,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
         %yaxis_idler_pulleyblock(part="vit");
     }
     else if(part=="pos")
+    material(Mat_Plastic)
     {
         rcubea([yaxis_idler_pulleyblock_supportsize, 2*yaxis_idler_pulleyblock_supportsize, h],
             align=N,
