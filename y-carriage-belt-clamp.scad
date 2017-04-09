@@ -1,5 +1,6 @@
 include <y-carriage-belt-clamp.h>
 use <thing_libutils/screws.scad>
+include <thing_libutils/materials.scad>
 
 module yaxis_belt_holder(part)
 {
@@ -13,6 +14,7 @@ module yaxis_belt_holder(part)
         %yaxis_belt_holder(part="vit");
     }
     else if(part=="pos")
+    material(Mat_Plastic)
     {
         // base (screws etc)
         rcubea([yaxis_belt_mount_width_base,yaxis_belt_mount_depth_base,yaxis_belt_mount_base_thick], align=Z);
