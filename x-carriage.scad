@@ -1171,12 +1171,15 @@ module x_carriage_extruder(with_sensormount=false)
         extruder_a();
 
         translate([explode[0],-explode[1],explode[2]])
-        extruder_b(with_sensormount=with_sensormount);
+        translate(extruder_offset_b)
+        {
+            extruder_b(with_sensormount=with_sensormount);
 
-        translate([explode[0],-explode[1],explode[2]])
-        translate(extruder_b_drivegear_offset)
-        attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
-        extruder_guidler();
+            translate([explode[0],-explode[1],explode[2]])
+            translate(extruder_b_drivegear_offset)
+            attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
+            extruder_guidler();
+        }
 
         /*translate([explode[0],-explode[1],explode[2]])*/
         /*translate([-95,53,20])*/
@@ -1203,7 +1206,53 @@ module x_carriage_extruder(with_sensormount=false)
     }
 }
 
-/*if(false)*/
+module xaxis_end_bucket(part)
+{
+    s=[60,60,30];
+
+    if(part==U)
+    {
+        difference()
+        {
+            xaxis_end_bucket(part="pos");
+            xaxis_end_bucket(part="neg");
+        }
+    }
+    else if(part=="pos")
+    {
+        /*translate(-Z*xaxis_end_wz/2)*/
+        /*cubea();*/
+
+        tz(extruder_offset.z)
+        tz(extruder_offset_b.z)
+        tz(-hotend_height)
+        t(hotend_mount_offset)
+
+        /*translate(-Z*xaxis_end_wz/2)*/
+
+        translate(X*100)
+        /*translate(-Y*xaxis_carriage_beltpath_offset_y)*/
+        /*translate(Y*extruder_offset_b.y)*/
+        translate(Y*extruder_filapath_offset.y)
+        rcubea(size=s, align=-Z);
+    }
+    else if(part=="neg")
+    {
+        tz(extruder_offset.z)
+        tz(extruder_offset_b.z)
+        tz(-hotend_height)
+        t(hotend_mount_offset)
+        /*translate(-Z*xaxis_end_wz/2)*/
+
+        translate(X*100)
+        /*translate(-Y*xaxis_carriage_beltpath_offset_y)*/
+        /*translate(Y*extruder_joffset_b.y)*/
+        translate(Y*extruder_filapath_offset.y)
+        rcubea(size=s-[3,3,3], align=-Z, extrasize=1000*Z, extrasize_align=Z);
+    }
+}
+
+if(false)
 {
     /*if(false)*/
     /*for(x=[-1])*/
@@ -1230,5 +1279,7 @@ module x_carriage_extruder(with_sensormount=false)
     mirror([max(0,x),0,0])
     {
         xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=true);
+
+        xaxis_end_bucket();
     }
 }

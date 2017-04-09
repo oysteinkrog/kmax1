@@ -121,6 +121,8 @@ extruder_offset_a = -extruder_gear_big_offset+[
     xaxis_bearing_top_OD + xaxis_carriage_bearing_offset_y + 2*mm,
     0];
 
+extruder_offset_b = [0,0,0];
+
 // shaft from big gear to hobbed gear
 extruder_shaft_d = 5*mm;
 extruder_shaft_len_b = abs(extruder_filapath_offset[1])+extruder_drivegear_h/2+extruder_b_bearing[2];

@@ -105,9 +105,11 @@ module x_axis()
             translate([x*(main_width/2), 0, 0])
             translate([0, xaxis_zaxis_distance_y, 0])
             translate([x*zmotor_mount_rod_offset_x, 0, 0])
+            mirror([max(0,x),0,0])
             {
-                mirror([max(0,x),0,0])
                 xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
+
+                xaxis_end_bucket();
             }
         }
     }
