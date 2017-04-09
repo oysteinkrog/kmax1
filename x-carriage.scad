@@ -14,9 +14,11 @@ use <thing_libutils/screws.scad>
 include <thing_libutils/bearing_data.scad>;
 include <thing_libutils/pulley.scad>;
 include <thing_libutils/timing-belts.scad>
+include <thing_libutils/materials.scad>
 
 module x_extruder_hotend()
 {
+    material(Mat_Aluminium)
     import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
 
     /*translate([0,-20,0])*/
@@ -36,6 +38,7 @@ module x_carriage(part=undef, beltpath_sign=1)
         }
     }
     else if(part=="pos")
+    material(Mat_Plastic)
     {
         hull()
         {
@@ -129,6 +132,7 @@ module x_carriage(part=undef, beltpath_sign=1)
 
 module extruder_gear_small(orient, align)
 {
+    material(Mat_Steel)
     difference()
     {
         union()
@@ -148,6 +152,7 @@ module extruder_gear_small(orient, align)
 module extruder_gear_big(align=N, orient=Z)
 {
     total_h = extruder_gear_big_h[0]+extruder_gear_big_h[1];
+    material(Mat_Steel)
     size_align([extruder_gear_big_PD, extruder_gear_big_PD, total_h], align=align, orient=orient, orient_ref=Z)
     translate([0,0,-extruder_gear_big_h[0] + total_h/2])
     difference()
@@ -169,6 +174,7 @@ module extruder_a_motor_mount(part)
     motor_nut=NutHexM3;
 
     if(part=="pos")
+    material(Mat_Plastic)
     {
         // mounts
         rotate([0,extruder_motor_mount_angle,0])
@@ -235,6 +241,7 @@ module extruder_a(part=undef)
         %extruder_a(part="vit");
     }
     else if(part=="pos")
+    material(Mat_Plastic)
     {
         /*hull()*/
         {
@@ -392,6 +399,7 @@ module hotmount_clamp(part=undef)
         hotmount_clamp(part="vit");
     }
     else if(part=="pos")
+    material(Mat_Plastic)
     {
         translate([0, -hotmount_clamp_offset-extruder_filapath_offset[1], 0])
         translate([0, 0, 0-hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
@@ -452,6 +460,7 @@ module extruder_b(part=undef, with_sensormount=true)
         extruder_b(part="vit", with_sensormount=with_sensormount);
     }
     else if(part=="pos")
+    material(Mat_Plastic)
     {
         // main body
         hull()
@@ -780,6 +789,7 @@ module x_carriage_withmounts(part, beltpath_sign)
             x_carriage(part=part, beltpath_sign=beltpath_sign);
 
             // extruder A mount
+            material(Mat_Plastic)
             translate(extruder_offset)
             translate(extruder_offset_a)
             {
@@ -850,6 +860,7 @@ module extruder_guidler(part)
         %extruder_guidler(part="vit");
     }
     else if(part=="pos")
+    material(Mat_Plastic)
     {
         union()
         {
@@ -941,6 +952,7 @@ module extruder_guidler(part)
         bearing(guidler_bearing, orient=X);
 
         // bearing bolt
+        material(Mat_Chrome)
         cylindera(d=guidler_bearing[0], h=guidler_bolt_h, orient=X);
     }
 }
@@ -1192,15 +1204,14 @@ module x_carriage_extruder(with_sensormount=false)
         /*import("stl/E3D_30_mm_Duct.stl");*/
 
         translate([explode[0],-explode[1],explode[2]])
-        color(color_hotend)
         attach(hotend_mount_conn, hotend_conn, roll=-90)
         {
             x_extruder_hotend();
         }
 
-        translate([explode[0],-explode[1],explode[2]])
         //filament path
-        color(color_filament)
+        translate([explode[0],-explode[1],explode[2]])
+        material(Mat_PlasticBlack)
         translate(extruder_filapath_offset)
         cylindera(h=1000, d=1.75*mm, orient=Z, align=N);
     }
@@ -1220,19 +1231,12 @@ module xaxis_end_bucket(part)
     }
     else if(part=="pos")
     {
-        /*translate(-Z*xaxis_end_wz/2)*/
-        /*cubea();*/
-
+        material(Mat_Plastic)
         tz(extruder_offset.z)
         tz(extruder_offset_b.z)
         tz(-hotend_height)
         t(hotend_mount_offset)
-
-        /*translate(-Z*xaxis_end_wz/2)*/
-
         translate(X*100)
-        /*translate(-Y*xaxis_carriage_beltpath_offset_y)*/
-        /*translate(Y*extruder_offset_b.y)*/
         translate(Y*extruder_filapath_offset.y)
         rcubea(size=s, align=-Z);
     }
