@@ -1,5 +1,6 @@
 include <rod-clamps.h>
 
+include <thing_libutils/materials.scad>
 use <thing_libutils/attach.scad>
 use <thing_libutils/shapes.scad>
 use <thing_libutils/screws.scad>
@@ -31,6 +32,7 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
     else if(part=="pos")
     {
         s=[outer_d, base_thick_, width];
+        material(Mat_Plastic)
         size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         {
@@ -103,6 +105,7 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
     }
     else if(part=="pos")
     {
+        material(Mat_Plastic)
         size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         {
