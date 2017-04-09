@@ -1,5 +1,7 @@
 include <z-motor-mount.h>
 
+include <thing_libutils/materials.scad>
+
 use <thing_libutils/shapes.scad>
 use <thing_libutils/screws.scad>
 
@@ -13,6 +15,7 @@ module zaxis_motor_mount(show_motor=false)
 
             difference()
             {
+                material(Mat_Plastic)
                 union()
                 {
                     // top plate
