@@ -280,7 +280,7 @@ module gantry_lower()
 
         for(x=[-1,1])
         translate([x*(main_width/2), 0, 0])
-        cubea([extrusion_size, main_depth, extrusion_size], align=[-x,0,-1]);
+        linear_extrusion(h=main_depth, align=-x*X-Z, orient=Y);
     }
 
 
