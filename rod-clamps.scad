@@ -152,11 +152,11 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
     }
     else if(part=="vit")
     {
-        %size_align(size=s, align=align, orient=orient, orient_ref=Z)
-        translate(pos_offset)
-        translate([rod_d/2,0,0])
-        translate(-clamp_tolerance*X)
-        cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);
+        /*%size_align(size=s, align=align, orient=orient, orient_ref=Z)*/
+        /*translate(pos_offset)*/
+        /*translate([rod_d/2,0,0])*/
+        /*translate(-clamp_tolerance*X)*/
+        /*cylindera(d=rod_d*rod_fit_tolerance, h=width*2, orient=Z);*/
     }
 }
 
