@@ -718,15 +718,13 @@ module extruder_b(part=undef, with_sensormount=true)
         /*// debug to ensure sensor/hotend positions are correct*/
         /*if(false)*/
         if(with_sensormount)
-        translate(-80*Z)
+        tz(-hotend_height)
+        t(hotend_mount_offset)
         {
-            translate(v_xy(hotend_mount_offset))
-            {
-                cylindera();
+            cylindera(h=10, d=filament_d, align=-Z);
 
-                translate(sensormount_sensor_hotend_offset)
-                cylindera();
-            }
+            translate(sensormount_sensor_hotend_offset)
+            cylindera(h=10, d=filament_d, align=-Z);
         }
 
         translate(hotend_mount_offset)
