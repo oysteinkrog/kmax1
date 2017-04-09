@@ -45,6 +45,7 @@ thick_wall_factor           = 4;
 // diameter of your filament.
 filament_d                  = 1.75*mm;
 filament_r                  = filament_d/2;
+Mat_filament = Mat_PlasticBlack;
 
 
 main_width = 420*mm;
@@ -165,6 +166,7 @@ zmotor_h = lookup(NemaLengthLong,zaxis_motor);
 
 // inner_d, outer_d, thread, outer_h, full_h, screw_dist, screw_thread
 zaxis_nut = [20*mm, 36*mm, 8*mm, 5*mm, 23*mm, 13.5*mm, ThreadM3];
+zaxis_nut_mat = Mat_PlasticBlack;
 
 zaxis_motor_offset_z = 10*mm;
 zmotor_mount_thickness = 5;
@@ -199,8 +201,3 @@ zmotor_mount_screw_offset_x = zmotor_w/2 + zmotor_mount_motor_offset;
 
 // z rod offset from lower extrusion (outer)
 zmotor_mount_rod_offset_x = zmotor_mount_screw_offset_x + zaxis_rod_screw_distance_x;
-
-color_extrusion = "DimGray";
-color_rods = "CornflowerBlue";
-color_part = "DarkRed";
-color_gantry_connectors = "OliveDrab";

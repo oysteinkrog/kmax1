@@ -1,5 +1,6 @@
 include <config.scad>
 include <thing_libutils/screws.scad>
+include <thing_libutils/materials.scad>
 
 module gantry_upper_connector()
 {
@@ -7,6 +8,7 @@ module gantry_upper_connector()
     upper_gantry_width_diff  = (main_upper_width-main_width)/2;
     difference()
     {
+        material(Mat_Plastic)
         union()
         {
             hull()

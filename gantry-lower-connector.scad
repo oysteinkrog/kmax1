@@ -1,5 +1,6 @@
 include <config.scad>
 include <thing_libutils/screws.scad>
+include <thing_libutils/materials.scad>
 
 module gantry_lower_connector()
 {
@@ -10,6 +11,7 @@ module gantry_lower_connector()
     translate([thick,0,0])
     difference()
     {
+        material(Mat_Plastic)
         union()
         {
             // top/bottom
