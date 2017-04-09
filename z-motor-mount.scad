@@ -1,9 +1,12 @@
 include <z-motor-mount.h>
-
 include <thing_libutils/materials.scad>
+include <MCAD/motors.scad>
 
+use <thing_libutils/attach.scad>
 use <thing_libutils/shapes.scad>
 use <thing_libutils/screws.scad>
+
+use <rod-clamps.scad>
 
 module zaxis_motor_mount(show_motor=false)
 {
