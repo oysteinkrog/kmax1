@@ -1,6 +1,7 @@
 use <thing_libutils/shapes.scad>
 use <thing_libutils/attach.scad>
 use <thing_libutils/transforms.scad>
+include <thing_libutils/materials.scad>
 
 include <y-motor-mount.h>
 
@@ -65,6 +66,7 @@ module yaxis_motor_mount(show_motor=false)
     difference()
     {
         // top plate
+        material(Mat_Plastic)
         union()
         {
             translate([0,0,yaxis_motor_offset_z])
