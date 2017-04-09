@@ -6,6 +6,7 @@ use <thing_libutils/bearing-linear.scad>
 
 include <thing_libutils/bearing_data.scad>
 include <thing_libutils/pulley.scad>
+include <thing_libutils/materials.scad>
 
 include <x-end.h>
 
@@ -28,6 +29,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         %xaxis_end_body(part="vit", with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
     }
     else if(part=="pos")
+    material(Mat_Plastic)
     {
         if(with_motor)
         {
@@ -133,6 +135,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
     else if(part=="pos")
     {
         // projection against z, ensure easy print
+        material(Mat_Plastic)
         proj_extrude_axis(axis=Z, offset=xaxis_end_wz/2)
         {
             xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
@@ -320,6 +323,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
                 difference()
                 {
+                    material(Mat_PlasticBlack)
                     rcubea(xaxis_endstop_size_switch, align=[-1,0,1]);
 
                     translate(xaxis_endstop_screw_offset_switch)
@@ -384,6 +388,7 @@ module xaxis_end_znut()
 {
     difference()
     {
+        material(zaxis_nut_mat)
         union()
         {
             cylindera(d=zaxis_nut[1], h=zaxis_nut[3], orient=Z, align=Z);
