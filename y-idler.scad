@@ -94,7 +94,7 @@ module yaxis_idler()
                 // front/horizontal mount screws (to extrusion)
                 for(i=[-1,1])
                 translate([0, i*(yaxis_idler_mount_thread_dia*2.5), 0])
-                screw_cut(yaxis_idler_mount_tightscrew_hexnut, h=yaxis_idler_mount_thickness, with_nut=false, orient=[-1,0,0], align=[-1,0,0]); 
+                screw_cut(yaxis_idler_mount_tightscrew_hexnut, h=yaxis_idler_mount_thickness, with_nut=false, orient=X, align=-X); 
             }
         }
     }
