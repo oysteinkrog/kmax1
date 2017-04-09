@@ -30,8 +30,8 @@ include <y-carriage-belt-clamp.h>
 use <y-idler.scad>
 include <y-idler.h>
 
-/*use <z-motor-mount.scad>*/
-/*include <z-motor-mount.h>*/
+use <z-motor-mount.scad>
+include <z-motor-mount.h>
 
 use <gantry-upper-connector.scad>
 use <gantry-lower-connector.scad>
