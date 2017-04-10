@@ -174,21 +174,24 @@ module y_axis()
         {
             yaxis_carriage_size_inner = [32*mm,32*mm,0];
 
-            // y axis plate "arms"
-            for(x=[-1,1])
-            for(y=[-1,1])
-            hull()
+            material(Mat_PrintCarriage)
             {
-                translate([x*yaxis_carriage_size[0]/2, y*yaxis_carriage_size[1]/2, 0])
-                cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
+                // y axis plate "arms"
+                for(x=[-1,1])
+                for(y=[-1,1])
+                hull()
+                {
+                    translate([x*yaxis_carriage_size[0]/2, y*yaxis_carriage_size[1]/2, 0])
+                    cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
 
-                translate([x*(yaxis_carriage_size[0]/2-yaxis_carriage_size_inner[0]/2), y*(yaxis_carriage_size[1]/2-yaxis_carriage_size_inner[1]/2*mm), 0])
-                cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
+                    translate([x*(yaxis_carriage_size[0]/2-yaxis_carriage_size_inner[0]/2), y*(yaxis_carriage_size[1]/2-yaxis_carriage_size_inner[1]/2*mm), 0])
+                    cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
+                }
+
             }
 
             // y axis plate
-            cubea(yaxis_carriage_size - yaxis_carriage_size_inner, align=Z);
-
+            material(Mat_PrintBed)
             translate([0,0,10*mm])
             cubea(printbed_size, align=Z);
         }
