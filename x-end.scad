@@ -135,15 +135,16 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
 
             // z smooth bearing mounts support
             translate(-xaxis_zaxis_distance_y*Y)
-            translate(-Z*(xaxis_end_wz/2))
+            for(z=[-1,1])
+            translate(-z*Z*(xaxis_end_wz/2))
             {
                 linear_bearing_mount(
                     part=part,
                     bearing=zaxis_bearing,
                     ziptie_type=ziptie_type,
                     ziptie_bearing_distance=ziptie_bearing_distance,
-                    orient=Z,
-                    align=Z,
+                    orient=Z*z,
+                    align=Z*z,
                     with_zips=true,
                     offset_flange=true,
                     mount_dir_align=xaxis_z_bearing_mount_dir,
@@ -194,15 +195,16 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
 
         // z smooth bearing mounts cut
         translate(-xaxis_zaxis_distance_y*Y)
-        translate(-Z*(xaxis_end_wz/2))
+        for(z=[-1,1])
+        translate(-z*Z*(xaxis_end_wz/2))
         {
             linear_bearing_mount(
                 part=part,
                 bearing=zaxis_bearing,
                 ziptie_type=ziptie_type,
                 ziptie_bearing_distance=ziptie_bearing_distance,
-                orient=Z,
-                align=Z,
+                orient=Z*z,
+                align=Z*z,
                 with_zips=true,
                 offset_flange=true,
                 mount_dir_align=xaxis_z_bearing_mount_dir,
@@ -272,15 +274,16 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         xaxis_end_body(part=part, with_motor=with_motor, beltpath_index=beltpath_index, nut_top=nut_top, with_xrod_adjustment=with_xrod_adjustment);
 
         translate(-xaxis_zaxis_distance_y*Y)
-        translate(-Z*(xaxis_end_wz/2))
+        for(z=[-1,1])
+        translate(-z*Z*(xaxis_end_wz/2))
         {
             linear_bearing_mount(
                 part=part,
                 bearing=zaxis_bearing,
                 ziptie_type=ziptie_type,
                 ziptie_bearing_distance=ziptie_bearing_distance,
-                orient=Z,
-                align=Z,
+                orient=Z*z,
+                align=Z*z,
                 with_zips=true,
                 offset_flange=true,
                 mount_dir_align=xaxis_z_bearing_mount_dir,
