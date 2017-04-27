@@ -112,37 +112,16 @@ module mount_lcd2004_parts(
 
 module gantry_lower()
 {
-    color(color_extrusion)
     for(z=[-1,1])
+    translate([0,0,z*-main_lower_dist_z/2])
     {
-        translate([0,0,z*-main_lower_dist_z/2])
-        {
-            for(y=[-1,1])
-            translate([0, y*(main_depth/2), 0])
-            {
-                if($preview_mode)
-                {
-                    cubea([main_width, extrusion_size, extrusion_size], align=[0,y,-1]);
-                }
-                else
-                {
-                    linear_extrusion(h=main_width, align=[0,y,-1], orient=X);
-                }
-            }
+        for(y=[-1,1])
+        translate([0, y*(main_depth/2), 0])
+        linear_extrusion(h=main_width, align=[0,y,-1], orient=X);
 
-            for(x=[-1,1])
-            translate([x*(main_width/2), 0, 0])
-            {
-                if($preview_mode)
-                {
-                    cubea([extrusion_size, main_depth, extrusion_size], align=[-x,0,-1]);
-                }
-                else
-                {
-                    linear_extrusion(h=main_depth, align=[-x,0,-1], orient=Y);
-                }
-            }
-        }
+        for(x=[-1,1])
+        translate([x*(main_width/2), 0, 0])
+        linear_extrusion(h=main_depth, align=-x*X-Z, orient=Y);
     }
 }
 
