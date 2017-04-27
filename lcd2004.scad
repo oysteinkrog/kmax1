@@ -271,7 +271,7 @@ module part_lcd2004_mount()
     mount_lcd2004();
 }
 
-/*if(false)*/
+if(false)
 {
     mount_lcd2004(show_gantry=true);
 }
