@@ -1,6 +1,7 @@
 use <thing_libutils/shapes.scad>
 use <thing_libutils/attach.scad>
 use <thing_libutils/transforms.scad>
+use <thing_libutils/screws.scad>
 include <thing_libutils/materials.scad>
 
 include <y-motor-mount.h>
@@ -33,7 +34,7 @@ module yaxis_motor_mount_bearing_clamp(align=N)
         for(x=[-1,1])
         for(y=[-1,1])
         translate([x*screw_dist/2, y*screw_dist/2, 1])
-        cylindera(h=height, d=3*mm, orient=Z, align=[0,0,-1]);
+        screw_cut(nut=extrusion_nut, h=12*mm, orient=Z, align=-Z);
     }
 
     // debug bearing
@@ -45,25 +46,34 @@ module motor_mount_top(width, depth, height, belt_cutout=true, belt_cutout_orien
     size_align(size=[width, depth, height], align=align);
     difference()
     {
-        cubea([width, depth, height], align=Z);
+        rcubea([width, depth, height], align=Z);
 
         ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
 
         // cutout for belt path
         cylindera(d=ymotor_round_d, h=height*2, orient=Z, align=N);
         translate([0, 0,-1])
-            cubea([depth/2, ymotor_round_d, height*2], align=[1,0,1]);
+        cubea([depth/2, ymotor_round_d, height*2], align=[1,0,1]);
 
         // cut out motor mount holes etc
         translate([0,0,-1])
-            linear_extrude(height+2)
-            stepper_motor_mount(17, slide_distance=0, mochup=false);
+        linear_extrude(height+2)
+        stepper_motor_mount(17, slide_distance=0, mochup=false);
     }
 }
 
-module yaxis_motor_mount(show_motor=false)
+module yaxis_motor_mount(part)
 {
-    difference()
+    if(part==U)
+    {
+        difference()
+        {
+            yaxis_motor_mount(part="pos");
+            yaxis_motor_mount(part="neg");
+        }
+        %yaxis_motor_mount(part="vit");
+    }
+    else if(part=="pos")
     {
         // top plate
         material(Mat_Plastic)
@@ -72,31 +82,18 @@ module yaxis_motor_mount(show_motor=false)
             translate([0,0,yaxis_motor_offset_z])
             {
                 // top plate
-                translate([ymotor_mount_thickness,0,extrusion_size/2])
-                {
-                    /*translate([ymotor_w/2,0,ymotor_mount_thickness_h+yaxis_motor_mount_bearing_clamp_offset_z+1])*/
-                        /*yaxis_motor_mount_bearing_clamp(align=[0,0,-1]);*/
+                tz(extrusion_size/2)
+                tx(ymotor_mount_thickness)
+                tx(ymotor_w/2)
+                motor_mount_top(width=ymotor_w+ymotor_mount_thickness,
+                    depth=ymotor_w+ymotor_mount_thickness*2,
+                    height=ymotor_mount_thickness_h,
+                    belt_cutout=true,
+                    belt_cutout_orient=X);
 
-                    translate([ymotor_w/2,0,0])
-                        motor_mount_top(width=ymotor_w+ymotor_mount_thickness,
-                        depth=ymotor_w+ymotor_mount_thickness*2,
-                        height=ymotor_mount_thickness_h,
-                        belt_cutout=true,
-                        belt_cutout_orient=X);
-                }
-
+                // reinforcement plate between motor and extrusion
                 translate([0,0,extrusion_size/2])
-                {
-                    difference()
-                    {
-                        // reinforcement plate between motor and extrusion
-                        cubea([ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_h], align=[1,0,-1], extrasize=[0,0,ymotor_mount_thickness_h], extrasize_align=Z);
-
-                        // cutout for motor cables
-                        translate([0,0,-20*mm])
-                            cubea([ymotor_mount_thickness*3, 20*mm, ymotor_h], align=[0,0,-1]);
-                    }
-                }
+                rcubea([ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_h], align=[1,0,-1], extrasize=[0,0,ymotor_mount_thickness_h], extrasize_align=Z);
 
                 // side triangles
                 for(i=[-1,1])
@@ -111,39 +108,39 @@ module yaxis_motor_mount(show_motor=false)
                                 );
 
                     translate([0, i*((ymotor_w/2)+ymotor_mount_thickness/2), extrusion_size/2])
-                        cubea([ymotor_mount_thickness, ymotor_mount_thickness, ymotor_mount_h], align=[1,0,-1]);
+                    rcubea([ymotor_mount_thickness, ymotor_mount_thickness, ymotor_mount_h], align=[1,0,-1]);
                 }
             }
 
             // top mount plate
-            difference()
-            {
-                cubea([ymotor_mount_thickness, ymotor_mount_width, extrusion_size], align=X);
-
-                for(i=[-1,1])
-                    translate([0, i*(ymotor_w/2+ymotor_mount_thread_dia*3), 0])
-                        cylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia, orient=X);
-            }
+            rcubea([ymotor_mount_thickness, ymotor_mount_width, extrusion_size], align=X);
 
             // bottom mount plate
-            translate([0,0,-main_lower_dist_z])
-            {
-                difference()
-                {
-                    cubea([ymotor_mount_thickness, ymotor_w, extrusion_size], align=X);
-
-                    for(i=[0])
-                        translate([0, i*(ymotor_w/2+ymotor_mount_thread_dia*3), 0])
-                            cylindera(h=ymotor_mount_thickness*3,d=ymotor_mount_thread_dia,align=N, orient=X);
-                }
-            }
+            tz(-main_lower_dist_z)
+            rcubea([ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, extrusion_size], align=X);
 
         }
-
     }
+    else if(part=="neg")
+    {
+        // cutout for motor cables
+        translate([0,0,-20*mm])
+        cubea([ymotor_mount_thickness*3, 20*mm, ymotor_h], align=[0,0,-1]);
 
+        // top mount plate screws
+        tx(ymotor_mount_thickness)
+        for(y=[-1,1])
+        ty(y*(ymotor_w/2+ymotor_mount_thread_dia*3))
+        screw_cut(nut=extrusion_nut, h=ymotor_mount_thickness*3, align=-X, orient=-X);
 
-    if(show_motor)
+        // bottom mount plate screw
+        tx(ymotor_mount_thickness)
+        tz(-main_lower_dist_z)
+        for(y=[0])
+        ty(y*(ymotor_w/2+ymotor_mount_thread_dia*3))
+        screw_cut(nut=extrusion_nut, h=ymotor_mount_thickness*3, align=-X, orient=-X);
+    }
+    else if(part=="vit")
     {
         attach(yaxis_motor_mount_conn_motor,[N,N])
         {
@@ -160,8 +157,9 @@ module part_y_motor_mount()
 {
     attach(yaxis_motor_mount_conn_motor,[N,X])
     {
-        yaxis_motor_mount(show_motor=false);
+        yaxis_motor_mount();
     }
 }
 
-/*yaxis_motor_mount(show_motor=true);*/
+/*yaxis_motor_mount_bearing_clamp();*/
+/*yaxis_motor_mount();*/
