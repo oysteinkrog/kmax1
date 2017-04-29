@@ -666,7 +666,7 @@ module extruder_b(part=undef, with_sensormount=true)
                     cylindera(r=r,h=1000, orient=X);
 
             // guidler screw nuts drop-in slots
-            nut_trap_cut(nut=guidler_screws_nut, screw_l=1000, screw_l_extra=1000, trap_axis=Z, orient=X);
+            nut_trap_cut(nut=guidler_screws_nut, screw_l=1000, screw_l_extra=1000, trap_axis=-Z, orient=X);
         }
 
         // guidler mount screw
