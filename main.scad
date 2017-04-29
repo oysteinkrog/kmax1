@@ -72,16 +72,17 @@ module x_axis()
     translate([0,0,axis_pos_z])
     {
         zrod_offset = zmotor_mount_rod_offset_x;
-        for(z=[-1,1])
         for(z=xaxis_beltpath_z_offsets)
-        translate([-main_width/2-zrod_offset+xaxis_end_motor_offset[0], xaxis_zaxis_distance_y, z])
+        tz(z)
+        ty(xaxis_zaxis_distance_y)
+        tx(-sign(z)*(-main_width/2-zrod_offset+xaxis_end_motor_offset[0]))
         rotate(90*X)
         belt_path(
-            len=main_width+2*(zrod_offset)+xaxis_end_motor_offset[0],
+            len=main_width+xaxis_end_motor_offset[0],
             belt_width=xaxis_belt_width,
             belt=xaxis_belt,
             pulley_d=xaxis_pulley_inner_d,
-            orient=X, align=X);
+            orient=X, align=-sign(z)*X);
 
         for(x=[0:len(axis_range_x)-1])
         {
