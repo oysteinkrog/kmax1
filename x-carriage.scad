@@ -457,7 +457,7 @@ module extruder_b(part=undef, with_sensormount=true)
             extruder_b(part="pos", with_sensormount=with_sensormount);
             extruder_b(part="neg", with_sensormount=with_sensormount);
         }
-        extruder_b(part="vit", with_sensormount=with_sensormount);
+        %extruder_b(part="vit", with_sensormount=with_sensormount);
     }
     else if(part=="pos")
     material(Mat_Plastic)
