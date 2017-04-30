@@ -36,9 +36,17 @@ xaxis_carriage_beltfasten_dist = xaxis_carriage_beltfasten_w/2+2*mm;
 
 xaxis_carriage_thickness = xaxis_bearing_top_OD/2 + xaxis_carriage_bearing_offset_y;
 
-extruder_drivegear_d_outer = 12.65*mm;
-extruder_drivegear_d_inner = 11.5*mm;
+// MK8 drive gear
+extruder_drivegear_d_outer = 9*mm;
+extruder_drivegear_d_inner = 7.45*mm;
 extruder_drivegear_h = 11*mm;
+extruder_drivegear_drivepath_offset = extruder_drivegear_h-7.85*mm;
+extruder_drivegear_drivepath_h = 3.45;
+
+// MK7 drive gear
+//extruder_drivegear_d_outer = 12.65*mm;
+//extruder_drivegear_d_inner = 11.5*mm;
+//extruder_drivegear_h = 11*mm;
 
 xaxis_endstop_SN04_pos = [-xaxis_carriage_top_width/2,0,xaxis_end_wz/2] + v_z(xaxis_endstop_size_SN04)/2;
 
