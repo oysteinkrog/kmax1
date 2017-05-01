@@ -154,7 +154,7 @@ module y_axis()
         for(x=[-1,1])
         for(y=[-1,1])
         attach([[x*(yaxis_rod_distance/2),y*(main_depth/2+extrusion_size/2),0],Z],mount_rod_clamp_conn_rod)
-        mount_rod_clamp_full(rod_d=zaxis_rod_d, thick=4, width=extrusion_size, thread=zmotor_mount_clamp_thread, orient=Y);
+        mount_rod_clamp_full(rod_d=zaxis_rod_d, thick=4, width=extrusion_size, thread=extrusion_thread, orient=Y);
 
         for(x=[-1,1])
         translate([x*(yaxis_rod_distance/2), 0, 0])
