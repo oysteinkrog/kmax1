@@ -54,7 +54,7 @@ module gantry_upper_connector()
         {
             translate([x*extrusion_thread_dia*2, y*main_upper_dist_y/2, 0])
             {
-                screw_cut(extrusion_nut, h=gantry_connector_thickness+.1, nut_offset=true, orient=[0,0,-1], align=[0,0,-1]);
+                screw_cut(nut=extrusion_nut, h=12*mm, head="button", nut_offset=true, orient=[0,0,-1], align=[0,0,-1]);
             }
         }
 
