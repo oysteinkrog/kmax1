@@ -324,6 +324,7 @@ module extruder_a(part=undef)
                 {
                     translate([0,-between_bearing_and_gear,0])
                     translate([0,-extruder_a_bearing[2],0])
+                    ty(-1*mm)
                     extruder_gear_big(orient=-Y, align=-Y);
 
                     // bearing
