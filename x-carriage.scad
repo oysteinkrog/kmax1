@@ -583,8 +583,8 @@ module extruder_b(part=undef, with_sensormount=true)
         translate([-.1,-.5*mm,0])
         translate(-[extruder_drivegear_d_inner,0,0])
         {
-            s=[extruder_drivegear_d_inner,extruder_drivegear_h+1*mm,extruder_drivegear_d_inner];
-            cubea(s, align=[0,0,0], extra_size=[0,3*mm,0], extra_align=Y);
+            s=[extruder_drivegear_d_inner,extruder_drivegear_h+1*mm,extruder_drivegear_d_inner+3*mm];
+            rcubea(s, align=[0,0,0], extra_size=[100,3*mm,0], extra_align=Y-X);
         }
 
         translate(extruder_b_drivegear_offset)
