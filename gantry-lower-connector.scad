@@ -31,17 +31,17 @@ module gantry_lower_connector()
         // side nuts
         for(z=[-1,1])
         translate([0,extrusion_size/2,z*main_lower_dist_z/2])
-        screw_cut(nut=extrusion_nut, h=thick+.1, with_nut=false, orient=[-1,0,0], align=[-1,0,0]);
+        screw_cut(nut=extrusion_nut, head="button", h=thick+.1, with_nut=false, orient=[-1,0,0], align=[-1,0,0]);
 
         // side end nuts
         for(z=[-1,1])
         translate([0,-extrusion_size/2,z*main_lower_dist_z/2])
-        screw_cut(nut=extrusion_end_nut, h=thick+.1, with_nut=false, orient=[-1,0,0], align=[-1,0,0]);
+        screw_cut(nut=extrusion_end_nut, head="button", h=thick+.1, with_nut=false, orient=[-1,0,0], align=[-1,0,0]);
 
         // front nuts
         for(z=[-1,1])
         translate([-width/2-thick,-extrusion_size-thick,z*main_lower_dist_z/2])
-        screw_cut(nut=extrusion_nut, h=thick+.1, with_nut=false, orient=Y, align=Y);
+        screw_cut(nut=extrusion_nut, head="button", h=thick+.1, with_nut=false, orient=Y, align=Y);
     }
 }
 
