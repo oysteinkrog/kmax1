@@ -59,7 +59,7 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
             for(i=[-1,1])
             translate([0, i*screw_dist_/2, 0])
             {
-                screw_cut(thread=thread, orient=-X);
+                screw_cut(thread=thread, head="button", orient=-X);
             }
 
             // cut rod
@@ -134,7 +134,7 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
             for(i=[-1,1])
             translate([0, i*screw_dist_/2, 0])
             {
-                screw_cut(thread=thread, orient=-X);
+                screw_cut(thread=thread, head="button", orient=-X);
             }
 
             // cut rod
