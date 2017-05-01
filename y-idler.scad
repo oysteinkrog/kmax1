@@ -75,7 +75,7 @@ module yaxis_idler(part)
         translate([0,0,extrusion_size/2+yaxis_idler_mount_thickness])
         for(y=[-1,0,1])
         ty(y*mount_screw_dist/2)
-        screw_cut(nut=extrusion_nut, head_embed=false, h=yaxis_idler_mount_thickness+5*mm, with_nut=false, orient=-Z, align=-Z);
+        screw_cut(nut=extrusion_nut, head="button", h=yaxis_idler_mount_thickness+5*mm, with_nut=false, orient=-Z, align=-Z);
 
         // mount screws for pulley block
         for(y=[-1,1])
@@ -90,7 +90,7 @@ module yaxis_idler(part)
         tx(-yaxis_idler_mount_thickness)
         for(y=[-1,1])
         ty(y*(yaxis_idler_mount_thread_dia*2.5))
-        screw_cut(yaxis_idler_mount_tightscrew_hexnut, h=yaxis_idler_mount_thickness+5*mm, with_nut=false, orient=X, align=X); 
+        screw_cut(nut=extrusion_nut, head="button", h=yaxis_idler_mount_thickness+5*mm, with_nut=false, orient=X, align=X); 
     }
 }
 
@@ -127,7 +127,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
 
         // pulley screw
         tz(h/2)
-        screw_cut(yaxis_idler_pulley_nut, h=h+5*mm, orient=[0,0,-1], align=[0,0,-1]);
+        screw_cut(yaxis_idler_pulley_nut, head="button", h=h+5*mm, orient=[0,0,-1], align=[0,0,-1]);
 
         cylindera(d=yaxis_idler_pulley_thread_dia, h=h*2, orient=Z, align=N);
 
