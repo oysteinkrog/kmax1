@@ -5,101 +5,104 @@ include <MCAD/motors.scad>
 use <thing_libutils/attach.scad>
 use <thing_libutils/shapes.scad>
 use <thing_libutils/screws.scad>
+use <thing_libutils/transforms.scad>
 
 use <rod-clamps.scad>
 
-module zaxis_motor_mount(show_motor=false)
+module zaxis_motor_mount(part)
 {
-    difference()
+    if(part==U)
+    {
+        difference()
+        {
+            zaxis_motor_mount(part="pos");
+            zaxis_motor_mount(part="neg");
+        }
+        %zaxis_motor_mount(part="vit");
+    }
+    else if(part=="pos")
+    material(Mat_Plastic)
     {
         // top plate
-        union()
+        rcubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
+        translate([zmotor_mount_rod_offset_x, 0, 0])
         {
-
-            difference()
-            {
-                material(Mat_Plastic)
-                union()
-                {
-                    // top plate
-                    rcubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
-                    translate([zmotor_mount_rod_offset_x, 0, 0])
-                    {
-                        rcubea([gantry_connector_thickness+5, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
-                    }
-
-                    // reinforcement plate between motor and extrusion
-                    rcubea([zmotor_mount_thickness, zmotor_w+2, zmotor_h], align=[1,0,-1], extra_size=[0,0,2], extra_align=Z);
-
-                    // top extrusion mount plate
-                    translate([0, 0,-extrusion_size-zaxis_motor_offset_z])
-                        rcubea([zmotor_mount_thickness, zmotor_mount_width, extrusion_size], align=[1,0,1]);
-
-                    // bottom extrusion mount plate
-                    translate([0, 0, -main_lower_dist_z-extrusion_size-zaxis_motor_offset_z])
-                        rcubea([zmotor_mount_thickness, zmotor_w+2, extrusion_size], align=[1,0,1]);
-
-                    // side triangles
-                    for(i=[-1,1])
-                    {
-                        translate([zmotor_mount_thickness, i*((zmotor_w/2)+zmotor_mount_thickness/2), 2])
-                            triangle(
-                                    zmotor_mount_rod_offset_x-zmotor_mount_thickness,
-                                    main_lower_dist_z+extrusion_size+zaxis_motor_offset_z+2,
-                                    depth=zmotor_mount_thickness,
-                                    align=[1,0,-1],
-                                    orient=X
-                                    );
-
-                        translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 2])
-                            cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h+2], align=[1,0,-1]);
-                    }
-
-                }
-
-                // cutout for motor cables
-                translate([0,0,-30*mm])
-                cubea([zmotor_mount_thickness*3, 20*mm, zmotor_h], align=[0,0,-1]);
-
-                // screw holes top
-                for(i=[-1,1])
-                    translate([0, i*(zmotor_w/2+zmotor_mount_thread_dia*3), -extrusion_size])
-                        cylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia, orient=X);
-
-                // screw hole bottom
-                for(i=[0])
-                    translate([0, i*(zmotor_w/2+zmotor_mount_thread_dia*3), -extrusion_size-main_lower_dist_z])
-                        cylindera(h=zmotor_mount_thickness*3,d=zmotor_mount_thread_dia,align=N, orient=X);
-            }
-
+            rcubea([gantry_connector_thickness+5, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
         }
+
+        // reinforcement plate between motor and extrusion
+        rcubea([zmotor_mount_thickness, zmotor_w+2, zmotor_h], align=[1,0,-1], extra_size=[0,0,2], extra_align=Z);
+
+        // top extrusion mount plate
+        translate([0, 0,-extrusion_size-zaxis_motor_offset_z])
+        rcubea([zmotor_mount_thickness, zmotor_mount_width, extrusion_size], align=[1,0,1]);
+
+        // bottom extrusion mount plate
+        translate([0, 0, -main_lower_dist_z-extrusion_size-zaxis_motor_offset_z])
+        rcubea([zmotor_mount_thickness, zmotor_w+2, extrusion_size], align=[1,0,1]);
+
+        // side triangles
+        for(i=[-1,1])
+        {
+            translate([zmotor_mount_thickness, i*((zmotor_w/2)+zmotor_mount_thickness/2), 2])
+            triangle(
+                zmotor_mount_rod_offset_x-zmotor_mount_thickness,
+                main_lower_dist_z+extrusion_size+zaxis_motor_offset_z+2,
+                depth=zmotor_mount_thickness,
+                align=[1,0,-1],
+                orient=X
+                );
+
+            translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 2])
+            cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h+2], align=[1,0,-1]);
+        }
+    }
+    else if(part=="neg")
+    {
+        // cutout for motor cables
+        translate([0,0,-30*mm])
+        cubea([zmotor_mount_thickness*3, 20*mm, zmotor_h], align=[0,0,-1]);
+
+        // screw holes top
+        for(y=[-1,1])
+        tx(zmotor_mount_thickness)
+        ty(y*(zmotor_w/2+zmotor_mount_thread_dia*3))
+        tz(-extrusion_size)
+        screw_cut(nut=extrusion_nut, head="button", h=12*mm, orient=-X, align=-X);
+
+        // screw hole bottom
+        for(y=[0])
+        tx(zmotor_mount_thickness)
+        ty(y*(zmotor_w/2+zmotor_mount_thread_dia*3))
+        tz(-extrusion_size-main_lower_dist_z)
+        screw_cut(nut=extrusion_nut, head="button", h=12*mm, orient=-X, align=-X);
 
         // cut out motor mount holes etc
         translate([zmotor_mount_screw_offset_x, 0, 0])
         translate([0,0,-1])
-            linear_extrude(zmotor_mount_thickness_h+2)
-            stepper_motor_mount(17, slide_distance=0, mochup=false);
+        linear_extrude(zmotor_mount_thickness_h+2)
+        stepper_motor_mount(17, slide_distance=0, mochup=false);
 
         // cut out z rod
         translate([zmotor_mount_rod_offset_x, 0, 0])
-            cylindera(d=zaxis_rod_d*rod_fit_tolerance, h=100, orient=Z);
+        cylindera(d=zaxis_rod_d*rod_fit_tolerance, h=100, orient=Z);
 
         // cut out z rod mounting clamp nut traps
         for(i=[-1,1])
         {
             translate([zmotor_mount_rod_offset_x-5, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
             {
-                nut_trap_cut(nut=zmotor_mount_clamp_nut, h=10, head_embed=false, trap_h=10, screw_l_extra=2*mm, trap_axis=Z, orient=X, align=N);
+                nut_trap_cut(nut=zmotor_mount_clamp_nut, h=10, head_embed=false, trap_h=10, screw_l_extra=2*mm, trap_axis=-Z, orient=X, align=N);
             }
         }
 
-        %if(show_motor)
+    }
+    else if(part=="vit")
+    {
+        attach([[lookup(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
         {
-            attach([[lookup(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
-            {
-                // z motor/leadscrews
-                motor(zaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
-            }
+            // z motor/leadscrews
+            motor(zaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
         }
     }
 }
