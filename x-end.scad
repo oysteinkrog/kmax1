@@ -120,8 +120,8 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
 module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, show_motor=false, nut_top=false, show_nut=false, show_rods=false, show_bearings=false, with_xrod_adjustment=false)
 {
     nut_h = zaxis_nut[4];
-    extrasize = with_motor?0*mm:0*mm;
-    extrasize_align = 1;
+    extra_size = with_motor?0*mm:0*mm;
+    extra_align = 1;
 
     if(part==undef)
     {

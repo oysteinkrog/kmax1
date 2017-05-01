@@ -29,7 +29,7 @@ module zaxis_motor_mount(show_motor=false)
                     }
 
                     // reinforcement plate between motor and extrusion
-                    rcubea([zmotor_mount_thickness, zmotor_w+2, zmotor_h], align=[1,0,-1], extrasize=[0,0,2], extrasize_align=Z);
+                    rcubea([zmotor_mount_thickness, zmotor_w+2, zmotor_h], align=[1,0,-1], extra_size=[0,0,2], extra_align=Z);
 
                     // top extrusion mount plate
                     translate([0, 0,-extrusion_size-zaxis_motor_offset_z])

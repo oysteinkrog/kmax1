@@ -48,7 +48,7 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
             if(with_tensioner)
             {
                 translate([0,0,belt_t2/4])
-                cubea(size=[1000, belt_width+.1, belt_t2], extrasize=1000*Y, extrasize_align=Y);
+                cubea(size=[1000, belt_width+.1, belt_t2], extra_size=1000*Y, extra_align=Y);
 
                 /*translate([0,0,angle_screw_dia/2])*/
                 {
@@ -84,11 +84,11 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
             }
             else
             {
-                cubea([1000, belt_width+3*mm, belt_t2*1.8], extrasize=[0,1000,1*mm], extrasize_align=Y+Z);
+                cubea([1000, belt_width+3*mm, belt_t2*1.8], extra_size=[0,1000,1*mm], extra_align=Y+Z);
             }
 
             translate(belt_dist/2*Z)
-            cubea([1000, belt_width+3*mm, belt_t2*2], extrasize=1000*Y, extrasize_align=Y);
+            cubea([1000, belt_width+3*mm, belt_t2*2], extra_size=1000*Y, extra_align=Y);
         }
         else if(part=="vit")
         {

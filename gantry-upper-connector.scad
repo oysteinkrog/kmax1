@@ -23,12 +23,12 @@ module gantry_upper_connector()
                 // connect upper gantry
                 translate([upper_gantry_width_diff, 0, 0])
                     translate([0,0,extrusion_size/2])
-                    rcubea([gantry_connector_thickness,main_upper_dist_y+extrusion_size,extrusion_size], align=X, extrasize=[0,0,gantry_connector_thickness], extrasize_align=Z);
+                    rcubea([gantry_connector_thickness,main_upper_dist_y+extrusion_size,extrusion_size], align=X, extra_size=[0,0,gantry_connector_thickness], extra_align=Z);
             }
 
             translate([upper_gantry_width_diff, 0, 0])
                 translate([0,0,extrusion_size])
-                rcubea([extrusion_size*2,main_upper_dist_y+extrusion_size,gantry_connector_thickness], align=[-1,0,1], extrasize=[gantry_connector_thickness,0,0], extrasize_align=X);
+                rcubea([extrusion_size*2,main_upper_dist_y+extrusion_size,gantry_connector_thickness], align=[-1,0,1], extra_size=[gantry_connector_thickness,0,0], extra_align=X);
 
         }
 
