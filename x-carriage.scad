@@ -88,7 +88,7 @@ module x_carriage(part=undef, beltpath_sign=1)
         if(xaxis_endstop_type == "SWITCH")
         {
             translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2])
-            rcubea(size=xaxis_endstop_size_switch, align=ZAXIS+XAXIS, extrasize=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2), extrasize_align=-Y);
+            rcubea(size=xaxis_endstop_size_switch, align=ZAXIS+XAXIS, extra_size=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2), extra_align=-Y);
         }
         else if(xaxis_endstop_type == "SN04")
         {
@@ -438,7 +438,7 @@ module hotmount_clamp_cut()
     translate([0, -hotmount_clamp_offset-extruder_filapath_offset[1], 0])
     translate([0, 0, 0-hotmount_d_h[0][1]-hotmount_d_h[1][1]/2])
     {
-        rcubea([hotmount_clamp_w[0], hotmount_clamp_thickness, hotmount_clamp_height], align=Y, extrasize=[0,100,0], extrasize_align=[0,-1,0]);
+        rcubea([hotmount_clamp_w[0], hotmount_clamp_thickness, hotmount_clamp_height], align=Y, extra_size=[0,100,0], extra_align=[0,-1,0]);
     }
     translate([0, 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2+.1])
     {
@@ -583,7 +583,7 @@ module extruder_b(part=undef, with_sensormount=true)
         translate(-[extruder_drivegear_d_inner,0,0])
         {
             s=[extruder_drivegear_d_inner,extruder_drivegear_h+1*mm,extruder_drivegear_d_inner];
-            cubea(s, align=[0,0,0], extrasize=[0,3*mm,0], extrasize_align=Y);
+            cubea(s, align=[0,0,0], extra_size=[0,3*mm,0], extra_align=Y);
         }
 
         translate(extruder_b_drivegear_offset)
@@ -879,7 +879,7 @@ module extruder_guidler(part)
             {
                 // guidler main block
                 translate([0,guidler_mount_off[1]-guidler_mount_d/2, 0])
-                rcubea([guidler_w, guidler_d, guidler_h], align=Y, extrasize=[0,0,guidler_extra_h_up], extrasize_align=Z);
+                rcubea([guidler_w, guidler_d, guidler_h], align=Y, extra_size=[0,0,guidler_extra_h_up], extra_align=Z);
 
                 // guidler mount point
                 translate([0,guidler_mount_off[1], guidler_mount_off[2]])
@@ -1252,7 +1252,7 @@ module xaxis_end_bucket(part)
         /*translate(-Y*xaxis_carriage_beltpath_offset_y)*/
         /*translate(Y*extruder_joffset_b.y)*/
         translate(Y*extruder_filapath_offset.y)
-        rcubea(size=s-[3,3,3], align=-Z, extrasize=1000*Z, extrasize_align=Z);
+        rcubea(size=s-[3,3,3], align=-Z, extra_size=1000*Z, extra_align=Z);
     }
 }
 

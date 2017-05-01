@@ -93,7 +93,7 @@ module yaxis_motor_mount(part)
 
                 // reinforcement plate between motor and extrusion
                 translate([0,0,extrusion_size/2])
-                rcubea([ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_h], align=[1,0,-1], extrasize=[0,0,ymotor_mount_thickness_h], extrasize_align=Z);
+                rcubea([ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_h], align=[1,0,-1], extra_size=[0,0,ymotor_mount_thickness_h], extra_align=Z);
 
                 // side triangles
                 for(i=[-1,1])

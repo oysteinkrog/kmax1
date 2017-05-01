@@ -25,8 +25,8 @@ module yaxis_idler(part)
         rcubea(
             size=[yaxis_idler_mount_thickness, yidler_mount_width, extrusion_size], 
             align=-X,
-            extrasize=Z*yaxis_idler_mount_thickness,
-            extrasize_align=Z
+            extra_size=Z*yaxis_idler_mount_thickness,
+            extra_align=Z
             );
 
         // top mount plate
@@ -34,8 +34,8 @@ module yaxis_idler(part)
         rcubea(
             size=[extrusion_size, yidler_mount_width, yaxis_idler_mount_thickness],
             align=Z,
-            extrasize=[yaxis_idler_mount_thickness,0,0],
-            extrasize_align=X
+            extra_size=[yaxis_idler_mount_thickness,0,0],
+            extra_align=X
             );
 
         intersection()
@@ -60,8 +60,8 @@ module yaxis_idler(part)
                     rcubea(
                         size=[extrusion_size, mount_screw_dist-yaxis_idler_mount_tightscrew_dia*3, yaxis_idler_mount_thickness],
                         align=Z,
-                        extrasize=[yaxis_idler_mount_thickness,0,0],
-                        extrasize_align=X
+                        extra_size=[yaxis_idler_mount_thickness,0,0],
+                        extra_align=X
                         );
                 }
             }
@@ -111,8 +111,8 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
     {
         rcubea([yaxis_idler_pulleyblock_supportsize, 2*yaxis_idler_pulleyblock_supportsize, h],
             align=N,
-            extrasize=[yaxis_idler_pulley_tight_len,0,0], 
-            extrasize_align=[-1,0,0]
+            extra_size=[yaxis_idler_pulley_tight_len,0,0], 
+            extra_align=[-1,0,0]
             );
     }
     else if(part=="neg")
@@ -122,7 +122,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
         cubea(
             size=[yaxis_idler_pulley_outer_d, yaxis_idler_pulley_outer_d*3, yaxis_idler_pulley_h+0.5],
             align=N,
-            extrasize=[20*mm,0,0], extrasize_align=X
+            extra_size=[20*mm,0,0], extra_align=X
             );
 
         // pulley screw

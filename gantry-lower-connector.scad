@@ -17,10 +17,10 @@ module gantry_lower_connector()
             // top/bottom
             for(z=[-1,1])
             translate([0,0,z*height/2])
-            rcubea([width,extrusion_size*2,thick], align=[-1,0,z], extrasize=[0,thick,0], extrasize_align=[0,-1,0]);
+            rcubea([width,extrusion_size*2,thick], align=[-1,0,z], extra_size=[0,thick,0], extra_align=[0,-1,0]);
 
             // side
-            rcubea([thick,depth,height+thick], align=[-1,0,0], extrasize=[0,thick,0], extrasize_align=[0,-1,0]);
+            rcubea([thick,depth,height+thick], align=[-1,0,0], extra_size=[0,thick,0], extra_align=[0,-1,0]);
 
             // front
             translate([0,-depth/2,0])

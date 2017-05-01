@@ -20,7 +20,7 @@ module yaxis_belt_holder(part)
         rcubea([yaxis_belt_mount_width_base,yaxis_belt_mount_depth_base,yaxis_belt_mount_base_thick], align=Z);
 
         // for belt attachment
-        rcubea([yaxis_belt_mount_width_belt,yaxis_belt_mount_depth,yaxis_belt_mount_height], align=-Z, extrasize=Z*yaxis_belt_mount_base_thick, extrasize_align=Z);
+        rcubea([yaxis_belt_mount_width_belt,yaxis_belt_mount_depth,yaxis_belt_mount_height], align=-Z, extra_size=Z*yaxis_belt_mount_base_thick, extra_align=Z);
 
         /*intersection()*/
         /*{*/
