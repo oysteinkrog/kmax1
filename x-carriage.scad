@@ -752,20 +752,31 @@ module extruder_b(part=undef, with_sensormount=true)
         }
 
         translate(extruder_b_drivegear_offset)
-        material(Mat_Aluminium)
-        {
-            // drive gear
-            cylindera(h=extruder_drivegear_h, d=extruder_drivegear_d_inner, orient=Y, align=N);
-            for(y=[-1,1])
-            translate([0,y*extruder_drivegear_h/2,0])
-            cylindera(h=extruder_drivegear_h/3, d=extruder_drivegear_d_outer, orient=Y, align=[0,-y,0]);
-        }
+        extruder_drivegear();
 
         if(with_sensormount)
         translate(extruder_b_sensormount_offset)
         {
-            sensormount(part, align=-Y);
+            bearing(bearing_type=extruder_b_bearing, orient=Y, align=N);
+
+            material(Mat_Aluminium)
+            translate([0,-extruder_b_bearing[2]/2,0])
+            cylindera(h=extruder_shaft_len+.2, d=extruder_shaft_d, orient=Y, align=Y);
         }
+    }
+}
+
+module extruder_drivegear()
+{
+    material(Mat_Aluminium)
+    {
+        cylindera(h=extruder_drivegear_drivepath_h, d=extruder_drivegear_d_inner, orient=Y, align=N);
+
+        translate([0,extruder_drivegear_drivepath_h/2,0])
+        cylindera(h=extruder_drivegear_h/2+extruder_drivegear_drivepath_offset/2-extruder_drivegear_drivepath_h/2, d=extruder_drivegear_d_outer, orient=Y, align=Y);
+
+        translate([0,-extruder_drivegear_drivepath_h/2,0])
+        cylindera(h=extruder_drivegear_h-extruder_drivegear_h/2+extruder_drivegear_drivepath_offset/2-extruder_drivegear_drivepath_h/2-extruder_drivegear_drivepath_h, d=extruder_drivegear_d_outer, orient=Y, align=-Y);
     }
 }
 
