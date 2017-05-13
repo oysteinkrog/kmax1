@@ -138,8 +138,8 @@ extruder_shaft_len = extruder_shaft_len_b+extruder_a_h+extruder_offset_a[1];
 
 echo("Extruder B main shaft length: ", extruder_shaft_len);
 
-extruder_hotmount_clamp_nut = NutHexM3;
-extruder_hotmount_clamp_thread = ThreadM3;
+extruder_hotend_clamp_nut = NutHexM3;
+extruder_hotend_clamp_thread = ThreadM3;
 
 
 // as per E3D spec
@@ -209,29 +209,29 @@ color_filament = [0,0,0, alpha];
 // from E3D V6 heatsink drawing
 // http://wiki.e3d-online.com/wiki/File:DRAWING-V6-175-SINK.png
 // each entry == dia + h
-hotmount_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
-hotmount_outer_size_xy=max(vec_i(hotmount_d_h,0))+5*mm;
-hotmount_outer_size_h=max(vec_i(hotmount_d_h,1))+5*mm;
+hotend_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
+hotend_outer_size_xy=max(vec_i(hotend_d_h,0))+5*mm;
+hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
 // relative to hotend mount
-hotmount_clamp_offset = [0, 0, -hotmount_d_h[0][1]-hotmount_d_h[1][1]/2];
+hotend_clamp_offset = [0, 0, -hotend_d_h[0][1]-hotend_d_h[1][1]/2];
 
 // which side does hotend slide in (x-axis, i.e. -1 is left, 1 is right)
-hotmount_tolerance=1.05*mm;
+hotend_tolerance=1.05*mm;
 
-// hotmount clamp screws distance from center
-hotmount_clamp_thread = ThreadM3;
-hotmount_clamp_nut = NutKnurlM3_5_42;
+// hotend clamp screws distance from center
+hotend_clamp_thread = ThreadM3;
+hotend_clamp_nut = NutKnurlM3_5_42;
 
-hotmount_clamp_screw_dia = lookup(ThreadSize, hotmount_clamp_thread);
-hotmount_clamp_screws_dist = hotmount_d_h[1][1] + 1.2*hotmount_clamp_screw_dia;
-hotmount_clamp_pad = 0;
-hotmount_clamp_thickness = 5*mm;
-hotmount_clamp_w = [
-2*(hotmount_clamp_screws_dist + hotmount_clamp_screw_dia + hotmount_clamp_pad),
-2*(hotmount_clamp_screws_dist - hotmount_clamp_screw_dia/2),
+hotend_clamp_screw_dia = lookup(ThreadSize, hotend_clamp_thread);
+hotend_clamp_screws_dist = hotend_d_h[1][1] + 1.2*hotend_clamp_screw_dia;
+hotend_clamp_pad = 0;
+hotend_clamp_thickness = 5*mm;
+hotend_clamp_w = [
+2*(hotend_clamp_screws_dist + hotend_clamp_screw_dia + hotend_clamp_pad),
+2*(hotend_clamp_screws_dist - hotend_clamp_screw_dia/2),
 ];
-hotmount_clamp_height = hotmount_d_h[1][1];
+hotend_clamp_height = hotend_d_h[1][1];
 
-hotmount_clamp_offset = abs(extruder_filapath_offset[1])+extruder_drivegear_h/2+extruder_b_bearing[2]+4*mm;
+hotend_clamp_offset = abs(extruder_filapath_offset[1])+extruder_drivegear_h/2+extruder_b_bearing[2]+4*mm;
 
-guidler_extra_h_up=guidler_bearing[1]/2+hotmount_clamp_screw_dia/2;
+guidler_extra_h_up=guidler_bearing[1]/2+hotend_clamp_screw_dia/2;
