@@ -161,6 +161,7 @@ guidler_bolt_h=guidler_bearing[2]+4*mm;
 guidler_w=max(guidler_mount_w+9*mm, guidler_bearing[2]*2.8);
 guidler_d=5;
 guidler_h=7;
+guidler_bearing_pos = Y*filament_d-.5*mm;
 
 guidler_screws_thread = ThreadM3;
 guidler_screws_nut = NutHexM3;
