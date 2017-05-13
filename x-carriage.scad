@@ -961,11 +961,18 @@ module extruder_guidler(part)
     }
     else if(part=="vit")
     {
-        bearing(guidler_bearing, orient=X);
+        // filament path
+        translate(-X*guidler_bearing[1]/2)
+        cylindera(d=filament_d, h=1000*mm);
 
-        // bearing bolt
-        material(Mat_Chrome)
-        cylindera(d=guidler_bearing[0], h=guidler_bolt_h, orient=X);
+        translate(guidler_bearing_pos)
+        {
+            bearing(guidler_bearing, orient=X);
+
+            // bearing bolt
+            material(Mat_Chrome)
+            cylindera(d=guidler_bearing[0], h=guidler_bolt_h, orient=X);
+        }
     }
 }
 
@@ -1204,6 +1211,10 @@ module x_carriage_extruder(with_sensormount=false)
             attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
             extruder_guidler();
         }
+
+        translate([explode[0],-explode[1],explode[2]])
+        attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll, Y)
+        extruder_guidler();
 
         /*translate([explode[0],-explode[1],explode[2]])*/
         /*translate([-95,53,20])*/
