@@ -87,6 +87,15 @@ extruder_a_base_h=extruder_a_bearing[2]-extruder_a_bearing_offset_y.y+1*mm;
 
 extruder_b_bearing = bearing_MR125;
 
+// from E3D V6 heatsink drawing
+// http://wiki.e3d-online.com/wiki/File:DRAWING-V6-175-SINK.png
+// each entry == dia + h
+hotend_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
+hotend_outer_size_xy=max(vec_i(hotend_d_h,0))+5*mm;
+hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
+// relative to hotend mount
+hotend_clamp_offset = [0, 0, -hotend_d_h[0][1]-hotend_d_h[1][1]/2];
+
 extruder_filapath_offset = [0, -20*mm, 0] + [extruder_drivegear_d_inner/2,0,0];
 extruder_b_drivegear_offset = extruder_filapath_offset - [extruder_drivegear_d_inner/2,0,0];
 extruder_b_bearing_offset = extruder_b_drivegear_offset - [0,extruder_drivegear_h/2+extruder_b_bearing[2]/2+1*mm];
@@ -205,15 +214,6 @@ color_hotend = [0.8,0.4,0.4, alpha];
 color_extruder = [0.2,0.6,0.9, alpha];
 color_guidler = [0.4,0.5,0.8, alpha];
 color_filament = [0,0,0, alpha];
-
-// from E3D V6 heatsink drawing
-// http://wiki.e3d-online.com/wiki/File:DRAWING-V6-175-SINK.png
-// each entry == dia + h
-hotend_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
-hotend_outer_size_xy=max(vec_i(hotend_d_h,0))+5*mm;
-hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
-// relative to hotend mount
-hotend_clamp_offset = [0, 0, -hotend_d_h[0][1]-hotend_d_h[1][1]/2];
 
 // which side does hotend slide in (x-axis, i.e. -1 is left, 1 is right)
 hotend_tolerance=1.05*mm;
