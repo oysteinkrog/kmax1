@@ -96,8 +96,8 @@ hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
 // relative to hotend mount
 hotend_clamp_offset = [0, 0, -hotend_d_h[0][1]-hotend_d_h[1][1]/2];
 
-extruder_filapath_offset = [0, -20*mm, 0] + [extruder_drivegear_d_inner/2,0,0];
-extruder_b_drivegear_offset = extruder_filapath_offset - [extruder_drivegear_d_inner/2,0,0];
+extruder_b_filapath_offset = [0, -20*mm, 0] + [extruder_drivegear_d_inner/2,0,0];
+extruder_b_drivegear_offset = extruder_b_filapath_offset - [extruder_drivegear_d_inner/2,0,0];
 extruder_b_bearing_offset = extruder_b_drivegear_offset - [0,extruder_drivegear_h/2+extruder_b_bearing[2]/2+1*mm];
 
 extruder_b_w = extruder_drivegear_d_outer+15*mm;
@@ -138,7 +138,7 @@ extruder_offset_b = [0,0,0];
 
 // shaft from big gear to hobbed gear
 extruder_shaft_d = 5*mm;
-extruder_shaft_len_b = abs(extruder_filapath_offset[1])+extruder_drivegear_h/2+extruder_b_bearing[2];
+extruder_shaft_len_b = abs(extruder_b_filapath_offset[1])+extruder_drivegear_h/2+extruder_b_bearing[2];
 extruder_shaft_len = extruder_shaft_len_b+extruder_a_h+extruder_offset_a[1];
 
 echo("Extruder B main shaft length: ", extruder_shaft_len);
@@ -149,7 +149,7 @@ extruder_hotend_clamp_thread = ThreadM3;
 
 // as per E3D spec
 hotend_height = 63*mm;
-hotend_mount_offset = extruder_filapath_offset + [0,0,-extruder_drivegear_d_outer/2 + -5*mm];
+hotend_mount_offset = extruder_b_filapath_offset + [0,0,-extruder_drivegear_d_outer/2 + -5*mm];
 hotend_mount_conn = [hotend_mount_offset, Z];
 hotend_conn = [[0,21.3,0], Y];
 
@@ -228,6 +228,6 @@ hotend_clamp_w = [
 ];
 hotend_clamp_height = hotend_d_h[1][1];
 
-hotend_clamp_offset = abs(extruder_filapath_offset[1])+extruder_drivegear_h/2+extruder_b_bearing[2]+4*mm;
+hotend_clamp_offset = abs(extruder_b_filapath_offset[1])+extruder_drivegear_h/2+extruder_b_bearing[2]+4*mm;
 
 guidler_extra_h_up=guidler_bearing[1]/2+hotend_clamp_screw_dia/2;
