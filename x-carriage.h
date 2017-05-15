@@ -105,10 +105,6 @@ extruder_b_w = extruder_drivegear_d_outer+15*mm;
 extruder_b_mount_thick = 5*mm;
 
 extruder_b_mount_offsets=[
-    /*[extruder_filapath_offset[0]-1*(extruder_b_w/2+4*mm),0,-15*mm],*/
-    /*[extruder_filapath_offset[0]+1*(extruder_b_w/2+4*mm)-5*mm,0,-25*mm],*/
-    /*[extruder_filapath_offset[0]-4*mm,0,44.5*mm-15*mm]*/
-
     [-14*mm,0,-13*mm],
     [20*mm,0,-13*mm],
     [0,0,35*mm-15*mm]
