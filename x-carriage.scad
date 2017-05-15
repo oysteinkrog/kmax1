@@ -402,12 +402,12 @@ module hotend_clamp(part=undef)
     else if(part=="pos")
     material(Mat_Plastic)
     {
-        translate([0, -hotend_clamp_offset-extruder_filapath_offset[1], 0])
+        translate([0, -hotend_clamp_offset-extruder_b_filapath_offset[1], 0])
         translate([0, 0, 0-hotend_d_h[0][1]-hotend_d_h[1][1]/2])
         {
             rcubea([hotend_clamp_w[0], hotend_clamp_thickness, hotend_clamp_height], align=Y);
         }
-        translate([0, -hotend_clamp_offset-extruder_filapath_offset[1], 0])
+        translate([0, -hotend_clamp_offset-extruder_b_filapath_offset[1], 0])
         translate([0, 0, 0-hotend_d_h[0][1]-hotend_d_h[1][1]/2])
         {
             rcubea([hotend_clamp_w[1], hotend_d_h[1][0], hotend_clamp_height], align=Y);
@@ -418,7 +418,7 @@ module hotend_clamp(part=undef)
         hotend_cut(extend_cut = false);
 
         // clamp mount screw holes
-        translate([0, -hotend_clamp_offset-extruder_filapath_offset[1], 0])
+        translate([0, -hotend_clamp_offset-extruder_b_filapath_offset[1], 0])
         translate([0, 0, 0-hotend_d_h[0][1]-hotend_d_h[1][1]/2])
         for(i=[-1,1])
         translate([i*hotend_clamp_screws_dist, 0, 0])
@@ -429,14 +429,14 @@ module hotend_clamp(part=undef)
 module hotend_clamp_cut()
 {
     // clamp mount screw holes
-    translate([0, -hotend_clamp_offset-extruder_filapath_offset[1], 0])
+    translate([0, -hotend_clamp_offset-extruder_b_filapath_offset[1], 0])
     translate([0, 0, 0-hotend_d_h[0][1]-hotend_d_h[1][1]/2])
     for(i=[-1,1])
     translate([i*hotend_clamp_screws_dist, 0, 0])
     screw_cut(thread=extruder_hotend_clamp_thread, h=30*mm, nut_offset=0*mm, head_embed=false, orient=Y, align=Y);
 
     // hotend clamp cutout
-    translate([0, -hotend_clamp_offset-extruder_filapath_offset[1], 0])
+    translate([0, -hotend_clamp_offset-extruder_b_filapath_offset[1], 0])
     translate([0, 0, 0-hotend_d_h[0][1]-hotend_d_h[1][1]/2])
     {
         rcubea([hotend_clamp_w[0], hotend_clamp_thickness, hotend_clamp_height], align=Y, extra_size=[0,100,0], extra_align=[0,-1,0]);
@@ -688,7 +688,7 @@ module extruder_b(part=undef, with_sensormount=true)
                 );
 
         // filament path
-        translate(extruder_filapath_offset)
+        translate(extruder_b_filapath_offset)
         {
             // above drive gear
             cylindera(h=1000, d=filament_d+.7*mm, orient=Z, align=Z);
@@ -1235,7 +1235,8 @@ module x_carriage_extruder(with_sensormount=false)
         //filament path
         translate([explode[0],-explode[1],explode[2]])
         material(Mat_PlasticBlack)
-        translate(extruder_filapath_offset)
+        translate(extruder_offset_b)
+        translate(extruder_b_filapath_offset)
         cylindera(h=1000, d=1.75*mm, orient=Z, align=N);
     }
 }
@@ -1260,7 +1261,7 @@ module xaxis_end_bucket(part)
         tz(-hotend_height)
         t(hotend_mount_offset)
         translate(X*100)
-        translate(Y*extruder_filapath_offset.y)
+        translate(Y*extruder_b_filapath_offset.y)
         rcubea(size=s, align=-Z);
     }
     else if(part=="neg")
@@ -1274,7 +1275,7 @@ module xaxis_end_bucket(part)
         translate(X*100)
         /*translate(-Y*xaxis_carriage_beltpath_offset_y)*/
         /*translate(Y*extruder_joffset_b.y)*/
-        translate(Y*extruder_filapath_offset.y)
+        translate(Y*extruder_b_filapath_offset.y)
         rcubea(size=s-[3,3,3], align=-Z, extra_size=1000*Z, extra_align=Z);
     }
 }
