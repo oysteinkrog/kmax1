@@ -171,17 +171,15 @@ guidler_bearing = bearing_MR105;
 
 guidler_mount_off =
     - Y*(guidler_bearing[1]/1.8)
-    - Y*(filament_d)
     - Z*(guidler_bearing[1]/1.4);
 
 extruder_guidler_mount_off =
+    + extruder_b_filapath_offset
     - X*(guidler_mount_off.y)
     + Z*(guidler_mount_off.z)
-    + X*(extruder_drivegear_d_outer/2)
     + X*(guidler_bearing[1]/2)
     - X*(extruder_filament_bite)
-    - X*(extruder_filament_bite)
-    + X*(filament_d)
+    + X*(filament_d/2)
 ;
 
 
@@ -197,7 +195,6 @@ guidler_bolt_h=guidler_bearing[2]+4*mm;
 guidler_w=max(guidler_mount_w+9*mm, guidler_bearing[2]*2.8);
 guidler_d=5;
 guidler_h=7;
-guidler_bearing_pos = Y*(filament_d/2);
 
 guidler_screws_thread = ThreadM3;
 guidler_screws_nut = NutHexM3;
@@ -210,7 +207,7 @@ guidler_srew_distance = 10;
 house_guidler_screw_h = guidler_screws_thread_dia+10*mm;
 
 extruder_b_guidler_screw_offset_h = 15*mm + guidler_screws_thread_dia -6*mm;
-extruder_b_guidler_screw_offset_x = 2*mm;
+extruder_b_guidler_screw_offset_x = -4*mm;
 
 extruder_b_mount_thickness = 10*mm;
 extruder_b_mount_dia = 10*mm;
