@@ -471,7 +471,7 @@ module extruder_b(part=undef, with_sensormount=true)
 
             // hobbed gear bearing support
             translate(extruder_b_bearing_offset)
-            rcylindera(d=extruder_b_bearing[1]+5*mm, h=extruder_b_bearing[2]+2*mm, orient=YAXIS, align=YAXIS);
+            rcylindera(d=extruder_b_bearing[1]+5*mm, h=extruder_b_bearing[2]+2*mm, orient=Y, align=Y);
 
             // hotend support
             translate(hotend_mount_offset)
@@ -533,7 +533,7 @@ module extruder_b(part=undef, with_sensormount=true)
 
             // hobbed gear bearing support
             translate(extruder_b_bearing_offset)
-            rcylindera(d=extruder_b_bearing[1]+5*mm, h=extruder_b_bearing[2]+2*mm, orient=Y, align=Y);
+            rcylindera(d=extruder_b_bearing[1]+5*mm, h=extruder_b_bearing[2]+2*mm, orient=Y, align=-Y);
 
             // guidler screw nuts support
             t(extruder_b_filapath_offset)
@@ -693,7 +693,7 @@ module extruder_b(part=undef, with_sensormount=true)
         // b bearing cutout
         translate(extruder_b_bearing_offset)
         translate([0,-extruder_b_bearing[2]/2,0])
-        cylindera(d=extruder_b_bearing[1]+.3*mm, h=extruder_b_bearing[2]+1000, align=Y, orient=Y);
+        cylindera(d=extruder_b_bearing[1]+.2*mm, h=extruder_b_bearing[2]+1000, align=Y, orient=Y);
 
         // drive gear cutout
         translate(extruder_b_drivegear_offset)

@@ -111,7 +111,7 @@ extruder_b_filapath_offset = extruder_b_drivegear_offset
 extruder_b_bearing_offset = extruder_b_drivegear_offset
     - Y*(extruder_drivegear_h/2)
     - Y*(extruder_b_bearing[2]/2)
-    + Y*(1*mm)
+    - Y*(1*mm)
 ;
 
 extruder_b_w = extruder_drivegear_d_outer+15*mm;
@@ -167,7 +167,7 @@ hotend_mount_offset = extruder_b_filapath_offset + [0,0,-extruder_drivegear_d_ou
 hotend_mount_conn = [hotend_mount_offset, Z];
 hotend_conn = [[0,21.3,0], Y];
 
-guidler_bearing = bearing_MR105;
+guidler_bearing = bearing_MR83;
 
 guidler_mount_off =
     - Y*(guidler_bearing[1]/1.8)
