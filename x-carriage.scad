@@ -1203,16 +1203,11 @@ module x_carriage_extruder(with_sensormount=false)
 
         translate([explode[0],-explode[1],explode[2]])
         translate(extruder_offset_b)
-        {
-            extruder_b(with_sensormount=with_sensormount);
-
-            translate([explode[0],-explode[1],explode[2]])
-            translate(extruder_b_drivegear_offset)
-            attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll)
-            extruder_guidler();
-        }
+        extruder_b(with_sensormount=with_sensormount);
 
         translate([explode[0],-explode[1],explode[2]])
+        translate(extruder_offset_b)
+        translate(extruder_b_drivegear_offset)
         attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll, Y)
         extruder_guidler();
 
