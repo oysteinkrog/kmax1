@@ -83,7 +83,7 @@ xaxis_rod_l = 500*mm;
 xaxis_rod_offset_x = 0*mm;
 xaxis_bearings_top=2;
 xaxis_bearings_bottom=1;
-xaxis_bearing_top = LinearBearingKH1026;
+xaxis_bearing_top = LinearBearingLM10;
 xaxis_bearing_bottom = xaxis_bearing_top;
 
 xaxis_pulley = pulley_2GT_20T;
