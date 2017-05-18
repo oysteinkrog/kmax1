@@ -127,9 +127,9 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
 
         // pulley screw
         tz(h/2)
-        screw_cut(yaxis_idler_pulley_nut, head="button", h=h+5*mm, orient=[0,0,-1], align=[0,0,-1]);
+        screw_cut(yaxis_idler_pulley_nut, head="button", h=h+5*mm, orient=-Z, align=-Z);
 
-        cylindera(d=yaxis_idler_pulley_thread_dia, h=h*2, orient=Z, align=N);
+        /*cylindera(d=yaxis_idler_pulley_thread_dia, h=h*2, orient=Z, align=N);*/
 
         for(y=[-1,1])
         translate([
