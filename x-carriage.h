@@ -96,7 +96,7 @@ hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
 // relative to hotend mount
 hotend_clamp_offset = [0, 0, -hotend_d_h[0][1]-hotend_d_h[1][1]/2];
 
-extruder_filament_bite = .25*mm;
+extruder_filament_bite = .5*mm;
 
 extruder_b_drivegear_offset =
     - Y*(hotend_outer_size_xy/2 + 9.5*mm)
