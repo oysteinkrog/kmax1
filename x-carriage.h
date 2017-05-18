@@ -163,7 +163,7 @@ extruder_hotend_clamp_thread = ThreadM3;
 
 // as per E3D spec
 hotend_height = 63*mm;
-hotend_mount_offset = extruder_b_filapath_offset + [0,0,-extruder_drivegear_d_outer/2 + -5*mm];
+hotend_mount_offset = extruder_b_filapath_offset + Z*(-extruder_drivegear_d_outer/2 - 5*mm);
 hotend_mount_conn = [hotend_mount_offset, Z];
 hotend_conn = [[0,21.3,0], Y];
 
