@@ -93,8 +93,6 @@ extruder_b_bearing = bearing_MR125;
 hotend_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
 hotend_outer_size_xy=max(vec_i(hotend_d_h,0))+5*mm;
 hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
-// relative to hotend mount
-hotend_clamp_offset = [0, 0, -hotend_d_h[0][1]-hotend_d_h[1][1]/2];
 
 extruder_filament_bite = .5*mm;
 
@@ -249,13 +247,14 @@ hotend_clamp_nut = NutKnurlM3_5_42;
 hotend_clamp_screw_dia = lookup(ThreadSize, hotend_clamp_thread);
 hotend_clamp_screws_dist = hotend_d_h[1][1] + 1.2*hotend_clamp_screw_dia;
 hotend_clamp_pad = 0;
-hotend_clamp_thickness = 5*mm;
+hotend_clamp_thickness = hotend_outer_size_xy/3;
 hotend_clamp_w = [
 2*(hotend_clamp_screws_dist + hotend_clamp_screw_dia + hotend_clamp_pad),
 2*(hotend_clamp_screws_dist - hotend_clamp_screw_dia/2),
 ];
 hotend_clamp_height = hotend_d_h[1][1];
 
-hotend_clamp_offset = abs(extruder_b_filapath_offset.y)+extruder_drivegear_h/2+extruder_b_bearing[2]+4*mm;
+// relative to hotend mount
+hotend_clamp_offset = Y*(-hotend_outer_size_xy/2 - 2*mm) + Z*(-hotend_d_h[0][1]-hotend_d_h[1][1]/2);//abs(extruder_b_filapath_offset.y)+extruder_drivegear_h/2+extruder_b_bearing[2]+4*mm;
 
 guidler_extra_h_up=guidler_bearing[1]/2+hotend_clamp_screw_dia/2;
