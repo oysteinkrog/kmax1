@@ -25,7 +25,7 @@ yaxis_idler_pulleyblock_wallthick = 5*mm;
 yaxis_idler_pulleyblock_lenfrompulley = yaxis_idler_pulleyblock_supportsize/2 + yaxis_idler_pulley_tight_len;
 
 // the pulley block mounting point (mounting point in pulley block frame)
-yaxis_idler_pulleyblock_conn = [[-yaxis_idler_pulleyblock_lenfrompulley, 0, 0], [-1,0,0]];
+yaxis_idler_pulleyblock_conn = [[-yaxis_idler_pulleyblock_lenfrompulley, 0, 0], X];
 
 yaxis_idler_pulleyblock_conn_print = [[-yaxis_idler_pulleyblock_lenfrompulley, yaxis_idler_pulleyblock_supportsize/2, 0], Y];
 
