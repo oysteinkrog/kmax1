@@ -368,7 +368,7 @@ module extruder_a(part=undef)
     }
 }
 
-module hotend_cut(extend_cut=false, extend_cut_amount = extruder_b_w/2+1)
+module hotend_cut(extend_cut=false, extend_cut_amount = 1000)
 {
     // cutout of j-head/e3d heatsink mount
     heights=vec_i(hotend_d_h,1);
