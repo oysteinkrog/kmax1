@@ -397,7 +397,7 @@ module hotend_clamp(part=undef)
             hotend_clamp(part="pos");
             hotend_clamp(part="neg");
         }
-        hotend_clamp(part="vit");
+        %hotend_clamp(part="vit");
     }
     else if(part=="pos")
     material(Mat_Plastic)
