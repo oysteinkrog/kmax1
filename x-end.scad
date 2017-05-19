@@ -408,15 +408,17 @@ if(false)
         /*if(!$preview_mode)*/
         {
             zrod_offset = zmotor_mount_rod_offset_x;
-            for(x=[-1,1])
-            {
-                z=xaxis_beltpath_z_offsets[x<0?0:x];
-                xo = x>0?xaxis_end_pulley_offset:xaxis_end_motor_offset[0];
-                xw = x<0?xaxis_end_pulley_offset:xaxis_end_motor_offset[0];
-                translate([-main_width/2-xo/2, xaxis_zaxis_distance_y, z])
-                color("black")
-                belt_path(main_width+xw, 6, xaxis_pulley_inner_d, orient=X, align=X);
-            }
+            for(z=xaxis_beltpath_z_offsets)
+            tz(z)
+            ty(xaxis_zaxis_distance_y)
+            tx(-sign(z)*(-main_width/2-zrod_offset+xaxis_end_motor_offset[0]))
+            rotate(90*X)
+            belt_path(
+                len=main_width+xaxis_end_motor_offset[0],
+                belt_width=xaxis_belt_width,
+                belt=xaxis_belt,
+                pulley_d=xaxis_pulley_inner_d,
+                orient=X, align=-sign(z)*X);
         }
 
         /*translate([axis_pos_x,0,0])*/
