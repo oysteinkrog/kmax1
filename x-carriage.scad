@@ -902,7 +902,7 @@ module extruder_guidler(part)
         {
             // offset for spring
             translate(7*mm*-Y)
-            screw_cut(thread=guidler_screws_thread, h=40*mm, orient=Y, align=Y);
+            screw_cut(thread=guidler_screws_thread, h=30*mm, orient=Y, align=Y);
 
             r= guidler_screws_thread_dia/2*1.1;
             cubea([r*2,guidler_d+.2,r], align=Y);
