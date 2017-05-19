@@ -70,18 +70,14 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         // endstops mount support
         if(xaxis_endstop_type == "SWITCH")
         {
-            translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
-            {
-                rcubea(xaxis_endstop_size_switch, align=-XAXIS-ZAXIS);
-            }
+            t(xaxis_endstop_pos(with_motor))
+            rcubea(xaxis_endstop_size_switch, align=-XAXIS-ZAXIS);
         }
         else if(xaxis_endstop_type == "SN04")
         {
-            translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
-            {
-                translate(xaxis_endstop_offset_SN04)
-                rcubea(xaxis_endstop_size_SN04, align=-XAXIS-ZAXIS);
-            }
+            t(xaxis_endstop_pos(with_motor))
+            translate(xaxis_endstop_offset_SN04)
+            rcubea(xaxis_endstop_size_SN04, align=-XAXIS-ZAXIS);
         }
 
         // belt idler screw cut support
@@ -178,7 +174,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         //endstop mount screw cuts
         if(xaxis_endstop_type == "SWITCH")
         {
-            translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
+            t(xaxis_endstop_pos(with_motor))
             translate(xaxis_endstop_screw_offset_switch)
             for(y=[-1,1])
             translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size_switch[2]])
@@ -188,7 +184,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         }
         else if(xaxis_endstop_type == "SN04")
         {
-            translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
+            t(xaxis_endstop_pos(with_motor))
             translate(xaxis_endstop_screw_offset_SN04)
             for(y=[-1,1])
             translate([-0*mm,y*10.5*mm/2,xaxis_endstop_size_SN04[2]])
@@ -323,7 +319,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         {
             if(xaxis_endstop_type == "SWITCH")
             {
-                translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
+                t(xaxis_endstop_pos(with_motor))
                 difference()
                 {
                     material(Mat_PlasticBlack)
@@ -337,7 +333,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
             }
             else if(xaxis_endstop_type == "SN04")
             {
-                translate([xaxis_end_width(with_motor),0,xaxis_end_wz/2])
+                t(xaxis_endstop_pos(with_motor))
                 translate(xaxis_endstop_offset_SN04)
                 translate([-36,-9,0])
                 rotate(ZAXIS*-90)

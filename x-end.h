@@ -10,6 +10,8 @@ xaxis_end_motor_offset=[xaxis_end_motorsize/2+zaxis_bearing_OD/2+1*mm,motor_moun
 xaxis_end_pulley_offset = xaxis_end_motor_offset[0]+10*mm;
 xaxis_end_wz = xaxis_rod_distance+xaxis_rod_d+10*mm;
 
+function xaxis_endstop_pos(with_motor) = [xaxis_end_width(with_motor),0,xaxis_end_wz/2];
+
 xaxis_endstop_size_switch = [10.3*mm, 20*mm, 6.3*mm];
 xaxis_endstop_screw_offset_switch = [-2.45*mm, 0*mm, 0*mm];
 
