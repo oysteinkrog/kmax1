@@ -34,7 +34,7 @@ module yaxis_motor_mount_bearing_clamp(align=N)
         for(x=[-1,1])
         for(y=[-1,1])
         translate([x*screw_dist/2, y*screw_dist/2, 1])
-        screw_cut(nut=extrusion_nut, h=12*mm, orient=Z, align=-Z);
+        screw_cut(nut=extrusion_nut, head="button", h=12*mm, orient=Z, align=-Z);
     }
 
     // debug bearing
@@ -131,14 +131,14 @@ module yaxis_motor_mount(part)
         tx(ymotor_mount_thickness)
         for(y=[-1,1])
         ty(y*(ymotor_w/2+ymotor_mount_thread_dia*3))
-        screw_cut(nut=extrusion_nut, h=ymotor_mount_thickness*3, align=-X, orient=-X);
+        screw_cut(nut=extrusion_nut, head="button", h=ymotor_mount_thickness*3, align=-X, orient=-X);
 
         // bottom mount plate screw
         tx(ymotor_mount_thickness)
         tz(-main_lower_dist_z)
         for(y=[0])
         ty(y*(ymotor_w/2+ymotor_mount_thread_dia*3))
-        screw_cut(nut=extrusion_nut, h=ymotor_mount_thickness*3, align=-X, orient=-X);
+        screw_cut(nut=extrusion_nut, head="button", h=ymotor_mount_thickness*3, align=-X, orient=-X);
     }
     else if(part=="vit")
     {
