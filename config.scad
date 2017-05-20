@@ -115,7 +115,7 @@ xaxis_endstop_type = "SWITCH";
 yaxis_rod_distance = 170*mm;
 yaxis_rod_d = 11.975*mm;
 yaxis_rod_l = 500*mm;
-yaxis_bearing = LinearBearingKH1228;
+yaxis_bearing = LinearBearingLM12;
 yaxis_bearing_distance_y = 7*cm;
 
 yaxis_motor = dict_replace(Nema17, NemaFrontAxleLength, 22*mm);
