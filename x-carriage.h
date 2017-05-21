@@ -96,9 +96,10 @@ hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
 // relative to hotend mount
 hotend_clamp_offset = [0, 0, -hotend_d_h[0][1]-hotend_d_h[1][1]/2];
 
-extruder_b_filapath_offset = [0, -20*mm, 0] + [extruder_drivegear_d_inner/2,0,0];
+extruder_filament_bite = .25*mm;
+
+extruder_filapath_offset = [0, -20*mm, 0] + [extruder_drivegear_d_inner/2,0,0];
 extruder_b_drivegear_offset = extruder_b_filapath_offset - [extruder_drivegear_d_inner/2,0,0];
-extruder_b_bearing_offset = extruder_b_drivegear_offset - [0,extruder_drivegear_h/2+extruder_b_bearing[2]/2+1*mm];
 
 extruder_b_w = extruder_drivegear_d_outer+15*mm;
 
@@ -158,6 +159,10 @@ guidler_bearing = bearing_MR105;
 guidler_mount_off = [0,-guidler_bearing[1]/1.8, -guidler_bearing[1]/1.4];
 extruder_guidler_mount_off = [-.3*mm -guidler_mount_off[1]+extruder_drivegear_d_outer/2+guidler_bearing[1]/2,0,guidler_mount_off[2]];
 
+guidler_screws_thread = ThreadM3;
+guidler_screws_nut = NutHexM3;
+guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
+
 // length of the guidler bearing bolt/screw
 guidler_mount_w=guidler_bearing[2];
 guidler_mount_d=8*mm;
@@ -166,7 +171,7 @@ guidler_bolt_h=guidler_bearing[2]+4*mm;
 guidler_w=max(guidler_mount_w+9*mm, guidler_bearing[2]*2.8);
 guidler_d=5;
 guidler_h=7;
-guidler_bearing_pos = Y*filament_d-.5*mm;
+guidler_bearing_pos = Y*(filament_d/2-extruder_filament_bite);
 
 guidler_screws_thread = ThreadM3;
 guidler_screws_nut = NutHexM3;
