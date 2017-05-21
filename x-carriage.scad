@@ -532,9 +532,7 @@ module extruder_b(part=undef, with_sensormount=true)
 
             // guidler mount
             translate(extruder_guidler_mount_off)
-            {
-                rcylindera(d=guidler_mount_d, h=guidler_mount_w, orient=Y);
-            }
+            rcylindera(d=guidler_mount_d, h=guidler_mount_w, orient=Y);
 
             // hotend support
             translate(hotend_mount_offset)
@@ -592,15 +590,15 @@ module extruder_b(part=undef, with_sensormount=true)
 
                             // cut for guidler bearing
                             translate(extruder_guidler_mount_off)
-                            translate(-[-guidler_mount_off[1],0,guidler_mount_off[2]])
+                            t(-guidler_mount_off)
                             cylindera(d=guidler_bearing[1]+2*mm, h=guidler_w_cut_inner, orient=Y, align=N);
 
                             // cut for guidler
                             translate(extruder_guidler_mount_off)
-                            translate(-[-guidler_mount_off[1],0,guidler_mount_off[2]])
+                            t(-guidler_mount_off)
                             cylindera(d=guidler_bearing[0]+4*mm, h=guidler_w_cut, orient=Y, align=N);
 
-                            guidler_pivot_r=pythag_hyp(abs(guidler_mount_off[1]),abs(guidler_mount_off[2]))+(guidler_bearing[1])/2;
+                            guidler_pivot_r=pythag_hyp(abs(guidler_mount_off[0]),abs(guidler_mount_off[2]))+(guidler_bearing[1])/2;
 
                             // cutout pivot to make sure guidler can rotate out
                             translate([0,-guidler_w_cut/2,0])
@@ -872,8 +870,7 @@ module extruder_guidler(part)
                 rcubea([guidler_d, guidler_w, guidler_h], align=-X, extra_size=[0,0,guidler_extra_h_up], extra_align=Z);
 
                 // guidler mount point
-                tx(guidler_mount_off[0])
-                tz(guidler_mount_off[2])
+                t(guidler_mount_off)
                 rcylindera(d=guidler_mount_d,h=guidler_w, orient=Y);
             }
 
@@ -927,14 +924,12 @@ module extruder_guidler(part)
         cubea([100, bearing_cut_w, guidler_bearing[1]/2+2*mm], align=Z);
 
         // cutout middle mount point pivot
-        tx(guidler_mount_off[0])
-        tz(guidler_mount_off[2])
+        t(guidler_mount_off)
         cylindera(d=guidler_mount_d+2*mm,h=guidler_mount_w+.5*mm, orient=Y);
 
         // mount screw hole
-        tx(guidler_mount_off[0])
+        t(guidler_mount_off)
         ty(-guidler_w/2)
-        tz(guidler_mount_off[2])
         screw_cut(thread=guidler_screws_thread, h=16*mm, orient=Y, align=Y);
 
         // guidler bearing screw holder cutout
