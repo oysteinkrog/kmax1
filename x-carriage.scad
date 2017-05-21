@@ -621,7 +621,7 @@ module extruder_b(part=undef, with_sensormount=true)
                         translate(-[0,extruder_b_mount_thickness/2,0])
                         hull()
                         {
-                            cylindera(d=guidler_screws_thread_dia+3*mm, h=guidler_w_cut_ext, orient=Y, align=[0,-1,0]);
+                            cylindera(d=guidler_screws_thread_dia+3.5*mm, h=guidler_w_cut_ext, orient=Y, align=[0,-1,0]);
                             translate([0,0,-(guidler_screws_thread_dia+0*mm)])
                             cubea([10,guidler_w_cut_ext,100], align=[1,-1,1]);
                         }
