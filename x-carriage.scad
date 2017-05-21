@@ -858,7 +858,7 @@ module extruder_guidler(part)
             hull()
             {
                 // guidler main block
-                translate([0,guidler_mount_off[1]-guidler_mount_d/2, 0])
+                ty(guidler_mount_off[1]-guidler_mount_d/2)
                 rcubea([guidler_w, guidler_d, guidler_h], align=Y);
 
                 // guidler bearing bolt holder
@@ -868,27 +868,32 @@ module extruder_guidler(part)
             hull()
             {
                 // guidler main block
-                translate([0,guidler_mount_off[1]-guidler_mount_d/2, 0])
+                ty(guidler_mount_off[1]-guidler_mount_d/2)
                 rcubea([guidler_w, guidler_d, guidler_h], align=Y, extra_size=[0,0,guidler_extra_h_up], extra_align=Z);
 
                 // guidler mount point
-                translate([0,guidler_mount_off[1], guidler_mount_off[2]])
+                ty(guidler_mount_off[1])
+                tz(guidler_mount_off[2])
                 rcylindera(d=guidler_mount_d,h=guidler_w, orient=X);
             }
 
             hull()
             {
                 // guidler main block
-                translate([0,guidler_mount_off[1]-guidler_mount_d/2, guidler_h])
+                ty(guidler_mount_off[1]-guidler_mount_d/2)
+                tz(guidler_h)
                 rcubea([guidler_w, guidler_d, 1], align=Y);
 
                 // guidler screws mount
-                for(i=[-1,1])
-                translate([i*(guidler_screws_distance),guidler_mount_off[1]-guidler_mount_d/2, extruder_b_guidler_screw_offset_h])
+                for(x=[-1,1])
+                tx(x*(guidler_screws_distance))
+                ty(guidler_mount_off[1]-guidler_mount_d/2)
+                tz(extruder_b_guidler_screw_offset_h)
                 rcylindera(r=guidler_screws_thread_dia/2*3,h=guidler_d, align=Y, orient=Y);
 
                 // tab above screw mount, for easier open
-                translate([0,guidler_mount_off[1]-guidler_mount_d/2, extruder_b_guidler_screw_offset_h+guidler_screws_thread_dia/2*3])
+                ty(guidler_mount_off[1]-guidler_mount_d/2)
+                tz(extruder_b_guidler_screw_offset_h+guidler_screws_thread_dia/2*3)
                 rcylindera(r=5*mm,h=guidler_d/2, align=Y, orient=Y);
 
             }
@@ -897,11 +902,13 @@ module extruder_guidler(part)
     else if(part=="neg")
     {
         // cutouts for clamping screws
-        for(i=[-1,1])
-        translate([i*(guidler_screws_distance),guidler_mount_off[1]-guidler_mount_d/2, extruder_b_guidler_screw_offset_h])
+        for(x=[-1,1])
+        tx(x*(guidler_screws_distance))
+        ty(guidler_mount_off[1]-guidler_mount_d/2)
+        tz(extruder_b_guidler_screw_offset_h)
         {
             // offset for spring
-            translate(7*mm*-Y)
+            ty(-7*mm)
             screw_cut(thread=guidler_screws_thread, h=30*mm, orient=Y, align=Y);
 
             r= guidler_screws_thread_dia/2*1.1;
@@ -919,11 +926,14 @@ module extruder_guidler(part)
         cubea([bearing_cut_w, 100, guidler_bearing[1]/2+2*mm], align=Z);
 
         // cutout middle mount point pivot
-        translate([0,guidler_mount_off[1], guidler_mount_off[2]])
+        ty(guidler_mount_off[1])
+        tz(guidler_mount_off[2])
         cylindera(d=guidler_mount_d+2*mm,h=guidler_mount_w+.5*mm, orient=X);
 
         // mount screw hole
-        translate([-guidler_w/2,guidler_mount_off[1], guidler_mount_off[2]])
+        tx(-guidler_w/2)
+        ty(guidler_mount_off[1])
+        tz(guidler_mount_off[1])
         screw_cut(thread=guidler_screws_thread, h=16*mm, orient=X, align=X);
 
         // guidler bearing screw holder cutout
