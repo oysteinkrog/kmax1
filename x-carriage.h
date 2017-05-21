@@ -168,13 +168,12 @@ hotend_conn = [[0,21.3,0], Y];
 guidler_bearing = bearing_MR83;
 
 guidler_mount_off =
-    - Y*(guidler_bearing[1]/1.8)
+    + X*(guidler_bearing[1]/1.8)
     - Z*(guidler_bearing[1]/1.4);
 
 extruder_guidler_mount_off =
     + extruder_b_filapath_offset
-    - X*(guidler_mount_off.y)
-    + Z*(guidler_mount_off.z)
+    + guidler_mount_off
     + X*(guidler_bearing[1]/2)
     - X*(extruder_filament_bite)
     + X*(filament_d/2)
@@ -226,7 +225,7 @@ echo("Sensor mount offset", sensormount_sensor_hotend_offset);
 extruder_conn_guidler = [ extruder_guidler_mount_off, Y];
 
 // guidler connection point
-extruder_guidler_conn_mount = [ guidler_mount_off,  X];
+extruder_guidler_conn_mount = [ guidler_mount_off,  Y];
 extruder_guidler_roll = 0;
 
 alpha = 0.7;
