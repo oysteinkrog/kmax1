@@ -85,7 +85,7 @@ extruder_a_bearing_offset_y = [0,-.5*mm,0];
 extruder_a_h = 16*mm;
 extruder_a_base_h=extruder_a_bearing[2]-extruder_a_bearing_offset_y.y+1*mm;
 
-extruder_b_bearing = bearing_MR125;
+extruder_b_bearing = bearing_MR105;
 
 // from E3D V6 heatsink drawing
 // http://wiki.e3d-online.com/wiki/File:DRAWING-V6-175-SINK.png
@@ -161,32 +161,19 @@ extruder_hotend_clamp_thread = ThreadM3;
 
 // as per E3D spec
 hotend_height = 63*mm;
-hotend_mount_offset = extruder_b_filapath_offset + Z*(-extruder_drivegear_d_outer/2 - 7*mm);
+hotend_mount_offset = extruder_b_filapath_offset + Z*(-extruder_drivegear_d_outer/2 - 10*mm);
 hotend_mount_conn = [hotend_mount_offset, Z];
 hotend_conn = [[0,21.3,0], Y];
 
 guidler_bearing = bearing_MR83;
-
-guidler_mount_off =
-    + X*(guidler_bearing[1]/1.8)
-    - Z*(guidler_bearing[1]/1.4);
-
-extruder_guidler_mount_off =
-    + extruder_b_filapath_offset
-    + guidler_mount_off
-    + X*(guidler_bearing[1]/2)
-    - X*(extruder_filament_bite)
-    + X*(filament_d/2)
-;
-
-
 guidler_screws_thread = ThreadM3;
 guidler_screws_nut = NutHexM3;
 guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
 
 // length of the guidler bearing bolt/screw
-guidler_mount_w=guidler_bearing[2];
+guidler_mount_w=max(6*mm, guidler_bearing[2]);
 guidler_mount_d=8*mm;
+guidler_bolt_mount_d = guidler_bearing[0]+3*mm;
 guidler_bolt_h=guidler_bearing[2]+4*mm;
 
 guidler_w=max(guidler_mount_w+9*mm, guidler_bearing[2]*2.8);
@@ -200,6 +187,17 @@ guidler_screws_distance=4*mm;
 guidler_screws_mount_d = guidler_screws_thread_dia*2+5*mm;
 
 guidler_srew_distance = 10;
+guidler_mount_off =
+    + X*(guidler_bearing[1]/1.8)
+    - Z*(guidler_bearing[1]/2 + guidler_mount_d/2);
+
+extruder_guidler_mount_off =
+    + extruder_b_filapath_offset
+    + guidler_mount_off
+    + X*(guidler_bearing[1]/2)
+    - X*(extruder_filament_bite)
+    + X*(filament_d/2)
+;
 
 house_guidler_screw_h = guidler_screws_thread_dia+10*mm;
 
