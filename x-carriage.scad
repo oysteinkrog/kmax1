@@ -480,7 +480,7 @@ module extruder_b(part=undef, with_sensormount=true)
 
             // support for clamp mount screw holes
             translate(hotend_mount_offset)
-            translate([0, 0, -hotend_d_h[0][1]-hotend_d_h[1][1]/2])
+            tz(-hotend_d_h[0][1]-hotend_d_h[1][1]/2)
             for(x=[-1,1])
             {
                 translate([x*hotend_clamp_screws_dist, 0, 0])
@@ -539,13 +539,13 @@ module extruder_b(part=undef, with_sensormount=true)
             {
                 rcubea([extruder_b_w, hotend_outer_size_xy, hotend_outer_size_h], align=[0,0,-1]);
 
-                translate([0,-extruder_b_drivegear_offset[1],0])
+                ty(-extruder_b_drivegear_offset[1])
                 rcubea([extruder_b_w, abs(extruder_b_drivegear_offset[1]), hotend_outer_size_h], align=[0,-1,-1]);
             }
 
             // support for clamp mount screw holes
             translate(hotend_mount_offset)
-            translate([0, 0, -hotend_d_h[0][1]-hotend_d_h[1][1]/2])
+            tz(-hotend_d_h[0][1]-hotend_d_h[1][1]/2)
             for(x=[-1,1])
             {
                 translate([x*hotend_clamp_screws_dist, 0, 0])
@@ -679,7 +679,7 @@ module extruder_b(part=undef, with_sensormount=true)
 
         // b bearing cutout
         translate(extruder_b_bearing_offset)
-        translate([0,-extruder_b_bearing[2]/2,0])
+        ty(-extruder_b_bearing[2]/2)
         ty(-1*mm)
         cylindera(d=extruder_b_bearing[1]+.2*mm, h=extruder_b_bearing[2]+1000, align=Y, orient=Y);
 
