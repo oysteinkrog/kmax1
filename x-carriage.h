@@ -109,7 +109,7 @@ extruder_b_filapath_offset = extruder_b_drivegear_offset
 extruder_b_bearing_offset = extruder_b_drivegear_offset
     - Y*(extruder_drivegear_h/2)
     - Y*(extruder_b_bearing[2]/2)
-    - Y*(1*mm)
+    - Y*(2*mm)
 ;
 
 extruder_b_w = extruder_drivegear_d_outer+15*mm;
@@ -176,7 +176,7 @@ guidler_mount_d=8*mm;
 guidler_bolt_mount_d = guidler_bearing[0]+3*mm;
 guidler_bolt_h=guidler_bearing[2]+4*mm;
 
-guidler_w=max(guidler_mount_w+9*mm, guidler_bearing[2]*2.8);
+guidler_w=max(guidler_mount_w+7*mm, guidler_bearing[2]*2.8);
 guidler_d=5;
 guidler_h=7;
 

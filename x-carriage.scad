@@ -482,9 +482,10 @@ module extruder_b(part=undef, with_sensormount=true)
             translate(hotend_mount_offset)
             tz(-hotend_d_h[0][1]-hotend_d_h[1][1]/2)
             for(x=[-1,1])
+            tx(x*hotend_clamp_screws_dist)
             {
-                translate([x*hotend_clamp_screws_dist, 0, 0])
-                rcylindera(d=lookup(ThreadSize, extruder_hotend_clamp_thread)+6*mm, h=extruder_b_w, orient=Y);
+                d = lookup(ThreadSize, extruder_hotend_clamp_thread)+8*mm;
+                rcubea([d, extruder_b_w, d]);
             }
         }
 
@@ -547,9 +548,10 @@ module extruder_b(part=undef, with_sensormount=true)
             translate(hotend_mount_offset)
             tz(-hotend_d_h[0][1]-hotend_d_h[1][1]/2)
             for(x=[-1,1])
+            tx(x*hotend_clamp_screws_dist)
             {
-                translate([x*hotend_clamp_screws_dist, 0, 0])
-                rcylindera(d=lookup(ThreadSize, extruder_hotend_clamp_thread)+6*mm, h=extruder_b_w, orient=Y);
+                d = lookup(ThreadSize, extruder_hotend_clamp_thread)+8*mm;
+                rcubea([d, extruder_b_w, d]);
             }
         }
 
@@ -564,15 +566,15 @@ module extruder_b(part=undef, with_sensormount=true)
         // drive gear window cutout
         translate(extruder_b_drivegear_offset)
         translate([-.1,-.5*mm,0])
-        translate(-[extruder_drivegear_d_inner,0,0])
+        tx(-extruder_drivegear_d_inner)
         {
-            s=[extruder_drivegear_d_inner,extruder_drivegear_h+1*mm,extruder_drivegear_d_inner+3*mm];
-            rcubea(s, align=[0,0,0], extra_size=[100,3*mm,0], extra_align=Y-X);
+            s=[extruder_drivegear_d_inner,extruder_drivegear_h+1*mm,extruder_drivegear_d_outer+3*mm];
+            rcubea(s, align=[0,0,0], extra_size=[100,3*mm,2*mm], extra_align=Y-X+Z);
         }
 
         union()
         {
-            guidler_w_cut = guidler_w+6*mm;
+            guidler_w_cut = guidler_w+5*mm;
             guidler_w_cut_inner = guidler_bearing[2]+1*mm;
             guidler_w_cut_ext = 1000;
             difference()
