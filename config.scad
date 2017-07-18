@@ -143,7 +143,6 @@ yaxis_idler_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness
 yaxis_idler_offset_z = 10*mm;
 
 yaxis_carriage_size = [220*mm,220*mm,5*mm];
-printbed_size = [213*mm,213*mm,3*mm];
 Mat_PrintCarriage = Mat_Aluminium;
 Mat_PrintBed = [.6,.5,.5];
 

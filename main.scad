@@ -39,6 +39,9 @@ use <gantry-lower-connector.scad>
 use <rod-clamps.scad>
 include <rod-clamps.h>
 
+use <printbed.scad>
+include <printbed.h>
+
 /*use <psu.scad>*/
 /*include <psu.h>*/
 
