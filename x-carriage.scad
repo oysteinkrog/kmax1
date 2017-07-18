@@ -21,10 +21,71 @@ module x_extruder_hotend()
     material(Mat_Aluminium)
     import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
 
-    /*translate([0,-20,0])*/
-    /*translate(extruder_offset)*/
-    /*translate(hotend_mount_offset)*/
-    /*cubea([10,10,hotend_height], align=[0,0,-1]);*/
+    // official 30mm duct
+    /*ty(-22)*/
+    /*rotate(180*Y)*/
+    /*import("stl/V6.6_Duct.stl");*/
+
+    ty(-21.5)
+    rotate(180*Y)
+    import("stl/30mm_Clamp.stl");
+
+    /*mirror(Z)*/
+    /*tx(10)*/
+    /*tx(27)*/
+    /*tz(-44)*/
+    /*ty(38)*/
+    /*rotate(-22*Z)*/
+    /*rotate(270*Y)*/
+    /*rotate(90*X)*/
+    /*import("stl/Radial_Fan_Fang_5015_SN04.stl");*/
+
+    /*mirror(Z)*/
+    /*tx(10)*/
+    /*tx(37)*/
+    /*tz(-43.6)*/
+    /*ty(34)*/
+    /*rotate(-22*Z)*/
+    /*rotate(270*Y)*/
+    /*rotate(90*X)*/
+    /*import("stl/Radial_Fan_Fang_5015.stl");*/
+
+    tx(10) // E3D fan thickness
+    tx(-12.7)
+    ty(22)
+    rotate(90*X)
+    import("stl/Radial_Fan_Fang_5015_mod.stl");
+
+    // E3D fan
+    tx(22.5*mm)
+    ty(-6*mm)
+    {
+        difference()
+        {
+            cubea([10*mm,30*mm,30*mm]);
+            cylindera(d=25*mm, h=1000, orient=X);
+
+            for(x=[-1,1])
+            for(y=[-1,1])
+            tz(x*(30/2*mm - 3.5*mm))
+            ty(y*(30/2*mm - 3.5*mm))
+            screw_cut(thread=extruder_hotend_clamp_thread, h=30*mm, orient=-X, align=-X);
+        }
+    }
+
+    /*tx(25)*/
+    /*ty(-7)*/
+    /*rotate(-90*Y)*/
+    /*import("stl/Custom_E3D_V6_40mm_Fan_V2.stl");*/
+
+    /*[>tx(10)<]*/
+    /*tx(22)*/
+    /*tz(-56)*/
+    /*ty(49)*/
+    /*rotate(-22*Z)*/
+    /*rotate(90*X)*/
+    /*import("stl/Radial_Fan_Fang_5015_for_40mm_thicker.stl");*/
+
 }
 
 module x_carriage(part=undef, beltpath_sign=1)
@@ -498,7 +559,8 @@ module extruder_b(part=undef, with_sensormount=true)
 
             intersection()
             {
-                translate(extruder_b_sensormount_offset)
+                attach(extruder_b_sensormount_conn, sensormount_conn)
+                /*translate(extruder_b_sensormount_offset)*/
                 proj_extrude_axis(axis=Y, offset=extruder_b_sensormount_offset[1])
                 sensormount(part, align=-Y);
 
@@ -507,7 +569,7 @@ module extruder_b(part=undef, with_sensormount=true)
         }
 
         if(with_sensormount)
-        translate(extruder_b_sensormount_offset)
+        attach(extruder_b_sensormount_conn, sensormount_conn)
         {
             proj_extrude_axis(axis=Y, offset=extruder_b_sensormount_offset[1]+1)
             sensormount(part, align=-Y);
@@ -701,10 +763,6 @@ module extruder_b(part=undef, with_sensormount=true)
             hotend_clamp(part=part, $show_vit=false);
             hotend_clamp_cut($show_vit=false);
         }
-
-        if(with_sensormount)
-        translate(extruder_b_sensormount_offset)
-        sensormount(part, align=-Y);
     }
     else if(part=="vit")
     {
@@ -733,7 +791,7 @@ module extruder_b(part=undef, with_sensormount=true)
         extruder_drivegear();
 
         if(with_sensormount)
-        translate(extruder_b_sensormount_offset)
+        attach(extruder_b_sensormount_conn, sensormount_conn)
         {
             bearing(bearing_type=extruder_b_bearing, orient=Y, align=N);
 
@@ -742,6 +800,10 @@ module extruder_b(part=undef, with_sensormount=true)
             cylindera(h=extruder_shaft_len+.2, d=extruder_shaft_d, orient=Y, align=Y);
         }
     }
+
+    if(with_sensormount)
+    attach(extruder_b_sensormount_conn, sensormount_conn)
+    sensormount(part, align=-Y);
 }
 
 module extruder_drivegear()
@@ -970,24 +1032,33 @@ module sensor_LJ12A3_mount(part=undef, height=10,sensormount_thickness=5,screws_
 
 module sensormount(part=undef, align=N)
 {
-    sensormount_cylinder(part=part, align=align);
-    /*if(part == "pos")*/
-    /*{*/
-        /*cubea();*/
-    /*}*/
-    /*else if(part == "neg")*/
-    /*{*/
+    /*sensormount_cylinder(part=part, align=align);*/
+    if(part==U)
+    {
+        difference()
+        {
+            sensormount(part="pos", align=align);
+            sensormount(part="neg", align=align);
+        }
+        %sensormount(part="vit", align=align);
+    }
+    else if(part == "pos")
+    {
+        cubea(size=[17.8,5,15], align=Y);
+    }
+    else if(part == "neg")
+    {
         /*cubea(s=[11,11,11]);*/
-    /*}*/
-    /*if(part == "vit")*/
-    /*{*/
-        /*%translate([-6,2,5])*/
-        /*[>rotate(Z*-90 + X*180)<]*/
-        /*[>rotate(X*180)<]*/
-        /*rotate(X*90)*/
-        /*rotate(Z*180)*/
-        /*import("stl/SN04-N_Inductive_Proximity_Sensor_3528_0.stl");*/
-    /*}*/
+    }
+    else if(part == "vit")
+    {
+        /*rz(-180)*/
+        /*ty(5)*/
+        translate([-8.8,0,8])
+        rotate(X*90)
+        rotate(Z*180)
+        import("stl/SN04-N_Inductive_Proximity_Sensor_3528_0.stl");
+    }
 }
 
 module sensormount_cylinder(part=undef, screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],align=N)
@@ -1130,7 +1201,7 @@ module part_x_carriage_left_extruder_a()
 module part_x_carriage_left_extruder_b()
 {
     rotate([-90,0,0])
-    extruder_b(with_sensormount=true);
+    extruder_b(with_sensormount=false);
 }
 
 module part_x_carriage_right()
@@ -1208,11 +1279,6 @@ module x_carriage_extruder(with_sensormount=false)
         /*rotate([-152,0,0])*/
         /*import("stl/E3D_40_mm_Duct.stl");*/
 
-        /*translate([explode[0],-explode[1],explode[2]])*/
-        /*translate([-123.5,78.5,-54])*/
-        /*rotate([0,0,-90])*/
-        /*import("stl/E3D_30_mm_Duct.stl");*/
-
         translate([explode[0],-explode[1],explode[2]])
         attach(hotend_mount_conn, hotend_conn, roll=-90)
         x_extruder_hotend();
@@ -1265,17 +1331,17 @@ module xaxis_end_bucket(part)
     }
 }
 
-if(false)
+/*if(false)*/
 {
     /*if(false)*/
-    /*for(x=[-1])*/
-    for(x=[-1,1])
+    for(x=[-1])
+    /*for(x=[-1,1])*/
     translate(x*40*mm*X)
     mirror([x<0?0:1,0,0])
     {
         x_carriage_withmounts(beltpath_sign=x);
 
-        x_carriage_extruder(with_sensormount=x<0);
+        x_carriage_extruder(with_sensormount=true);
     }
 
     if(false)

@@ -123,7 +123,11 @@ extruder_b_mount_offsets=[
 ];
 
 /*extruder_b_sensormount_offset=[35,-7,-41];*/
-extruder_b_sensormount_offset=[-25,-7,-41];
+//extruder_b_sensormount_offset=[-25,-7,-47];
+extruder_b_sensormount_offset=[-25,-7,-47];
+extruder_b_sensormount_conn=[extruder_b_sensormount_offset,Y];
+
+sensormount_conn = [N,Y];
 
 extruder_motor_mount_angle = 0-180;
 
