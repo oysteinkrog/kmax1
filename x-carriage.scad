@@ -236,9 +236,9 @@ module extruder_a_motor_mount(part)
 
     if(part=="pos")
     material(Mat_Plastic)
+    ry(extruder_motor_mount_angle)
     {
         // mounts
-        rotate([0,extruder_motor_mount_angle,0])
         position(extruder_a_mount_offsets)
         rcylindera(d=extruder_b_mount_dia, h=extruder_a_h, orient=Y, align=Y);
 
@@ -246,16 +246,16 @@ module extruder_a_motor_mount(part)
         // screws for mounting motor
         hull()
         translate(Y*extruder_a_h)
-        rotate([0,extruder_motor_mount_angle,0])
         for(x=[-1,1])
         for(z=[-1,1])
-        translate([x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2])
+        tx(x*extruder_motor_holedist/2)
+        tz(z*extruder_motor_holedist/2)
         rcylindera(d=get(ThreadSize, motor_thread)+6*mm, h=extruder_a_base_h, orient=Y, align=-Y);
     }
     else if(part=="neg")
+    ry(extruder_motor_mount_angle)
     {
         // round dia
-        rotate([0,extruder_motor_mount_angle,0])
         translate([0,extruder_a_h,0])
         translate([0, .1, 0])
         {
@@ -271,17 +271,16 @@ module extruder_a_motor_mount(part)
             cylindera(d=1.2*lookup(NemaAxleDiameter, extruder_motor), h=lookup(NemaFrontAxleLength, extruder_motor)+2*mm, orient=Y, align=[0,-1,0]);
         }
 
-        rotate([0,extruder_motor_mount_angle,0])
         position(extruder_a_mount_offsets)
         screw_cut(nut=NutKnurlM3_3_42, h=6*mm, with_nut=false, head_embed=false, orient=Y, align=Y);
 
         // screws for mounting motor
         translate(-Y*3*mm)
         translate(Y*extruder_a_h)
-        rotate([0,extruder_motor_mount_angle,0])
         for(x=[-1,1])
         for(z=[-1,1])
-        translate([x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2])
+        tx(x*extruder_motor_holedist/2)
+        tz(z*extruder_motor_holedist/2)
         screw_cut(nut=motor_nut, h=6*mm, with_nut=false, head_embed=false, orient=Y, align=Y);
     }
     else if(part=="vit")
