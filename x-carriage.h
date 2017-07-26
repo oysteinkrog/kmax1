@@ -139,7 +139,7 @@ extruder_motor_offset_z = sin(extruder_motor_gear_offset_angle) * extruder_gears
 extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_motor);
 
 extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
-[x*extruder_motor_holedist/2,1,z*extruder_motor_holedist/2]+[x*5,0,z<0?0:z*9]
+[x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2]+[x*5,0,z<0?0:z*9]
 ];
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
