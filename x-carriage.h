@@ -97,7 +97,7 @@ hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
 extruder_filament_bite = .5*mm;
 
 extruder_b_drivegear_offset =
-    - Y*(hotend_outer_size_xy/2 + 9.5*mm)
+    - Y*(hotend_outer_size_xy/2 + 12.5*mm)
 ;
 
 extruder_b_filapath_offset = extruder_b_drivegear_offset
@@ -122,10 +122,10 @@ extruder_b_mount_offsets=[
     [0,0,35*mm-15*mm]
 ];
 
-/*extruder_b_sensormount_offset=[35,-7,-41];*/
-//extruder_b_sensormount_offset=[-25,-7,-47];
-extruder_b_sensormount_offset=[-25,-7,-47];
-extruder_b_sensormount_conn=[extruder_b_sensormount_offset,Y];
+/*extruder_carriage_sensormount_offset=[35,-7,-41];*/
+//extruder_carriage_sensormount_offset=[-25,-7,-47];
+extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x + 24*mm,0,-47.5*mm];
+extruder_carriage_sensormount_conn=[extruder_carriage_sensormount_offset,Y];
 
 sensormount_conn = [N,Y];
 
@@ -139,7 +139,7 @@ extruder_motor_offset_z = sin(extruder_motor_gear_offset_angle) * extruder_gears
 extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_motor);
 
 extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
-[x*extruder_motor_holedist/2,0,z*extruder_motor_holedist/2]+[x*5,0,z<0?0:z*9]
+[x*(extruder_motor_holedist/2+2*mm),0,z*extruder_motor_holedist/2]+[x*5,0,z<0?0:z*9]
 ];
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
@@ -214,13 +214,10 @@ extruder_b_mount_dia = 10*mm;
 x_carriage_w = max(xaxis_carriage_top_width, xaxis_carriage_bottom_width, sqrt(2)*(extruder_motor_holedist+extruder_b_mount_dia));
 
 sensor_diameter=12;
-sensormount_thickness=5;
-sensormount_OD_cut = 0*mm;
-sensormount_OD = sensor_diameter+2*sensormount_thickness;
-sensormount_h_ = 10;
-sensormount_size = [sensormount_OD,sensormount_OD-2*sensormount_OD_cut,sensormount_h_];
+sensormount_thickness=xaxis_carriage_thickness;
+sensormount_size = [17.8*mm,sensormount_thickness,15*mm];
 
-sensormount_sensor_hotend_offset = v_xy(extruder_b_sensormount_offset) - v_y(sensormount_size/2) - v_xy(hotend_mount_offset);
+sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - v_y(sensormount_size/2) - v_xy(hotend_mount_offset);
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
 
 // extruder guidler mount point
