@@ -186,6 +186,7 @@ module x_carriage(part=undef, beltpath_sign=1)
     linear_bearing_mount(part=part, bearing=xaxis_bearing_top, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X, mount_dir_align=Y);
 
     // bearing mount bottom
+    /*tx(-20)*/
     for(x=spread(-xaxis_carriage_bearing_distance/2,xaxis_carriage_bearing_distance/2,xaxis_bearings_bottom))
     translate([x,xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y,-xaxis_rod_distance/2])
     linear_bearing_mount(part=part, bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X, mount_dir_align=Y);
@@ -495,16 +496,16 @@ module hotend_clamp_cut()
     hotend_cut(extend_cut = true);
 }
 
-module extruder_b(part=undef, with_sensormount=true)
+module extruder_b(part=undef)
 {
     if(part==undef)
     {
         difference()
         {
-            extruder_b(part="pos", with_sensormount=with_sensormount);
-            extruder_b(part="neg", with_sensormount=with_sensormount);
+            extruder_b(part="pos");
+            extruder_b(part="neg");
         }
-        %extruder_b(part="vit", with_sensormount=with_sensormount);
+        %extruder_b(part="vit");
     }
     else if(part=="pos")
     material(Mat_Plastic)
@@ -547,31 +548,6 @@ module extruder_b(part=undef, with_sensormount=true)
                 d = lookup(ThreadSize, extruder_hotend_clamp_thread)+8*mm;
                 rcubea([d, extruder_b_w, d]);
             }
-        }
-
-        // mount onto carriage
-        if(with_sensormount)
-        hull()
-        {
-            position(extruder_b_mount_offsets)
-            rcylindera(d=extruder_b_mount_dia, h=extruder_b_mount_thick, orient=Y, align=[0,-1,0]);
-
-            intersection()
-            {
-                attach(extruder_b_sensormount_conn, sensormount_conn)
-                /*translate(extruder_b_sensormount_offset)*/
-                proj_extrude_axis(axis=Y, offset=extruder_b_sensormount_offset[1])
-                sensormount(part, align=-Y);
-
-                cubea([1000,extruder_b_mount_thick,1000], align=[0,-1,0]);
-            }
-        }
-
-        if(with_sensormount)
-        attach(extruder_b_sensormount_conn, sensormount_conn)
-        {
-            proj_extrude_axis(axis=Y, offset=extruder_b_sensormount_offset[1]+1)
-            sensormount(part, align=-Y);
         }
 
         hull()
@@ -765,18 +741,6 @@ module extruder_b(part=undef, with_sensormount=true)
     }
     else if(part=="vit")
     {
-        /*// debug to ensure sensor/hotend positions are correct*/
-        /*if(false)*/
-        if(with_sensormount)
-        tz(-hotend_height)
-        t(hotend_mount_offset)
-        {
-            cylindera(h=10, d=filament_d, align=-Z);
-
-            translate(sensormount_sensor_hotend_offset)
-            cylindera(h=10, d=filament_d, align=-Z);
-        }
-
         translate(extruder_b_bearing_offset)
         {
             bearing(bearing_type=extruder_b_bearing, orient=Y, align=N);
@@ -789,20 +753,17 @@ module extruder_b(part=undef, with_sensormount=true)
         translate(extruder_b_drivegear_offset)
         extruder_drivegear();
 
-        if(with_sensormount)
-        attach(extruder_b_sensormount_conn, sensormount_conn)
+        /*// debug to ensure sensor/hotend positions are correct*/
+        /*if(false)*/
+        tz(-hotend_height)
+        t(hotend_mount_offset)
         {
-            bearing(bearing_type=extruder_b_bearing, orient=Y, align=N);
+            cylindera(h=10, d=filament_d, align=-Z);
 
-            material(Mat_Aluminium)
-            translate([0,-extruder_b_bearing[2]/2,0])
-            cylindera(h=extruder_shaft_len+.2, d=extruder_shaft_d, orient=Y, align=Y);
+            translate(sensormount_sensor_hotend_offset)
+            cylindera(h=10, d=filament_d, align=-Z);
         }
     }
-
-    if(with_sensormount)
-    attach(extruder_b_sensormount_conn, sensormount_conn)
-    sensormount(part, align=-Y);
 }
 
 module extruder_drivegear()
@@ -820,17 +781,17 @@ module extruder_drivegear()
 }
 
 // Final part
-module x_carriage_withmounts(part, beltpath_sign)
+module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
 {
     if(part==undef)
     {
         difference()
         {
-            x_carriage_withmounts(part="pos", beltpath_sign=beltpath_sign);
-            x_carriage_withmounts(part="neg", beltpath_sign=beltpath_sign);
+            x_carriage_withmounts(part="pos", beltpath_sign=beltpath_sign, with_sensormount=with_sensormount);
+            x_carriage_withmounts(part="neg", beltpath_sign=beltpath_sign, with_sensormount=with_sensormount);
         }
 
-        %x_carriage_withmounts(part="vit", beltpath_sign=beltpath_sign);
+        %x_carriage_withmounts(part="vit", beltpath_sign=beltpath_sign, with_sensormount=with_sensormount);
     }
     else if(part=="pos")
     {
@@ -838,6 +799,13 @@ module x_carriage_withmounts(part, beltpath_sign)
         /*union()*/
         {
             x_carriage(part=part, beltpath_sign=beltpath_sign);
+
+            if(with_sensormount)
+            t(extruder_offset)
+            attach(extruder_carriage_sensormount_conn, sensormount_conn)
+            {
+                sensormount(part, align=-Y);
+            }
 
             // extruder A mount
             material(Mat_Plastic)
@@ -892,10 +860,24 @@ module x_carriage_withmounts(part, beltpath_sign)
             translate(xaxis_endstop_SN04_pos)
             screw_cut(nut=NutHexM5, h=10*mm, head_embed=true, with_nut=false, orient=X, align=X);
         }
+
+        if(with_sensormount)
+        t(extruder_offset)
+        attach(extruder_carriage_sensormount_conn, sensormount_conn)
+        {
+            sensormount(part, align=-Y);
+        }
     }
     else if(part=="vit")
     {
         x_carriage(part=part, beltpath_sign=beltpath_sign);
+
+        if(with_sensormount)
+        t(extruder_offset)
+        attach(extruder_carriage_sensormount_conn, sensormount_conn)
+        {
+            sensormount(part, align=-Y);
+        }
     }
 }
 
@@ -1025,13 +1007,8 @@ module extruder_guidler(part)
     }
 }
 
-module sensor_LJ12A3_mount(part=undef, height=10,sensormount_thickness=5,screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],sensor_diameter=12)
-{
-}
-
 module sensormount(part=undef, align=N)
 {
-    /*sensormount_cylinder(part=part, align=align);*/
     if(part==U)
     {
         difference()
@@ -1042,72 +1019,27 @@ module sensormount(part=undef, align=N)
         %sensormount(part="vit", align=align);
     }
     else if(part == "pos")
+    material(Mat_Plastic)
     {
-        cubea(size=[17.8,5,15], align=Y);
+        rcubea(size=sensormount_size, align=Y);
     }
     else if(part == "neg")
     {
         /*cubea(s=[11,11,11]);*/
+        ty(-14*mm)
+        for(x=[-1,1])
+        tx(x*5.5*mm)
+        screw_cut(nut=NutKnurlM3_5_42, h=20*mm, with_nut=true, orient=Y, align=Y);
     }
     else if(part == "vit")
     {
-        /*rz(-180)*/
-        /*ty(5)*/
+        /*tz(8)*/
+        /*rcubea(size=[17.8*mm,sensormount_thickness,35.7*mm], align=-Y-Z);*/
+
         translate([-8.8,0,8])
         rotate(X*90)
         rotate(Z*180)
         import("stl/SN04-N_Inductive_Proximity_Sensor_3528_0.stl");
-    }
-}
-
-module sensormount_cylinder(part=undef, screws_spacing=21,screw_offset=[1,0],screws_diameter=4,sensor_spacing=3,sensor_height=[15,40,5],align=N)
-{
-    sensor_h = v_sum(sensor_height,2);
-
-    size_align(size=sensormount_size, align=align, orient=Z)
-    {
-        if(part == "pos")
-        {
-            //Sensor mount
-            cylindera(d=sensormount_OD, h=sensormount_h_);
-        }
-
-        else if(part == "neg")
-        {
-            translate([0,0,sensormount_h_/2])
-            cylindera(d=sensormount_OD+1*mm, h=sensor_h, align=Z);
-
-            cylindera(d=sensor_diameter+0,5, h=sensormount_h_+.2);
-
-            translate([0,0,-sensormount_h_/2])
-            cylindera(d=sensormount_OD+1*mm, h=sensor_h, align=[0,0,-1]);
-
-            for(y=[-1,1])
-            translate([0,y*sensormount_OD/2, 0])
-            cubea([sensor_diameter+sensormount_thickness*2,sensormount_OD_cut,sensormount_h_+2*e],[0,-y,0]);
-        }
-        else if(part == "vit")
-        {
-            translate([0,0,sensor_h/2])
-            {
-                for(e=v_itrlen(sensor_height))
-                {
-                    hs=v_sum(sensor_height, e);
-                    translate([0,0,-hs])
-                    {
-                        if(e==0||e==2)
-                        {
-                            color([0.3,.4,0])
-                            cylindera(d=sensor_diameter,h=sensor_height[e], align=Z);
-                        }
-                        else
-                        {
-                            cylindera(d=sensor_diameter,h=sensor_height[e], align=Z);
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -1188,7 +1120,7 @@ module part_x_carriage_left()
 {
     rotate([0,0,180])
     rotate([90,0,0])
-    x_carriage_withmounts(beltpath_sign=-1);
+    x_carriage_withmounts(beltpath_sign=-1, with_sensormount=true);
 }
 
 module part_x_carriage_left_extruder_a()
@@ -1200,7 +1132,7 @@ module part_x_carriage_left_extruder_a()
 module part_x_carriage_left_extruder_b()
 {
     rotate([-90,0,0])
-    extruder_b(with_sensormount=false);
+    extruder_b();
 }
 
 module part_x_carriage_right()
@@ -1222,7 +1154,7 @@ module part_x_carriage_right_extruder_b()
 {
     rotate([-90,0,0])
     mirror(X)
-    extruder_b(with_sensormount=false);
+    extruder_b();
 }
 
 module part_x_carriage_hotend_clamp()
@@ -1251,7 +1183,7 @@ module x_carriage_full()
     x_carriage_extruder();
 }
 
-module x_carriage_extruder(with_sensormount=false)
+module x_carriage_extruder()
 {
     translate(extruder_offset)
     {
@@ -1261,7 +1193,7 @@ module x_carriage_extruder(with_sensormount=false)
 
         translate([explode[0],-explode[1],explode[2]])
         translate(extruder_offset_b)
-        extruder_b(with_sensormount=with_sensormount);
+        extruder_b();
 
         translate([explode[0],-explode[1],explode[2]])
         translate(extruder_offset_b)
@@ -1338,9 +1270,9 @@ module xaxis_end_bucket(part)
     translate(x*40*mm*X)
     mirror([x<0?0:1,0,0])
     {
-        x_carriage_withmounts(beltpath_sign=x);
+        x_carriage_withmounts(beltpath_sign=x, with_sensormount=true);
 
-        x_carriage_extruder(with_sensormount=true);
+        x_carriage_extruder();
     }
 
     if(false)
