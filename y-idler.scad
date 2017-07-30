@@ -109,11 +109,20 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
     else if(part=="pos")
     material(Mat_Plastic)
     {
-        rcubea([yaxis_idler_pulleyblock_supportsize, 2*yaxis_idler_pulleyblock_supportsize, h],
-            align=N,
-            extra_size=[yaxis_idler_pulley_tight_len,0,0], 
-            extra_align=[-1,0,0]
-            );
+        hull()
+        {
+            tz(h/2)
+            rcylindera(d=yaxis_idler_pulley_thread_dia+15*mm, h=h, orient=-Z, align=-Z);
+
+            for(y=[-1,1])
+            tx(-yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len)
+            ty(y*yaxis_idler_tightscrew_dist)
+            /*rcylindera(d=yaxis_idler_mount_tightscrew_hexnut_dia*2, h=yaxis_idler_pulley_tight_len, orient=X, align=X);*/
+            {
+                d=yaxis_idler_mount_tightscrew_hexnut_dia*2;
+                rcubea([d,d,yaxis_idler_pulley_tight_len], orient=X, align=X);
+            }
+        }
     }
     else if(part=="neg")
     {
@@ -132,12 +141,9 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
         /*cylindera(d=yaxis_idler_pulley_thread_dia, h=h*2, orient=Z, align=N);*/
 
         for(y=[-1,1])
-        translate([
-            -yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len,
-            y*yaxis_idler_tightscrew_dist, 
-            0
-        ])
-        screw_cut(yaxis_idler_mount_tightscrew_hexnut, head_embed=true, nut_offset=5*mm, h=yaxis_idler_pulley_tight_len, orient=X, align=X); 
+        tx(-yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len)
+        ty(y*yaxis_idler_tightscrew_dist)
+        screw_cut(yaxis_idler_mount_tightscrew_hexnut, head_embed=false, nut_offset=2*mm, h=yaxis_idler_pulley_tight_len, orient=X, align=X); 
     }
     else if(part=="vit")
     {
@@ -148,7 +154,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
 
 module part_y_idler()
 {
-    attach([N, [0,0,-1]], yaxis_idler_conn)
+    attach([N, -Z], yaxis_idler_conn)
     {
         yaxis_idler();
     }
