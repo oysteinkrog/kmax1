@@ -52,11 +52,11 @@ module motor_mount_top(width, depth, height, belt_cutout=true, belt_cutout_orien
 
         // cutout for belt path
         cylindera(d=ymotor_round_d, h=height*2, orient=Z, align=N);
-        translate([0, 0,-1])
-        cubea([depth/2, ymotor_round_d, height*2], align=[1,0,1]);
+        tz(-1)
+        cubea([depth/2, ymotor_round_d, height*2], align=X+Z);
 
         // cut out motor mount holes etc
-        translate([0,0,-1])
+        tz(-1)
         linear_extrude(height+2)
         stepper_motor_mount(17, slide_distance=0, mochup=false);
     }
@@ -79,7 +79,7 @@ module yaxis_motor_mount(part)
         material(Mat_Plastic)
         union()
         {
-            translate([0,0,yaxis_motor_offset_z])
+            tz(yaxis_motor_offset_z)
             {
                 // top plate
                 tz(extrusion_size/2)
@@ -92,23 +92,24 @@ module yaxis_motor_mount(part)
                     belt_cutout_orient=X);
 
                 // reinforcement plate between motor and extrusion
-                translate([0,0,extrusion_size/2])
+                tz(extrusion_size/2)
                 rcubea([ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_h], align=[1,0,-1], extra_size=[0,0,ymotor_mount_thickness_h], extra_align=Z);
 
                 // side triangles
-                for(i=[-1,1])
+                tz(extrusion_size/2)
+                for(y=[-1,1])
+                ty(y*((ymotor_w/2)+ymotor_mount_thickness/2))
                 {
-                    translate([ymotor_mount_thickness, i*((ymotor_w/2)+ymotor_mount_thickness/2), extrusion_size/2])
-                        triangle(
-                                ymotor_w+ymotor_mount_thickness/2,
-                                main_lower_dist_z+extrusion_size+yaxis_motor_offset_z,
-                                depth=ymotor_mount_thickness,
-                                align=[1,0,-1],
-                                orient=X
-                                );
+                    tx(ymotor_mount_thickness)
+                    triangle(
+                            ymotor_w+ymotor_mount_thickness/2,
+                            main_lower_dist_z+extrusion_size+yaxis_motor_offset_z,
+                            depth=ymotor_mount_thickness,
+                            align=X-Z,
+                            orient=X
+                            );
 
-                    translate([0, i*((ymotor_w/2)+ymotor_mount_thickness/2), extrusion_size/2])
-                    rcubea([ymotor_mount_thickness, ymotor_mount_thickness, ymotor_mount_h], align=[1,0,-1]);
+                    rcubea([ymotor_mount_thickness, ymotor_mount_thickness, ymotor_mount_h], align=X-Z);
                 }
             }
 
@@ -124,8 +125,8 @@ module yaxis_motor_mount(part)
     else if(part=="neg")
     {
         // cutout for motor cables
-        translate([0,0,-20*mm])
-        cubea([ymotor_mount_thickness*3, 20*mm, ymotor_h], align=[0,0,-1]);
+        tz(-20*mm)
+        cubea([ymotor_mount_thickness*3, 20*mm, ymotor_h], align=-Z);
 
         // top mount plate screws
         tx(ymotor_mount_thickness)
