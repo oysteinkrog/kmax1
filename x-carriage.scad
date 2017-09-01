@@ -26,9 +26,9 @@ module x_extruder_hotend()
     /*rotate(180*Y)*/
     /*import("stl/V6.6_Duct.stl");*/
 
-    ty(-21.5)
-    rotate(180*Y)
-    import("stl/30mm_Clamp.stl");
+    /*ty(-21.5)*/
+    /*rotate(180*Y)*/
+    /*import("stl/30mm_Clamp.stl");*/
 
     /*mirror(Z)*/
     /*tx(10)*/
@@ -50,26 +50,44 @@ module x_extruder_hotend()
     /*rotate(90*X)*/
     /*import("stl/Radial_Fan_Fang_5015.stl");*/
 
-    tx(10) // E3D fan thickness
-    tx(-12.7)
-    ty(22)
-    rotate(90*X)
-    import("stl/Radial_Fan_Fang_5015_mod.stl");
+    /*tx(10) // E3D fan thickness*/
+    /*tx(-12.7)*/
+    /*ty(22)*/
+    /*rotate(90*X)*/
+    /*import("stl/Radial_Fan_Fang_5015_mod.stl");*/
+
+    tz(0)
+    tx(24.5)
+    ty(-7.5)
+    ry(90)
+    ry(180)
+    import("stl/Custom_E3D_V6_40mm_Fan_V2.stl");
+
+    tt = 10*mm; // E3D fan thickness
+
+    tx(tt)
+    tx(-5.7)
+    ty(28)
+    rx(90)
+    import("extras/Fang_5015_40mm_v4 - Copy.stl");
 
     // E3D fan
-    tx(22.5*mm)
+    tx(7.2)
+    tx(tt)
+    tx(12.5*mm)
     ty(-6*mm)
     {
+        d=40*mm;
         difference()
         {
-            cubea([10*mm,30*mm,30*mm]);
-            cylindera(d=25*mm, h=1000, orient=X);
+            cubea([tt,d,d]);
+            cylindera(d=d-5*mm, h=1000, orient=X);
 
             for(x=[-1,1])
             for(y=[-1,1])
-            tz(x*(30/2*mm - 3.5*mm))
-            ty(y*(30/2*mm - 3.5*mm))
-            screw_cut(thread=extruder_hotend_clamp_thread, h=30*mm, orient=-X, align=-X);
+            tz(x*(d/2 - 3.5*mm))
+            ty(y*(d/2 - 3.5*mm))
+            screw_cut(thread=extruder_hotend_clamp_thread, h=12*mm, orient=-X, align=-X);
         }
     }
 
