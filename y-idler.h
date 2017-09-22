@@ -14,6 +14,12 @@ yaxis_idler_mount_tightscrew_hexnut = NutHexM4;
 yaxis_idler_mount_tightscrew_hexnut_dia = lookup(NutWidthMax, yaxis_idler_mount_tightscrew_hexnut);
 yaxis_idler_mount_tightscrew_hexnut_thick = lookup(NutThickness, yaxis_idler_mount_tightscrew_hexnut);
 
+yaxis_idler_mount_adjustscrew_hexnut = NutHexM3;
+yaxis_idler_mount_adjustscrew_hexnut_dia = lookup(NutWidthMax, yaxis_idler_mount_adjustscrew_hexnut);
+yaxis_idler_mount_adjustscrew_hexnut_thick = lookup(NutThickness, yaxis_idler_mount_adjustscrew_hexnut);
+
+yaxis_idler_mount_adjustscrew_offset = Z*yaxis_idler_mount_adjustscrew_hexnut_dia;
+
 yidler_mount_width = yidler_w+yaxis_idler_mount_thickness*2 + yaxis_idler_mount_thread_dia*3;
 
 yaxis_idler_tightscrew_dist = 10*mm;
