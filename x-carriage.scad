@@ -629,7 +629,7 @@ module extruder_b(part=undef)
 
         union()
         {
-            guidler_w_cut = guidler_w+5*mm;
+            guidler_w_cut = guidler_w+6*mm;
             guidler_w_cut_inner = guidler_bearing[2]+1*mm;
             guidler_w_cut_ext = 1000;
             difference()
