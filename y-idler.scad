@@ -189,10 +189,7 @@ module part_y_idler_pulleyblock()
 /*yaxis_idler();*/
 /*yaxis_idler_pulleyblock();*/
 
-/*print_yaxis_idler();*/
-/*print_yaxis_idler_pulleyblock();*/
-
-/*attach([N,[-1,0,0]], yaxis_idler_conn)*/
+/*attach([N,-X], yaxis_idler_conn)*/
 /*{*/
     /*yaxis_idler();*/
     /*attach(yaxis_idler_conn_pulleyblock, yaxis_idler_pulleyblock_conn)*/
