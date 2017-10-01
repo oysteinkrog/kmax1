@@ -423,10 +423,12 @@ module extruder_a(part=undef)
                     translate([0,lookup(NemaLengthMedium, extruder_motor)+2*mm,0])
                     {
                         w = lookup(NemaSideSize, extruder_motor);
+                        if(false)
                         color([.5,.5,.5])
                         cubea([40*mm,11*mm,40*mm], align=Y);
 
                         // fan
+                        if(false)
                         color([.9,.9,.9])
                         translate([0,11*mm,0])
                         {
