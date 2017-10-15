@@ -75,15 +75,19 @@ gear_20t_mod05 =[
 [GearTeeth, 20]
 ];
 
-extruder_gear_small = [
-    [GearMod, spurgear_M_from_DP(48)],
-    [GearTeeth, 21]
-];
 
-extruder_gear_big = [
-    [GearMod, spurgear_M_from_DP(48)],
-    [GearTeeth, 66]
-];
+extruder_gear_small = gear_13t_mod05;
+extruder_gear_big = gear_60t_mod05;
+
+//extruder_gear_small = [
+    //[GearMod, spurgear_M_from_DP(48)],
+    //[GearTeeth, 21]
+//];
+
+//extruder_gear_big = [
+    //[GearMod, spurgear_M_from_DP(48)],
+    //[GearTeeth, 66]
+//];
 
 extruder_gears_distance=calc_gears_center_distance(extruder_gear_small,extruder_gear_big)+.1*mm;
 extruder_gear_small_PD = calc_gear_PD(extruder_gear_small);
