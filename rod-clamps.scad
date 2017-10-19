@@ -128,7 +128,7 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
         {
             // cut bottom of cylinder
             /*translate(-rod_d/2*X)*/
-            cubea([outer_d/2, screw_dist_+thread_dia*2.5+.1, width+1], align=[-1,0,0]);
+            cubea([outer_d/2, screw_dist_+thread_dia*2.5+.1, width+1], align=-X);
 
             // cut clamp screw holes
             for(i=[-1,1])
