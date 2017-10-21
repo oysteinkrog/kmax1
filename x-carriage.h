@@ -6,6 +6,7 @@ include <thing_libutils/system.scad>;
 include <thing_libutils/units.scad>;
 include <thing_libutils/gears-data.scad>
 include <thing_libutils/bearing-linear-data.scad>
+include <thing_libutils/misc.scad>;
 include <x-end.h>
 
 use <thing_libutils/gears.scad>
@@ -188,7 +189,8 @@ extruder_hotend_clamp_thread = ThreadM3;
 hotend_height = 63*mm;
 hotend_mount_offset = extruder_b_filapath_offset + Z*(-extruder_drivegear_d_outer/2 - 10*mm);
 hotend_mount_conn = [hotend_mount_offset, Z];
-hotend_conn = [[0,21.3,0], Y];
+//hotend_conn = [[0,21.3,0], Y];
+hotend_conn = [[0,0,0], Z];
 
 guidler_bearing = bearing_MR83;
 guidler_screws_thread = ThreadM3;

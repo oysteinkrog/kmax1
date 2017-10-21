@@ -2,6 +2,8 @@ include <x-carriage.h>
 
 use <x-end.scad>
 use <belt_fastener.scad>;
+use <fanduct.scad>
+
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
 use <thing_libutils/transforms.scad>;
@@ -17,6 +19,24 @@ include <thing_libutils/timing-belts.scad>
 include <thing_libutils/materials.scad>
 
 module x_extruder_hotend()
+{
+    material(Mat_Aluminium)
+    tz(-21.3*mm)
+    rz(-90)
+    rx(90)
+    import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
+
+    tz(-hotend_height)
+    color("blue")
+    spherea(2, align=Z);
+
+    tz(-hotend_height)
+    {
+        fanduct();
+    }
+}
+
+module x_extruder_hotend_()
 {
     material(Mat_Aluminium)
     import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
@@ -1225,13 +1245,8 @@ module x_carriage_extruder()
         attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll, Y)
         extruder_guidler();
 
-        /*translate([explode[0],-explode[1],explode[2]])*/
-        /*translate([-95,53,20])*/
-        /*rotate([-152,0,0])*/
-        /*import("stl/E3D_40_mm_Duct.stl");*/
-
         translate([explode[0],-explode[1],explode[2]])
-        attach(hotend_mount_conn, hotend_conn, roll=-90)
+        attach(hotend_mount_conn, hotend_conn)
         x_extruder_hotend();
 
         //filament path
