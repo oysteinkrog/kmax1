@@ -15,6 +15,8 @@ use <thing_libutils/attach.scad>
 
 use <thing_libutils/Naca_sweep.scad>
 
+include <fan_5015S.scad>
+
 function vec_xyz(v) = [for(v=v) let(v_=v) [v_[0],v_[1], v_[2]]];
 
 // helper functions to work on headered-arrays (where first entry is column headers)
@@ -139,7 +141,7 @@ module duct(A, fanduct_wallthick=2, N=100, d=2)
         ]
     ]);
 
-    // debug experiment, mirror + join path for both duct blades
+    // debug experiment, mirror + join path for both duct arms
     /*A_ = mirrorshape(A);*/
     /*A__ = reverse_header(A_);*/
     /*A___ = concat_header(A__,A);*/
@@ -168,9 +170,58 @@ module mirrorcopy(axis)
     children();
 }
 
+use <thing_libutils/attach.scad>
+use <thing_libutils/shapes.scad>
+use <thing_libutils/transforms.scad>
+
+module fanduct_throat(throat_seal_h)
+{
+    difference()
+    {
+        union()
+        {
+            hull()
+            {
+                ty((fanduct_throat_size_withwall.y)/2)
+                cubea([fanduct_throat_size.x,fanduct_throat_size.y,throat_seal_h]+XY*fanduct_wallthick,align=Z-Y);
+
+                tz(seal_height)
+                ty(fanduct_throat_size.y/2 - 47)
+                tz(11.34/2)
+                cylindera(h=fanduct_throat_size_withwall.x, d=7, orient=X);
+            }
+
+        }
+
+        tz(-.1)
+        cubea([fanduct_throat_size.x,fanduct_throat_size.y,1000],align=Z);
+
+        seal_height = 4;
+        tz(seal_height)
+        {
+            ty((fanduct_throat_size.y)/2)
+            cubea([fanduct_throat_size.x,1000,1000],align=Z-Y, extra_size=.1*Y, extra_align=-Z);
+
+            ty(-(fanduct_throat_size_withwall.y)/2)
+            tz(-5)
+            cubea([fanduct_throat_size.x,1000,1000],align=Z-Y, extra_size=.1*Y, extra_align=-Z);
+
+            tz(-seal_height+2*mm)
+            cubea([3.8,1000,1000],align=Z+Y);
+
+            ty(fanduct_throat_size.y/2 - 47)
+            tz(11.34/2)
+            cylindera(h=1000, d=3.65, orient=X);
+        }
+    }
+
+    ry(45)
+    cubea([fanduct_wallthick/sqrt(2),fanduct_throat_size_withwall.y,fanduct_wallthick/sqrt(2)]);
+}
+
 module fanduct()
 {
-    $fn=32;
+    $fn=is_build?$fn:48;
 
     A = fanduct_data;
 
@@ -183,47 +234,13 @@ module fanduct()
     t(geth(A,["Tx","Ty","Tz"],0))
     r(geth(A,["Rx","Ry","Rz"],0))
     {
-        difference()
-        {
-            union()
-            {
-                hull()
-                {
-                    ty((fanduct_throat_size_withwall.y)/2)
-                    cubea([fanduct_throat_size.x,fanduct_throat_size.y,13]+[fanduct_wallthick,fanduct_wallthick,0],align=Z-Y);
+        throat_seal_h = 13*mm;
 
-                    tz(seal_height)
-                    ty(fanduct_throat_size.y/2 - 47)
-                    tz(11.34/2)
-                    cylindera(h=fanduct_throat_size_withwall.x, d=7, orient=X);
-                }
+        fanduct_conn_fan = [[0,0,-throat_seal_h/2],-Z];
+        attach(fanduct_conn_fan, fan_5015S_conn_flowoutput, 90)
+        fan_5015S();
 
-            }
-
-            tz(-.1)
-            cubea([fanduct_throat_size.x,fanduct_throat_size.y,1000],align=Z);
-
-            seal_height = 4;
-            tz(seal_height)
-            {
-                ty((fanduct_throat_size.y)/2)
-                cubea([fanduct_throat_size.x,1000,1000],align=Z-Y, extra_size=.1*Y, extra_align=-Z);
-
-                ty(-(fanduct_throat_size_withwall.y)/2)
-                tz(-5)
-                cubea([fanduct_throat_size.x,1000,1000],align=Z-Y, extra_size=.1*Y, extra_align=-Z);
-
-                tz(-seal_height+2*mm)
-                cubea([3.8,1000,1000],align=Z+Y);
-
-                ty(fanduct_throat_size.y/2 - 47)
-                tz(11.34/2)
-                cylindera(h=1000, d=3.65, orient=X);
-            }
-        }
-
-        ry(45)
-        cubea([fanduct_wallthick/sqrt(2),fanduct_throat_size_withwall.y,fanduct_wallthick/sqrt(2)]);
+        fanduct_throat(throat_seal_h);
     }
 }
 
