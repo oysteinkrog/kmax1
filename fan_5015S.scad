@@ -1,20 +1,5 @@
-include <thing_libutils/system.scad>
-include <thing_libutils/units.scad>
 use <thing_libutils/shapes.scad>;
-
-fan_5015S_screwpos = [[-20.15*mm,20.3*mm],[22*mm, -19.5*mm]];
-fan_5015S_X = 51.2;
-fan_5015S_Y = 51.2;
-fan_5015S_Z = 15;
-fan_5015S_output_X = 19;
-fan_5015S_output_Y = 11;
-fan_5015S_output_screw_Y = -6.5;
-fan_5015S_output_screw_X = 9.5;
-
-fan_5015S();
-
-/*translate([0,0,-10])*/
-/*fan_5015S_bracket();*/
+include <fan_5015S.h>
 
 //optional 5015S fan_5015S fan mockup
 module fan_5015S(part)
@@ -54,6 +39,11 @@ module fan_5015S(part)
             cylindera(d=3.3*mm, h=fan_5015S_Z+.1, align=Z);
         }
     }
+    else if(part=="conn")
+    {
+        color("red")
+        connector(fan_5015S_conn_flowoutput);
+    }
 }
 
 
@@ -66,4 +56,9 @@ module fan_5015S_bracket(thickness=2.2*mm)
 }
 
 
+if(false)
+fan_5015S();
 
+if(false)
+translate([0,0,-10])
+fan_5015S_bracket();
