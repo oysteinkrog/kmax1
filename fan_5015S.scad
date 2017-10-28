@@ -1,4 +1,5 @@
 use <thing_libutils/shapes.scad>;
+use <thing_libutils/transforms.scad>;
 include <fan_5015S.h>
 
 //optional 5015S fan_5015S fan mockup
@@ -14,29 +15,48 @@ module fan_5015S(part)
     }
     else if(part=="pos")
     {
-        translate([0, -fan_5015S_output_Y, 0])
-        cube([fan_5015S_output_X, fan_5015S_output_Y+fan_5015S_Y/2, fan_5015S_Z]);
+        hull()
+        {
+            //throat
+            tx(-51*mm/2)
+            ty(51.3*mm/2)
+            cubea([51*mm/2, 20*mm, fan_5015S_Z], align=X-Y);
 
-        cylindera(r=fan_5015S_X/2, h=fan_5015S_Z, align=[1,1,1]);
-        translate([fan_5015S_X/2, fan_5015S_Y/2, 0])
+            tx(1.5*mm)
+            ty(1.5*mm)
+            cylindera(d=49*mm, h=fan_5015S_Z);
+        }
+
         union()
         {
             hull()
             {
                 for(pos=fan_5015S_screwpos)
                 translate([pos[0], pos[1], 0])
-                cylindera(d=8*mm, h=fan_5015S_Z, align=Z);
+                cylindera(d=7*mm, h=fan_5015S_Z);
             }
         }
     }
     else if(part=="neg")
     {
-        translate([fan_5015S_X/2, fan_5015S_Y/2, 0])
+        tx(-51*mm/2)
+        ty(51.3*mm/2)
+        tx(-.1)
+        ty(-2.4*mm/2)
+        cubea([10*mm, 17.6*mm, 12.2], align=X-Y);
+
+        tz(3*mm)
+        difference()
+        {
+            cylindera(d=31*mm, h=fan_5015S_Z+.1);
+            cylindera(d=26*mm, h=fan_5015S_Z+.1);
+        }
+
         union()
         {
             for(pos=fan_5015S_screwpos)
             translate([pos[0], pos[1], 0])
-            cylindera(d=3.3*mm, h=fan_5015S_Z+.1, align=Z);
+            cylindera(d=3.3*mm, h=fan_5015S_Z+.1);
         }
     }
     else if(part=="conn")
@@ -56,8 +76,14 @@ module fan_5015S_bracket(thickness=2.2*mm)
 }
 
 
+use <thing_libutils/attach.scad>
 if(false)
-fan_5015S();
+/*attach([[0,0,0], X], fan_5015S_conn_flowoutput)*/
+{
+    fan_5015S();
+    connector(fan_5015S_conn_flowoutput);
+
+}
 
 if(false)
 translate([0,0,-10])
