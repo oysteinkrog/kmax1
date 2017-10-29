@@ -14,6 +14,7 @@ module fan_5015S(part)
         }
     }
     else if(part=="pos")
+    material(Mat_PlasticBlack)
     {
         hull()
         {
