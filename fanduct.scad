@@ -1,5 +1,6 @@
 include <config.scad>
 include <fanduct.h>
+
 use <scad-utils/transformations.scad>
 use <scad-utils/lists.scad>
 use <scad-utils/shapes.scad>
@@ -12,22 +13,16 @@ use <thing_libutils/sweep.scad>
 use <thing_libutils/transforms.scad>
 use <thing_libutils/shapes.scad>
 use <thing_libutils/attach.scad>
-
-use <thing_libutils/Naca_sweep.scad>
-
+use <thing_libutils/naca_sweep.scad>
 include <fan_5015S.scad>
-
-function vec_xyz(v) = [for(v=v) let(v_=v) [v_[0],v_[1], v_[2]]];
 
 // helper functions to work on headered-arrays (where first entry is column headers)
 function nSpline_header(S, N) =
 let(slice = v_slice(S,start=1))
-let(filtered = filter(slice,U))
 concat(
     [S[0]],
-    nSpline(filtered, N)
+    nSpline(slice, N)
     );
-
 
 // data for duct geometry
 // ss parameter is initial size of duct (e.g. for fan throat/output)
@@ -154,13 +149,10 @@ module duct(A, fanduct_wallthick=2, N=100, d=2)
 
         /*tx(-15)*/
         showcontrols(A);
+    }
 
-        sweepshape(A,true);
-    }
-    else
-    {
-        sweepshape(A,true);
-    }
+    material(Mat_Plastic)
+    sweepshape(A,true);
 }
 
 module mirrorcopy(axis)
@@ -169,10 +161,6 @@ module mirrorcopy(axis)
     mirror(axis)
     children();
 }
-
-use <thing_libutils/attach.scad>
-use <thing_libutils/shapes.scad>
-use <thing_libutils/transforms.scad>
 
 module fanduct_throat(throat_seal_h)
 {
@@ -219,7 +207,7 @@ module fanduct_throat(throat_seal_h)
     cubea([fanduct_wallthick/sqrt(2),fanduct_throat_size_withwall.y,fanduct_wallthick/sqrt(2)]);
 }
 
-module fanduct()
+module fanduct(part)
 {
     $fn=is_build?$fn:48;
 
@@ -236,11 +224,13 @@ module fanduct()
     {
         throat_seal_h = 13*mm;
 
-        fanduct_conn_fan = [[0,0,-throat_seal_h/2],-Z];
-        attach(fanduct_conn_fan, fan_5015S_conn_flowoutput, 90)
-        fan_5015S();
-
+        material(Mat_Plastic)
         fanduct_throat(throat_seal_h);
+
+        fanduct_conn_fan = [N,-Z];
+        tz(2)
+        attach(fanduct_conn_fan, fan_5015S_conn_flowoutput, 0)
+        fan_5015S();
     }
 }
 
