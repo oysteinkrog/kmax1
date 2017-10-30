@@ -14,7 +14,8 @@ use <thing_libutils/transforms.scad>
 use <thing_libutils/shapes.scad>
 use <thing_libutils/attach.scad>
 use <thing_libutils/naca_sweep.scad>
-include <fan_5015S.scad>
+use <thing_libutils/fan_5015S.scad>
+include <thing_libutils/fan_5015S.h>
 
 // helper functions to work on headered-arrays (where first entry is column headers)
 function nSpline_header(S, N) =
