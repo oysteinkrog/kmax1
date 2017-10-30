@@ -142,13 +142,13 @@ module duct(A, fanduct_wallthick=2, N=100, d=2)
     /*A___ = concat_header(A__,A);*/
     /*sweepshape(A___,true);*/
 
-    if($preview_mode)
+    if($debug_mode)
     {
         /*tx(15)*/
         /*sweep(gen_dat(A), close = false, slices = true);*/
 
         /*tx(-15)*/
-        showcontrols(A);
+        /*showcontrols(A);*/
     }
 
     material(Mat_Plastic)
@@ -244,5 +244,8 @@ module part_fanduct()
     fanduct();
 }
 
-fanduct();
-/*part_fanduct();*/
+if(false)
+{
+   $debug_mode=true;
+   fanduct();
+}
