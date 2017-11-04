@@ -520,7 +520,7 @@ module hotend_clamp(part=undef)
         for(x=[-1,1])
         tx(x*hotend_clamp_screws_dist)
         t(hotend_clamp_offset)
-        screw_cut(thread=extruder_hotend_clamp_thread, h=30*mm, nut_offset=0*mm, head_embed=false, orient=Y, align=Y);
+        screw_cut(thread=extruder_hotend_clamp_thread, h=hotend_clamp_screw_l, nut_offset=0*mm, head_embed=false, orient=Y, align=Y);
     }
 }
 
@@ -530,7 +530,7 @@ module hotend_clamp_cut()
     for(x=[-1,1])
     tx(x*hotend_clamp_screws_dist)
     t(hotend_clamp_offset)
-    screw_cut(thread=extruder_hotend_clamp_thread, h=30*mm, nut_offset=0*mm, head_embed=false, orient=Y, align=Y);
+    screw_cut(thread=extruder_hotend_clamp_thread, h=hotend_clamp_screw_l, nut_offset=0*mm, head_embed=false, orient=Y, align=Y);
 
     // hotend clamp cutout
     t(hotend_clamp_offset)
@@ -642,7 +642,7 @@ module extruder_b(part=undef)
         // mount onto carriage
         translate([0, -extruder_b_mount_thick, 0])
         position(extruder_b_mount_offsets)
-        screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=true, orient=Y, align=Y);
+        screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width, head_embed=true, orient=Y, align=Y);
 
         // drive gear window cutout
         translate(extruder_b_drivegear_offset)
@@ -890,9 +890,14 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
 
         // extruder B mount cutout
         translate(extruder_offset)
-        translate([0,-extruder_b_mount_thick,0])
         position(extruder_b_mount_offsets)
-        screw_cut(nut=NutKnurlM3_3_42, h=extruder_b_mount_thick+xaxis_carriage_thickness-xaxis_beltpath_width/2, head_embed=false, orient=Y, align=Y);
+        screw_cut(
+            nut=NutKnurlM3_3_42,
+            h=4*mm,
+            nut_offset=0,
+            with_nut_access=false,
+            head_embed=false,
+            orient=Y, align=Y);
 
         // endstop bumper for physical switch endstop
         translate([0,xaxis_carriage_beltpath_offset_y,0])

@@ -138,12 +138,6 @@ extruder_b_w = extruder_drivegear_d_outer+15*mm;
 
 extruder_b_mount_thick = 5*mm;
 
-extruder_b_mount_offsets=[
-    [-14*mm,0,-13*mm],
-    [20*mm,0,-13*mm],
-    [0,0,35*mm-15*mm]
-];
-
 /*extruder_carriage_sensormount_offset=[35,-7,-41];*/
 //extruder_carriage_sensormount_offset=[-25,-7,-47];
 extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x + 24*mm,0,-47.5*mm];
@@ -277,5 +271,13 @@ hotend_clamp_height = hotend_d_h[1][1];
 
 // relative to hotend mount
 hotend_clamp_offset = Y*(-hotend_outer_size_xy/2 - 2*mm) + Z*(-hotend_d_h[0][1]-hotend_d_h[1][1]/2);//abs(extruder_b_filapath_offset.y)+extruder_drivegear_h/2+extruder_b_bearing[2]+4*mm;
+hotend_clamp_screw_l = -hotend_mount_offset.y-hotend_clamp_offset.y+5*mm;
+
+extruder_b_mount_offsets=[
+    // position the mount offsets so that we reuse the hotend clamp screws
+    X*hotend_clamp_screws_dist+v_xz(hotend_mount_offset+hotend_clamp_offset),
+    -X*hotend_clamp_screws_dist+v_xz(hotend_mount_offset+hotend_clamp_offset),
+    [0,0,35*mm-15*mm]
+];
 
 guidler_extra_h_up=guidler_bearing[1]/2+hotend_clamp_screw_dia/2;
