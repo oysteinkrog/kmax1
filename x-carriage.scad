@@ -34,6 +34,10 @@ module x_extruder_hotend()
     {
         fanduct();
     }
+
+    //filament path
+    material(Mat_PlasticBlack)
+    cylindera(h=1000, d=1.75*mm, orient=Z, align=N);
 }
 
 module x_extruder_hotend_()
@@ -1227,34 +1231,23 @@ module x_carriage_extruder()
 {
     translate(extruder_offset)
     {
-        translate([explode[0],explode[1],explode[2]])
-        translate(extruder_offset_a)
+        te(extruder_offset_a, explode)
         extruder_a();
 
-        translate([explode[0],-explode[1],explode[2]])
-        translate(extruder_offset_b)
+        te(extruder_offset_b, explode)
         extruder_b();
 
-        translate([explode[0],-explode[1],explode[2]])
-        translate(extruder_offset_b)
-        translate(hotend_mount_offset)
+        te(extruder_offset_b, explode)
+        te(hotend_mount_offset, explode)
         hotend_clamp();
 
-        translate([explode[0],-explode[1],explode[2]])
-        translate(extruder_offset_b)
+        te(extruder_offset_b, explode)
         attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll, Y)
         extruder_guidler();
 
         translate([explode[0],-explode[1],explode[2]])
         attach(hotend_mount_conn, hotend_conn)
         x_extruder_hotend();
-
-        //filament path
-        translate([explode[0],-explode[1],explode[2]])
-        material(Mat_PlasticBlack)
-        translate(extruder_offset_b)
-        translate(extruder_b_filapath_offset)
-        cylindera(h=1000, d=1.75*mm, orient=Z, align=N);
     }
 }
 
