@@ -1222,15 +1222,8 @@ module part_x_carriage_extruder_guidler()
     }
 }
 
-explode=N;
-/*explode=[0,10,0];*/
-
-module x_carriage_full()
-{
-    x_carriage_withmounts();
-
-    x_carriage_extruder();
-}
+/*explode=N;*/
+explode=20*Y;
 
 module x_carriage_extruder()
 {
@@ -1239,20 +1232,19 @@ module x_carriage_extruder()
         te(extruder_offset_a, explode)
         extruder_a();
 
-        te(extruder_offset_b, explode)
-        extruder_b();
+        te(extruder_offset_b+-Y*.1, explode)
+        {
+            extruder_b();
+            attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll, Y)
+            extruder_guidler();
 
-        te(extruder_offset_b, explode)
-        te(hotend_mount_offset, explode)
-        hotend_clamp();
+            te(hotend_mount_offset)
+            hotend_clamp();
 
-        te(extruder_offset_b, explode)
-        attach(extruder_conn_guidler, extruder_guidler_conn_mount, extruder_guidler_roll, Y)
-        extruder_guidler();
+            attach(hotend_mount_conn, hotend_conn)
+            x_extruder_hotend();
+        }
 
-        translate([explode[0],-explode[1],explode[2]])
-        attach(hotend_mount_conn, hotend_conn)
-        x_extruder_hotend();
     }
 }
 
@@ -1303,7 +1295,7 @@ module xaxis_end_bucket(part)
     translate(x*40*mm*X)
     mirror([x<0?0:1,0,0])
     {
-        x_carriage_withmounts(beltpath_sign=x, with_sensormount=true);
+        x_carriage_withmounts(beltpath_sign=x, with_sensormount=x==-1);
 
         x_carriage_extruder();
     }
