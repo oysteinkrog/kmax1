@@ -12,6 +12,7 @@ use <thing_libutils/linear-extrusion.scad>;
 use <thing_libutils/bearing.scad>
 use <thing_libutils/bearing-linear.scad>
 use <thing_libutils/screws.scad>
+use <thing_libutils/shape_gears.scad>
 
 include <thing_libutils/bearing_data.scad>;
 include <thing_libutils/pulley.scad>;
@@ -241,12 +242,23 @@ module extruder_gear_small(orient, align)
     {
         union()
         {
-            hull()
+            ty(-6*mm)
             {
-                cylindera(d=extruder_gear_small_PD, h=7*mm, orient=orient, align=align);
-                cylindera(d=10*mm, h= 3*mm, orient=orient, align=align);
+                h=7*mm;
+                if($preview_mode)
+                {
+                    cylindera(d=extruder_gear_small_PD, h=h, orient=orient, align=align);
+                }
+                else
+                {
+                    rx(90)
+                    tz(h/2)
+                    gear(z=get(GearTeeth, extruder_gear_small), m=get(GearMod, extruder_gear_small), h=h);
+                }
             }
-            cylindera(d=extruder_gear_small_PD, h=13*mm, orient=orient, align=align);
+            h=13*mm;
+
+            cylindera(d=extruder_gear_small_PD, h=h-7*mm, orient=orient, align=align);
         }
         cylindera(d=5*mm, h=13*mm+.1, orient=orient, align=align);
     }
@@ -263,7 +275,16 @@ module extruder_gear_big(align=N, orient=Z)
     {
         union()
         {
-            cylindera(d=extruder_gear_big_PD, h=extruder_gear_big_h[0], orient=Z, align=Z);
+            if($preview_mode)
+            {
+                cylindera(d=extruder_gear_big_PD, h=extruder_gear_big_h[0], orient=Z, align=Z);
+            }
+            else
+            {
+                tz(extruder_gear_big_h[0]/2)
+                gear(z=get(GearTeeth, extruder_gear_big), m=get(GearMod, extruder_gear_big),h=extruder_gear_big_h[0]);
+            }
+
             cylindera(d=12*mm, h=extruder_gear_big_h[1], orient=Z, align=[0,0,-1]);
         }
         translate([0,0,-.5])
@@ -400,7 +421,7 @@ module extruder_a(part=undef)
                 translate([0,-between_bearing_and_gear,0])
                 translate([0,-extruder_a_bearing[2],0])
                 {
-                    cylindera(d=extruder_gear_big_OD+5*mm, h=extruder_a_h+.2, orient=Y, align=[0,-1,0]);
+                    cylindera(d=extruder_gear_big_OD+2*mm, h=extruder_a_h+.2, orient=Y, align=[0,-1,0]);
                 }
 
                 cylindera(d=extruder_shaft_d+1*mm, h=extruder_a_h+.2, orient=Y, align=[0,-1,0]);
