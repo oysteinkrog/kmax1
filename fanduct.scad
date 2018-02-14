@@ -31,12 +31,13 @@ concat(
 // warning, don't set r to 0 or rendering breaks!
 function gen_data(ss) = [
     [       "Tx","Ty","Tz",     "Sx",   "Sy", "Rx", "Ry",  "r"],
-    [     ss.x/4, -27,  55,   ss.x/2,   ss.y,   13,    0,  .01],
-    [ 2.5+ss.x/4, -25,  49, 5+ss.x/2, 1+ss.y,   13,    0,  .1 ],
-    [         15, -18,  40,       11,     20,   13,    0,  .4 ],
-    [         17,  -8,  20,       11,     17,   11,  -10,  .5 ],
-    [         14,  -3,  10,        8,     15,    8,  -25,  .7 ],
-    [         11,   0,   4,        6,     13,    0,  -45,  .8 ],
+    [     ss.x/4, -27,  25,   ss.x/2,   ss.y,   60,   00,  .01],
+    [ 2.5+ss.x/4, -21,  21, 5+ss.x/2,   ss.y,   60,   00,  .1 ],
+    /*[         15, -18,  30,       11,     20,   13,    0,  .4 ],*/
+    /*[         17,  -8,  20,       11,     17,   11,  -10,  .5 ],*/
+    [         16, -10,  15,       17,     20,   30,  -15,  .7 ],
+    [         15,  -4,  10,       11,     19,   20,  -30,  .7 ],
+    [         12,   0,   5,        6,     13,    0,  -45,  .8 ],
 ];
 
 fanduct_data = gen_data(fanduct_throat_size_withwall);
@@ -149,7 +150,7 @@ module duct(A, fanduct_wallthick=2, N=100, d=2)
         /*sweep(gen_dat(A), close = false, slices = true);*/
 
         /*tx(-15)*/
-        /*showcontrols(A);*/
+        showcontrols(A);
     }
 
     material(Mat_Plastic)
@@ -216,7 +217,7 @@ module fanduct(part)
 
     mirrorcopy(X)
     {
-        duct(A=A, fanduct_wallthick=fanduct_wallthick, N=$fn, debug=true);
+        duct(A=A, fanduct_wallthick=fanduct_wallthick, N=$fn, $debug_mode=true);
     }
 
     tx(-geth(A,"Tx",0))
@@ -226,9 +227,11 @@ module fanduct(part)
         throat_seal_h = 13*mm;
 
         material(Mat_Plastic)
+        rz(180)
         fanduct_throat(throat_seal_h);
 
         fanduct_conn_fan = [N,-Z];
+        rz(180)
         tz(2)
         attach(fanduct_conn_fan, fan_5015S_conn_flowoutput, 0)
         fan_5015S();
