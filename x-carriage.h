@@ -82,7 +82,7 @@ gear_20t_mod05 =[
 
 extruder_gear_small = [
     [GearMod, spurgear_M_from_DP(48)],
-    [GearTeeth, 21]
+    [GearTeeth, 19]
 ];
 
 extruder_gear_big = [
