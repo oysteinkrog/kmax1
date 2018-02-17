@@ -1086,7 +1086,7 @@ module sensormount(part=undef, align=N)
             sensormount(part="pos", align=align);
             sensormount(part="neg", align=align);
         }
-        %sensormount(part="vit", align=align);
+        sensormount(part="vit", align=align);
     }
     else if(part == "pos")
     material(Mat_Plastic)
@@ -1106,6 +1106,7 @@ module sensormount(part=undef, align=N)
         /*tz(8)*/
         /*rcubea(size=[17.8*mm,sensormount_thickness,35.7*mm], align=-Y-Z);*/
 
+        color("darkgreen")
         translate([-8.8,0,8])
         rotate(X*90)
         rotate(Z*180)
