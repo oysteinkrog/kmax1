@@ -260,7 +260,7 @@ hotend_clamp_thread = ThreadM3;
 hotend_clamp_nut = NutKnurlM3_5_42;
 
 hotend_clamp_screw_dia = lookup(ThreadSize, hotend_clamp_thread);
-hotend_clamp_screws_dist = hotend_d_h[1][1] + 1.2*hotend_clamp_screw_dia;
+hotend_clamp_screws_dist = hotend_d_h[1][1] + 1.2*hotend_clamp_screw_dia + 2.5*mm;
 hotend_clamp_pad = 0;
 hotend_clamp_thickness = hotend_outer_size_xy/3;
 hotend_clamp_w = [
