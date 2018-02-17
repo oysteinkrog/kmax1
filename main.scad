@@ -55,8 +55,8 @@ axis_printrange_x = [-1/2, 1/2] * printbed_size[0];
 axis_x_parked = [false, true];
 
 axis_range_y=[0*mm,200*mm];
-axis_pos_y = axis_range_y[0];
-axis_range_z=[90*mm,353*mm];
+axis_pos_y = -axis_range_y[1]/2-30*mm;
+axis_range_z=[-20+26*mm+hotend_height,353*mm];
 axis_pos_z = axis_range_z[0];
 
 echo(str("Axis range X: " , axis_range_x[0], " ", axis_range_x[1]," mm"));
