@@ -65,7 +65,7 @@ echo(str("Axis range Z: " , axis_range_z[0], " ", axis_range_z[1]," mm"));
 
 echo(str("Build area Z: " , axis_range_z[1]-axis_range_z[0] , " mm"));
 
-home_offset_x0 = axis_range_x[0] - axis_printrange_x[0] + v_x(extruder_filapath_offset)[0];
+home_offset_x0 = axis_range_x[0] - axis_printrange_x[0] + v_x(extruder_b_filapath_offset)[0];
 echo(str("Home offset X0: " , home_offset_x0));
 echo(str("Tool offset X: " , axis_range_x_+x_carriage_w/2));
 
