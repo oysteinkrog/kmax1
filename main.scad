@@ -330,16 +330,24 @@ module enclosure()
 
 module main()
 {
+    render();
     translate([0,0,-main_lower_dist_z/2])
     gantry_lower();
 
+    render();
     translate(-zaxis_rod_offset)
     gantry_upper();
 
+    render();
     x_axis();
+
+    render();
     y_axis();
+
+    render();
     z_axis();
 
+    render();
     translate([-75*mm,0,0])
     translate([0,main_depth/2,0])
     translate([0,extrusion_size,0])
@@ -348,6 +356,7 @@ module main()
 
     if(!$preview_mode)
     {
+        render();
         translate([0,-main_depth/2,0])
         translate([0,-extrusion_size/2,0])
         translate([0,0,-main_lower_dist_z/2])
@@ -357,16 +366,20 @@ module main()
         translate([x*(main_width/2-extrusion_size),main_depth/2,-main_lower_dist_z-extrusion_size])
         translate([-x*psu_a_w/2, -psu_a_d/2, psu_a_h/2])
         {
+            render();
             psu_a();
 
+            render();
             mirror([x==-1?1:0,0,0])
             translate([0, -psu_a_screw_dist_y/2, 0])
             psu_a_extrusion_bracket_side();
 
+            render();
             translate([0, psu_a_screw_dist_y/2, 0])
             psu_a_extrusion_bracket_back();
         }
 
+        render();
         translate([0,-main_depth/2,-main_lower_dist_z-extrusion_size])
         translate([-100,100,0])
         rotate([0,0,270])
