@@ -30,7 +30,8 @@ module yaxis_idler(part)
             );
 
         // top mount plate
-        translate([-yaxis_idler_mount_thickness,0,extrusion_size/2])
+        tx(-yaxis_idler_mount_thickness)
+        tz(extrusion_size/2)
         rcubea(
             size=[extrusion_size, yidler_mount_width, yaxis_idler_mount_thickness],
             align=Z,
@@ -64,6 +65,25 @@ module yaxis_idler(part)
                         extra_align=X
                         );
                 }
+
+                // adjustment screw
+                tx(-yaxis_idler_mount_thickness)
+                tz(extrusion_size/2)
+                t(yaxis_idler_mount_adjustscrew_offset)
+                rcylindera(d=yaxis_idler_mount_adjustscrew_hexnut_dia*2, orient=X, align=X);
+
+                // adjustment screw
+                tx(-yaxis_idler_mount_thickness)
+                tz(extrusion_size/2)
+                t([yaxis_idler_mount_thickness/2,0,yaxis_belt_path_offset_z])
+                t(yaxis_idler_mount_adjustscrew_offset)
+                rcylindera(
+                    h=extrusion_size+yaxis_idler_mount_thickness,
+                    d=yaxis_idler_mount_adjustscrew_hexnut_dia*sqrt(2),
+                    align=N,
+                    orient=X
+                    );
+                /*rcylindera(d=yaxis_idler_mount_adjustscrew_hexnut_dia*2, orient=X, align=X);*/
             }
 
         }
@@ -72,7 +92,7 @@ module yaxis_idler(part)
     else if(part=="neg")
     {
         // top/vertical mount screws (to extrusion)
-        translate([0,0,extrusion_size/2+yaxis_idler_mount_thickness])
+        tz(extrusion_size/2+yaxis_idler_mount_thickness)
         for(y=[-1,1])
         ty(y*mount_screw_dist/2)
         screw_cut(nut=extrusion_nut, head="button", h=yaxis_idler_mount_thickness+5*mm, with_nut=false, orient=-Z, align=-Z);
@@ -85,12 +105,11 @@ module yaxis_idler(part)
         screw_cut(yaxis_idler_mount_tightscrew_hexnut, head_embed=false, h=extrusion_size+yaxis_idler_mount_thickness+10*mm, with_nut=false, orient=X, align=X);
 
         // pulley block adjustment screw
-        tx(-extrusion_size/2-yaxis_idler_mount_thickness)
+        tx(-extrusion_size/2)
+        tx(-yaxis_idler_mount_thickness)
         tz(extrusion_size/2+yaxis_belt_path_offset_z)
-        tx(extrusion_size/2)
-        tx(yaxis_idler_mount_thickness/2)
         t(yaxis_idler_mount_adjustscrew_offset)
-        screw_cut(yaxis_idler_mount_adjustscrew_hexnut, head_embed=false, h=extrusion_size/2+yaxis_idler_mount_thickness, with_nut=false, orient=X, align=X);
+        screw_cut(yaxis_idler_mount_adjustscrew_hexnut, head="button", h=extrusion_size+yaxis_idler_mount_thickness+10*mm, head_embed=false, with_nut=false, orient=X, align=X);
 
         // front/horizontal mount screws (to extrusion)
         tx(-extrusion_size/2)
@@ -133,7 +152,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
             // adjustment screw
             tx(-yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len)
             t(yaxis_idler_mount_adjustscrew_offset)
-            rcylindera(d=yaxis_idler_mount_adjustscrew_hexnut_dia*2, orient=X, align=X);
+            rcylindera(d=yaxis_idler_mount_adjustscrew_hexnut_dia*sqrt(2), orient=X, align=X);
         }
     }
     else if(part=="neg")
@@ -160,7 +179,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
         tx(-yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len)
         tx(yaxis_idler_pulley_tight_len/2)
         t(yaxis_idler_mount_adjustscrew_offset)
-        nut_trap_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, head="button", cut_screw=true, screw_l=20*mm, trap_axis=-Z, orient=-X);
+        nut_trap_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, head="button", cut_screw=true, screw_l=7*mm, trap_axis=-Z, orient=-X);
     }
     else if(part=="vit")
     {
