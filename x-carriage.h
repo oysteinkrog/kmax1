@@ -165,8 +165,16 @@ extruder_offset_a = -extruder_gear_big_offset+[
     0,
     xaxis_bearing_top_OD + xaxis_carriage_bearing_offset_y + 2*mm,
     0];
-
 extruder_offset_b = [0,0,0];
+
+extruder_offset_c = extruder_b_drivegear_offset-[0,extruder_drivegear_h/2-extruder_drivegear_drivepath_offset+extruder_b_bearing[2]/2+4*mm];
+extruder_c_bearing_offset = extruder_offset_c;
+
+extruder_c_mount_offsets=[
+    [extruder_b_filapath_offset[0]-1*(extruder_b_w/2+4*mm),0,-13*mm],
+    [extruder_b_filapath_offset[0]+1*(extruder_b_w/2+4*mm),0,-13*mm],
+    //[extruder_b_filapath_offset[0]-4*mm,0,35*mm-15*mm]
+];
 
 // shaft from big gear to hobbed gear
 extruder_shaft_d = 5*mm;
@@ -188,30 +196,11 @@ hotend_mount_conn = [hotend_mount_offset, Z];
 hotend_conn = [[0,0,0], Z];
 
 guidler_bearing = bearing_MR83;
-guidler_screws_thread = ThreadM3;
-guidler_screws_nut = NutHexM3;
-guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
 
-// length of the guidler bearing bolt/screw
-guidler_mount_w=max(6*mm, guidler_bearing[2]);
-guidler_mount_d=8*mm;
-guidler_bolt_mount_d = guidler_bearing[0]+3*mm;
-guidler_bolt_h=guidler_bearing[2]+4*mm;
-
-guidler_w=max(guidler_mount_w+7*mm, guidler_bearing[2]*2.8);
-guidler_d=5;
-guidler_h=7;
-
-guidler_screws_thread = ThreadM3;
-guidler_screws_nut = NutHexM3;
-guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
-guidler_screws_distance=4*mm;
-guidler_screws_mount_d = guidler_screws_thread_dia*2+5*mm;
-
-guidler_srew_distance = 10;
+extruder_filaguide_d = filament_d + 1*mm;
 guidler_mount_off =
-    + X*(guidler_bearing[1]/1.8)
-    - Z*(guidler_bearing[1]/2 + guidler_mount_d/2);
+    - Y*(guidler_bearing[1]/1.8)
+    - Z*(guidler_bearing[1]/1.4);
 
 extruder_guidler_mount_off =
     + extruder_b_filapath_offset
@@ -221,13 +210,35 @@ extruder_guidler_mount_off =
     + X*(filament_d/2)
 ;
 
+
+guidler_screws_thread = ThreadM3;
+guidler_screws_nut = NutHexM3;
+guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
+
+// length of the guidler bearing bolt/screw
+guidler_mount_w=max(6*mm, guidler_bearing[2]);
+guidler_mount_d=guidler_screws_thread_dia+6*mm;
+guidler_bolt_mount_d = guidler_bearing[0]+3*mm;
+guidler_bolt_h=guidler_bearing[2]+4*mm;
+
+guidler_w=max(guidler_mount_w+7*mm, guidler_bearing[2]*2);
+guidler_d=guidler_bearing[0]/2;
+guidler_h=7;
+
+guidler_screw_distance = 10;
+
+house_guidler_screws_h = guidler_screws_thread_dia+10*mm;
+guidler_mount_off =
+    + X*(guidler_bearing[1]/1.8)
+    - Z*(guidler_bearing[1]/2 + guidler_mount_d/2);
+
 house_guidler_screw_h = guidler_screws_thread_dia+10*mm;
 
 extruder_b_guidler_screw_offset_h = 15*mm + guidler_screws_thread_dia -6*mm;
 extruder_b_guidler_screw_offset_x = -4*mm;
 
 extruder_b_mount_thickness = 10*mm;
-extruder_b_mount_dia = 10*mm;
+extruder_b_mount_dia = 7*mm;
 
 x_carriage_w = max(xaxis_carriage_top_width, xaxis_carriage_bottom_width, sqrt(2)*(extruder_motor_holedist+extruder_b_mount_dia));
 
@@ -239,7 +250,7 @@ sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - 
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
 
 // extruder guidler mount point
-extruder_conn_guidler = [ extruder_guidler_mount_off, Y];
+extruder_conn_guidler = [ extruder_b_drivegear_offset + extruder_guidler_mount_off, X];
 
 // guidler connection point
 extruder_guidler_conn_mount = [ guidler_mount_off,  Y];
@@ -266,7 +277,8 @@ hotend_clamp_pad = 0;
 hotend_clamp_thickness = hotend_outer_size_xy/3;
 hotend_clamp_w = [
 2*(hotend_clamp_screws_dist + hotend_clamp_screw_dia + hotend_clamp_pad),
-2*(hotend_clamp_screws_dist - hotend_clamp_screw_dia/2),
+2*(hotend_clamp_screws_dist + hotend_clamp_screw_dia + hotend_clamp_pad),
+//2*(hotend_clamp_screws_dist - hotend_clamp_screw_dia/2),
 ];
 hotend_clamp_height = hotend_d_h[1][1];
 
