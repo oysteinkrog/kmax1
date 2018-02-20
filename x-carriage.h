@@ -113,16 +113,20 @@ extruder_b_bearing = bearing_MR105;
 // http://wiki.e3d-online.com/wiki/File:DRAWING-V6-175-SINK.png
 // each entry == dia + h
 hotend_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
-hotend_outer_size_xy=max(vec_i(hotend_d_h,0))+5*mm;
+hotend_outer_size_xy=max(vec_i(hotend_d_h,0));
 hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
 
 extruder_filament_bite = .5*mm;
 
+// drivegear relative to extruder B
 extruder_b_drivegear_offset =
-    - Y*(hotend_outer_size_xy/2 + 12.5*mm)
+    - Y*(12.5*mm)
+    - Y*(hotend_outer_size_xy/2)
 ;
 
-extruder_b_filapath_offset = extruder_b_drivegear_offset
+// filament path relative to extruder B
+extruder_b_filapath_offset =
+    + extruder_b_drivegear_offset
     + X*(extruder_drivegear_d_inner/2)
     - X*(extruder_filament_bite)
     + X*(filament_d/2)
@@ -132,6 +136,20 @@ extruder_b_bearing_offset = extruder_b_drivegear_offset
     - Y*(extruder_drivegear_h/2)
     - Y*(extruder_b_bearing[2]/2)
     - Y*(2*mm)
+;
+
+// drivegear relative to extruder C
+extruder_c_drivegear_offset =
+    N
+    + Y*(hotend_outer_size_xy/2)
+;
+
+// filament path relative to extruder C
+extruder_c_filapath_offset =
+    + extruder_c_drivegear_offset
+    + X*(extruder_drivegear_d_inner/2)
+    - X*(extruder_filament_bite)
+    + X*(filament_d/2)
 ;
 
 extruder_b_w = extruder_drivegear_d_outer+15*mm;
@@ -160,21 +178,58 @@ extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
+// extruder mount offset, relative to X carriage
 extruder_offset = [0, 0, 22.5*mm];
+
+// extruder a offset relative to extruder
 extruder_offset_a = -extruder_gear_big_offset+[
     0,
     xaxis_bearing_top_OD + xaxis_carriage_bearing_offset_y + 2*mm,
     0];
-extruder_offset_b = [0,0,0];
 
-extruder_offset_c = extruder_b_drivegear_offset-[0,extruder_drivegear_h/2-extruder_drivegear_drivepath_offset+extruder_b_bearing[2]/2+4*mm];
+// extruder b offset relative to extruder
+extruder_offset_b = N;
+
+// hotend mount relative to filament path
+// basically lower it by the size of the drivegear and then a bit of a margin
+// this margin is basically needed for the guidler pivot/mount
+extruder_filament_path_hotend_mount_offset =
+    + Z*(-extruder_drivegear_d_outer/2 - 10*mm);
+
+// hotend mount offset relative to extruder B
+extruder_b_hotend_mount_offset =
+    + extruder_b_filapath_offset
+    + extruder_filament_path_hotend_mount_offset;
+
+
+extruder_b_thick=
+    - extruder_b_hotend_mount_offset.y
+    - extruder_offset_b.y
+    + hotend_outer_size_xy/2
+;
+
+extruder_c_thickness = extruder_b_bearing[2]+2*mm;
+
+hotend_clamp_screw_l = extruder_b_thick+extruder_c_thickness + 5*mm;
+
+// extruder c offset relative to extruder
+extruder_offset_c =
+    + extruder_offset_b
+    - Y*extruder_b_thick
+    //+ extruder_b_filapath_offset
+    //- Y*(extruder_drivegear_h/2)
+    //- Y*(extruder_drivegear_drivepath_offset)
+    //- Y*(extruder_b_bearing[2]/2)
+    //+ Y*(4*mm)
+ ;
+
+// hotend mount offset relative to extruder C
+extruder_c_hotend_mount_offset =
+    + extruder_c_filapath_offset
+    + extruder_filament_path_hotend_mount_offset;
+;
+
 extruder_c_bearing_offset = extruder_offset_c;
-
-extruder_c_mount_offsets=[
-    [extruder_b_filapath_offset[0]-1*(extruder_b_w/2+4*mm),0,-13*mm],
-    [extruder_b_filapath_offset[0]+1*(extruder_b_w/2+4*mm),0,-13*mm],
-    //[extruder_b_filapath_offset[0]-4*mm,0,35*mm-15*mm]
-];
 
 // shaft from big gear to hobbed gear
 extruder_shaft_d = 5*mm;
@@ -190,10 +245,10 @@ extruder_hotend_clamp_thread = ThreadM3;
 // as per E3D spec
 hotend_height = 63*mm;
 //hotend_height = 60.55*mm;
-hotend_mount_offset = extruder_b_filapath_offset + Z*(-extruder_drivegear_d_outer/2 - 10*mm);
-hotend_mount_conn = [hotend_mount_offset, Z];
-//hotend_conn = [[0,21.3,0], Y];
-hotend_conn = [[0,0,0], Z];
+
+extruder_b_hotend_mount_conn = [extruder_b_hotend_mount_offset, Z];
+
+hotend_conn = [N, Z];
 
 guidler_bearing = bearing_MR83;
 
@@ -237,16 +292,13 @@ house_guidler_screw_h = guidler_screws_thread_dia+10*mm;
 extruder_b_guidler_screw_offset_h = 15*mm + guidler_screws_thread_dia -6*mm;
 extruder_b_guidler_screw_offset_x = -4*mm;
 
-extruder_b_mount_thickness = 10*mm;
-extruder_b_mount_dia = 7*mm;
-
-x_carriage_w = max(xaxis_carriage_top_width, xaxis_carriage_bottom_width, sqrt(2)*(extruder_motor_holedist+extruder_b_mount_dia));
+extruder_b_mount_dia = 10*mm;
 
 sensor_diameter=12;
 sensormount_thickness=xaxis_carriage_thickness;
 sensormount_size = [17.8*mm,sensormount_thickness,15*mm];
 
-sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - v_y(sensormount_size/2) - v_xy(hotend_mount_offset);
+sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - v_y(sensormount_size/2) - v_xy(extruder_b_hotend_mount_offset);
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
 
 // extruder guidler mount point
@@ -283,14 +335,33 @@ hotend_clamp_w = [
 hotend_clamp_height = hotend_d_h[1][1];
 
 // relative to hotend mount
-hotend_clamp_offset = Y*(-hotend_outer_size_xy/2 - 2*mm) + Z*(-hotend_d_h[0][1]-hotend_d_h[1][1]/2);//abs(extruder_b_filapath_offset.y)+extruder_drivegear_h/2+extruder_b_bearing[2]+4*mm;
-hotend_clamp_screw_l = -hotend_mount_offset.y-hotend_clamp_offset.y+5*mm;
+extruder_b_hotend_clamp_offset =
+    + Z*(-hotend_outer_size_h/2)
+;
 
+extruder_c_hotend_clamp_offset =
+    + Z*(-hotend_outer_size_h/2)
+    - Y*(hotend_outer_size_xy/2)
+;
+
+
+// extruder b mount offsets onto extruder
 extruder_b_mount_offsets=[
     // position the mount offsets so that we reuse the hotend clamp screws
-    X*hotend_clamp_screws_dist+v_xz(hotend_mount_offset+hotend_clamp_offset),
-    -X*hotend_clamp_screws_dist+v_xz(hotend_mount_offset+hotend_clamp_offset),
-    [0,0,35*mm-15*mm]
+    +X*hotend_clamp_screws_dist+v_xz(extruder_b_hotend_mount_offset+extruder_b_hotend_clamp_offset),
+    -X*hotend_clamp_screws_dist+v_xz(extruder_b_hotend_mount_offset+extruder_b_hotend_clamp_offset),
+    -X*(hotend_clamp_screws_dist/2)+Z*(15*mm)
 ];
 
+// extruder c mount offsets onto extruder b
+extruder_c_mount_offsets=[
+    // position the mount offsets so that we reuse the hotend clamp screws
+    +X*hotend_clamp_screws_dist+v_xz(extruder_c_hotend_mount_offset+extruder_c_hotend_clamp_offset),
+    -X*hotend_clamp_screws_dist+v_xz(extruder_c_hotend_mount_offset+extruder_c_hotend_clamp_offset),
+    -X*(hotend_clamp_screws_dist/2)+Z*(15*mm)
+];
+
+
 guidler_extra_h_up=guidler_bearing[1]/2+hotend_clamp_screw_dia/2;
+
+extruder_ptfe_tube_d = 4*mm;
