@@ -128,8 +128,6 @@ extruder_b_drivegear_offset =
 extruder_b_filapath_offset =
     + extruder_b_drivegear_offset
     + X*(extruder_drivegear_d_inner/2)
-    - X*(extruder_filament_bite)
-    + X*(filament_d/2)
 ;
 
 extruder_b_bearing_offset = extruder_b_drivegear_offset
@@ -148,8 +146,7 @@ extruder_c_drivegear_offset =
 extruder_c_filapath_offset =
     + extruder_c_drivegear_offset
     + X*(extruder_drivegear_d_inner/2)
-    - X*(extruder_filament_bite)
-    + X*(filament_d/2)
+    //- X*(extruder_filament_bite)
 ;
 
 extruder_b_w = extruder_drivegear_d_outer+15*mm;
@@ -208,7 +205,7 @@ extruder_b_thick=
     + hotend_outer_size_xy/2
 ;
 
-extruder_c_thickness = extruder_b_bearing[2]+2*mm;
+extruder_c_thickness = extruder_b_bearing[2]+3*mm;
 
 hotend_clamp_screw_l = extruder_b_thick+extruder_c_thickness + 5*mm;
 
@@ -233,7 +230,7 @@ extruder_c_bearing_offset = extruder_offset_c;
 
 // shaft from big gear to hobbed gear
 extruder_shaft_d = 5*mm;
-extruder_shaft_len_b = abs(extruder_b_filapath_offset[1])+extruder_drivegear_h/2+extruder_b_bearing[2];
+extruder_shaft_len_b = -extruder_b_bearing_offset.y+extruder_b_bearing[2];//abs(extruder_b_filapath_offset.y)+extruder_drivegear_h/2+extruder_b_bearing[2];
 extruder_shaft_len = extruder_shaft_len_b+extruder_a_h+extruder_offset_a[1];
 
 echo("Extruder B main shaft length: ", extruder_shaft_len);
@@ -253,46 +250,44 @@ hotend_conn = [N, Z];
 guidler_bearing = bearing_MR83;
 
 extruder_filaguide_d = filament_d + 1*mm;
-guidler_mount_off =
-    - Y*(guidler_bearing[1]/1.8)
-    - Z*(guidler_bearing[1]/1.4);
-
-extruder_guidler_mount_off =
-    + extruder_b_filapath_offset
-    + guidler_mount_off
-    + X*(guidler_bearing[1]/2)
-    - X*(extruder_filament_bite)
-    + X*(filament_d/2)
-;
-
 
 guidler_screws_thread = ThreadM3;
 guidler_screws_nut = NutHexM3;
 guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
 
-// length of the guidler bearing bolt/screw
-guidler_mount_w=max(6*mm, guidler_bearing[2]);
-guidler_mount_d=guidler_screws_thread_dia+6*mm;
+guidler_mount_d = guidler_screws_thread_dia+7*mm;
 guidler_bolt_mount_d = guidler_bearing[0]+3*mm;
-guidler_bolt_h=guidler_bearing[2]+4*mm;
+guidler_bolt_h = guidler_bearing[2]+4*mm;
 
-guidler_w=max(guidler_mount_w+7*mm, guidler_bearing[2]*2);
-guidler_d=guidler_bearing[0]/2;
-guidler_h=7;
+//guidler_w = guidler_bearing[2]*2 + 5*mm;
+guidler_w = hotend_outer_size_xy;
+guidler_d = guidler_bearing[0]/2;
+guidler_h = 7;
 
 guidler_screw_distance = 10;
 
 house_guidler_screws_h = guidler_screws_thread_dia+10*mm;
-guidler_mount_off =
-    + X*(guidler_bearing[1]/1.8)
-    - Z*(guidler_bearing[1]/2 + guidler_mount_d/2);
 
 house_guidler_screw_h = guidler_screws_thread_dia+10*mm;
 
+guidler_mount_off =
+    + X*(guidler_bearing[1])
+    - Z*(guidler_bearing[1]/2 + guidler_mount_d/2);
+
+extruder_b_guidler_mount_off =
+    + extruder_b_filapath_offset
+    + Y*(guidler_w/2)
+    + guidler_mount_off
+    + X*(guidler_bearing[1]/2)
+    //- X*(extruder_filament_bite)
+    + X*(filament_d/2)
+;
+
 extruder_b_guidler_screw_offset_h = 15*mm + guidler_screws_thread_dia -6*mm;
 extruder_b_guidler_screw_offset_x = -4*mm;
+extruder_b_guidler_mount_w = - extruder_b_guidler_mount_off.y;
 
-extruder_b_mount_dia = 10*mm;
+extruder_b_mount_dia = 11*mm;
 
 sensor_diameter=12;
 sensormount_thickness=xaxis_carriage_thickness;
@@ -302,10 +297,10 @@ sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - 
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
 
 // extruder guidler mount point
-extruder_conn_guidler = [ extruder_b_drivegear_offset + extruder_guidler_mount_off, X];
+extruder_conn_guidler = [ extruder_b_guidler_mount_off, X];
 
 // guidler connection point
-extruder_guidler_conn_mount = [ guidler_mount_off,  Y];
+guidler_conn = [ Y*(guidler_w/2)+guidler_mount_off, X];
 extruder_guidler_roll = 0;
 
 alpha = 0.7;
@@ -324,7 +319,7 @@ hotend_clamp_thread = ThreadM3;
 hotend_clamp_nut = NutKnurlM3_5_42;
 
 hotend_clamp_screw_dia = lookup(ThreadSize, hotend_clamp_thread);
-hotend_clamp_screws_dist = hotend_d_h[1][1] + 1.2*hotend_clamp_screw_dia + 2.5*mm;
+hotend_clamp_screws_dist = hotend_d_h[1][1] + 1.2*hotend_clamp_screw_dia + 2.0*mm;
 hotend_clamp_pad = 0;
 hotend_clamp_thickness = hotend_outer_size_xy/3;
 hotend_clamp_w = [
