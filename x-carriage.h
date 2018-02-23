@@ -243,32 +243,32 @@ extruder_hotend_clamp_thread = ThreadM3;
 hotend_height = 63*mm;
 //hotend_height = 60.55*mm;
 
-extruder_b_hotend_mount_conn = [extruder_b_hotend_mount_offset, Z];
+extruder_b_hotend_mount_conn = [extruder_b_hotend_mount_offset, -Z];
 
-hotend_conn = [N, Z];
+hotend_conn = [N, -Z];
 
 guidler_bearing = bearing_MR83;
+guidler_bearing_thread = ThreadM3;
 
 extruder_filaguide_d = filament_d + 1*mm;
 
-guidler_screws_thread = ThreadM3;
-guidler_screws_nut = NutHexM3;
-guidler_screws_thread_dia= lookup(ThreadSize, guidler_screws_thread);
+guidler_screw_thread = ThreadM3;
+guidler_screw_nut = NutKnurlM3_5_42;;
+guidler_screw_thread_dia= lookup(ThreadSize, guidler_screw_thread);
 
-guidler_mount_d = guidler_screws_thread_dia+7*mm;
+guidler_mount_d = guidler_screw_thread_dia+7*mm;
 guidler_bolt_mount_d = guidler_bearing[0]+3*mm;
 guidler_bolt_h = guidler_bearing[2]+4*mm;
 
 //guidler_w = guidler_bearing[2]*2 + 5*mm;
 guidler_w = hotend_outer_size_xy;
-guidler_d = guidler_bearing[0]/2;
-guidler_h = 7;
+guidler_d = guidler_bearing[0]/2+3*mm;
 
 guidler_screw_distance = 10;
 
-house_guidler_screws_h = guidler_screws_thread_dia+10*mm;
+house_guidler_screw_h = guidler_screw_thread_dia+10*mm;
 
-house_guidler_screw_h = guidler_screws_thread_dia+10*mm;
+house_guidler_screw_h = guidler_screw_thread_dia+10*mm;
 
 guidler_mount_off =
     + X*(guidler_bearing[1])
@@ -283,8 +283,21 @@ extruder_b_guidler_mount_off =
     + X*(filament_d/2)
 ;
 
-extruder_b_guidler_screw_offset_h = 15*mm + guidler_screws_thread_dia -6*mm;
+extruder_b_guidler_screw_offset_h = 15*mm + guidler_screw_thread_dia -6*mm;
 extruder_b_guidler_screw_offset_x = -4*mm;
+
+extruder_guidler_screw_offset =
+    + Z*15*mm
+    + X*4*mm
+    ;
+
+extruder_b_guidler_screw_offset =
+    + extruder_guidler_screw_offset
+    + extruder_b_guidler_mount_off
+    - guidler_mount_off
+    - Y*guidler_w/2
+    ;
+
 extruder_b_guidler_mount_w = - extruder_b_guidler_mount_off.y;
 
 extruder_b_mount_dia = 11*mm;
@@ -297,10 +310,10 @@ sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - 
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
 
 // extruder guidler mount point
-extruder_conn_guidler = [ extruder_b_guidler_mount_off, X];
+extruder_conn_guidler = [ extruder_b_guidler_mount_off, -Y];
 
 // guidler connection point
-guidler_conn = [ Y*(guidler_w/2)+guidler_mount_off, X];
+guidler_conn = [ Y*(guidler_w/2)+guidler_mount_off, -Y];
 extruder_guidler_roll = 0;
 
 alpha = 0.7;
@@ -345,7 +358,7 @@ extruder_b_mount_offsets=[
     // position the mount offsets so that we reuse the hotend clamp screws
     +X*hotend_clamp_screws_dist+v_xz(extruder_b_hotend_mount_offset+extruder_b_hotend_clamp_offset),
     -X*hotend_clamp_screws_dist+v_xz(extruder_b_hotend_mount_offset+extruder_b_hotend_clamp_offset),
-    -X*(hotend_clamp_screws_dist/2)+Z*(15*mm)
+    -X*(3*mm)+Z*(20*mm)
 ];
 
 // extruder c mount offsets onto extruder b
@@ -353,7 +366,7 @@ extruder_c_mount_offsets=[
     // position the mount offsets so that we reuse the hotend clamp screws
     +X*hotend_clamp_screws_dist+v_xz(extruder_c_hotend_mount_offset+extruder_c_hotend_clamp_offset),
     -X*hotend_clamp_screws_dist+v_xz(extruder_c_hotend_mount_offset+extruder_c_hotend_clamp_offset),
-    -X*(hotend_clamp_screws_dist/2)+Z*(15*mm)
+    -X*(3*mm)+Z*(20*mm)
 ];
 
 
