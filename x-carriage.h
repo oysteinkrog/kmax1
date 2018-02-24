@@ -37,14 +37,31 @@ xaxis_carriage_beltfasten_dist = xaxis_carriage_beltfasten_w/2+2*mm;
 
 xaxis_carriage_thickness = xaxis_bearing_top_OD/2 + xaxis_carriage_bearing_offset_y;
 
+// Bondtech 5mm drive gear
+extruder_drivegear_type = "Bondtech";
+extruder_drivegear_d_outer = 9.5*mm;
+extruder_drivegear_d_inner = 7.35*mm;
+extruder_drivegear_h = 14*mm;
+extruder_drivegear_drivepath_offset=3*mm;
+extruder_drivegear_bearing_thread = ThreadM3;
+extruder_drivegear_bearing_h = extruder_drivegear_h;
+extruder_drivegear_bearing_d = extruder_drivegear_d_outer;
+extruder_drivegear_bearing_id = 3*mm;
+
 // MK8 drive gear
-extruder_drivegear_d_outer = 9*mm;
-extruder_drivegear_d_inner = 7.45*mm;
-extruder_drivegear_h = 11*mm;
-extruder_drivegear_drivepath_offset = extruder_drivegear_h-7.85*mm;
-extruder_drivegear_drivepath_h = 3.45;
+//extruder_drivegear_type = "MK8";
+//extruder_drivegear_d_outer = 9*mm;
+//extruder_drivegear_d_inner = 7.45*mm;
+//extruder_drivegear_h = 11*mm;
+//extruder_drivegear_drivepath_offset = extruder_drivegear_h-7.85*mm;
+//extruder_drivegear_bearing = bearing_MR83;
+//extruder_drivegear_bearing_thread = ThreadM3;
+//extruder_drivegear_bearing_h = extruder_drivegear_bearing.z;
+//extruder_drivegear_bearing_d = extruder_drivegear_bearing.y;
+//extruder_drivegear_bearing_id = extruder_drivegear_bearing.x;
 
 // MK7 drive gear
+//extruder_drivegear_type = "MK7";
 //extruder_drivegear_d_outer = 12.65*mm;
 //extruder_drivegear_d_inner = 11.5*mm;
 //extruder_drivegear_h = 11*mm;
@@ -116,7 +133,8 @@ hotend_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
 hotend_outer_size_xy=max(vec_i(hotend_d_h,0));
 hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
 
-extruder_filament_bite = .5*mm;
+// if bondtech, less bite but each side bites
+extruder_filament_bite = extruder_drivegear_type == "Bondtech" ? .2*mm : .4*mm;
 
 // drivegear relative to extruder B
 extruder_b_drivegear_offset =
@@ -124,10 +142,11 @@ extruder_b_drivegear_offset =
     - Y*(hotend_outer_size_xy/2)
 ;
 
-// filament path relative to extruder B
-extruder_b_filapath_offset =
-    + extruder_b_drivegear_offset
+// offset between drivegear and filament path
+extruder_filapath_drivegear_offset =
     + X*(extruder_drivegear_d_inner/2)
+    + X*(filament_d/2)
+    - X*(extruder_filament_bite)
 ;
 
 extruder_b_bearing_offset = extruder_b_drivegear_offset
@@ -142,11 +161,15 @@ extruder_c_drivegear_offset =
     + Y*(hotend_outer_size_xy/2)
 ;
 
+// filament path relative to extruder B
+extruder_b_filapath_offset =
+    + extruder_b_drivegear_offset
+    + extruder_filapath_drivegear_offset
+;
 // filament path relative to extruder C
 extruder_c_filapath_offset =
     + extruder_c_drivegear_offset
-    + X*(extruder_drivegear_d_inner/2)
-    //- X*(extruder_filament_bite)
+    + extruder_filapath_drivegear_offset
 ;
 
 extruder_b_w = extruder_drivegear_d_outer+15*mm;
@@ -213,11 +236,6 @@ hotend_clamp_screw_l = extruder_b_thick+extruder_c_thickness + 5*mm;
 extruder_offset_c =
     + extruder_offset_b
     - Y*extruder_b_thick
-    //+ extruder_b_filapath_offset
-    //- Y*(extruder_drivegear_h/2)
-    //- Y*(extruder_drivegear_drivepath_offset)
-    //- Y*(extruder_b_bearing[2]/2)
-    //+ Y*(4*mm)
  ;
 
 // hotend mount offset relative to extruder C
@@ -247,22 +265,23 @@ extruder_b_hotend_mount_conn = [extruder_b_hotend_mount_offset, -Z];
 
 hotend_conn = [N, -Z];
 
-guidler_bearing = bearing_MR83;
-guidler_bearing_thread = ThreadM3;
-
-extruder_filaguide_d = filament_d + 1*mm;
+extruder_ptfe_tube_d = 4.2*mm;
+extruder_filaguide_d = extruder_ptfe_tube_d + 3*mm;
 
 guidler_screw_thread = ThreadM3;
 guidler_screw_nut = NutKnurlM3_5_42;;
 guidler_screw_thread_dia= lookup(ThreadSize, guidler_screw_thread);
 
 guidler_mount_d = guidler_screw_thread_dia+7*mm;
-guidler_bolt_mount_d = guidler_bearing[0]+3*mm;
-guidler_bolt_h = guidler_bearing[2]+4*mm;
+guidler_drivegear_offset =
+     Y * (extruder_drivegear_type=="Bondtech" ?extruder_drivegear_drivepath_offset + 1*mm : 0)
+;
 
-//guidler_w = guidler_bearing[2]*2 + 5*mm;
-guidler_w = hotend_outer_size_xy;
-guidler_d = guidler_bearing[0]/2+3*mm;
+guidler_bolt_mount_d = extruder_drivegear_bearing_id+3*mm;
+guidler_bolt_h = extruder_drivegear_bearing_h+4*mm;
+
+guidler_w = max(hotend_outer_size_xy, extruder_drivegear_bearing_h + guidler_drivegear_offset.y + 5*mm);
+guidler_d = extruder_drivegear_bearing_id/2+3*mm;
 
 guidler_screw_distance = 10;
 
@@ -271,22 +290,28 @@ house_guidler_screw_h = guidler_screw_thread_dia+10*mm;
 house_guidler_screw_h = guidler_screw_thread_dia+10*mm;
 
 guidler_mount_off =
-    + X*(guidler_bearing[1])
-    - Z*(guidler_bearing[1]/2 + guidler_mount_d/2);
+    + X*(extruder_drivegear_bearing_d)
+    - Z*(extruder_drivegear_bearing_d/2 + guidler_mount_d/2)
+    + guidler_drivegear_offset
+    ;
 
 extruder_b_guidler_mount_off =
     + extruder_b_filapath_offset
     + Y*(guidler_w/2)
     + guidler_mount_off
-    + X*(guidler_bearing[1]/2)
-    //- X*(extruder_filament_bite)
-    + X*(filament_d/2)
+    + X*(extruder_drivegear_bearing_d/2)
+    // does guidler bearing/drivgear bite or not? (is it a bearing or a drivegear??)
+    - (extruder_drivegear_type == "Bondtech" ? X*(extruder_filament_bite) : X*(filament_d/2))
+    // to allow guidler to allow some pressure
+    - X*.1*mm
+    - Z*.1*mm
 ;
 
 extruder_b_guidler_screw_offset_h = 15*mm + guidler_screw_thread_dia -6*mm;
 extruder_b_guidler_screw_offset_x = -4*mm;
 
 extruder_guidler_screw_offset =
+    + guidler_drivegear_offset
     + Z*15*mm
     + X*4*mm
     ;
@@ -315,6 +340,7 @@ extruder_conn_guidler = [ extruder_b_guidler_mount_off, -Y];
 // guidler connection point
 guidler_conn = [ Y*(guidler_w/2)+guidler_mount_off, -Y];
 extruder_guidler_roll = 0;
+//extruder_guidler_roll = -1-90;
 
 alpha = 0.7;
 /*alpha = 1;*/
@@ -324,8 +350,7 @@ color_extruder = [0.2,0.6,0.9, alpha];
 color_guidler = [0.4,0.5,0.8, alpha];
 color_filament = [0,0,0, alpha];
 
-// which side does hotend slide in (x-axis, i.e. -1 is left, 1 is right)
-hotend_tolerance=1.05*mm;
+hotend_tolerance=.3*mm;
 
 // hotend clamp screws distance from center
 hotend_clamp_thread = ThreadM3;
@@ -370,6 +395,5 @@ extruder_c_mount_offsets=[
 ];
 
 
-guidler_extra_h_up=guidler_bearing[1]/2+hotend_clamp_screw_dia/2;
+guidler_extra_h_up=extruder_drivegear_bearing_d/2+hotend_clamp_screw_dia/2;
 
-extruder_ptfe_tube_d = 4*mm;
