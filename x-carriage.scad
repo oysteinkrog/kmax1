@@ -1252,7 +1252,7 @@ module sensormount(part=undef, align=N)
     else if(part == "pos")
     material(Mat_Plastic)
     {
-        rcubea(size=sensormount_size, align=Y);
+        rcubea(size=sensormount_size, align=Y, extra_size=10*X, extra_align=-X);
     }
     else if(part == "neg")
     {
