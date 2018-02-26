@@ -1165,7 +1165,7 @@ module extruder_guidler(part, override_w)
         extruder_drivegear(part="cutout");
 
         // guidler bearing cutout
-        bearing_mount_bump = .6*mm;
+        bearing_mount_bump = .8*mm;
         bearing_cut_w = extruder_drivegear_bearing_h+2*bearing_mount_bump;
         t(guidler_drivegear_offset)
         difference()
