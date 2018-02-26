@@ -42,7 +42,7 @@ xaxis_carriage_thickness = xaxis_bearing_top_OD/2 + xaxis_carriage_bearing_offse
 extruder_drivegear_type = "Bondtech";
 extruder_drivegear_d_outer = 9.5*mm;
 extruder_drivegear_d_inner = 7.35*mm;
-extruder_drivegear_h = 14*mm;
+extruder_drivegear_h = 13.95*mm;
 extruder_drivegear_drivepath_offset=3*mm;
 extruder_drivegear_bearing_thread = ThreadM3;
 extruder_drivegear_bearing_h = extruder_drivegear_h;
@@ -138,7 +138,7 @@ hotend_outer_size_xy=max(vec_i(hotend_d_h,0));
 hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
 
 // if bondtech, less bite but each side bites
-extruder_filament_bite = extruder_drivegear_type == "Bondtech" ? .2*mm : .4*mm;
+extruder_filament_bite = extruder_drivegear_type == "Bondtech" ? .4*mm : .4*mm;
 
 // drivegear relative to extruder B
 extruder_b_drivegear_offset =
