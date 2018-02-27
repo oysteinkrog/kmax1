@@ -203,7 +203,7 @@ extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
 // extruder mount offset, relative to X carriage
-extruder_offset = [0, 0, 22.5*mm];
+extruder_offset = [0, 0, 22*mm];
 
 // extruder a offset relative to extruder
 extruder_offset_a = -extruder_gear_big_offset+[
