@@ -351,6 +351,7 @@ color_guidler = [0.4,0.5,0.8, alpha];
 color_filament = [0,0,0, alpha];
 
 hotend_tolerance=.2*mm;
+bearing_pressfit_tolerance = .3*mm;
 
 // hotend clamp screws distance from center
 hotend_clamp_thread = ThreadM3;
