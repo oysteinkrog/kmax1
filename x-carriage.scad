@@ -428,8 +428,7 @@ module extruder_a(part=undef)
                 cylindera(d=extruder_shaft_d+1*mm, h=extruder_a_h+.2, orient=Y, align=[0,-1,0]);
 
                 translate(extruder_a_bearing_offset_y)
-                scale(1.02)
-                cylindera(d=extruder_a_bearing[1], h=1000*mm, orient=Y, align=[0,-1,0]);
+                cylindera(d=extruder_a_bearing[1]+bearing_pressfit_tolerance, h=1000*mm, orient=Y, align=[0,-1,0]);
             }
         }
     }
@@ -914,7 +913,7 @@ module extruder_c(part=undef)
     {
         // b bearing cutout
         ty(.1)
-        cylindera(d=extruder_b_bearing[1]+.3*mm, h=extruder_b_bearing[2]+.5*mm, orient=Y, align=-Y);
+        cylindera(d=extruder_b_bearing[1]+bearing_pressfit_tolerance, h=extruder_b_bearing[2]+.5*mm, orient=Y, align=-Y);
 
         /*// guidler mount screw cut*/
         /*translate(extruder_b_bearing[2]/2*Y)*/
