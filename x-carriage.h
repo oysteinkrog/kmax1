@@ -128,7 +128,7 @@ extruder_a_h = 16*mm;
 extruder_a_base_h=extruder_a_bearing[2]-extruder_a_bearing_offset_y.y+1*mm;
 
 extruder_b_bearing = bearing_MR105;
-extruder_b_mount_dia = 11*mm;
+extruder_b_mount_dia = 9*mm;
 
 // from E3D V6 heatsink drawing
 // http://wiki.e3d-online.com/wiki/File:DRAWING-V6-175-SINK.png
@@ -197,7 +197,7 @@ extruder_motor_offset_z = sin(extruder_motor_gear_offset_angle) * extruder_gears
 extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_motor);
 
 extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
-[x*(extruder_motor_holedist/2+2*mm),0,z*extruder_motor_holedist/2]+[x*5,0,z<0?-5.2*mm:z*4]
+[x*(extruder_motor_holedist/2+4*mm),0,z*extruder_motor_holedist/2]+[x*5,0,z<0?-5.2*mm:z*4]
 ];
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
