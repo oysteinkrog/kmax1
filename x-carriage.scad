@@ -355,7 +355,7 @@ module extruder_a_motor_mount(part)
 module extruder_a(part=undef)
 {
     between_bearing_and_gear=0*mm;
-    if(part==undef)
+    if(part==U)
     {
         difference()
         {
@@ -376,121 +376,88 @@ module extruder_a(part=undef)
                 intersection()
                 {
                     extruder_a_motor_mount(part=part);
-                    translate([0,extruder_a_h,0])
+                    ty(extruder_a_h)
                     cubea(size=[1000,extruder_a_base_h,1000], align=-Y);
                 }
+
                 // support around bearing
-                translate([0,extruder_a_h,0])
-                translate(extruder_gear_big_offset)
+                ty(extruder_a_h)
+                t(extruder_gear_big_offset)
                 rcylindera(d=extruder_a_bearing[1]+6*mm, h=extruder_a_base_h, orient=Y, align=-Y);
             }
 
             extruder_a_motor_mount(part=part);
-
-            // support round big gear, needed?
-            /*translate(extruder_gear_big_offset)*/
-            /*rcylindera(d=extruder_gear_big_OD+2*mm+5*mm, h=extruder_a_h, orient=Y, align=Y);*/
-
         }
     }
     else if(part=="neg")
     {
         extruder_a_motor_mount(part=part);
 
-        //cutouts for access to small gear tightscrew
-        /*rotate([0,extruder_motor_mount_angle,0])*/
-        /*for(i=[-1,10])*/
-        /*rotate([0,i*90,0])*/
-        /*translate([0,0,lookup(NemaSideSize, extruder_motor)/2])*/
-        /*translate([0,extruder_a_h,0])*/
-        /*teardrop(d=17*mm, h=lookup(NemaSideSize, extruder_motor)/2, orient=Z, roll=90, align=[0,0,-1]);*/
-
-        //cutouts for access to big gear tightscrew
-        /*translate(extruder_gear_big_offset)*/
-        /*translate([0,extruder_gear_big_h[0],0])*/
-        /*translate([1,extruder_gear_big_h[1]/2+1*mm,0])*/
-        /*for(i=[0:6])*/
-        /*rotate([0,20+i*-35,0])*/
-        /*teardrop(d=9*mm, h=1000, orient=X, align=[-1,0,0], roll=90);*/
-
-        translate([0,extruder_a_h,0])
+        ty(extruder_a_h)
+        ty(-extruder_gear_motor_dist)
+        t(extruder_gear_big_offset)
         {
-            translate([0,-extruder_gear_motor_dist,0])
-            translate(extruder_gear_big_offset)
-            {
-                // big gear cutout
-                translate([0,-between_bearing_and_gear,0])
-                translate([0,-extruder_a_bearing[2],0])
-                {
-                    cylindera(d=extruder_gear_big_OD+2*mm, h=extruder_a_h+.2, orient=Y, align=[0,-1,0]);
-                }
+            cylindera(d=extruder_shaft_d+1*mm, h=extruder_a_h+.2, orient=Y, align=[0,-1,0]);
 
-                cylindera(d=extruder_shaft_d+1*mm, h=extruder_a_h+.2, orient=Y, align=[0,-1,0]);
-
-                translate(extruder_a_bearing_offset_y)
-                cylindera(d=extruder_a_bearing[1]+bearing_pressfit_tolerance, h=1000*mm, orient=Y, align=[0,-1,0]);
-            }
+            t(extruder_a_bearing_offset)
+            cylindera(d=extruder_a_bearing[1]+bearing_pressfit_tolerance, h=1000*mm, orient=Y, align=[0,-1,0]);
         }
     }
     else if(part=="vit")
     {
         extruder_a_motor_mount(part=part);
 
-        translate([0,extruder_a_h,0])
+        ty(extruder_a_h)
+        ty(-extruder_gear_motor_dist)
         {
-            translate([0,-extruder_gear_motor_dist,0])
+            ty(-.5*mm)
+            extruder_gear_small(orient=Y, align=-Y);
+
+            // big gear
+            t(extruder_gear_big_offset)
             {
-                ty(-.5*mm)
-                extruder_gear_small(orient=Y, align=-Y);
+                ty(-between_bearing_and_gear)
+                ty(-extruder_a_bearing[2])
+                ty(-1*mm)
+                extruder_gear_big(orient=-Y, align=-Y);
 
-                // big gear
-                translate(extruder_gear_big_offset)
-                {
-                    translate([0,-between_bearing_and_gear,0])
-                    translate([0,-extruder_a_bearing[2],0])
-                    ty(-1*mm)
-                    extruder_gear_big(orient=-Y, align=-Y);
+                // bearing
+                t(extruder_a_bearing_offset)
+                bearing(extruder_a_bearing, orient=Y, align=-Y);
 
-                    // bearing
-                    translate(extruder_a_bearing_offset_y)
-                    bearing(extruder_a_bearing, orient=Y, align=[0,-1,0]);
-
-                    cylindera(h=extruder_shaft_len, d=extruder_shaft_d, orient=Y, align=[0,-1,0]);
-                }
+                cylindera(h=extruder_shaft_len, d=extruder_shaft_d, orient=Y, align=-Y);
             }
-            rotate([0,extruder_motor_mount_angle,0])
+        }
+
+        ty(extruder_a_h)
+        ry(extruder_motor_mount_angle)
+        ty(-1*mm)
+        {
+            motor(extruder_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+
+            // motor heatsink
+            ty(lookup(NemaLengthMedium, extruder_motor)+2*mm)
             {
-                translate([0,-1*mm,0])
+                w = lookup(NemaSideSize, extruder_motor);
+                if(false)
+                color([.5,.5,.5])
+                cubea([40*mm,11*mm,40*mm], align=Y);
+
+                // fan
+                if(false)
+                color([.9,.9,.9])
+                ty(11*mm)
+                difference()
                 {
-                    motor(extruder_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
-
-                    // motor heatsink
-                    translate([0,lookup(NemaLengthMedium, extruder_motor)+2*mm,0])
-                    {
-                        w = lookup(NemaSideSize, extruder_motor);
-                        if(false)
-                        color([.5,.5,.5])
-                        cubea([40*mm,11*mm,40*mm], align=Y);
-
-                        // fan
-                        if(false)
-                        color([.9,.9,.9])
-                        translate([0,11*mm,0])
-                        {
-                            difference()
-                            {
-                                cubea([40*mm,10*mm,40*mm], align=Y);
-                                cylindera(d=38*mm, h=10*mm+.1, orient=Y, align=[0,-1,0]);
-                            }
-
-                        }
-                    }
-
+                    cubea([40*mm,10*mm,40*mm], align=Y);
+                    cylindera(d=38*mm, h=10*mm+.1, orient=Y, align=-Y);
                 }
 
             }
 
         }
+
+
     }
 }
 
