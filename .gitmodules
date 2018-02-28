@@ -10,3 +10,6 @@
 [submodule "list-comprehension-demos"]
 	path = list-comprehension-demos
 	url = https://github.com/openscad/list-comprehension-demos.git
+[submodule "thing_spurgearmount"]
+	path = thing_spurgearmount
+	url = https://github.com/oysteinkrog/thing_spurgearmount.git
