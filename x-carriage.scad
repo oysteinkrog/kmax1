@@ -894,7 +894,6 @@ module extruder_c(part=undef)
         /*screw_cut(nut=guidler_screw_nut, h=extruder_b_guidler_mount_w+extruder_c_thickness+5*mm, orient=Y, align=Y);*/
 
         t(extruder_c_hotend_mount_offset)
-        ty(2*mm)
         hotend_cut(extend_cut = false);
 
         // mount screws
