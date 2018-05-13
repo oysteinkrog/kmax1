@@ -232,9 +232,10 @@ extruder_b_thick=
     + hotend_outer_size_xy/2
 ;
 
-extruder_c_thickness = extruder_b_bearing[2]+3*mm;
+extruder_c_thickness = extruder_b_bearing[2]+5*mm;
 
-hotend_clamp_screw_l = extruder_b_thick+extruder_c_thickness + 5*mm;
+hotend_clamp_screw_l = 40*mm;
+//hotend_clamp_screw_l = extruder_b_thick+extruder_c_thickness + 5*mm;
 
 // extruder c offset relative to extruder
 extruder_offset_c =

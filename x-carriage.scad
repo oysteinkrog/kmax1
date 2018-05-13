@@ -880,7 +880,7 @@ module extruder_c(part=undef)
     {
         // b bearing cutout
         ty(.1)
-        cylindera(d=extruder_b_bearing[1]+bearing_pressfit_tolerance, h=extruder_b_bearing[2]+.5*mm, orient=Y, align=-Y);
+        cylindera(d=extruder_b_bearing[1]+bearing_pressfit_tolerance, h=extruder_b_bearing[2]+1.5*mm, orient=Y, align=-Y);
 
         /*// guidler mount screw cut*/
         /*translate(extruder_b_bearing[2]/2*Y)*/
