@@ -615,10 +615,15 @@ module extruder_b(part=undef)
         // drive gear window cutout
         t(extruder_b_drivegear_offset)
         ty(extruder_drivegear_drivepath_offset)
-        /*[>tx(-extruder_drivegear_d_inner)<]*/
+        ty(1*mm)
         {
-            s=[100,extruder_drivegear_h+1*mm,extruder_drivegear_d_inner+3*mm];
-            cubea(s, align=-X);
+            /*cylindera(h=20, d=30/2, orient=X, align=-X);*/
+            hull()
+            {
+                cubea([1,extruder_drivegear_h,extruder_drivegear_d_inner+1*mm], align=-X);
+                tx(-20)
+                cubea([1,extruder_drivegear_h+4*mm,extruder_drivegear_d_inner+30*mm], align=-X);
+            }
         }
 
         t(extruder_b_hotend_mount_offset)
