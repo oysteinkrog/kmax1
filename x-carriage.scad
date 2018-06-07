@@ -566,7 +566,7 @@ module extruder_b(part=undef)
             extruder_b(part="neg");
 
             t(extruder_offset_c)
-            extruder_c(part="neg", $show_vit=false);
+            extruder_c(part="neg", is_extruder_b=true, $show_vit=false);
 
             attach(extruder_conn_guidler, guidler_conn, $explode=0)
             extruder_guidler(part="neg", $show_vit=false);
@@ -856,7 +856,7 @@ module extruder_drivegear_mk8(part)
     }
 }
 
-module extruder_c(part=undef)
+module extruder_c(part=undef, is_extruder_b=false)
 {
     if(part==undef)
     {
@@ -911,6 +911,7 @@ module extruder_c(part=undef)
         /*screw_cut(nut=guidler_screw_nut, h=extruder_b_guidler_mount_w+extruder_c_thickness+5*mm, orient=Y, align=Y);*/
 
         t(extruder_c_hotend_mount_offset)
+        ty(is_extruder_b?0:1*mm)
         hotend_cut(extend_cut = false);
 
         // mount screws
