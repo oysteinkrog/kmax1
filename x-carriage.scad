@@ -594,6 +594,11 @@ module extruder_b(part=undef)
 
                 rcubea([d, extruder_b_thick, d], align=-Y);
             }
+
+            // pushfit connector support
+            t(extruder_b_filapath_offset)
+            tz(20*mm)
+            rcylindera(d=get(NutWidthMin, extruder_b_pushfit_nut)+3*mm, h=get(NutThickness, extruder_b_pushfit_nut)+1*mm, orient=Z, align=Z);
         }
 
         // filaguide slot and hotend support
@@ -703,6 +708,18 @@ module extruder_b(part=undef)
 
         translate(extruder_b_hotend_mount_offset)
         hotend_cut(extend_cut = true);
+
+        // pushfit connector knurl nut
+        t(extruder_b_filapath_offset)
+        tz(20*mm)
+        {
+            screw_cut($show_vit=false, nut=extruder_b_pushfit_nut, with_head="false", orient=-Z, align=Z, with_nut_access=false);
+
+            // cut for ptfe tube underneath pushfit and knurl nut
+            pcylindera(d=extruder_ptfe_tube_d, h=13*mm, orient=Z, align=-Z);
+        }
+
+
     }
     else if(part=="vit")
     {
