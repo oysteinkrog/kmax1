@@ -328,6 +328,9 @@ extruder_b_guidler_screw_offset =
 
 extruder_b_guidler_mount_w = - extruder_b_guidler_mount_off.y;
 
+extruder_b_pushfit_nut = NutKnurlM5_5_42;
+extruder_b_pushfit_nut_thread = get(NutThread, extruder_b_pushfit_nut);
+
 sensor_diameter=12;
 sensormount_thickness=xaxis_carriage_thickness;
 sensormount_size = [17.8*mm,sensormount_thickness,15*mm];
