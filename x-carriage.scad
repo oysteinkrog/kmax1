@@ -423,7 +423,7 @@ module extruder_a(part=undef)
 
                 // bearing
                 t(extruder_a_bearing_offset)
-                #bearing(extruder_a_bearing, orient=Y, align=-Y);
+                bearing(extruder_a_bearing, orient=Y, align=-Y);
 
                 cylindera(h=extruder_shaft_len, d=extruder_shaft_d, orient=Y, align=-Y);
             }
