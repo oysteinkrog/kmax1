@@ -11,4 +11,4 @@ addons:
   artifacts: true
 
 script:
-    - docker build -t build .
+    - travis_wait 120 sleep infinity & docker build -t build .
