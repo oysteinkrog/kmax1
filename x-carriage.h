@@ -276,7 +276,7 @@ guidler_screw_thread = ThreadM3;
 guidler_screw_nut = NutKnurlM3_5_42;;
 guidler_screw_thread_dia= lookup(ThreadSize, guidler_screw_thread);
 
-guidler_mount_d = guidler_screw_thread_dia+7*mm;
+guidler_mount_d = guidler_screw_thread_dia+5*mm;
 guidler_drivegear_offset =
      Y * (extruder_drivegear_type=="Bondtech" ?extruder_drivegear_drivepath_offset + 1*mm : 0)
 ;
@@ -293,7 +293,8 @@ house_guidler_screw_h = guidler_screw_thread_dia+10*mm;
 house_guidler_screw_h = guidler_screw_thread_dia+10*mm;
 
 guidler_mount_off =
-    + X*(extruder_drivegear_bearing_d)
+    + X*(extruder_drivegear_bearing_d/2)
+    + X*1*mm
     - Z*(extruder_drivegear_bearing_d/2 + guidler_mount_d/2)
     + guidler_drivegear_offset
     ;
