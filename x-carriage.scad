@@ -1187,10 +1187,16 @@ module extruder_guidler(part, override_w)
             screw_cut(thread=extruder_drivegear_bearing_thread, head="button", head_embed=true, h=guidler_w, orient=Y, align=Y, with_nut_access=false);
         }
 
-        // port hole to see bearing
+        // port hole/window to see bearing
         t(guidler_drivegear_offset)
-        tx(extruder_drivegear_bearing_d/2)
-        rcubea([guidler_mount_off.x+guidler_mount_d/2+.1*mm, extruder_drivegear_bearing_h+1*mm, extruder_drivegear_bearing_d/2+2*mm], align=X);
+        hull()
+        {
+            tx(extruder_drivegear_bearing_d/3)
+            rcubea([3*mm, extruder_drivegear_bearing_h+1*mm, extruder_drivegear_bearing_d-3*mm], align=-X);
+
+            tx(10*mm)
+            rcubea([3*mm, extruder_drivegear_bearing_h+1*mm, extruder_drivegear_bearing_d+6*mm], align=X);
+        }
 
         // screw/spring for tighten
         t(extruder_guidler_screw_offset)
