@@ -556,6 +556,47 @@ module extruder_b_filaguide(part)
     }
 }
 
+module extruder_b_cableguide(part)
+{
+    hh=8*mm;
+    if(part==U)
+    {
+        difference()
+        {
+            extruder_b_cableguide(part="pos");
+            extruder_b_cableguide(part="neg");
+        }
+    }
+    if(part=="pos")
+    material(Mat_Plastic)
+    {
+        tx(1*mm)
+        rcubea([10, 10, hh], align=-Y);
+    }
+    else if(part=="neg")
+    {
+        tx(-7*mm)
+        ty(-7*mm)
+        {
+            hull()
+            {
+                rcylindera(d=10*mm, h=hh+.1, orient=Z);
+                ty(-10)
+                rcylindera(d=10*mm, h=hh+.1, orient=Z);
+            }
+
+            hollow_cylinder(
+               d=14*mm,
+               thickness = ziptie_thickness,
+               h = ziptie_width,
+               taper=false,
+               orient=Z,
+               align=-Z
+               );
+        }
+    }
+}
+
 module extruder_b(part=undef)
 {
     if(part==undef)
@@ -745,6 +786,15 @@ module extruder_b(part=undef)
         translate(extruder_b_filapath_offset)
         cylindera(h=1000, d=filament_d, orient=Z, align=N);
     }
+
+    t(extruder_b_mount_offsets[2])
+    tx(-4*mm)
+    extruder_b_cableguide(part=part);
+
+    t(extruder_b_mount_offsets[1])
+    tx(-4.5*mm)
+    extruder_b_cableguide(part=part);
+
 }
 
 module extruder_drivegear(part)
