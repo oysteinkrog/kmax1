@@ -203,9 +203,8 @@ module y_axis()
             }
 
             // y axis plate
-            material(Mat_PrintBed)
             translate([0,0,10*mm])
-            cubea(printbed_size, align=Z);
+            printbed(align=Z);
         }
     }
 
