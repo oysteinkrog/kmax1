@@ -24,11 +24,7 @@ module zaxis_motor_mount(part)
     material(Mat_Plastic)
     {
         // top plate
-        rcubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
-        translate([zmotor_mount_rod_offset_x, 0, 0])
-        {
-            rcubea([gantry_connector_thickness+5, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
-        }
+        rcubea([zmotor_w+zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=X+Z);
 
         // reinforcement plate between motor and extrusion
         rcubea([zmotor_mount_thickness, zmotor_w+2, zmotor_h], align=[1,0,-1], extra_size=[0,0,2], extra_align=Z);
@@ -46,10 +42,10 @@ module zaxis_motor_mount(part)
         {
             translate([zmotor_mount_thickness, i*((zmotor_w/2)+zmotor_mount_thickness/2), 2])
             triangle(
-                zmotor_mount_rod_offset_x-zmotor_mount_thickness,
+                zmotor_w,
                 main_lower_dist_z+extrusion_size+zaxis_motor_offset_z+2,
                 depth=zmotor_mount_thickness,
-                align=[1,0,-1],
+                align=X-Z,
                 orient=X
                 );
 
@@ -84,18 +80,8 @@ module zaxis_motor_mount(part)
         stepper_motor_mount(17, slide_distance=0, mochup=false);
 
         // cut out z rod
-        translate([zmotor_mount_rod_offset_x, 0, 0])
+        tx(zmotor_mount_rod_offset_x)
         cylindera(d=zaxis_rod_d*rod_fit_tolerance, h=100, orient=Z);
-
-        // cut out z rod mounting clamp nut traps
-        for(i=[-1,1])
-        {
-            translate([zmotor_mount_rod_offset_x-5, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
-            {
-                nut_trap_cut(nut=zmotor_mount_clamp_nut, h=10, head_embed=false, trap_h=10, screw_l_extra=2*mm, trap_axis=-Z, orient=X, align=N);
-            }
-        }
-
     }
     else if(part=="vit")
     {
@@ -115,7 +101,7 @@ module part_z_motor_mount()
 
 module part_z_motor_mount_clamp()
 {
-    translate([0,0,zmotor_mount_thickness_h/2])
+    tz(zmotor_mount_thickness_h/2)
     mount_rod_clamp_half(
             rod_d=zaxis_rod_d,
             screw_dist=zmotor_mount_clamp_dist,

@@ -36,12 +36,10 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
             screw_dist = lookup(NemaDistanceBetweenMountingHoles, xaxis_motor);
             for(x=[-1,1])
             for(z=[-1,1])
-            translate([0,0,xaxis_beltpath_z_offsets[beltpath_index]])
+            tz(xaxis_beltpath_z_offsets[beltpath_index])
             translate(xaxis_end_motor_offset)
-            {
-                translate([x*screw_dist/2, 0, z*screw_dist/2])
-                cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=Y, align=[0,-1,0], rounding_radius=2);
-            }
+            translate([x*screw_dist/2, 0, z*screw_dist/2])
+            cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=Y, align=[0,-1,0], rounding_radius=2);
         }
 
         // nut mount
@@ -64,8 +62,9 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
 
         // x axis rod holders
         for(z=[-1,1])
-        translate([0,0,z*(xaxis_rod_distance/2)])
-        rcylindera(h=xaxis_end_width(with_motor), d=xaxis_rod_d_support, orient=X, align=X);
+        tz(z*(xaxis_rod_distance/2))
+        tx(xaxis_end_width_right(with_motor))
+        rcylindera(h=xaxis_end_width_right(with_motor)+xaxis_end_width(with_motor), d=xaxis_rod_d_support, orient=X, align=-X);
 
         // endstops mount support
         if(xaxis_endstop_type == "SWITCH")
