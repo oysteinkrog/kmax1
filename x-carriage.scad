@@ -678,9 +678,9 @@ module extruder_b(part=undef)
         guidler_w_cut = guidler_w+.2*mm;
 
         t(extruder_b_guidler_screw_offset)
-        tx(3*mm)
+        /*tx(3*mm)*/
         ty(guidler_w_cut/2)
-        cubea([100,100,20*mm], align=X-Y);
+        cubea([100,100,100], align=X-Y+Z);
 
         attach(extruder_conn_guidler, N, $explode=0)
         ty(-guidler_w/2)
@@ -1569,7 +1569,7 @@ module xaxis_end_bucket(part)
     }
 }
 
-/*if(false)*/
+if(false)
 {
     /*if(false)*/
     for(x=[-1])
