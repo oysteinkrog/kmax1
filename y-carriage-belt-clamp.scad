@@ -45,7 +45,9 @@ module yaxis_belt_holder(part)
         for(y=[-1,1])
         translate(Y*y*yaxis_belt_mounthole_dist/2)
         screw_cut(nut=yaxis_belt_mounthole_nut, orient=Z, align=Z);
-        /*cylindera(d=yaxis_belt_mounthole_thread_dia,yaxis_belt_mount_base_thick*2, align=Z, orient=Z);*/
+
+        tx(1*mm)
+        cylindera(d=8*mm, h=100, orient=Z);
     }
 }
 
