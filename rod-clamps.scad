@@ -165,6 +165,11 @@ module mount_rod_clamp_full(part, rod_d=10*mm, screw_dist=undef, screw_h=10*mm, 
     }
 }
 
+module part_z_rod_clamp()
+{
+    mount_rod_clamp_full(rod_d=zaxis_rod_d,  width=extrusion_size, thick=4, thread=ThreadM5, align_obj="mount");
+}
+
 if(false)
 {
     /*$show_vit=false;*/
