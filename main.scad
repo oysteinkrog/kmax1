@@ -197,69 +197,77 @@ module z_axis()
     // z axis
     for(x=[-1,1])
     {
-        translate([x*(main_width/2),0,main_height])
-        mirror([x==-1?1:0,0,0])
-        translate([zmotor_mount_rod_offset_x, 0, extrusion_size/2])
-        mount_rod_clamp_half(
+        tx(x*(main_width/2))
+        mirror([x==-1?0:1,0,0])
+        {
+            tz(main_height)
+            tx(extrusion_size)
+            tx(+zaxis_rod_d/2)
+            tz(extrusion_size/2)
+            mount_rod_clamp_full(
             rod_d=zaxis_rod_d,
             screw_dist=zmotor_mount_clamp_dist,
             thick=5,
             base_thick=5,
-            width=zmotor_mount_thickness_h,
-            thread=zmotor_mount_clamp_thread);
+                width=extrusion_size,
+                thread=extrusion_mount_thread
+                );
 
-        tx(x*(main_width/2))
-        {
-            tz(zaxis_motor_offset_z)
-            mirror([x==-1?1:0,0,0])
-            {
-                zaxis_motor_mount();
-
-                tx(zmotor_mount_rod_offset_x)
-                tz(zmotor_mount_thickness_h/2)
-                mount_rod_clamp_half(
+            /*tx(zmotor_mount_rod_offset_x)*/
+            tx(extrusion_size)
+            tx(+zaxis_rod_d/2)
+            tz(-extrusion_size/2)
+            mount_rod_clamp_full(
                     rod_d=zaxis_rod_d,
                     screw_dist=zmotor_mount_clamp_dist,
                     thick=5,
                     base_thick=5,
-                    width=zmotor_mount_thickness_h,
+                width=extrusion_size,
                     thread=zmotor_mount_clamp_thread);
             }
 
+
+        tx(x*(main_width/2))
+        mirror([x==-1?0:1,0,0])
+        {
+            tz(zaxis_motor_offset_z)
+            mirror(X)
+            zaxis_motor_mount(show_motor=true);
+
             // z smooth rods
-            tx(x*(zmotor_mount_rod_offset_x))
+            tx(extrusion_size+zaxis_rod_d/2)
             tz(zaxis_motor_offset_z-80*mm)
             material(Mat_Chrome)
             cylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=Z);
         }
     }
-
 }
 
 module gantry_upper()
 {
     for(y=[-1,1])
-    translate([0,y*(main_upper_dist_y/2),0])
+    ty(y*(main_upper_dist_y/2+extrusion_size/2))
     {
         for(x=[-1,1])
-        translate([x*(main_width/2), 0, 0])
-        linear_extrusion(h=main_height, align=[-x,0,1], orient=Z);
+        tx(x*(main_width/2))
+        linear_extrusion(h=main_height, align=-x*X+Z, orient=Z);
 
-        translate([0, 0, main_height])
+        tz(main_height)
         linear_extrusion(h=main_upper_width, align=Z, orient=X);
     }
 
-    // upper gantry connectors
+
     ty(-gantry_upper_offset_y)
     for(x=[-1,1])
-    tx(x*(main_upper_width/2))
+    tx(x*(main_width/2))
     tz(main_height)
-    {
         linear_extrusion(h=main_upper_dist_y, align=-x*X+Z, orient=Y);
-        mirror([x==1?0:-1,0,0])
-        gantry_upper_connector();
-    }
 
+    // upper gantry connectors
+    /*for(x=[-1,1])*/
+    /*translate([x*(main_width/2),0,main_height])*/
+    /*mirror([x==-1?1:0,0,0])*/
+    /*gantry_upper_connector();*/
 }
 
 module gantry_lower()
