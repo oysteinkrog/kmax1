@@ -13,7 +13,7 @@ module printbed(align=U, orient=Z)
         size_align(size=s, align=align, orient=orient)
         {
             t(-s/2)
-            material(Mat_Black)
+            material(Mat_BlackPaint)
             import("stl/heatbedmk52.stl");
 
             tz(1.1*mm)
