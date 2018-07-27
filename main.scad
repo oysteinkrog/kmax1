@@ -18,6 +18,9 @@ include <x-end.h>
 use <x-carriage.scad>
 include <x-carriage.h>
 
+use <y-carriage.scad>
+include <y-carriage.h>
+
 use <y-motor-mount.scad>
 include <y-motor-mount.h>
 
@@ -176,33 +179,8 @@ module y_axis()
 
         attach(yaxis_carriage_bearing_mount_conn_bearing, [[0,axis_pos_y,0],Z])
         {
-            yaxis_carriage_size_inner = [32*mm,32*mm,0];
+            yaxis_carriage();
 
-            material(Mat_PrintCarriage)
-            {
-                // y axis carriage plate "arms"
-                for(x=[-1,1])
-                for(y=[-1,1])
-                hull()
-                {
-                    translate([x*yaxis_carriage_size[0]/2, y*yaxis_carriage_size[1]/2, 0])
-                    cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
-
-                    translate([x*(yaxis_carriage_size[0]/2-yaxis_carriage_size_inner[0]/2), y*(yaxis_carriage_size[1]/2-yaxis_carriage_size_inner[1]/2*mm), 0])
-                    cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
-                }
-
-                // y axis carriage plate
-                hull()
-                for(x=[-1,1])
-                for(y=[-1,1])
-                {
-                    translate([x*(yaxis_carriage_size[0]/2-yaxis_carriage_size_inner[0]/2), y*(yaxis_carriage_size[1]/2-yaxis_carriage_size_inner[1]/2*mm), 0])
-                    cylindera(d=10*mm, h=yaxis_carriage_size[2], align=[-x,-y,1]);
-                }
-            }
-
-            // y axis plate
             translate([0,0,10*mm])
             printbed(align=Z);
         }
