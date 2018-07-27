@@ -186,7 +186,7 @@ module x_carriage(part=undef, beltpath_sign=1, with_sensormount)
         if(xaxis_endstop_type == "SWITCH")
         {
             translate([-x_carriage_w/2,xaxis_carriage_thickness/2,-8*mm])
-            rcubea(size=[8,10,10], align=X+Y, extra_size=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2), extra_align=-Y);
+            rcubea(size=[8,10,10], align=X+Y, extra_size=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2), extra_align=Y);
         }
         else if(xaxis_endstop_type == "SN04")
         {

@@ -47,9 +47,9 @@ filament_r                  = filament_d/2;
 Mat_filament = Mat_PlasticBlack;
 
 
-main_width = 420*mm;
+main_width = 500*mm;
 main_depth = 420*mm;
-main_height = 400*mm;
+main_height = 420*mm;
 main_upper_width = 500*mm;
 
 extrusion_size = 20*mm;
@@ -172,9 +172,10 @@ zaxis_nut = [20*mm, 36*mm, 8*mm, 5*mm, 23*mm, 13.5*mm, ThreadM3];
 zaxis_nut_mat = Mat_PlasticBlack;
 
 zaxis_motor_offset_z = 10*mm;
-zmotor_mount_thickness = 5;
-zmotor_mount_thickness_h = 10;
-zmotor_mount_motor_offset=5;
+zmotor_mount_thickness = 5*mm;
+zmotor_mount_thickness_h = 7*mm;
+zmotor_mount_motor_offset = 5*mm;
+
 
 zmotor_mount_thread_dia = lookup(ThreadSize, extrusion_thread);
 zmotor_mount_width = zmotor_w+zmotor_mount_thickness*2 + zmotor_mount_thread_dia*8;
@@ -195,10 +196,11 @@ zaxis_nut_mount_outer = zaxis_nut[1]/2 + zaxis_rod_d/2 + 1*mm;
 
 // offset between Z motor screw and z rod
 // place z rod as close as possible (depends on z nut and also motor etc)
-zaxis_rod_screw_distance_x = max(zaxis_nut_mount_outer, zaxis_rod_d/2 + zmotor_w/2 + 1*mm);
+/*zaxis_rod_screw_distance_x = max(zaxis_nut_mount_outer, zaxis_rod_d/2 + zmotor_w/2 + 1*mm);*/
+zaxis_rod_screw_distance_x = -zaxis_rod_d/2 -extrusion_size -zmotor_mount_motor_offset -lookup(NemaSideSize,zaxis_motor)/2;
 
 // z screw offset from lower extrusion (outer)
 zmotor_mount_screw_offset_x = zmotor_w/2 + zmotor_mount_motor_offset;
 
 // z rod offset from lower extrusion (outer)
-zmotor_mount_rod_offset_x = zmotor_mount_screw_offset_x + zaxis_rod_screw_distance_x;
+zmotor_mount_rod_offset_x = zaxis_rod_screw_distance_x;

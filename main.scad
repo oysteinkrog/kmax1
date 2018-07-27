@@ -52,7 +52,7 @@ include <printbed.h>
 /*use <power-panel-iec320.scad>*/
 
 // x carriage
-axis_range_x_ = main_width/2 - extrusion_size - x_carriage_w/2 + 20;
+axis_range_x_ = main_width/2 - extrusion_size - zaxis_rod_d/2 - xaxis_end_width_right(true) - x_carriage_w/2 - .5*mm;
 axis_range_x = [-1,1] *  axis_range_x_;
 axis_printrange_x = [-1, 1] * (printbed_size[0]/2+extruder_b_hotend_mount_offset.x);
 axis_x_pos_relative=[1,0];
@@ -82,10 +82,10 @@ module x_axis()
         for(z=xaxis_beltpath_z_offsets)
         tz(z)
         ty(xaxis_zaxis_distance_y)
-        tx(-sign(z)*(-main_width/2-zrod_offset+xaxis_end_motor_offset[0]))
+        tx(-sign(z)*(-main_width/2+extrusion_size+zaxis_rod_d/2+xaxis_end_motor_offset.x))
         rotate(90*X)
         belt_path(
-            len=main_width+xaxis_end_motor_offset[0],
+            len=-xaxis_end_motor_offset.x+extrusion_size+zaxis_rod_d/2+(main_width-2*extrusion_size-2*zaxis_rod_d/2),
             belt_width=xaxis_belt_width,
             belt=xaxis_belt,
             pulley_d=xaxis_pulley_inner_d,
@@ -117,9 +117,9 @@ module x_axis()
         cylindera(h=xaxis_rod_l,d=xaxis_rod_d+.1, orient=X);
 
         for(x=[-1,1])
-        translate([x*(main_width/2), 0, 0])
-        translate([0, xaxis_zaxis_distance_y, 0])
-        translate([x*zmotor_mount_rod_offset_x, 0, 0])
+        tx(x*(main_width/2))
+        ty(xaxis_zaxis_distance_y)
+        tx(-x*(extrusion_size+zaxis_rod_d/2))
         mirror([max(0,x),0,0])
         {
             xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=true, show_nut=true);
@@ -167,7 +167,7 @@ module y_axis()
         mount_rod_clamp_full(rod_d=zaxis_rod_d, thick=4, width=extrusion_size, thread=extrusion_thread, orient=Y);
 
         for(x=[-1,1])
-        translate([x*(yaxis_rod_distance/2), 0, 0])
+        tx(x*(yaxis_rod_distance/2))
         {
             // y smooth rods
             material(Mat_Chrome)
