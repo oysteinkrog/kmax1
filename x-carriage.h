@@ -321,10 +321,12 @@ extruder_guidler_screw_offset =
     ;
 
 extruder_b_guidler_screw_offset =
-    + extruder_guidler_screw_offset
     + extruder_b_guidler_mount_off
-    - guidler_mount_off
+    + extruder_guidler_screw_offset
+    - Y*guidler_mount_off.y
     - Y*guidler_w/2
+    - X*guidler_d
+    - X*5*mm
     ;
 
 extruder_b_guidler_mount_w = - extruder_b_guidler_mount_off.y;
@@ -356,7 +358,7 @@ color_guidler = [0.4,0.5,0.8, alpha];
 color_filament = [0,0,0, alpha];
 
 hotend_tolerance=.2*mm;
-bearing_pressfit_tolerance = .3*mm;
+bearing_pressfit_tolerance = .2*mm;
 
 // hotend clamp screws distance from center
 hotend_clamp_thread = ThreadM3;
