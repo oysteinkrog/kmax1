@@ -324,61 +324,55 @@ module enclosure()
 
 module main()
 {
-    render();
-    translate([0,0,-main_lower_dist_z/2])
+    /*render()*/
+    tz(-main_lower_dist_z/2)
     gantry_lower();
 
-    render();
+    /*render()*/
     translate(-zaxis_rod_offset)
     ty(gantry_upper_offset_y)
     gantry_upper();
 
-    render();
+    /*render()*/
     x_axis();
 
-    render();
+    /*render()*/
     y_axis();
 
-    render();
+    /*render()*/
     z_axis();
 
-    render();
-    translate([-75*mm,0,0])
-    translate([0,main_depth/2,0])
-    translate([0,extrusion_size,0])
-    translate([0,0,-main_lower_dist_z/2-extrusion_size/2])
-    power_panel_iec320(orient=[0,-1,0], align=Y);
+    /*render()*/
+    /*translate([-75*mm,0,0])*/
+    /*translate([0,main_depth/2,0])*/
+    /*translate([0,extrusion_size,0])*/
+    /*translate([0,0,-main_lower_dist_z/2-extrusion_size/2])*/
+    /*power_panel_iec320(orient=[0,-1,0], align=Y);*/
 
     if(!$preview_mode)
     {
-        render();
-        translate([0,-main_depth/2,0])
-        translate([0,-extrusion_size/2,0])
-        translate([0,0,-main_lower_dist_z/2])
+        render()
+        ty(-main_depth/2)
+        ty(-extrusion_size/2)
+        tz(-main_lower_dist_z/2)
         mount_lcd2004(show_gantry=true);
 
         for(x=[-1,1])
         translate([x*(main_width/2-extrusion_size),main_depth/2,-main_lower_dist_z-extrusion_size])
         translate([-x*psu_a_w/2, -psu_a_d/2, psu_a_h/2])
         {
-            render();
+            render()
             psu_a();
 
-            render();
+            render()
             mirror([x==-1?1:0,0,0])
-            translate([0, -psu_a_screw_dist_y/2, 0])
+            ty(-psu_a_screw_dist_y/2)
             psu_a_extrusion_bracket_side();
 
-            render();
-            translate([0, psu_a_screw_dist_y/2, 0])
+            render()
+            translate(psu_a_screw_dist_y/2)
             psu_a_extrusion_bracket_back();
         }
-
-        render();
-        translate([0,-main_depth/2,-main_lower_dist_z-extrusion_size])
-        translate([-100,100,0])
-        rotate([0,0,270])
-        import("stl/RAMPS1_4.STL");
     }
 }
 
