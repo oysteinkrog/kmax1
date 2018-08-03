@@ -186,11 +186,24 @@ module x_carriage(part=undef, beltpath_sign=1)
         }
 
         // endstop bumper for physical switch endstop
-        ty(xaxis_carriage_beltpath_offset_y)
         if(xaxis_endstop_type == "SWITCH")
         {
-            translate([-x_carriage_w/2,0,xaxis_end_wz/2])
-            rcubea(size=xaxis_endstop_size_switch, align=ZAXIS+XAXIS, extra_size=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2), extra_align=-Y);
+            tx(-x_carriage_w/2)
+            ty(xaxis_endstop_pos(true).y)
+            tz(xaxis_endstop_pos(true).z)
+            hull()
+            {
+                rcubea(
+                    size=[4*mm,xaxis_endstop_size_switch.y,xaxis_endstop_size_switch.z],
+                    align=X+Y+Z);
+
+                ty(xaxis_carriage_bearing_offset_y)
+                rcubea(
+                    size=[4*mm,xaxis_endstop_size_switch.y,xaxis_endstop_size_switch.z],
+                    align=X+Y+Z,
+                    extra_size=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2),
+                    extra_align=-Y);
+            }
         }
         else if(xaxis_endstop_type == "SN04")
         {
@@ -1005,7 +1018,7 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
 
             if(with_sensormount)
             t(extruder_offset)
-            attach(extruder_carriage_sensormount_conn, sensormount_conn, $explode=false)
+            attach(extruder_carriage_sensormount_conn, sensormount_conn, $explode=0)
             {
                 sensormount(part, align=-Y);
             }
@@ -1085,7 +1098,6 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
         attach(extruder_carriage_sensormount_conn, sensormount_conn)
         {
             sensormount(part=part);
-            sensormount_clamp(part=part);
         }
     }
 }
@@ -1572,28 +1584,23 @@ if(false)
     /*if(false)*/
     for(x=[-1])
     /*for(x=[-1,1])*/
-    translate(x*40*mm*X)
+    translate(x*117*mm*X)
     mirror([x<0?0:1,0,0])
     {
         x_carriage_withmounts(beltpath_sign=x, with_sensormount=x<0);
 
         x_carriage_extruder();
-
-        if(x<0)
-        t(extruder_offset)
-        attach(extruder_carriage_sensormount_conn, sensormount_conn)
-        sensormount_clamp();
     }
 
-    if(false)
+    /*if(false)*/
     for(z=[-1,1])
     for(z=xaxis_beltpath_z_offsets)
     translate([-main_width/2, xaxis_carriage_beltpath_offset_y, z])
     rotate(90*X)
     belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=X, align=X);
 
-    if(false)
-    /*ty(-xaxis_carriage_beltpath_offset_y)*/
+    /*if(false)*/
+    ty(xaxis_carriage_beltpath_offset_y)
     for(x=[-1,1])
     translate([x*200,0,0])
     mirror([max(0,x),0,0])

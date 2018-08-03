@@ -22,5 +22,7 @@ xaxis_z_bearing_mount_dir = X;
 //xaxis_z_bearing_mount_style = "open";
 xaxis_z_bearing_mount_style = "closed";
 
-function xaxis_end_width(with_motor) = with_motor? xaxis_end_motorsize+xaxis_end_motor_offset[0] - xaxis_end_motorsize/2 : zaxis_bearing_OD/2+zaxis_nut[1];
+function xaxis_end_width_right(with_motor) = 15*mm;
+function xaxis_end_width(with_motor) = with_motor? xaxis_end_motorsize+abs(xaxis_end_motor_offset[0]) - xaxis_end_motorsize/2 : zaxis_bearing_OD/2+zaxis_nut[1];
+
 
