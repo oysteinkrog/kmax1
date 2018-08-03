@@ -1596,13 +1596,20 @@ if(false)
     belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=X, align=X);
 
     if(false)
+    /*ty(-xaxis_carriage_beltpath_offset_y)*/
     for(x=[-1,1])
     translate([x*200,0,0])
-    translate([0, xaxis_carriage_beltpath_offset_y, 0])
     mirror([max(0,x),0,0])
     {
         xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=true);
 
         xaxis_end_bucket();
     }
+
+    // x smooth rods
+    for(z=[-1,1])
+    ty(xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y)
+    translate([xaxis_rod_offset_x,0,z*(xaxis_rod_distance/2)])
+    material(Mat_Chrome)
+    cylindera(h=xaxis_rod_l,d=xaxis_rod_d+.1, orient=X);
 }
