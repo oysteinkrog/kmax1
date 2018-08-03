@@ -143,6 +143,10 @@ yaxis_idler_pulley_offset_y = yaxis_idler_mount_thickness + yaxis_pulley_inner_d
 yaxis_idler_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness;
 yaxis_idler_offset_z = 10*mm;
 
+yaxis_carriage_offset =
+    Z*get(LinearBearingInnerDiameter, yaxis_bearing)/2;
+
+
 zaxis_rod_d = 11.975*mm;
 zaxis_rod_l = 500*mm;
 // relative to entire machine

@@ -59,7 +59,7 @@ axis_x_parked = [false, true];
 
 axis_range_y=[0*mm,200*mm];
 axis_pos_y = -axis_range_y[0]/2-30*mm;
-axis_range_z=[-1+26*mm+hotend_height,353*mm];
+axis_range_z=[-extruder_offset.z-extruder_offset_b.z-extruder_b_hotend_mount_offset.z+hotend_height+yaxis_carriage_offset.z+yaxis_carriage_bearing_mount_conn_bearing[0].z+yaxis_carriage_printbed_offset.z+printbed_size.z,353*mm];
 axis_pos_z = axis_range_z[0];
 
 echo(str("Axis range X: " , axis_range_x[0], " ", axis_range_x[1]," mm"));
@@ -154,7 +154,7 @@ module y_axis()
     attach(yaxis_carriage_bearing_mount_conn_bearing, yaxis_belt_mount_conn)
     yaxis_belt_holder();
 
-    translate([0,0,get(LinearBearingInnerDiameter, yaxis_bearing)/2])
+    t(yaxis_carriage_offset)
     {
         // y smooth rod clamps to frame
         for(x=[-1,1])
@@ -171,17 +171,17 @@ module y_axis()
 
             // y bearing mounts
             for(y=[-1,1])
-            attach([[0,y*(yaxis_bearing_distance_y/2)-axis_pos_y,0],[0,0,-1]], yaxis_carriage_bearing_mount_conn_bearing)
+            attach([[0,y*(yaxis_bearing_distance_y/2)-axis_pos_y,0],-Z], yaxis_carriage_bearing_mount_conn_bearing)
             {
                 yaxis_carriage_bearing_mount();
             }
         }
 
-        attach(yaxis_carriage_bearing_mount_conn_bearing, [[0,axis_pos_y,0],Z])
+        attach(yaxis_carriage_bearing_mount_conn_bearing, [Y*axis_pos_y,Z])
         {
             yaxis_carriage();
 
-            translate([0,0,10*mm])
+            t(yaxis_carriage_printbed_offset)
             printbed(align=Z);
         }
     }
