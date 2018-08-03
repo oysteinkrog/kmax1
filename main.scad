@@ -75,7 +75,7 @@ echo(str("Tool offset X: " , axis_range_x_+x_carriage_w/2));
 module x_axis()
 {
     // x axis
-    translate([0,0,axis_pos_z])
+    tz(axis_pos_z)
     {
         zrod_offset = zmotor_mount_rod_offset_x;
         for(z=xaxis_beltpath_z_offsets)
@@ -96,7 +96,7 @@ module x_axis()
 
             pos = axis_x_parked[x] ? axis_range_x[x] : -axis_printrange_x[x];
 
-            translate([pos,0,0])
+            tx(pos)
             mirror([x==0?0:1,0,0])
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],N])
             {
