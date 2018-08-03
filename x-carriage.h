@@ -41,7 +41,7 @@ xaxis_carriage_beltfasten_w = 11*mm;
 xaxis_carriage_beltfasten_h = 4*mm;
 xaxis_carriage_beltfasten_dist = xaxis_carriage_beltfasten_w/2+2*mm;
 
-xaxis_carriage_thickness = xaxis_bearing_top_OD/2 + xaxis_carriage_bearing_offset_y;
+xaxis_carriage_thickness = xaxis_bearing_top_OD/2 + xaxis_carriage_bearing_offset_y + xaxis_belt_width/2;
 
 
 // Bondtech 5mm drive gear
