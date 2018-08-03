@@ -1030,7 +1030,7 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
         // rod between extruder part A and B
         translate(extruder_offset)
         {
-            cylindera(h=100*mm, d=extruder_shaft_d+5*mm, orient=Y, align=N);
+            cylindera(h=100*mm, d=extruder_shaft_d+3*mm, orient=Y, align=N);
         }
 
         // extruder A mount cutout
