@@ -168,7 +168,8 @@ module x_carriage(part=undef, beltpath_sign=1)
             rcylindera(d=extruder_b_mount_dia, h=xaxis_carriage_thickness, orient=Y, align=Y);
 
             for(z=xaxis_beltpath_z_offsets)
-            translate([0, xaxis_carriage_beltpath_offset_y, z])
+            tz(z)
+            ty(xaxis_carriage_beltpath_offset_y)
             mirror([0,0,sign(z)<1?1:0])
             mirror(X)
             {
@@ -202,7 +203,8 @@ module x_carriage(part=undef, beltpath_sign=1)
     else if(part=="neg")
     {
         for(z=xaxis_beltpath_z_offsets)
-        translate([0, xaxis_carriage_beltpath_offset_y, z])
+        ty(xaxis_carriage_beltpath_offset_y)
+        tz(z)
         mirror([0,0,sign(z)<1?1:0])
         mirror(X)
         {
