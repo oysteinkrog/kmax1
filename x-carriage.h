@@ -19,15 +19,21 @@ xaxis_bearing_bottom_ID = get(LinearBearingInnerDiameter, xaxis_bearing_bottom);
 xaxis_bearing_bottom_OD = get(LinearBearingOuterDiameter, xaxis_bearing_bottom);
 xaxis_bearing_bottom_L = get(LinearBearingLength, xaxis_bearing_bottom);
 
-xaxis_carriage_bearing_distance = xaxis_rod_distance;
+xaxis_carriage_bearing_distance = .5*mm;
+xaxis_carriage_bearing_spread = xaxis_bearings_top*xaxis_bearing_top_L + (xaxis_bearings_top-1)*xaxis_carriage_bearing_distance;
 xaxis_carriage_padding = 1*mm;
-xaxis_carriage_mount_distance = xaxis_carriage_bearing_distance+5*mm;
-xaxis_carriage_mount_offset_z = 0*mm;
-xaxis_carriage_teeth_height=xaxis_belt_width*1.5;
-xaxis_carriage_mount_screws = ThreadM4;
 
-xaxis_carriage_top_width = xaxis_carriage_bearing_distance*(xaxis_bearings_top-1) + xaxis_carriage_padding*2;
-xaxis_carriage_bottom_width = xaxis_bearing_bottom_L*xaxis_bearings_bottom + xaxis_carriage_bearing_distance*(xaxis_bearings_bottom-1) + 2*xaxis_carriage_padding;
+xaxis_carriage_top_width =
+    xaxis_bearing_top_L*xaxis_bearings_top
+    + xaxis_carriage_bearing_distance*(xaxis_bearings_top-1)
+    + 2*xaxis_carriage_padding
+    ;
+
+xaxis_carriage_bottom_width =
+    xaxis_bearing_bottom_L*xaxis_bearings_bottom
+    + xaxis_carriage_bearing_distance*(xaxis_bearings_bottom-1)
+    + 2*xaxis_carriage_padding
+    ;
 
 xaxis_carriage_conn = [[0, -xaxis_bearing_top_OD/2 - xaxis_carriage_bearing_offset_y,0], N];
 

@@ -146,14 +146,12 @@ module x_carriage(part=undef, beltpath_sign=1)
     {
         hull()
         {
-            // top bearings
-            translate([0,0,xaxis_rod_distance/2])
+            // top bearings support
+            tz(xaxis_rod_distance/2)
             rcubea([xaxis_carriage_top_width, xaxis_carriage_thickness, xaxis_bearing_top_OD+xaxis_carriage_padding+ziptie_bearing_distance*2], align=Y);
 
-            /*rcubea([xaxis_carriage_top_width,xaxis_carriage_thickness,xaxis_rod_distance/2], align=Y);*/
-
-            // bottom bearing
-            translate([0,0,-xaxis_rod_distance/2])
+            // bottom bearings support
+            tz(-xaxis_rod_distance/2)
             rcubea([xaxis_carriage_bottom_width, xaxis_carriage_thickness, xaxis_bearing_bottom_OD+xaxis_carriage_padding+ziptie_bearing_distance*2], align=Y);
 
             /// support for extruder mount
@@ -188,10 +186,10 @@ module x_carriage(part=undef, beltpath_sign=1)
         }
 
         // endstop bumper for physical switch endstop
-        translate([0,xaxis_carriage_beltpath_offset_y,0])
+        ty(xaxis_carriage_beltpath_offset_y)
         if(xaxis_endstop_type == "SWITCH")
         {
-            translate([-xaxis_carriage_top_width/2,0,xaxis_end_wz/2])
+            translate([-x_carriage_w/2,0,xaxis_end_wz/2])
             rcubea(size=xaxis_endstop_size_switch, align=ZAXIS+XAXIS, extra_size=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2), extra_align=-Y);
         }
         else if(xaxis_endstop_type == "SN04")
@@ -224,13 +222,12 @@ module x_carriage(part=undef, beltpath_sign=1)
     }
 
     // bearing mount top
-    for(x=spread(-xaxis_carriage_bearing_distance/2,xaxis_carriage_bearing_distance/2,xaxis_bearings_top))
+    for(x=spread(-xaxis_carriage_bearing_spread/2,xaxis_carriage_bearing_spread/2,xaxis_bearings_top))
     translate([x,xaxis_bearing_top_OD/2+xaxis_carriage_bearing_offset_y,xaxis_rod_distance/2])
     linear_bearing_mount(part=part, bearing=xaxis_bearing_top, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X, mount_dir_align=Y);
 
     // bearing mount bottom
-    /*tx(-20)*/
-    for(x=spread(-xaxis_carriage_bearing_distance/2,xaxis_carriage_bearing_distance/2,xaxis_bearings_bottom))
+    for(x=spread(-xaxis_carriage_bearing_spread/2,xaxis_carriage_bearing_spread/2,xaxis_bearings_bottom))
     translate([x,xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y,-xaxis_rod_distance/2])
     linear_bearing_mount(part=part, bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X, mount_dir_align=Y);
 }
