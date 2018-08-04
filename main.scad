@@ -52,10 +52,10 @@ include <printbed.h>
 /*use <power-panel-iec320.scad>*/
 
 // x carriage
-axis_range_x_ = main_width/2 + zmotor_mount_rod_offset_x - xaxis_end_width(true) - x_carriage_w/2 - .5*mm;
+axis_range_x_ = main_width/2 - extrusion_size - zaxis_rod_d/2 - xaxis_end_width_right(true) - x_carriage_w/2;
 axis_range_x = [-1,1] *  axis_range_x_;
-axis_printrange_x = [-1/2, 1/2] * printbed_size[0];
-axis_x_parked = [false, true];
+axis_printrange_x = [-1, 1] * (printbed_size[0]/2-extruder_b_hotend_mount_offset.x);
+axis_x_parked = [true, false];
 
 axis_range_y=[0*mm,200*mm];
 axis_pos_y = -axis_range_y[0]/2-30*mm;
