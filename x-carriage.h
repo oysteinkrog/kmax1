@@ -35,6 +35,8 @@ xaxis_carriage_bottom_width =
     + 2*xaxis_carriage_padding
     ;
 
+x_carriage_w = max(xaxis_carriage_top_width, xaxis_carriage_bottom_width);
+
 xaxis_carriage_conn = [[0, -xaxis_bearing_top_OD/2 - xaxis_carriage_bearing_offset_y,0], N];
 
 xaxis_carriage_beltfasten_w = 11*mm;
@@ -203,7 +205,7 @@ extruder_motor_offset_z = sin(extruder_motor_gear_offset_angle) * extruder_gears
 extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_motor);
 
 extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
-[x*(extruder_motor_holedist/2+4*mm),0,z*extruder_motor_holedist/2]+[x*5,0,z<0?-6*mm:z*4-11*mm]
+[x*(x_carriage_w/2-extruder_b_mount_dia-1*mm),0,z*extruder_motor_holedist/2]+[x*5,0,z<0?-6*mm:z*4-11*mm]
 ];
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
@@ -409,5 +411,3 @@ extruder_c_mount_offsets=[
 
 
 guidler_extra_h_up=extruder_drivegear_bearing_d/2+hotend_clamp_screw_dia/2;
-
-x_carriage_w = max(xaxis_carriage_top_width, xaxis_carriage_bottom_width, sqrt(2)*(extruder_motor_holedist+extruder_b_mount_dia));
