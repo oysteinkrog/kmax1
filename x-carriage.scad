@@ -189,7 +189,7 @@ module x_carriage(part=undef, beltpath_sign=1, with_sensormount)
             attach(extruder_carriage_sensormount_conn, sensormount_conn, $explode=0)
             {
                 sensormount(part);
-        }
+            }
         }
 
         // endstop bumper for physical switch endstop
@@ -1020,13 +1020,6 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
     {
         x_carriage(part=part, beltpath_sign=beltpath_sign, with_sensormount=with_sensormount);
 
-            if(with_sensormount)
-            t(extruder_offset)
-            attach(extruder_carriage_sensormount_conn, sensormount_conn, $explode=0)
-            {
-                sensormount(part, align=-Y);
-            }
-
             // extruder A mount
             material(Mat_Plastic)
             translate(extruder_offset)
@@ -1100,7 +1093,8 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
         t(extruder_offset)
         attach(extruder_carriage_sensormount_conn, sensormount_conn)
         {
-            sensormount(part=part);
+            sensormount(part);
+            sensormount_clamp(part);
         }
     }
 }
@@ -1318,11 +1312,12 @@ module sensormount(part=undef)
     }
     else if(part == "neg")
     {
-        ty(3*mm)
+        tz(-10*mm)
+        /*ty(4*mm)*/
         ty(-11*mm)
         for(x=[-1,1])
         tx(x*5.5*mm)
-        screw_cut(nut=NutKnurlM3_5_42, head="button", head_embed=true, h=20*mm, with_nut=true, orient=Y, align=Y);
+        screw_cut(nut=NutKnurlM3_5_42, head="button", h=20*mm, with_nut=true, orient=Y, align=Y);
 
         tz(-18.5*mm-5*mm)
         rcylindera(d=8*mm, h=40*mm, orient=Z, align=Z);
@@ -1355,15 +1350,17 @@ module sensormount_clamp(part=U)
     {
         /*ty(-10*mm)*/
         ty(-3*mm)
-        rcubea(size=[18*mm,3*mm,8*mm], align=-Y);
+        tz(-10*mm)
+        rcubea(size=[18*mm,4*mm,8*mm], align=-Y);
     }
     else if(part == "neg")
     {
-        ty(3*mm)
+        tz(-10*mm)
+        /*ty(4*mm)*/
         ty(-11*mm)
         for(x=[-1,1])
         tx(x*5.5*mm)
-        screw_cut(nut=NutKnurlM3_5_42, head="button", h=20*mm, head_embed=true, with_nut=true, orient=Y, align=Y);
+        screw_cut(nut=NutKnurlM3_5_42, head="button", h=20*mm, with_nut=true, orient=Y, align=Y);
 
         tz(-18.5*mm)
         rcylindera(d=8*mm, h=30*mm, orient=Z, align=Z);
@@ -1640,7 +1637,12 @@ module xaxis_end_bucket(part)
     {
         x_carriage_withmounts($show_vit=true, beltpath_sign=x, with_sensormount=x<0);
 
-        x_carriage_extruder();
+        x_carriage_extruder(with_sensormount=x<0);
+
+        if(x<0)
+        t(extruder_offset)
+        attach(extruder_carriage_sensormount_conn, sensormount_conn)
+        sensormount_clamp();
     }
 
     /*if(false)*/
