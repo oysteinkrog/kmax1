@@ -77,7 +77,6 @@ module x_axis()
     // x axis
     tz(axis_pos_z)
     {
-        zrod_offset = zmotor_mount_rod_offset_x;
         for(z=xaxis_beltpath_z_offsets)
         tz(z)
         ty(xaxis_zaxis_distance_y)
@@ -92,8 +91,6 @@ module x_axis()
 
         for(x=[0:len(axis_range_x)-1])
         {
-            /*#cubea(size=[x_carriage_w,10,100]);*/
-
             pos = axis_x_parked[x] ? axis_range_x[x] : -axis_printrange_x[x];
 
             tx(pos)
