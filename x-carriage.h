@@ -188,7 +188,7 @@ extruder_b_mount_thick = 5*mm;
 
 /*extruder_carriage_sensormount_offset=[35,-7,-41];*/
 //extruder_carriage_sensormount_offset=[-25,-7,-47];
-extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x+16*mm,0*mm,-52*mm];
+extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x+15*mm,0*mm,-52*mm];
 extruder_carriage_sensormount_conn=[extruder_carriage_sensormount_offset,Y];
 
 sensormount_conn = [N,Y];
@@ -209,7 +209,7 @@ extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
 // extruder mount offset, relative to X carriage
-extruder_offset = [0, 0, 9.5*mm];
+extruder_offset = [0, 0, 9.8*mm];
 
 // extruder a offset relative to extruder
 extruder_offset_a = -extruder_gear_big_offset+[
@@ -340,7 +340,7 @@ extruder_b_pushfit_nut_thread = get(NutThread, extruder_b_pushfit_nut);
 
 sensor_diameter=12;
 sensormount_thickness=5*mm;
-sensormount_size = [17*mm,sensormount_thickness,15*mm];
+sensormount_size = [17.8*mm,sensormount_thickness,15*mm];
 
 sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - v_xy(extruder_b_hotend_mount_offset);
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
