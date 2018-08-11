@@ -151,7 +151,7 @@ zaxis_rod_d = 11.975*mm;
 zaxis_rod_l = 500*mm;
 // relative to entire machine
 zaxis_rod_offset = [0,0*mm,0];
-zaxis_bearing = LinearBearingLMH12L;
+zaxis_bearing = LinearBearingLMH12;
 zaxis_bearing_ID=get(LinearBearingInnerDiameter,zaxis_bearing);
 zaxis_bearing_OD=get(LinearBearingOuterDiameter,zaxis_bearing);
 zaxis_bearing_L=get(LinearBearingLength,zaxis_bearing);
