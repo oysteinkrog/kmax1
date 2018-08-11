@@ -94,15 +94,15 @@ module x_axis()
         {
             /*#cubea(size=[x_carriage_w,10,100]);*/
 
-            pos = axis_x_parked[x] ? axis_range_x[x] : -axis_printrange_x[x];
+            pos = axis_x_parked[x] ? axis_range_x[x] : axis_printrange_x[x];
 
             tx(pos)
             mirror([x==0?0:1,0,0])
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],N])
             {
-                x_carriage_withmounts(show_vitamins=true, beltpath_sign=x==0?-1:1, with_sensormount=x==0);
+                x_carriage_withmounts($show_vit=true, beltpath_sign=x==0?-1:1, with_sensormount=x==0);
 
-                x_carriage_extruder(show_vitamins=true);
+                x_carriage_extruder($show_vit=true);
             }
         }
 

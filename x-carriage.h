@@ -339,7 +339,7 @@ extruder_b_pushfit_nut = NutKnurlM5_5_42;
 extruder_b_pushfit_nut_thread = get(NutThread, extruder_b_pushfit_nut);
 
 sensor_diameter=12;
-sensormount_thickness=xaxis_carriage_thickness;
+sensormount_thickness=5*mm;
 sensormount_size = [17.8*mm,sensormount_thickness,15*mm];
 
 sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - v_y(sensormount_size/2) - v_xy(extruder_b_hotend_mount_offset);
