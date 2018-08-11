@@ -3,6 +3,9 @@ use <thing_libutils/bearing.scad>
 use <thing_libutils/screws.scad>
 use <thing_libutils/timing-belts.scad>
 use <thing_libutils/bearing-linear.scad>
+use <x-carriage.scad>
+use <z-motor-mount.scad>
+include <z-motor-mount.h>
 
 include <thing_libutils/bearing_data.scad>
 include <thing_libutils/pulley.scad>
@@ -18,6 +21,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
     xaxis_end_xrod_offset_z = xaxis_rod_l/2 - (main_width/2 + zmotor_mount_rod_offset_x);
     xaxis_rod_d_support = xaxis_rod_d+5*mm;
     xaxis_rod_l_support = xaxis_end_xrod_offset_z + 8*mm + (with_xrod_adjustment?8*mm:0);
+    rod_outer_padding_support = with_xrod_adjustment?15*mm:5*mm;
 
     if(part==undef)
     {
@@ -60,17 +64,18 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
             /*rcylindera(h=xaxis_end_wz, d=zaxis_nut[2]*2, align=Z);*/
         }
 
+
         // x axis rod holders
         for(z=[-1,1])
         tz(z*(xaxis_rod_distance/2))
         tx(xaxis_end_width_right(with_motor))
-        rcylindera(h=xaxis_end_width_right(with_motor)+xaxis_end_width(with_motor), d=xaxis_rod_d_support, orient=X, align=-X);
+        rcylindera(h=xaxis_end_width_right(with_motor)+xaxis_end_width(with_motor)+rod_outer_padding_support, d=xaxis_rod_d_support, orient=X, align=-X);
 
         // endstops mount support
         if(xaxis_endstop_type == "SWITCH")
         {
             t(xaxis_endstop_pos(with_motor))
-            rcubea(xaxis_endstop_size_switch, align=-XAXIS-ZAXIS);
+            rcubea(xaxis_endstop_size_switch, align=-X-Y);
         }
         else if(xaxis_endstop_type == "SN04")
         {
@@ -91,16 +96,18 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
     else if(part=="neg")
     {
         for(z=[-1,1])
-        translate([0,0*mm,z*(xaxis_rod_distance/2)])
+        tz(z*(xaxis_rod_distance/2))
         {
-            xoff = - xaxis_end_xrod_offset_z -(with_xrod_adjustment?6:0)*mm;
-            translate([xoff,0,0])
-            cylindera(h=abs(xoff)+xaxis_end_width(with_motor)+1,d=xaxis_rod_d+.5*mm, orient=X, align=X);
+            xoff = with_xrod_adjustment?-3*mm:0*mm;
+            tx(xoff)
+            tx(-(extrusion_size+zaxis_rod_d/2))
+            cylindera(h=xaxis_rod_l, d=xaxis_rod_d+.4*mm, orient=X, align=X);
 
             if(with_xrod_adjustment)
             {
-                translate(X*5*mm)
-                nut_trap_cut(nut=NutHexM4, trap_axis=Y, orient=-X, align=X);
+                tx(45*mm)
+                tx(-xaxis_end_width(with_motor)-rod_outer_padding_support)
+                nut_trap_cut(nut=NutHexM4, trap_offset=33*mm, screw_l=45*mm, trap_axis=Y, orient=-X, align=-X);
 
                 translate(X*-7*mm)
                 cylindera(d=10, h=10, orient=X);
@@ -112,7 +119,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
     }
 }
 
-module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, show_motor=false, nut_top=false, show_nut=false, show_rods=false, show_bearings=false, with_xrod_adjustment=false)
+module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, show_motor=false, nut_top=false, show_nut=false, show_rods=false, show_bearings=false, with_xrod_adjustment=true)
 {
     nut_h = zaxis_nut[4];
     extra_size = with_motor?0*mm:0*mm;
@@ -175,10 +182,10 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
         {
             t(xaxis_endstop_pos(with_motor))
             translate(xaxis_endstop_screw_offset_switch)
-            for(y=[-1,1])
-            translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size_switch[2]])
+            for(z=[-1,1])
+            translate([-5*mm, xaxis_endstop_size_switch.y, z*9.5*mm/2])
             {
-                screw_cut(nut=NutHexM2_5, h=10*mm, embed_head=false, with_head=true, with_nut=false, orient=[0,0,-1], align=[0,0,-1]);
+                screw_cut(nut=NutHexM2_5, h=10*mm, embed_head=false, with_head=true, with_nut=false, orient=-Y, align=-Y);
             }
         }
         else if(xaxis_endstop_type == "SN04")
@@ -321,13 +328,21 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 t(xaxis_endstop_pos(with_motor))
                 difference()
                 {
-                    material(Mat_PlasticBlack)
-                    rcubea(xaxis_endstop_size_switch, align=[-1,0,1]);
+                    union()
+                    {
+                        material(Mat_PlasticBlack)
+                        rcubea(xaxis_endstop_size_switch, align=-X+Y);
+
+                        color("red")
+                        tz(-xaxis_endstop_size_switch.z/2+6*mm)
+                        ty(xaxis_endstop_size_switch.y/2)
+                        cubea([1.5*mm, 3*mm, 1*mm], align=X);
+                    }
 
                     translate(xaxis_endstop_screw_offset_switch)
-                    for(y=[-1,1])
-                    translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size_switch[2]])
-                    screw(nut=NutHexM2_5, with_nut=false, h=10*mm, orient=[0,0,-1], align=[0,0,-1]);
+                    for(z=[-1,1])
+                    translate([-5*mm, 0, z*9.5*mm/2])
+                    screw(nut=NutHexM2_5, with_nut=false, h=10*mm, orient=-Y, align=Y);
                 }
             }
             else if(xaxis_endstop_type == "SN04")
@@ -421,36 +436,48 @@ if(false)
         }
 
         /*translate([axis_pos_x,0,0])*/
-        /*{*/
-            // x carriage
-            /*attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],N])*/
-            /*{*/
-                /*x_carriage_full();*/
-            /*}*/
-        /*}*/
-
-        // x smooth rods
-        color(color_rods)
-        for(z=[-1,1])
-        translate([xaxis_rod_offset_x,xaxis_zaxis_distance_y,z*(xaxis_rod_distance/2)])
-        cylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=X);
-
+        // x carriage
+        /*attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],N])*/
         for(x=[-1,1])
-        translate([x*(main_width/2), 0, 0])
-        translate([x*(zmotor_mount_rod_offset_x),0,0])
-        cylindera(h=zaxis_rod_l,d=zaxis_rod_d, orient=Z, align=N);
-
-        for(x=[-1,1])
+        translate(x*40*mm*X)
+        mirror([x<0?0:1,0,0])
         {
-            translate([x*(main_width/2), 0, 0])
-            {
-                translate([0, xaxis_zaxis_distance_y, 0])
-                translate([x*zmotor_mount_rod_offset_x, 0, 0])
-                mirror([max(0,x),0,0])
-                {
-                    xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
-                }
-            }
+            /*x_carriage_withmounts(beltpath_sign=x, with_sensormount=x<0);*/
+
+            /*x_carriage_extruder();*/
+        }
+
+        /*// x smooth rods*/
+        /*color(color_rods)*/
+        /*for(z=[-1,1])*/
+        /*translate([xaxis_rod_offset_x,xaxis_zaxis_distance_y,z*(xaxis_rod_distance/2)])*/
+        /*cylindera(h=xaxis_rod_l,d=xaxis_rod_d, orient=X);*/
+
+        tz(-100*mm)
+        for(x=[-1,1])
+        tx(x*(main_width/2))
+        mirror([x==-1?0:1,0,0])
+        {
+            tz(zaxis_motor_offset_z)
+            mirror(X)
+            zaxis_motor_mount(show_motor=true);
+
+            // z smooth rods
+            tx(extrusion_size+zaxis_rod_d/2)
+            tz(zaxis_motor_offset_z-80*mm)
+            material(Mat_Chrome)
+            cylindera(h=zaxis_rod_l,d=zaxis_rod_d, align=Z);
+        }
+
+        for(x=[-1,1])
+        tx(x*(main_width/2))
+        ty(xaxis_zaxis_distance_y)
+        tx(-x*(extrusion_size+zaxis_rod_d/2))
+        mirror([max(0,x),0,0])
+        {
+            xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
+
+            /*xaxis_end_bucket();*/
         }
     }
 
