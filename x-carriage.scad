@@ -1342,7 +1342,8 @@ module sensormount_clamp(part=U)
     {
         /*ty(-10*mm)*/
         ty(-3*mm)
-        rcubea(size=[18*mm,3*mm,8*mm], align=-Y);
+        tz(-10*mm)
+        rcubea(size=[18*mm,4*mm,8*mm], align=-Y);
     }
     else if(part == "neg")
     {
