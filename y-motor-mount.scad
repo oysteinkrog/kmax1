@@ -17,17 +17,14 @@ module yaxis_motor_mount_bearing_clamp(align=N)
     /*size_align(size=[width,depth,height], align=align);*/
     difference()
     {
-        cubea([width, depth, height], align=[0,0,-1]);
+        cubea([width, depth, height], align=-Z);
 
-        ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
-
-        translate([0,0,.1])
-            cylindera(h=bearing_h*2, d=bearing_d*rod_fit_tolerance, orient=Z, align=[0,0,-1]);
+        cylindera(h=bearing_h*2, d=bearing_d*rod_fit_tolerance, orient=Z, align=-Z, extra_h=.1, extra_align=Z);
 
         // cutout for belt path
-        cylindera(d=bearing_d, h=height*2, orient=Z, align=[0,0,-1]);
-        translate([depth/2, 0, -bearing_h])
-            cubea([depth, ymotor_round_d, height-bearing_h+1], align=[0,0,-1]);
+        cylindera(d=bearing_d, h=height*2, orient=Z, align=-Z);
+        t([depth/2, 0, -bearing_h])
+        cubea([depth, ymotor_round_d, height-bearing_h+1], align=-Z);
 
         // cut out motor mount holes etc
         screw_dist = lookup(NemaDistanceBetweenMountingHoles, yaxis_motor);
@@ -38,32 +35,23 @@ module yaxis_motor_mount_bearing_clamp(align=N)
     }
 
     // debug bearing
-    %cylindera(h=bearing_h, d=bearing_d*rod_fit_tolerance, align=[0,0,-1], orient=Z);
-}
-
-module motor_mount_top(width, depth, height, belt_cutout=true, belt_cutout_orient=X, align=N)
-{
-    size_align(size=[width, depth, height], align=align);
-    difference()
-    {
-        rcubea([width, depth, height], align=Z);
-
-        ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
-
-        // cutout for belt path
-        cylindera(d=ymotor_round_d, h=height*2, orient=Z, align=N);
-        tz(-1)
-        cubea([depth/2, ymotor_round_d, height*2], align=X+Z);
-
-        // cut out motor mount holes etc
-        tz(-1)
-        linear_extrude(height+2)
-        stepper_motor_mount(17, slide_distance=0, mochup=false);
-    }
+    %cylindera(h=bearing_h, d=bearing_d*rod_fit_tolerance, align=-Z, orient=Z);
 }
 
 module yaxis_motor_mount(part)
 {
+    width = ymotor_w+ymotor_mount_thickness;
+    depth = ymotor_w+ymotor_mount_thickness*2;
+    height = ymotor_mount_thickness_h;
+    ymotor_round_d = lookup(NemaRoundExtrusionDiameter, yaxis_motor);
+
+    motor_pos =
+        + Z * yaxis_motor_offset_z
+        + Z * extrusion_size/2
+        + X * ymotor_mount_thickness
+        + X * ymotor_w/2;
+
+
     if(part==U)
     {
         difference()
@@ -71,7 +59,7 @@ module yaxis_motor_mount(part)
             yaxis_motor_mount(part="pos");
             yaxis_motor_mount(part="neg");
         }
-        %yaxis_motor_mount(part="vit");
+        yaxis_motor_mount(part="vit");
     }
     else if(part=="pos")
     {
@@ -79,21 +67,14 @@ module yaxis_motor_mount(part)
         material(Mat_Plastic)
         union()
         {
+            t(motor_pos)
+            motor_mount(part=part, model=yaxis_motor, size=NemaMedium, thickness=ymotor_mount_thickness_h, extra_size=[ymotor_mount_thickness, ymotor_mount_thickness*2]);
+
             tz(yaxis_motor_offset_z)
             {
-                // top plate
-                tz(extrusion_size/2)
-                tx(ymotor_mount_thickness)
-                tx(ymotor_w/2)
-                motor_mount_top(width=ymotor_w+ymotor_mount_thickness,
-                    depth=ymotor_w+ymotor_mount_thickness*2,
-                    height=ymotor_mount_thickness_h,
-                    belt_cutout=true,
-                    belt_cutout_orient=X);
-
                 // reinforcement plate between motor and extrusion
                 tz(extrusion_size/2)
-                rcubea([ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_h], align=[1,0,-1], extra_size=[0,0,ymotor_mount_thickness_h], extra_align=Z);
+                rcubea([ymotor_mount_thickness, ymotor_w+ymotor_mount_thickness*2, ymotor_h], align=X-Z, extra_size=[0,0,ymotor_mount_thickness_h], extra_align=Z);
 
                 // side triangles
                 tz(extrusion_size/2)
@@ -124,6 +105,16 @@ module yaxis_motor_mount(part)
     }
     else if(part=="neg")
     {
+        t(motor_pos)
+        motor_mount(part=part, model=yaxis_motor, size=NemaMedium, thickness=ymotor_mount_thickness_h, extra_size=[ymotor_mount_thickness, ymotor_mount_thickness*2]);
+
+        // cutout for belt path
+        t(motor_pos)
+        {
+            cylindera(d=ymotor_round_d+1*mm, h=ymotor_mount_thickness_h+1, orient=Z, align=Z, extra_h=1, extra_align=-Z);
+            cubea([depth/2, ymotor_round_d+1*mm, ymotor_mount_thickness_h+1], align=X+Z, extra_size=1*Z, extra_align=-Z);
+        }
+
         // cutout for motor cables
         tz(-20*mm)
         cubea([ymotor_mount_thickness*3, 20*mm, ymotor_h], align=-Z);
@@ -143,13 +134,13 @@ module yaxis_motor_mount(part)
     }
     else if(part=="vit")
     {
-        attach(yaxis_motor_mount_conn_motor,[N,N])
+        t(motor_pos)
         {
-            motor(yaxis_motor, NemaMedium, dualAxis=false, orientation=[0,180,0]);
+            motor_mount(part=part, model=yaxis_motor, size=NemaMedium, thickness=ymotor_mount_thickness_h, extra_size=[ymotor_mount_thickness, ymotor_mount_thickness*2]);
 
             tz(7*mm)
             rotate(180*X)
-            %pulley(pulley_2GT_20T);
+            pulley(pulley_2GT_20T);
         }
     }
 }

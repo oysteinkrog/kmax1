@@ -1,7 +1,6 @@
-include <MCAD/stepper.scad>
-include <MCAD/motors.scad>
 include <config.scad>
 include <thing_libutils/pulley.scad>
+include <thing_libutils/stepper.scad>
 
 yaxis_motor_mount_conn = [[0,0,+extrusion_size/2+yaxis_motor_offset_z],X];
 yaxis_motor_mount_conn_motor = [[+yaxis_motor_offset_x, 0,+extrusion_size/2+yaxis_motor_offset_z],Z];

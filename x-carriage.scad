@@ -432,7 +432,7 @@ module extruder_a(part=undef)
         ry(extruder_motor_mount_angle)
         ty(-1*mm)
         {
-            motor(extruder_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+            motor(model=extruder_motor, size=NemaMedium, orient=-Y);
 
             // motor heatsink
             ty(lookup(NemaLengthMedium, extruder_motor)+2*mm)

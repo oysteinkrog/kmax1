@@ -1,8 +1,7 @@
 include <thing_libutils/units.scad>
 include <thing_libutils/system.scad>
+include <thing_libutils/stepper.scad>
 include <config.scad>
-include <MCAD/motors.scad>
-include <MCAD/stepper.scad>
 
 motor_mount_wall_thick = xaxis_pulley[1] - xaxis_pulley[0]/2 + 4*mm;
 xaxis_end_motorsize = lookup(NemaSideSize,xaxis_motor);

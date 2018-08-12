@@ -305,7 +305,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
 
                     if(show_motor)
                     {
-                        motor(xaxis_motor, NemaMedium, dualAxis=false, orientation=[-90,0,0]);
+                        motor(model=xaxis_motor, size=NemaMedium, dual_axis=false, orient=-Y);
                     }
                 }
             }
