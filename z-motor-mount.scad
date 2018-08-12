@@ -85,9 +85,10 @@ module zaxis_motor_mount(part)
     }
     else if(part=="vit")
     {
-        attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
-        motor_mount(part=part, model=zaxis_motor, thickness=zmotor_mount_thickness_h);
     }
+
+    attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
+    motor_mount(part=part, model=zaxis_motor, thickness=zmotor_mount_thickness_h);
 }
 
 module part_z_motor_mount()
@@ -95,4 +96,7 @@ module part_z_motor_mount()
     rotate([0,-90,0])
     zaxis_motor_mount();
 }
+
+if(false)
+zaxis_motor_mount();
 
