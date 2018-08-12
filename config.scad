@@ -6,8 +6,7 @@ include <thing_libutils/bearing-linear-data.scad>
 /*include <thing_libutils/thread-data.scad>*/
 include <thing_libutils/nut-data.scad>
 include <thing_libutils/timing-belts-data.scad>
-
-include <MCAD/stepper.scad>
+include <thing_libutils/stepper-data.scad>
 
 use <thing_libutils/misc.scad>
 
@@ -161,6 +160,7 @@ zaxis_motor = dict_replace_multiple(Nema17,
         [
         [NemaAxleDiameter, 8*mm],
         [NemaFrontAxleLength, 340*mm],
+        [NemaAxleFlatDepth, 0*mm],
         ]);
 
 zmotor_w = lookup(NemaSideSize,zaxis_motor);

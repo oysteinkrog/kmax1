@@ -1,12 +1,10 @@
-include <MCAD/stepper.scad>
-//include <MCAD/motors.scad>
-
 include <config.scad>
 include <thing_libutils/system.scad>;
 include <thing_libutils/units.scad>;
 include <thing_libutils/gears-data.scad>
 include <thing_libutils/bearing-linear-data.scad>
 include <thing_libutils/misc.scad>;
+include <thing_libutils/stepper.scad>;
 include <x-end.h>
 
 use <thing_libutils/gears.scad>
