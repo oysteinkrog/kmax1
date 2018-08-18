@@ -2,9 +2,6 @@ include <config.scad>
 include <thing_libutils/units.scad>
 include <thing_libutils/shapes.scad>
 include <thing_libutils/screws.scad>
-//use <boxes.scad>
-use <MCAD/boxes.scad>
-/*use <GoblinOne.scad>*/
 
 //3 Pin IEC320 C14 Inlet Male Power Socket w Fuse Switch 10A 250V
 //http://www.amazon.com/IEC320-Inlet-Power-Socket-Switch/dp/B00511QVVK
