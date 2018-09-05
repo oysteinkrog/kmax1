@@ -51,7 +51,7 @@ module yaxis_idler(part)
                 tx(-yaxis_idler_mount_thickness)
                 tz(extrusion_size/2)
                 {
-                    translate([yaxis_idler_mount_thickness/2,0,yaxis_belt_path_offset_z])
+                    translate([yaxis_idler_mount_thickness/2,0,yaxis_belt_path_offset.z])
                     rcylindera(
                         h=extrusion_size+yaxis_idler_mount_thickness,
                         d=tighten_screw_dia_outer,
@@ -75,7 +75,7 @@ module yaxis_idler(part)
                 // adjustment screw
                 tx(-yaxis_idler_mount_thickness)
                 tz(extrusion_size/2)
-                t([yaxis_idler_mount_thickness/2,0,yaxis_belt_path_offset_z])
+                t([yaxis_idler_mount_thickness/2,0,yaxis_belt_path_offset.z])
                 t(yaxis_idler_mount_adjustscrew_offset)
                 rcylindera(
                     h=extrusion_size+yaxis_idler_mount_thickness,
@@ -101,13 +101,13 @@ module yaxis_idler(part)
         for(y=[-1,1])
         tx(-extrusion_size/2-yaxis_idler_mount_thickness)
         ty(y*yaxis_idler_tightscrew_dist)
-        tz(extrusion_size/2+yaxis_belt_path_offset_z)
+        tz(extrusion_size/2+yaxis_belt_path_offset.z)
         screw_cut(yaxis_idler_mount_tightscrew_hexnut, head_embed=false, h=extrusion_size+yaxis_idler_mount_thickness+10*mm, with_nut=false, orient=X, align=X);
 
         // pulley block adjustment screw
         tx(-extrusion_size/2)
         tx(-yaxis_idler_mount_thickness)
-        tz(extrusion_size/2+yaxis_belt_path_offset_z)
+        tz(extrusion_size/2+yaxis_belt_path_offset.z)
         t(yaxis_idler_mount_adjustscrew_offset)
         screw_cut(yaxis_idler_mount_adjustscrew_hexnut, head="button", h=extrusion_size+yaxis_idler_mount_thickness+10*mm, head_embed=false, with_nut=false, orient=X, align=X);
 

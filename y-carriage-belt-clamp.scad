@@ -17,9 +17,10 @@ module yaxis_belt_holder(part)
     material(Mat_Plastic)
     {
         // base (screws etc)
-        rcubea([yaxis_belt_mount_width_base,yaxis_belt_mount_depth_base,yaxis_belt_mount_base_thick], align=Z);
+        rcubea([yaxis_belt_mount_width_base,yaxis_belt_mount_depth_base,yaxis_belt_mount_base_thick], align=-Z);
 
         // for belt attachment
+        tz(-yaxis_belt_mount_base_thick)
         rcubea([yaxis_belt_mount_width_belt,yaxis_belt_mount_depth,yaxis_belt_mount_height], align=-Z, extra_size=Z*yaxis_belt_mount_base_thick, extra_align=Z);
 
         /*intersection()*/
@@ -40,12 +41,15 @@ module yaxis_belt_holder(part)
     else if(part=="neg")
     {
         // for belt attachment
+        tz(-yaxis_belt_mount_base_thick)
         rcubea([yaxis_belt_mount_width_base*2,yaxis_belt_mount_belt_gap,yaxis_belt_mount_height+1], align=-Z);
 
+        tz(-yaxis_belt_mount_base_thick)
         for(y=[-1,1])
         translate(Y*y*yaxis_belt_mounthole_dist/2)
         screw_cut(nut=yaxis_belt_mounthole_nut, orient=Z, align=Z);
 
+        tz(-yaxis_belt_mount_base_thick)
         tx(1*mm)
         cylindera(d=8*mm, h=100, orient=Z);
     }
@@ -59,3 +63,6 @@ module part_y_carriage_belt_holder()
         yaxis_belt_holder();
     }
 }
+
+if(false)
+yaxis_belt_holder();

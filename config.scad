@@ -127,10 +127,14 @@ yaxis_motor_offset_x = lookup(NemaSideSize,yaxis_motor)/2+ymotor_mount_thickness
 
 yaxis_belt = TimingBelt_GT2_2;
 yaxis_belt_width = 6*mm;
-yaxis_belt_path_offset_x = -yaxis_pulley_inner_d/2;
-yaxis_belt_path_offset_z = 5*mm;
+yaxis_pulley_h_full = yaxis_pulley[1];
+yaxis_pulley_h = yaxis_pulley[0];
 
-yaxis_motor_offset_z = yaxis_belt_path_offset_z - 10*mm;
+yaxis_carriage_bearing_mount_bottom_thick = 3;
+yaxis_belt_path_offset =
+    +Z*yaxis_carriage_bearing_mount_bottom_thick
+    +Z*4.5*mm
+    -Z*yaxis_pulley_inner_d/2;
 
 yaxis_idler_pulley = pulley_2GT_20T_idler;
 yaxis_idler_pulley_inner_d = yaxis_idler_pulley[2];

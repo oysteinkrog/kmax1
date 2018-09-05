@@ -125,10 +125,13 @@ module x_axis()
 module y_axis()
 {
     // y axis
-    attach([[yaxis_belt_path_offset_x,main_depth/2+extrusion_size,yaxis_motor_offset_z], Y], yaxis_motor_mount_conn)
-    yaxis_motor_mount(show_motor=true);
+    extrusion_motor_mount_conn = [[0, main_depth/2, -extrusion_size/2], Y];
+    attach(extrusion_motor_mount_conn, yaxis_motor_mount_conn)
+    {
+        yaxis_motor_mount(show_motor=true);
+    }
 
-    extrusion_idler_conn = [[yaxis_belt_path_offset_x, -main_depth/2-extrusion_size, -extrusion_size+yaxis_idler_offset_z], [0,-1,0]];
+    extrusion_idler_conn = [[0, -main_depth/2-extrusion_size, -extrusion_size], -Y];
     attach(extrusion_idler_conn, yaxis_idler_conn)
     {
         yaxis_idler();
@@ -137,19 +140,15 @@ module y_axis()
         yaxis_idler_pulleyblock(show_pulley=true);
     }
 
-    translate([yaxis_belt_path_offset_x,0,yaxis_belt_path_offset_z])
-    translate([0,main_depth/2+extrusion_size+yaxis_motor_offset_x,0])
-    rotate(90*Y)
+    ty(main_depth/2+extrusion_size+yaxis_motor_mount_motor_offset.x)
+    t(yaxis_belt_path_offset)
     belt_path(
-        len=main_depth+yaxis_motor_offset_x-yaxis_idler_pulley_offset_y+extrusion_size,
+        len=main_depth+yaxis_motor_mount_motor_offset.x-yaxis_idler_pulley_offset_y+extrusion_size,
         belt_width=yaxis_belt_width,
         pulley_d=yaxis_pulley_inner_d,
         belt=yaxis_belt,
         align=-Y, orient=Y);
 
-    translate([0,-axis_pos_y,get(LinearBearingInnerDiameter, yaxis_bearing)/2])
-    attach(yaxis_carriage_bearing_mount_conn_bearing, yaxis_belt_mount_conn)
-    yaxis_belt_holder();
 
     t(yaxis_carriage_offset)
     {
@@ -159,19 +158,26 @@ module y_axis()
         attach([[x*(yaxis_rod_distance/2),y*(main_depth/2+extrusion_size/2),0],Z],mount_rod_clamp_conn_rod)
         mount_rod_clamp_full(rod_d=zaxis_rod_d, thick=4, width=extrusion_size, thread=extrusion_thread, orient=Y);
 
+        // y smooth rods
         for(x=[-1,1])
         tx(x*(yaxis_rod_distance/2))
-        {
-            // y smooth rods
-            material(Mat_Chrome)
-            cylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=Y);
+        material(Mat_Chrome)
+        cylindera(h=yaxis_rod_l,d=yaxis_rod_d, orient=Y);
 
-            // y bearing mounts
-            for(y=[-1,1])
-            attach([[0,y*(yaxis_bearing_distance_y/2)-axis_pos_y,0],-Z], yaxis_carriage_bearing_mount_conn_bearing)
-            {
-                yaxis_carriage_bearing_mount();
-            }
+        // y bearing mounts
+        for(x=[-1,1])
+        tx(x*(yaxis_rod_distance/2))
+        for(y=[-1,1])
+        attach([[0,y*(yaxis_bearing_distance_y/2)-axis_pos_y,0],-Z], yaxis_carriage_bearing_mount_conn_bearing)
+        yaxis_carriage_bearing_mount();
+
+        translate([0,-axis_pos_y,get(LinearBearingInnerDiameter, yaxis_bearing)/2])
+        attach(yaxis_carriage_bearing_mount_conn_bearing, yaxis_belt_mount_conn)
+        {
+            /*yaxis_belt_holder()*/
+
+            tz(-13*mm)
+            #cubea([10,10,1]);
         }
 
         attach(yaxis_carriage_bearing_mount_conn_bearing, [Y*axis_pos_y,Z])
