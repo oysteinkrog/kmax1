@@ -59,6 +59,7 @@ module yaxis_motor_mount(part)
             yaxis_motor_mount(part="pos");
             yaxis_motor_mount(part="neg");
         }
+        if($show_vit)
         yaxis_motor_mount(part="vit");
     }
     else if(part=="pos")
