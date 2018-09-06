@@ -199,7 +199,7 @@ module part_y_idler()
 
 module part_y_idler_pulleyblock()
 {
-    attach([N, -X], yaxis_idler_pulleyblock_conn_print)
+    attach([N, Z], yaxis_idler_pulleyblock_conn_print)
     {
         yaxis_idler_pulleyblock(show_pulley=false);
     }
