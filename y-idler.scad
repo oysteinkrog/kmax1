@@ -122,7 +122,8 @@ module yaxis_idler(part)
 
 module yaxis_idler_pulleyblock(part, show_pulley=false)
 {
-    h = yaxis_idler_pulley_h + 3*mm*2;
+    washer_h=.8*mm + .1*mm;
+    h = yaxis_idler_pulley_h + 2*washer_h + 3*mm*2;
     d=yaxis_idler_mount_tightscrew_hexnut_dia*2;
 
     if(part==U)
@@ -157,10 +158,11 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
     }
     else if(part=="neg")
     {
-        // pulley cutout
+
+        // pulley+washers cutout
         tx(-3*mm)
         cubea(
-            size=[yaxis_idler_pulley_outer_d, yaxis_idler_pulley_outer_d*3, yaxis_idler_pulley_h+0.5],
+            size=[yaxis_idler_pulley_outer_d, yaxis_idler_pulley_outer_d*3, yaxis_idler_pulley_h+0.5+2*washer_h],
             align=N,
             extra_size=[20*mm,0,0], extra_align=X
             );
@@ -191,6 +193,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
     else if(part=="vit")
     {
         pulley(pulley_2GT_20T_idler);
+        // TODO: add washers
     }
 
 }
