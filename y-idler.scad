@@ -179,15 +179,13 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
 
         // adjustment screw
         tx(-yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len)
-        tx(yaxis_idler_pulley_tight_len/2)
         t(yaxis_idler_mount_adjustscrew_offset)
         {
-            tx(yaxis_idler_pulley_tight_len/2)
-            tx(5*mm)
-            nut_trap_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, screw_l=12*mm, trap_axis=-Z, orient=-X, align=X);
+        tx(yaxis_idler_pulley_tight_len/2)
+            tx(9*mm)
+            nut_trap_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, screw_l=10*mm, trap_axis=-Z, orient=-X, align=X);
 
-            tx(-yaxis_idler_pulley_tight_len/2)
-            screw_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, h=7*mm, with_nut=false, orient=X, align=X);
+            screw_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, screw_l=10*mm, with_nut=false, trap_axis=-Z, orient=X, align=X);
         }
     }
     else if(part=="vit")
