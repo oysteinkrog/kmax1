@@ -89,7 +89,7 @@ module zaxis_motor_mount(part)
         {
             translate([zmotor_mount_rod_offset_x-5, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
             {
-                nut_trap_cut(nut=zmotor_mount_clamp_nut, h=10, head_embed=false, trap_h=10, screw_l_extra=2*mm, trap_axis=-Z, orient=X, align=N);
+                nut_trap_cut(nut=zmotor_mount_clamp_nut, trap_h=10, trap_axis=-Z, orient=X, align=N);
             }
         }
 

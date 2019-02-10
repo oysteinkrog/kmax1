@@ -294,8 +294,6 @@ guidler_screw_distance = 10;
 
 house_guidler_screw_h = guidler_screw_thread_dia+10*mm;
 
-house_guidler_screw_h = guidler_screw_thread_dia+10*mm;
-
 guidler_mount_off =
     + X*(extruder_drivegear_bearing_d/2)
     + X*1*mm

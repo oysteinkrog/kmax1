@@ -40,7 +40,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
             translate(xaxis_end_motor_offset)
             {
                 translate([x*screw_dist/2, 0, z*screw_dist/2])
-                cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=Y, align=[0,-1,0], rounding_radius=2);
+            cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=Y, align=[0,-1,0], round_r=2);
             }
         }
 
@@ -178,7 +178,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
             for(y=[-1,1])
             translate([-5*mm,y*9.5*mm/2,xaxis_endstop_size_switch[2]])
             {
-                screw_cut(nut=NutHexM2_5, h=10*mm, embed_head=false, with_head=true, with_nut=false, orient=[0,0,-1], align=[0,0,-1]);
+                screw_cut(nut=NutHexM2_5, h=10*mm, head_embed=false, with_head=true, with_nut=false, orient=-Z, align=-Z);
             }
         }
         else if(xaxis_endstop_type == "SN04")
@@ -189,7 +189,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
             translate([-0*mm,y*10.5*mm/2,xaxis_endstop_size_SN04[2]])
             {
                 translate(xaxis_endstop_offset_SN04)
-                screw_cut(nut=NutHexM3, h=20*mm, embed_head=false, with_head=true, with_nut=false, orient=[0,0,-1], align=[0,0,-1]);
+                screw_cut(nut=NutHexM3, h=20*mm, head_embed=false, with_head=true, with_nut=false, orient=-Z, align=-Z);
             }
         }
 
@@ -224,7 +224,7 @@ module xaxis_end(part, with_motor=false, stop_x_rods=true, beltpath_index=0, sho
                 round_d=1.1*lookup(NemaRoundExtrusionDiameter, xaxis_motor);
                 translate([0, .1, 0])
                 translate(Y)
-                teardrop(d=round_d,h=motor_mount_wall_thick, tear_orient=Z, orient=Y, align=-Y, roll=90, truncate=0.9);
+                teardrop(d=round_d,h=motor_mount_wall_thick, orient=Y, align=-Y, roll=90, truncate=0.9);
 
                 // motor axle
                 translate([0, .1, 0])

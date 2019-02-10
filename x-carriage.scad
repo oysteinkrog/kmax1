@@ -180,7 +180,6 @@ module x_carriage(part=undef, beltpath_sign=1)
                    belt=xaxis_belt,
                    belt_width=xaxis_belt_width,
                    belt_dist=xaxis_pulley_inner_d,
-                   thick=xaxis_carriage_thickness,
                    with_tensioner=beltpath_sign==sign(z)
                    );
             }
@@ -214,7 +213,6 @@ module x_carriage(part=undef, beltpath_sign=1)
                belt=xaxis_belt,
                belt_width=xaxis_belt_width,
                belt_dist=xaxis_pulley_inner_d,
-               thick=xaxis_carriage_thickness,
                with_tensioner=beltpath_sign==sign(z)
                );
         }
@@ -681,7 +679,7 @@ module extruder_b(part=undef)
         ty(guidler_w_cut/2)
         cubea([100,100,100], align=X-Y+Z);
 
-        attach(extruder_conn_guidler, N, $explode=0)
+        attach(extruder_conn_guidler, [N,Z], $explode=0)
         ty(-guidler_w/2)
         ty(guidler_w_cut/2)
         {
@@ -855,7 +853,7 @@ module extruder_drivegear_bondtech(part)
     else if(part=="neg")
     material(Mat_Steel)
     {
-        cylindera(d=5.01*mm, h=100, orient=N);
+        cylindera(d=5.01*mm, h=100, orient=Z);
 
         // drive path teeth
         torus($fn=32, d=outer_d+extruder_drivegear_drivepath_h/1.5, radial_width=extruder_drivegear_drivepath_h/2, orient=Y);
@@ -1086,7 +1084,8 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
         t(extruder_offset)
         attach(extruder_carriage_sensormount_conn, sensormount_conn)
         {
-            sensormount(part, align=-Y);
+            sensormount(part=part);
+            sensormount_clamp(part=part);
         }
     }
 }
@@ -1119,7 +1118,7 @@ module extruder_guidler(part, override_w)
         t(guidler_mount_off)
         tx(guidler_mount_d/2)
         tz(guidler_mount_d)
-        rcubea([guidler_d, guidler_w_, 15*mm], align=-X, extrasize=guidler_extra_h_up*Z, extrasize_align=Z);
+        rcubea([guidler_d, guidler_w_, 15*mm], align=-X, extra_size=guidler_extra_h_up*Z, extra_align=Z);
     }
     else if(part=="pos")
     material(Mat_Plastic)
@@ -1580,12 +1579,10 @@ if(false)
 
         x_carriage_extruder();
 
-        /*translate(8*X)*/
-        /*translate(-30*Y)*/
-        /*translate(-33*Z)*/
-        /*rotate(180*Y)*/
-        /*rotate(-90*X)*/
-        /*import("stl/e3d-v6-part-cooling-2x3510-blower.stl");*/
+        if(x<0)
+        t(extruder_offset)
+        attach(extruder_carriage_sensormount_conn, sensormount_conn)
+        sensormount_clamp();
     }
 
     if(false)

@@ -118,7 +118,7 @@ module x_axis()
         translate([x*zmotor_mount_rod_offset_x, 0, 0])
         mirror([max(0,x),0,0])
         {
-            xaxis_end(with_motor=true, beltpath_index=max(0,x), show_nut=true, show_motor=true, show_nut=true);
+            xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=true, show_nut=true);
 
             xaxis_end_bucket();
         }
@@ -129,7 +129,7 @@ module y_axis()
 {
     // y axis
     attach([[yaxis_belt_path_offset_x,main_depth/2+extrusion_size,yaxis_motor_offset_z], Y], yaxis_motor_mount_conn)
-    yaxis_motor_mount(show_motor=true);
+    yaxis_motor_mount();
 
     extrusion_idler_conn = [[yaxis_belt_path_offset_x, -main_depth/2-extrusion_size, -extrusion_size+yaxis_idler_offset_z], [0,-1,0]];
     attach(extrusion_idler_conn, yaxis_idler_conn)
@@ -209,7 +209,7 @@ module z_axis()
             tz(zaxis_motor_offset_z)
             mirror([x==-1?1:0,0,0])
             {
-                zaxis_motor_mount(show_motor=true);
+                zaxis_motor_mount();
 
                 tx(zmotor_mount_rod_offset_x)
                 tz(zmotor_mount_thickness_h/2)

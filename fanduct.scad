@@ -30,14 +30,14 @@ concat(
 // returned data has a header row
 // warning, don't set r to 0 or rendering breaks!
 function gen_data(ss) = [
-    [       "Tx","Ty","Tz",     "Sx",   "Sy", "Rx", "Ry",  "r"],
-    [     ss.x/4, -27,  25,   ss.x/2,   ss.y,   60,   00,  .01],
-    [ 2.5+ss.x/4, -21,  21, 5+ss.x/2,   ss.y,   60,   00,  .1 ],
-    /*[         15, -18,  30,       11,     20,   13,    0,  .4 ],*/
-    /*[         17,  -8,  20,       11,     17,   11,  -10,  .5 ],*/
-    [         16, -10,  15,       17,     20,   30,  -15,  .7 ],
-    [         15,  -4,  10,       11,     19,   20,  -30,  .7 ],
-    [         12,   0,   5,        6,     13,    0,  -45,  .8 ],
+    [       "Tx","Ty","Tz",     "Sx",   "Sy", "Rx", "Ry",  "Rz", "r"],
+    [     ss.x/4, -27,  25,   ss.x/2,   ss.y,   60,   00,  00, .01],
+    [ 2.5+ss.x/4, -21,  21, 5+ss.x/2,   ss.y,   60,   00,  00, .1 ],
+    /*[         15, -18,  30,       11,     20,   13,    0,  00, .4 ],*/
+    /*[         17,  -8,  20,       11,     17,   11,  -10,  00, .5 ],*/
+    [         16, -10,  15,       17,     20,   30,  -15,  00, .7 ],
+    [         15,  -4,  10,       11,     19,   20,  -30,  00, .7 ],
+    [         12,   0,   5,        6,     13,    0,  -45,  00, .8 ],
 ];
 
 fanduct_data = gen_data(fanduct_throat_size_withwall);
@@ -84,11 +84,12 @@ module duct(A, fanduct_wallthick=2, N=100, d=2)
                let(S = geth(V,["Sx","Sy"],i))
                let(R = vec3(geth(V,["Rx","Ry"],i)))
                let(T = geth(V,["Tx","Ty","Tz"],i))
-               let(dat = R_(R.x, R.y, R.z, v=to_3d(circle_profile(r=.5))))
+               let(v=to_3d(circle_profile(r=.5)))
+               let(dat = R_(R.x, R.y, R.z, v))
                T_(T.x,T.y,T.z, dat)
            ];
         outer = gen_dat(nSpline_header(A,N));    // outer skin
-        skin(outer, close = true, slices = true);
+        skin(outer);
     }
 
     // generate transformed shapes
@@ -97,9 +98,10 @@ module duct(A, fanduct_wallthick=2, N=100, d=2)
        for (i=[0:len(V)-2])
            let(S = geth(V,["Sx","Sy"],i))
            let(r = [S.x*.5*geth(V,"r",i), S.y*.5*geth(V,"r",i)])
+           let(v=to_3d(shape_profile(size=S,r=r)))
            let(R = vec3(geth(V,["Rx","Ry"],i)))
            let(T = geth(V,["Tx","Ty","Tz"],i))
-           let(dat = R_(R.x, R.y, R.z, v=to_3d(shape_profile(size=S,r=r))))
+           let(dat = R_(R.x, R.y, R.z, v=v))
            T_(T.x,T.y,T.z, dat)
        ];
 

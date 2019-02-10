@@ -1,9 +1,9 @@
 include <belt_fastener.h>
-
 use <thing_libutils/screws.scad>
+use <thing_libutils/shapes.scad>
 use <thing_libutils/timing-belts.scad>
 
-module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pulley_2GT_20T[2], width=55*mm, with_tensioner=true, align=U, orient=X)
+module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pulley_2GT_20T[2], width=55*mm, with_tensioner=true, align=N, orient=X)
 {
     belt_t2 = belt_t2_thickness(belt) + .2*mm;
     tension_screw_nut = NutHexM3;
