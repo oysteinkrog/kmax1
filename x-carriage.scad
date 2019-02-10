@@ -1068,8 +1068,8 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
         t(extruder_offset)
         attach(extruder_carriage_sensormount_conn, sensormount_conn)
         {
-            sensormount(part);
-            sensormount_clamp(part);
+            sensormount(part=part);
+            sensormount_clamp(part=part);
         }
     }
 }

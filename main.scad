@@ -229,7 +229,7 @@ module z_axis()
         {
             tz(zaxis_motor_offset_z)
             mirror(X)
-            zaxis_motor_mount(show_motor=true);
+            zaxis_motor_mount();
 
             // z smooth rods
             tx(extrusion_size+zaxis_rod_d/2)
