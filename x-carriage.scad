@@ -1079,8 +1079,8 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
         t(extruder_offset)
         attach(extruder_carriage_sensormount_conn, sensormount_conn)
         {
-            sensormount(part);
-            sensormount_clamp(part);
+            sensormount(part=part);
+            sensormount_clamp(part=part);
         }
     }
 }
@@ -1628,7 +1628,7 @@ module xaxis_end_bucket(part)
         if(x<0)
         t(extruder_offset)
         attach(extruder_carriage_sensormount_conn, sensormount_conn)
-        sensormount_clamp(part);
+        sensormount_clamp();
     }
 
     /*if(false)*/
