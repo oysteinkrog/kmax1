@@ -54,6 +54,7 @@ module gantry_upper_connector(part)
             head="button",
             thread=extrusion_thread,
             orient=-X,
+            thread=extrusion_thread,
             align=-X
             );
 
