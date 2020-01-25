@@ -171,7 +171,7 @@ zmotor_h = lookup(NemaLengthLong,zaxis_motor);
 zaxis_nut = [20*mm, 36*mm, 8*mm, 5*mm, 23*mm, 13.5*mm, ThreadM3];
 zaxis_nut_mat = Mat_PlasticBlack;
 
-zaxis_motor_offset_z = 10*mm;
+zaxis_motor_offset_z = -10*mm;
 zmotor_mount_thickness = 5*mm;
 zmotor_mount_thickness_h = 7*mm;
 zmotor_mount_motor_offset = 5*mm;
