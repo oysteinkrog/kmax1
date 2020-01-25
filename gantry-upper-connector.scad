@@ -50,9 +50,7 @@ module gantry_upper_connector(part)
         ty(y*(zmotor_mount_clamp_dist/2 + 13*mm))
         screw_cut(
             nut=zmotor_mount_clamp_nut,
-            h=12*mm,
-            head="button",
-            thread=extrusion_thread,
+            h=abs(zmotor_mount_rod_offset_x+(extrusion_size*2)),
             orient=-X,
             thread=extrusion_thread,
             align=-X
