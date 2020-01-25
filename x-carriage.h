@@ -188,7 +188,7 @@ extruder_b_mount_thick = 5*mm;
 
 /*extruder_carriage_sensormount_offset=[35,-7,-41];*/
 //extruder_carriage_sensormount_offset=[-25,-7,-47];
-extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x + 28*mm,0,-47.5*mm];
+extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x+16*mm,2*mm,-52*mm];
 extruder_carriage_sensormount_conn=[extruder_carriage_sensormount_offset,Y];
 
 sensormount_conn = [N,Y];
@@ -340,7 +340,7 @@ extruder_b_pushfit_nut_thread = get(NutThread, extruder_b_pushfit_nut);
 
 sensor_diameter=12;
 sensormount_thickness=5*mm;
-sensormount_size = [17.8*mm,sensormount_thickness,15*mm];
+sensormount_size = [17*mm,sensormount_thickness,15*mm];
 
 sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - v_y(sensormount_size/2) - v_xy(extruder_b_hotend_mount_offset);
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
