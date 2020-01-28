@@ -1680,57 +1680,6 @@ module x_carriage_extruder(side)
     }
 }
 
-module xaxis_end_bucket(part)
-{
-    s=[60,60,30];
-
-    if(part==U)
-    {
-        difference()
-        {
-            xaxis_end_bucket(part="pos");
-            xaxis_end_bucket(part="neg");
-        }
-    }
-    else if(part=="pos")
-    {
-        tz(extruder_offset.z)
-        tz(extruder_offset_b.z)
-        tz(-hotend_height)
-        t(extruder_b_hotend_mount_offset)
-
-        tx(100)
-        ty(extruder_b_filapath_offset.y)
-        rcubea(size=s, align=-Z);
-    }
-    else if(part=="neg")
-    {
-        tz(extruder_offset.z)
-        tz(extruder_offset_b.z)
-        tz(-hotend_height)
-        t(extruder_b_hotend_mount_offset)
-
-        tx(100)
-        ty(extruder_b_filapath_offset.y)
-        rcubea(size=s-[3,3,3], align=-Z, extra_size=1000*Z, extra_align=Z);
-    }
-}
-
-/*// bearing mount bottom*/
- /*difference()*/
- /*{*/
-     /*union()*/
-     /*{*/
-     /*rcubea([xaxis_carriage_bottom_width, xaxis_carriage_thickness, xaxis_bearing_bottom_L+xaxis_carriage_padding+ziptie_bearing_distance*2], align=Y);*/
-
-     /*ty(xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y)*/
-     /*linear_bearing_mount(part="pos", bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, mount_dir_align=Y);*/
-     /*}*/
-
-     /*ty(xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y)*/
-     /*linear_bearing_mount(part="neg", bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, mount_dir_align=Y);*/
-/*}*/
-
 /*if(false)*/
 {
     sides=[-1,1];
