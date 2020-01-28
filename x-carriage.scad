@@ -1552,42 +1552,6 @@ module x_carriage_extruder(side)
     }
 }
 
-module xaxis_end_bucket(part)
-{
-    s=[60,60,30];
-
-    if(part==U)
-    {
-        difference()
-        {
-            xaxis_end_bucket(part="pos");
-            xaxis_end_bucket(part="neg");
-        }
-    }
-    else if(part=="pos")
-    {
-        tz(extruder_offset.z)
-        tz(extruder_offset_b.z)
-        tz(-hotend_height)
-        t(extruder_b_hotend_mount_offset)
-
-        tx(100)
-        ty(extruder_b_filapath_offset.y)
-        rcubea(size=s, align=-Z);
-    }
-    else if(part=="neg")
-    {
-        tz(extruder_offset.z)
-        tz(extruder_offset_b.z)
-        tz(-hotend_height)
-        t(extruder_b_hotend_mount_offset)
-
-        tx(100)
-        ty(extruder_b_filapath_offset.y)
-        rcubea(size=s-[3,3,3], align=-Z, extra_size=1000*Z, extra_align=Z);
-    }
-}
-
 /*if(false)*/
 {
     sides=[-1,1];

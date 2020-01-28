@@ -12,6 +12,7 @@ include <thing_libutils/pulley.scad>
 include <thing_libutils/materials.scad>
 
 include <x-end.h>
+include <x-carriage.h>
 
 module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xrod_adjustment=true)
 {
@@ -410,6 +411,51 @@ module xaxis_end_znut()
         cylindera(d=zaxis_nut[2], h=zaxis_nut[4]+.2, orient=Z, align=Z);
     }
 }
+
+module xaxis_end_bucket(part)
+{
+    s=[60,60,30];
+    flange_h = fallback(get(LinearBearingFlangeThickness, zaxis_bearing),0);
+
+    echo(flange_h);
+
+    if(part==U)
+    {
+        difference()
+        {
+            xaxis_end_bucket(part="pos");
+            xaxis_end_bucket(part="neg");
+        }
+    }
+    else if(part=="pos")
+    material(Mat_Plastic)
+    hull()
+    {
+        ty(-xaxis_zaxis_distance_y)
+        tz(-xaxis_end_wz/2)
+        tz(-flange_h)
+        rcubea(size=[10,50,10], align=-Z);
+
+        tx(50)
+        tz(extruder_offset.z)
+        tz(extruder_offset_b.z)
+        tz(-hotend_height)
+        t(extruder_b_hotend_mount_offset)
+        /*ty(extruder_b_filapath_offset.y)*/
+        rcubea(size=s, align=-Z);
+    }
+    else if(part=="neg")
+    {
+        tx(50)
+        tz(extruder_offset.z)
+        tz(extruder_offset_b.z)
+        tz(-hotend_height)
+        t(extruder_b_hotend_mount_offset)
+        /*ty(extruder_b_filapath_offset.y)*/
+        rcubea(size=s-[3,3,3], align=-Z, extra_size=1000*Z, extra_align=Z);
+    }
+}
+
 
 
 if(false)
