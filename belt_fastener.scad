@@ -115,20 +115,19 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
 
 if(false)
 {
-    for(z=[-1,1])
     for(z=xaxis_beltpath_z_offsets)
     {
-        translate([0, 0, z])
+        tz(z)
         {
-            translate([0, xaxis_carriage_beltpath_offset_y, 0])
-            translate([-main_width/2, 0, 0])
-            rotate([90,0,0])
+            ty(xaxis_carriage_beltpath_offset_y)
+            tx(-main_width/2)
+            rx(90)
             belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=X, align=X);
 
-            proj_extrude_axis(axis=-Y)
-            translate([0, xaxis_carriage_beltpath_offset_y, 0])
+            /*proj_extrude_axis(axis=-Y)*/
+            ty(xaxis_carriage_beltpath_offset_y)
             mirror([0,0,sign(z)>1?1:0])
-            /*mirror(X)*/
+            mirror([sign(z)<1?1:0,0,0])
             belt_fastener();
         }
     }
