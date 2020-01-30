@@ -59,6 +59,9 @@ module zaxis_motor_mount(part)
             translate([0, i*((zmotor_w/2)+zmotor_mount_thickness/2), 2])
             cubea([zmotor_mount_thickness, zmotor_mount_thickness, zmotor_mount_h+2], align=X-Z);
         }
+
+        attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
+        motor_mount(part=part, model=zaxis_motor, thickness=zmotor_mount_thickness_h);
     }
     else if(part=="neg")
     {
@@ -86,21 +89,18 @@ module zaxis_motor_mount(part)
 
         // cut out z rod mounting clamp nut traps
         for(i=[-1,1])
-        {
-            translate([zmotor_mount_rod_offset_x-5, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
-            {
-                nut_trap_cut(nut=zmotor_mount_clamp_nut, trap_h=10, trap_axis=-Z, orient=X, align=N);
-            }
-        }
+        translate([zmotor_mount_rod_offset_x+1, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
+        nut_trap_cut(nut=zmotor_mount_clamp_nut, trap_h=20, cut_screw=false, trap_axis=-Z, orient=-X, align=X);
 
+        attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
+        motor_mount(part=part, model=zaxis_motor, thickness=zmotor_mount_thickness_h);
     }
     else if(part=="vit")
     {
-        }
-
-    attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
-    motor_mount(part=part, model=zaxis_motor, thickness=zmotor_mount_thickness_h);
+        attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
+        motor_mount(part=part, model=zaxis_motor, thickness=zmotor_mount_thickness_h);
     }
+}
 
 module part_z_motor_mount()
 {
