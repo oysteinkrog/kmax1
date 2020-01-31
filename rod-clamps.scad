@@ -6,7 +6,7 @@ use <thing_libutils/shapes.scad>
 use <thing_libutils/screws.scad>
 use <thing_libutils/transforms.scad>
 
-module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=undef, base_thick=undef, thread=ThreadM4, align=N, orient=Z, align_obj = "rod")
+module mount_rod_clamp_half(part, rod_d=10*mm, screw_dist=undef, screw_h=10*mm, width=4, thick=undef, base_thick=undef, thread=ThreadM4, nut=NutHexM4, align=N, orient=Z, align_obj = "rod")
 {
     thick_=thick==undef?rod_d:thick;
     outer_d= rod_d+thick_*2;
@@ -39,7 +39,12 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
             /*hull()*/
             {
                 // cylinder around rod
-                rcylindera(d=outer_d, h=width, orient=Z, align=N);
+                difference()
+                {
+                    rcylindera(d=outer_d, h=width, orient=Z, align=N);
+                    // cut bottom of cylinder
+                    cubea([outer_d/2+.1, screw_dist_+thread_dia*2.5+.1, width+1], align=[-1,0,0]);
+                }
 
                 // base
                 rcubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=X);
@@ -52,14 +57,11 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
         size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         {
-            // cut bottom of cylinder
-            cubea([outer_d/2+.1, screw_dist_+thread_dia*2.5+.1, width+1], align=[-1,0,0]);
-
             // cut clamp screw holes
             for(i=[-1,1])
             translate([0, i*screw_dist_/2, 0])
             {
-                screw_cut(thread=thread, head="button", orient=-X);
+                screw_cut(thread=thread, nut=nut, h=screw_h, head="button", orient=-X);
             }
 
             // cut rod
@@ -79,7 +81,7 @@ module mount_rod_clamp_half(part, rod_d=10, screw_dist=undef, width=4, thick=und
     }
 }
 
-module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=undef, base_thick=undef, thread=ThreadM4, align=N, orient=Z, align_obj = "rod")
+module mount_rod_clamp_full(part, rod_d=10*mm, screw_dist=undef, screw_h=10*mm, width=4, thick=undef, base_thick=undef, thread=ThreadM4, nut=NutHexM4, align=N, orient=Z, align_obj = "rod")
 {
     thick_=thick==undef?rod_d:thick;
     outer_d= rod_d+thick_*2;
@@ -112,8 +114,14 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
             /*hull()*/
             {
                 // cylinder around rod
-                translate([rod_d/2,0,0])
-                rcylindera(d=outer_d, h=width, orient=Z, align=N);
+                difference()
+                {
+                    tx(rod_d/2)
+                    rcylindera(d=outer_d, h=width, orient=Z, align=N);
+
+                    // cut bottom of cylinder
+                    cubea([outer_d/2, screw_dist_+thread_dia*2.5+.1, width+1], align=-X);
+                }
 
                 // base
                 /*translate([-rod_d/2,0,0])*/
@@ -126,15 +134,12 @@ module mount_rod_clamp_full(part, rod_d=10, screw_dist=undef, width=4, thick=und
         size_align(size=s, align=align, orient=orient, orient_ref=Z)
         translate(pos_offset)
         {
-            // cut bottom of cylinder
-            /*translate(-rod_d/2*X)*/
-            cubea([outer_d/2, screw_dist_+thread_dia*2.5+.1, width+1], align=-X);
 
             // cut clamp screw holes
             for(i=[-1,1])
             translate([0, i*screw_dist_/2, 0])
             {
-                screw_cut(thread=thread, head="button", orient=-X);
+                screw_cut(thread=thread, nut=nut, h=screw_h, head="button", orient=-X);
             }
 
             // cut rod

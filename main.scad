@@ -247,9 +247,13 @@ module gantry_upper()
 
     // upper gantry connectors
     for(x=[-1,1])
-    translate([x*(main_width/2),0,main_height])
-    mirror([x==-1?1:0,0,0])
-    gantry_upper_connector();
+    tx(x*(main_upper_width/2))
+    tz(main_height)
+    {
+        linear_extrusion(h=main_upper_dist_y, align=-x*X+Z, orient=Y);
+        mirror([x==1?0:-1,0,0])
+        gantry_upper_connector();
+    }
 
 }
 
