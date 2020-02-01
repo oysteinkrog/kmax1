@@ -92,7 +92,7 @@ module mount_rod_clamp_full(part, rod_d=10*mm, screw_dist=undef, screw_h=10*mm, 
 
     pos_offset = align_obj == "mount" ? N : [-rod_d/2,0,0];
 
-    s=[base_thick_, screw_dist_+thread_dia*2.5, width];
+    s=[base_thick_, screw_dist_+thread_dia*3.5, width];
     if(part==undef)
     {
         difference()
@@ -120,12 +120,12 @@ module mount_rod_clamp_full(part, rod_d=10*mm, screw_dist=undef, screw_h=10*mm, 
                     rcylindera(d=outer_d, h=width, orient=Z, align=N);
 
                     // cut bottom of cylinder
-                    cubea([outer_d/2, screw_dist_+thread_dia*2.5+.1, width+1], align=-X);
+                    cubea([outer_d/2, screw_dist_+thread_dia*3.5+.1, width+1], align=-X);
                 }
 
                 // base
                 /*translate([-rod_d/2,0,0])*/
-                rcubea([base_thick_, screw_dist_+thread_dia*2.5, width], align=X);
+                rcubea([base_thick_, screw_dist_+thread_dia*3.5, width], align=X);
             }
         }
     }
