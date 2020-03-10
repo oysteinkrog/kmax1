@@ -5,13 +5,12 @@ MAKEFLAGS += --jobs=$(CPUS)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-	OPENSCAD="openscad-nightly"
+OPENSCAD="openscad-nightly"
 endif
-ifeq ($(UNAME_S),MINGW64_NT-10.0)
-	OPENSCAD="C:/Program Files/OpenSCAD/openscad.com"
+ifneq (,$(findstring MINGW64_NT,$(UNAME_S)))
+OPENSCAD=/c/Program\ Files/OpenSCAD/openscad.com
 endif
 
-OPENSCAD_FLAGS="--enable=assert"
 OPENSCADPATH=$(shell pwd)
 
 SCAD_FILES = $(wildcard *.scad)
@@ -32,7 +31,7 @@ $(BUILDDIR)/$2.scad: $1 | dir_build dir_output
 
 $(OUTPUTDIR)/$2.stl: $(BUILDDIR)/$2.scad
 	@echo Building $2
-	@OPENSCADPATH=$(OPENSCADPATH) $(OPENSCAD) $(OPENSCAD_FLAGS) -m make -D is_build=true -o $(OUTPUTDIR)/$2.stl -d $(BUILDDIR)/$2.deps $(BUILDDIR)/$2.scad
+	@OPENSCADPATH=$(OPENSCADPATH) $(OPENSCAD) -m make -D is_build=true -o $(OPENSCADPATH)/$(OUTPUTDIR)/$2.stl -d $(OPENSCADPATH)/$(BUILDDIR)/$2.deps $(OPENSCADPATH)/$(BUILDDIR)/$2.scad
 
 .PHONY: all
 all:: $(OUTPUTDIR)/$2.stl
@@ -65,4 +64,4 @@ clean:
 	@rm -rf $(OUTPUTDIR)
 
 gui:
-	@OPENSCADPATH=$(OPENSCADPATH) $(OPENSCAD) $(OPENSCAD_FLAGS)
+	@OPENSCADPATH=$(OPENSCADPATH) $(OPENSCAD)
