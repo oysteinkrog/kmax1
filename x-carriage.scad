@@ -699,7 +699,7 @@ module extruder_b(part=undef)
         ty(guidler_w_cut/2)
         cubea([100,100,100], align=X-Y+Z);
 
-        attach(extruder_conn_guidler, [N,Z], $explode=0)
+        attach(extruder_conn_guidler, [N,guidler_conn[1]], $explode=0)
         ty(-guidler_w/2)
         ty(guidler_w_cut/2)
         {
