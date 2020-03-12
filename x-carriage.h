@@ -342,7 +342,7 @@ sensor_diameter=12;
 sensormount_thickness=5*mm;
 sensormount_size = [17*mm,sensormount_thickness,15*mm];
 
-sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - v_y(sensormount_size/2) - v_xy(extruder_b_hotend_mount_offset);
+sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - v_xy(extruder_b_hotend_mount_offset);
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
 
 // extruder guidler mount point
