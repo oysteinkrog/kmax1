@@ -181,9 +181,10 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
         t(yaxis_idler_mount_adjustscrew_offset)
         {
             tx(yaxis_idler_pulley_tight_len/2)
-            tx(9*mm)
-            nut_trap_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, screw_l=7*mm, trap_axis=-Z, orient=-X, align=X);
+            tx(5*mm)
+            nut_trap_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, screw_l=12*mm, trap_axis=-Z, orient=-X, align=X);
 
+            tx(-yaxis_idler_pulley_tight_len/2)
             screw_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, h=7*mm, with_nut=false, orient=X, align=X);
         }
     }
@@ -211,14 +212,20 @@ module part_y_idler_pulleyblock()
     }
 }
 
-/*yaxis_idler();*/
-/*yaxis_idler_pulleyblock();*/
+if(false)
+{
+    yaxis_idler();
+    yaxis_idler_pulleyblock();
+}
 
-/*attach([N,-X], yaxis_idler_conn)*/
-/*{*/
-    /*yaxis_idler();*/
-    /*attach(yaxis_idler_conn_pulleyblock, yaxis_idler_pulleyblock_conn)*/
-    /*{*/
-        /*yaxis_idler_pulleyblock(show_pulley=true);*/
-    /*}*/
-/*}*/
+if(false)
+{
+    attach([N,-X], yaxis_idler_conn)
+    {
+        yaxis_idler();
+        attach(yaxis_idler_conn_pulleyblock, yaxis_idler_pulleyblock_conn)
+        {
+            yaxis_idler_pulleyblock(show_pulley=true);
+        }
+    }
+}

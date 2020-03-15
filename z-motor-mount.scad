@@ -27,11 +27,7 @@ module zaxis_motor_mount(part)
     material(Mat_Plastic)
     {
         // top plate
-        rcubea([zmotor_mount_rod_offset_x-zmotor_mount_thickness, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[1,0,1]);
-        translate([zmotor_mount_rod_offset_x, 0, 0])
-        {
-            rcubea([gantry_connector_thickness+5, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=[-1,0,1]);
-        }
+        rcubea([zmotor_mount_rod_offset_x, zmotor_w+zmotor_mount_thickness*2, zmotor_mount_thickness_h], align=X+Z);
 
         // reinforcement plate between motor and extrusion
         rcubea([zmotor_mount_thickness, zmotor_w+2, zmotor_h], align=X-Z, extra_size=[0,0,2], extra_align=Z);
@@ -88,9 +84,13 @@ module zaxis_motor_mount(part)
         cylindera(d=zaxis_rod_d*rod_fit_tolerance, h=100, orient=Z);
 
         // cut out z rod mounting clamp nut traps
+        tx(zmotor_mount_rod_offset_x)
+        tz(zmotor_mount_thickness_h/2)
         for(i=[-1,1])
-        translate([zmotor_mount_rod_offset_x+1, i*zmotor_mount_clamp_dist/2, zmotor_mount_thickness_h/2])
-        nut_trap_cut(nut=zmotor_mount_clamp_nut, trap_h=20, cut_screw=false, trap_axis=-Z, orient=-X, align=X);
+        ty(i*zmotor_mount_clamp_dist/2)
+        {
+            nut_trap_cut(nut=zmotor_mount_clamp_nut, trap_h=20, trap_offset=3*mm, cut_screw=true, trap_axis=-Z, orient=-X, align=-X);
+        }
 
         attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
         motor_mount(part=part, model=zaxis_motor, thickness=zmotor_mount_thickness_h);

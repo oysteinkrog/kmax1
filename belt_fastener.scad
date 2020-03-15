@@ -25,7 +25,7 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
                 belt_fastener("pos", belt=belt, belt_width=belt_width, belt_dist=belt_dist, width=width, with_tensioner=with_tensioner, align=align, orient=orient);
                 belt_fastener("neg", belt=belt, belt_width=belt_width, belt_dist=belt_dist, width=width, with_tensioner=with_tensioner, align=align, orient=orient);
             }
-            %belt_fastener("vit", belt=belt, belt_width=belt_width, belt_dist=belt_dist, width=width, with_tensioner=with_tensioner, align=align, orient=orient);
+            belt_fastener("vit", belt=belt, belt_width=belt_width, belt_dist=belt_dist, width=width, with_tensioner=with_tensioner, align=align, orient=orient);
         }
         else if(part=="pos")
         {
@@ -73,10 +73,18 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
                     {
                         // cut for angle screw
                         translate(-1*mm*Y)
-                        translate(-12*mm*X)
+                        translate(-25*mm*X)
                         {
                             cylindera(d=angle_screw_dia+.3*mm, h=1000, orient=X, align=X);
-                            nut_trap_cut(nut=tension_screw_nut, screw_l=6*mm, cut_screw=true, orient=-X, trap_axis=Y);
+
+                            nut_trap_cut(
+                                nut=tension_screw_nut,
+                                screw_l=20*mm,
+                                screw_offset=5*mm,
+                                cut_screw=true,
+                                cut_screw_close=true,
+                                orient=X,
+                                trap_axis=Y);
                         }
                     }
                 }
@@ -101,11 +109,13 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
 
                 // 90 angle metal screw
                 /*translate(screw_offset_x*X)*/
+                material(Mat_Steel)
                 translate(-belt_dist/2*Z)
                 translate(-belt_width*Y)
                 translate(-angle_screw_dia/2*Y)
                 {
                     cylindera(d=angle_screw_dia+.2*mm, h=20*mm, orient=X, align=X);
+                    tx(-angle_screw_dia/2)
                     cylindera(d=angle_screw_dia+.2*mm, h=11*mm, orient=Y, align=Y+X);
                 }
             }

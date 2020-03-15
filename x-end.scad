@@ -40,7 +40,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
             translate(xaxis_end_motor_offset)
             {
                 translate([x*screw_dist/2, 0, z*screw_dist/2])
-            cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=Y, align=[0,-1,0], round_r=2);
+                cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=Y, align=[0,-1,0], round_r=2);
             }
         }
 
@@ -65,7 +65,7 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
         // x axis rod holders
         for(z=[-1,1])
         translate([0,0,z*(xaxis_rod_distance/2)])
-        rcylindera(h=xaxis_end_width(with_motor), d=xaxis_rod_d_support, orient=X, align=X);
+        rcylindera(h=xaxis_end_width(with_motor), d=xaxis_rod_d_support, extra_h=3*mm, extra_align=-X, orient=X, align=X);
 
         // endstops mount support
         if(xaxis_endstop_type == "SWITCH")
@@ -100,11 +100,8 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
 
             if(with_xrod_adjustment)
             {
-                translate(X*5*mm)
-                nut_trap_cut(nut=NutHexM4, trap_axis=Y, orient=-X, align=X);
-
-                translate(X*-7*mm)
-                cylindera(d=10, h=10, orient=X);
+                tx(-5*mm)
+                nut_trap_cut(nut=NutHexM4, trap_offset=8*mm, screw_l=12*mm, screw_offset=2*mm, trap_axis=Y, cut_screw=true, orient=X, align=X);
             }
         }
     }
