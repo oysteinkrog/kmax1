@@ -69,7 +69,7 @@ module power_panel_iec320(align=N, orient=[0,0,-1])
         for (x = [-1,1])
         for (y = [-1,1])
         translate([x*(power_panel_iec320_width/2-power_panel_iec320_hole_hedge_w-mount_hole_d/2), y*(power_panel_iec320_hole_vspace/2), -s[2]/2])
-        screw_cut(nut=extrusion_nut, screw_l=12*mm, with_nut=false, align=Z, orient=Z);
+        screw_cut(nut=extrusion_nut, h=12*mm, with_nut=false, align=Z, orient=Z);
     }
 }
 
