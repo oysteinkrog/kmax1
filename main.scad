@@ -52,10 +52,11 @@ include <printbed.h>
 /*use <power-panel-iec320.scad>*/
 
 // x carriage
-axis_range_x_ = main_width/2 - extrusion_size - zaxis_rod_d/2 - xaxis_end_width_right(true) - x_carriage_w/2;
+axis_range_x_ = main_width/2 - extrusion_size - x_carriage_w/2 + 20;
 axis_range_x = [-1,1] *  axis_range_x_;
-axis_printrange_x = [-1, 1] * (printbed_size[0]/2-extruder_b_hotend_mount_offset.x);
-axis_x_parked = [false, false];
+axis_printrange_x = [-1, 1] * (printbed_size[0]/2+extruder_b_hotend_mount_offset.x);
+axis_x_pos_relative=[1,0];
+axis_x_parked = [false, true];
 
 axis_range_y=[0*mm,200*mm];
 axis_pos_y = -axis_range_y[0]/2-30*mm;
@@ -94,7 +95,8 @@ module x_axis()
         {
             /*#cubea(size=[x_carriage_w,10,100]);*/
 
-            pos = axis_x_parked[x] ? axis_range_x[x] : axis_printrange_x[x];
+            pos = axis_x_parked[x] ? axis_range_x[x] : (axis_printrange_x[x]+axis_x_pos_relative[x]*printbed_size[0]);
+            echo("x carriage", x, pos);
 
             tx(pos)
             mirror([x==0?0:1,0,0])
