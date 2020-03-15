@@ -19,6 +19,7 @@ include <thing_libutils/fan_5015S.h>
 
 // helper functions to work on headered-arrays (where first entry is column headers)
 function nSpline_header(S, N) =
+assert(N > 1)
 let(slice = v_slice(S,start=1))
 concat(
     [S[0]],
@@ -48,7 +49,7 @@ module duct(A, fanduct_wallthick=2, N=100, d=2)
     function shape_profile(size,r) = rounded_rectangle_profile(size=size,r=r);
     /*function shape_profile(size,r) = rectangle_profile(size);*/
 
-    module showcontrols(V)
+    module showcontrols(V, N=100)
     {
         function gen_T(V) = 
         [
@@ -108,7 +109,7 @@ module duct(A, fanduct_wallthick=2, N=100, d=2)
     // inner skin data: modify tube diameter
     function modify_inner(S, subtract) = array_header_col_subtract(S, ["Sx", "Sy"], subtract);
 
-    module sweepshape(V_outer,interp=true)
+    module sweepshape(V_outer,interp=true, N=100)
     {
         // inner skin is outer, but smaller size and reversed (so it will go back to start and join)
         V_inner = modify_inner(reverse_header(V_outer), fanduct_wallthick);
@@ -213,7 +214,7 @@ module fanduct_throat(throat_seal_h)
 
 module fanduct(part)
 {
-    $fn=is_build?$fn:48;
+    /*$fn=is_build?$fn:48;*/
 
     A = fanduct_data;
 
@@ -243,7 +244,6 @@ module fanduct(part)
 module part_fanduct()
 {
     ry(180)
-    t(-13)
     t(-geth(fanduct_data,["Tx","Ty","Tz"],0))
     r(-geth(fanduct_data,["Rx","Ry","Rz"],0))
     difference()
