@@ -1,6 +1,4 @@
-dist: trusty
-
-sudo: false
+dist: bionic
 
 services:
     - docker
@@ -8,7 +6,9 @@ services:
 language: generic
 
 addons:
-  artifacts: true
+    artifacts: true
+    snaps:
+        - openscad-nightly
 
 script:
-    - travis_wait 120 sleep infinity & docker build -t build .
+    - make
