@@ -33,7 +33,7 @@ module mount_lcd2004_parts(
     else if(part=="pos")
     {
         translate([-lcd2004_width/2,-lcd2004_depth/2,-height/2])
-        rcubea(size=[lcd2004_width,lcd2004_depth,height], rounding_radius=3, align=[1,1,1]);
+        rcubea(size=[lcd2004_width,lcd2004_depth,height], round_r=3, align=[1,1,1]);
     }
     else if(part=="neg")
     mirror(Y)
@@ -140,12 +140,12 @@ module lcd2004_extrusion_conn(part, orient=Z, align=N)
     }
     else if(part=="pos")
     {
-        rcubea(size=s, rounding_radius=3);
+        rcubea(size=s, round_r=3);
     }
     else if(part=="neg")
     {
         translate([0,0,-lcd2004_mount_thickness/2])
-        screw_cut(nut=extrusion_nut, with_nut=true, nut_cut_h=30, with_head=true, head_cut_h=30, length=12*mm, align=Z, orient=Z);
+        screw_cut(nut=extrusion_nut, with_nut=true, nut_cut_h=30, with_head=true, head_cut_h=30, h=12*mm, align=Z, orient=Z);
     }
 }
 
