@@ -185,22 +185,8 @@ module x_carriage(part=undef, beltpath_sign=1, with_sensormount)
         // endstop bumper for physical switch endstop
         if(xaxis_endstop_type == "SWITCH")
         {
-            tx(-x_carriage_w/2)
-            ty(xaxis_endstop_pos(true).y)
-            tz(xaxis_endstop_pos(true).z)
-            hull()
-            {
-                rcubea(
-                    size=[4*mm,xaxis_endstop_size_switch.y,xaxis_endstop_size_switch.z],
-                    align=X+Y+Z);
-
-                ty(xaxis_carriage_bearing_offset_y)
-                rcubea(
-                    size=[4*mm,xaxis_endstop_size_switch.y,xaxis_endstop_size_switch.z],
-                    align=X+Y+Z,
-                    extra_size=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2),
-                    extra_align=-Y);
-            }
+            translate([-x_carriage_w/2,xaxis_carriage_thickness/2,-8*mm])
+            rcubea(size=[8,10,10], align=X+Y, extra_size=Y*(xaxis_carriage_beltpath_offset_y-xaxis_endstop_size_switch.y/2), extra_align=-Y);
         }
         else if(xaxis_endstop_type == "SN04")
         {
