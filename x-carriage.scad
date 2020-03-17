@@ -1308,7 +1308,6 @@ module sensormount(part=undef)
     {
         /*ty(4*mm)*/
         tz(-2*mm)
-        ty(-2*mm)
         rcubea(size=sensormount_size, align=Y);
     }
     else if(part == "neg")

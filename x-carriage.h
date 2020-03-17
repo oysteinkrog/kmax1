@@ -188,7 +188,7 @@ extruder_b_mount_thick = 5*mm;
 
 /*extruder_carriage_sensormount_offset=[35,-7,-41];*/
 //extruder_carriage_sensormount_offset=[-25,-7,-47];
-extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x+16*mm,2*mm,-52*mm];
+extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x+16*mm, 0*mm,-52*mm];
 extruder_carriage_sensormount_conn=[extruder_carriage_sensormount_offset,Y];
 
 sensormount_conn = [N,Y];
