@@ -1301,26 +1301,30 @@ module sensormount(part=undef)
         {
             sensormount(part="vit");
             sensormount_clamp();
-    }
+        }
     }
     else if(part == "pos")
     material(Mat_Plastic)
     {
         /*ty(4*mm)*/
-        tz(-8*mm)
+        tz(-2*mm)
         ty(-2*mm)
         rcubea(size=sensormount_size, align=Y);
     }
     else if(part == "neg")
     {
-        ty(3*mm)
-        ty(-11*mm)
+        ty(-7*mm)
         for(x=[-1,1])
         tx(x*5.5*mm)
-        screw_cut(nut=NutKnurlM3_5_42, head="button", head_embed=true, h=20*mm, with_nut=true, orient=Y, align=Y);
+        screw_cut(nut=NutKnurlM3_5_42, head="button", head_embed=true, h=16*mm, with_nut=true, orient=Y, align=Y);
 
-        tz(-18.5*mm-5*mm)
-        rcylindera(d=8*mm, h=40*mm, orient=Z, align=Z);
+        tz(-18.5*mm)
+        hull()
+        {
+            rcylindera(d=8*mm, h=40*mm, orient=Z, align=Z);
+            ty(-1000)
+            rcylindera(d=8*mm, h=40*mm, orient=Z, align=Z);
+        }
     }
     else if(part == "vit")
     tz(-18.5*mm)
@@ -1354,11 +1358,10 @@ module sensormount_clamp(part=U)
     }
     else if(part == "neg")
     {
-        ty(3*mm)
-        ty(-11*mm)
+        ty(-8*mm)
         for(x=[-1,1])
         tx(x*5.5*mm)
-        screw_cut(nut=NutKnurlM3_5_42, head="button", h=20*mm, head_embed=true, with_nut=true, orient=Y, align=Y);
+        screw_cut(nut=NutKnurlM3_5_42, head="button", h=12*mm, head_embed=true, with_nut=true, orient=Y, align=Y);
 
         tz(-18.5*mm)
         rcylindera(d=8*mm, h=30*mm, orient=Z, align=Z);
