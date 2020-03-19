@@ -13,6 +13,7 @@ use <thing_libutils/bearing.scad>
 use <thing_libutils/bearing-linear.scad>
 use <thing_libutils/screws.scad>
 use <thing_libutils/shape_gears.scad>
+use <thing_libutils/fan_axial.scad>
 
 include <thing_libutils/bearing_data.scad>;
 include <thing_libutils/pulley.scad>;
@@ -1576,6 +1577,40 @@ module x_carriage_extruder(with_sensormount=false)
         /*rotate(180*Z)*/
         /*rotate(-90*X)*/
         /*import("stl/Fan_Duct_V4.STL");*/
+
+        /*ty(-20)*/
+        difference()
+        {
+            tx(4.1)
+            ty(-20.7)
+            tz(21.1)
+            rx(90)
+            import("stl/extruder-body.stl");
+
+            if(!with_sensormount)
+            tx(21)
+            cubea([1000,1000,1000], align=X);
+        }
+
+        tx(-10.0)
+        ty(-32.0)
+        tz(21.1)
+        rz(180)
+        rx(90)
+        import("stl/extruder-motor-plate.stl");
+
+        tx(4.2)
+        tz(-106)
+        ty(-43)
+        rx(-90)
+        import("stl/extruder-cover.stl");
+
+        tz(-44)
+        ty(-23.5)
+        tx(-23.2)
+        rz(90)
+        rx(90)
+        fan_axial(40,10,0,ThreadM3);
 
     }
 }
