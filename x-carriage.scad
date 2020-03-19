@@ -1632,10 +1632,13 @@ module xaxis_end_bucket(part)
 
 /*if(false)*/
 {
+    sides=[-1,1];
+    /*sides=[-1];*/
+
     /*if(false)*/
-    for(x=[-1])
+    for(x=sides)
     /*for(x=[-1,1])*/
-    translate(x*117*mm*X)
+    tx(x==-1?x*156*mm:-98*mm)
     mirror([x<0?0:1,0,0])
     {
         x_carriage_withmounts($show_vit=true, beltpath_sign=x, with_sensormount=x<0);
@@ -1657,7 +1660,7 @@ module xaxis_end_bucket(part)
 
     /*if(false)*/
     ty(xaxis_carriage_beltpath_offset_y)
-    for(x=[-1,1])
+    for(x=sides)
     translate([x*200,0,0])
     mirror([max(0,x),0,0])
     {
