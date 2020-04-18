@@ -5,6 +5,7 @@ include <thing_libutils/gears-data.scad>
 include <thing_libutils/bearing-linear-data.scad>
 include <thing_libutils/misc.scad>;
 include <thing_libutils/stepper.scad>;
+include <thing_libutils/fan_axial_data.scad>;
 include <x-end.h>
 
 use <thing_libutils/gears.scad>
@@ -139,9 +140,17 @@ extruder_b_mount_dia = 9*mm;
 // from E3D V6 heatsink drawing
 // http://wiki.e3d-online.com/wiki/File:DRAWING-V6-175-SINK.png
 // each entry == dia + h
-hotend_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm]];
-hotend_outer_size_xy=max(vec_i(hotend_d_h,0));
-hotend_outer_size_h=max(vec_i(hotend_d_h,1))+5*mm;
+hotend_d_h=[[16*mm,3.7*mm],[12*mm,6*mm],[16*mm,3*mm],[16*mm,3*mm],[22.3*mm,26*mm]];
+hotend_outer_size_xy=hotend_d_h[1][0];
+hotend_outer_size_h=hotend_d_h[1][1]+5*mm;
+
+hotend_heatsink_size_xy = hotend_d_h[4][0];
+hotend_heatsink_size_h = hotend_d_h[4][1];
+hotend_heatsink_fan_pos =
+    -X*hotend_heatsink_size_xy
+    -Z*v_cumsum(vec_i(hotend_d_h,1))[4]
+    +Z*hotend_d_h[4][1]/2
+;
 
 // if bondtech, less bite but each side bites
 extruder_filament_bite = extruder_drivegear_type == "Bondtech" ? .4*mm : .4*mm;
@@ -272,6 +281,13 @@ hotend_height = 63*mm;
 //hotend_height = 60.55*mm;
 
 extruder_b_hotend_mount_conn = [extruder_b_hotend_mount_offset, -Z];
+extruder_b_hotend_fan_conn = [
+    extruder_b_hotend_mount_offset
+    -X*hotend_outer_size_xy
+    -X*10*mm
+    -Y*5*mm
+    -Z*26*mm
+, X];
 
 hotend_conn = [N, -Z];
 
@@ -377,6 +393,10 @@ hotend_clamp_w = [
 2*(hotend_clamp_screws_dist + hotend_clamp_screw_dia + hotend_clamp_pad),
 ];
 hotend_clamp_height = hotend_d_h[1][1];
+
+hotend_fan = FanNoctuaA4x10;
+hotend_fan_width = get(AxialFanWidth,hotend_fan);
+hotend_fan_mount_dist = get(AxialFanMountDist,hotend_fan);
 
 // relative to hotend mount
 extruder_b_hotend_clamp_offset =

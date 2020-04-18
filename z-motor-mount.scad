@@ -69,7 +69,7 @@ module zaxis_motor_mount(part)
         for(y=[-1,1])
         tx(zmotor_mount_thickness)
         ty(y*(zmotor_w/2+zmotor_mount_thread_dia*3))
-        tz(-extrusion_size)
+        /*tz(-extrusion_size)*/
         screw_cut(nut=extrusion_nut, head="button", h=12*mm, orient=-X, align=-X);
 
         // screw hole bottom

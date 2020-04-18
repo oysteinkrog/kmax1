@@ -15,6 +15,8 @@ use <thing_libutils/screws.scad>
 use <thing_libutils/shape_gears.scad>
 use <thing_libutils/fan_axial.scad>
 
+include <thing_libutils/fan_axial_data.scad>
+
 include <thing_libutils/bearing_data.scad>;
 include <thing_libutils/pulley.scad>;
 include <thing_libutils/timing-belts.scad>
@@ -76,11 +78,11 @@ module x_extruder_hotend_()
     /*rotate(90*X)*/
     /*import("stl/Radial_Fan_Fang_5015.stl");*/
 
-    /*tx(10) // E3D fan thickness*/
-    /*tx(-12.7)*/
-    /*ty(22)*/
-    /*rotate(90*X)*/
-    /*import("stl/Radial_Fan_Fang_5015_mod.stl");*/
+    tx(10) // E3D fan thickness
+    tx(-12.7)
+    ty(22)
+    rotate(90*X)
+    import("stl/Radial_Fan_Fang_5015_mod.stl");
 
     tz(0)
     tx(24.5)
@@ -649,19 +651,62 @@ module extruder_b(part=undef)
         // filaguide slot and hotend support
         hull()
         {
-            for(x=[-1,1])
-            tx(x*hotend_clamp_screws_dist)
             t(extruder_b_hotend_mount_offset)
             t(extruder_b_hotend_clamp_offset)
             ty(-hotend_outer_size_xy/2)
+            spreadx(hotend_clamp_screws_dist)
             rcylindera(d=get(ThreadSize, extruder_hotend_clamp_thread)+8*mm, h=extruder_b_thick, orient=Y, align=Y);
 
             t(extruder_b_hotend_mount_offset)
             extruder_b_filaguide(part="support");
+
+            /*t(extruder_b_hotend_mount_offset)*/
+            /*ty(-hotend_outer_size_xy/2)*/
+            /*{*/
+                /*h=v_sum(vec_i(hotend_d_h,1));*/
+
+                /*tz(-h)*/
+                /*spreadx(hotend_clamp_screws_dist+5*mm)*/
+                /*#rcylindera(d=get(ThreadSize, extruder_hotend_clamp_thread)+8*mm, h=extruder_b_thick, orient=Y, align=Y+Z);*/
+            /*}*/
+
+            attach(extruder_b_hotend_fan_conn, [N,X])
+            {
+                spreadyz(hotend_fan_mount_dist/2)
+                rcylindera(d=7*mm, h=5*mm, align=X, orient=X);
+
+                tx(hotend_heatsink_size_xy)
+                tx(15*mm)
+                rcylindera(d=40*mm, h=3*mm, align=X, orient=X);
+            }
+
+            t(extruder_b_hotend_mount_offset)
+            t(hotend_heatsink_fan_pos)
+            {
+                tx(hotend_heatsink_size_xy)
+                rcylindera(d=hotend_heatsink_size_xy, h=3*mm, align=X, orient=X);
+            }
         }
     }
     else if(part=="neg")
     {
+        hull()
+        {
+            attach(extruder_b_hotend_fan_conn, [N,X])
+            {
+                rcylindera(d=40*mm, h=3*mm, align=X, orient=X);
+
+                tx(hotend_heatsink_size_xy)
+                tx(15*mm)
+                rcylindera(d=30*mm, h=4*mm, align=X, orient=X);
+            }
+            t(extruder_b_hotend_mount_offset)
+            t(hotend_heatsink_fan_pos)
+            {
+                tx(hotend_heatsink_size_xy)
+                rcylindera(d=hotend_heatsink_size_xy, h=hotend_heatsink_size_h*mm, align=N, orient=Z);
+            }
+        }
         // drive gear window cutout
         t(extruder_b_drivegear_offset)
         ty(extruder_drivegear_drivepath_offset)
@@ -789,6 +834,11 @@ module extruder_b(part=undef)
         material(Mat_PlasticBlack)
         translate(extruder_b_filapath_offset)
         cylindera(h=1000, d=filament_d, orient=Z, align=N);
+
+        $show_conn=true;
+        attach(extruder_b_hotend_fan_conn, [N,-X])
+        /*fan_axial(40,10,0,ThreadM3, orient=X, align=X);*/
+        fan(fan=hotend_fan, orient=X, align=-X);
     }
 
     t(extruder_b_mount_offsets[2])
@@ -1034,7 +1084,7 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
         position(extruder_a_mount_offsets)
         {
             h= extruder_offset_a[1]+.2;
-            echo("carriage => A screw length:", h);
+            /*echo("carriage => A screw length:", h);*/
             screw_cut(
                $show_vit=true,
                 nut=NutHexM3,
@@ -1528,8 +1578,8 @@ module x_carriage_extruder(with_sensormount=false)
 
     translate(extruder_offset)
     {
-        te(extruder_offset_a, Y*$explode)
-        extruder_a();
+        /*te(extruder_offset_a, Y*$explode)*/
+        /*extruder_a();*/
 
         te(extruder_offset_b+[0,-.1,0], Y*$explode)
         {
@@ -1537,20 +1587,21 @@ module x_carriage_extruder(with_sensormount=false)
             {
                 union()
                 {
+                    if(with_sensormount)
                     extruder_b();
 
-                    te(extruder_offset_b, Y*$explode)
-                    t(extruder_b_hotend_mount_offset)
-                    extruder_b_filaguide();
+                    /*te(extruder_offset_b, Y*$explode)*/
+                    /*t(extruder_b_hotend_mount_offset)*/
+                    /*extruder_b_filaguide();*/
 
-                    attach(extruder_conn_guidler, guidler_conn, extruder_guidler_roll, $explode=$explode/2)
-                    extruder_guidler();
+                    /*attach(extruder_conn_guidler, guidler_conn, extruder_guidler_roll, $explode=$explode/2)*/
+                    /*extruder_guidler();*/
 
                     attach(extruder_b_hotend_mount_conn, hotend_conn, roll=0)
                     x_extruder_hotend();
 
-                    te(extruder_offset_c, Y*$explode)
-                    extruder_c();
+                    /*te(extruder_offset_c, Y*$explode)*/
+                    /*extruder_c();*/
                 }
 
                 if(debug_filapath)
@@ -1578,39 +1629,95 @@ module x_carriage_extruder(with_sensormount=false)
         /*rotate(-90*X)*/
         /*import("stl/Fan_Duct_V4.STL");*/
 
-        /*ty(-20)*/
-        difference()
+        if(false)
         {
-            tx(4.1)
-            ty(-20.7)
-            tz(21.1)
-            rx(90)
-            import("stl/extruder-body.stl");
+            /*mx(!with_sensormount)*/
+            /*mirror(X)*/
+            {
+                tx(-12)
+                ty(105)
+                tz(78)
+                rz(-90)
+                rx(-90)
+                import("stl2/30mm_clip_with_venturi_v3_50_by_thed0ct0r_.stl");
 
-            if(!with_sensormount)
-            tx(21)
-            cubea([1000,1000,1000], align=X);
+
+                tx(3)
+                ty(-130)
+                tz(-95)
+                rz(180)
+                rx(90)
+                import("stl2/e3d_v6_30mm_to_40mm_adapter.stl");
+
+
+                tz(-44)
+                ty(-23.5)
+                tx(-23.2)
+                rz(90)
+                rx(90)
+                fan_axial(40,10,0,ThreadM3);
+
+                /*mx(true)*/
+                mirror(X)
+                tx(-5)
+                {
+                    tx(17.5)
+                    ty(110)
+                    tz(105)
+                    rz(180)
+                    ry(90)
+                    import("stl2/Clip_with_sliding_guide_and_screw_slot_ToRight.stl");
+
+                    tx(-135)
+                    ty(-166.5)
+                    tz(59)
+                    rx(-45)
+                    import("stl2/5015_sloped_layer_cooling_ToRight.stl");
+                }
+            }
+
         }
 
-        tx(-10.0)
-        ty(-32.0)
-        tz(21.1)
-        rz(180)
-        rx(90)
-        import("stl/extruder-motor-plate.stl");
+        /*ty(-20)*/
+        /*if(false)*/
+        {
+            if(!with_sensormount)
+            /*difference()*/
+            {
+                tx(4.1)
+                ty(-20.7)
+                tz(21.1)
+                rx(90)
+                import("stl/extruder-body.stl");
 
-        tx(4.2)
-        tz(-106)
-        ty(-43)
-        rx(-90)
-        import("stl/extruder-cover.stl");
+                /*if(!with_sensormount)*/
+                /*tx(24)*/
+                /*cubea([1000,1000,1000], align=X);*/
+            }
 
-        tz(-44)
-        ty(-23.5)
-        tx(-23.2)
-        rz(90)
-        rx(90)
-        fan_axial(40,10,0,ThreadM3);
+            /*tx(-10.0)*/
+            /*ty(-32.0)*/
+            /*tz(21.1)*/
+            /*rz(180)*/
+            /*rx(90)*/
+            /*import("stl/extruder-motor-plate.stl");*/
+
+            if(!with_sensormount)
+            ty(-20)
+
+            tx(4.2)
+            tz(-106)
+            ty(-43)
+            rx(-90)
+            import("stl/extruder-cover.stl");
+
+            /*tz(-44)*/
+            /*ty(-23.5)*/
+            /*tx(-23.2)*/
+            /*rz(90)*/
+            /*rx(90)*/
+            /*fan_axial(40,10,0,ThreadM3);*/
+        }
 
     }
 }
@@ -1623,7 +1730,8 @@ module x_carriage_extruder(with_sensormount=false)
     /*if(false)*/
     for(x=sides)
     /*for(x=[-1,1])*/
-    tx(x==-1?x*156*mm:-98*mm)
+    /*tx(x==-1?x*156*mm:-98*mm)*/
+    tx(x==-1?x*156*mm:-78*mm)
     mirror([x<0?0:1,0,0])
     {
         x_carriage_withmounts($show_vit=true, beltpath_sign=x, with_sensormount=x<0);
@@ -1637,27 +1745,31 @@ module x_carriage_extruder(with_sensormount=false)
     }
 
     /*if(false)*/
-    for(z=[-1,1])
-    for(z=xaxis_beltpath_z_offsets)
-    translate([-main_width/2, xaxis_carriage_beltpath_offset_y, z])
-    rotate(90*X)
-    belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=X, align=X);
-
     /*if(false)*/
     ty(xaxis_carriage_beltpath_offset_y)
     for(x=sides)
     translate([x*200,0,0])
     mirror([max(0,x),0,0])
     {
-        xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=true);
+        /*xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=true);*/
 
-        xaxis_end_bucket();
+        /*xaxis_end_bucket();*/
     }
 
     // x smooth rods
+    if(false)
     for(z=[-1,1])
     ty(xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y)
     translate([xaxis_rod_offset_x,0,z*(xaxis_rod_distance/2)])
     material(Mat_Chrome)
     cylindera(h=xaxis_rod_l,d=xaxis_rod_d+.1, orient=X);
+
+    // belts
+    if(false)
+    for(z=[-1,1])
+    for(z=xaxis_beltpath_z_offsets)
+    translate([-main_width/2, xaxis_carriage_beltpath_offset_y, z])
+    rotate(90*X)
+    belt_path(main_width, xaxis_belt_width, xaxis_pulley_inner_d, orient=X, align=X);
+
 }
