@@ -290,7 +290,7 @@ guidler_drivegear_offset =
 guidler_bolt_mount_d = extruder_drivegear_bearing_id+3*mm;
 
 guidler_w = max(hotend_outer_size_xy, extruder_drivegear_bearing_bolt_h + 4*mm);
-guidler_d = extruder_drivegear_bearing_id/2+3*mm;
+guidler_d = extruder_drivegear_bearing_id/2+2*mm;
 
 guidler_screw_distance = 10;
 
@@ -335,7 +335,14 @@ extruder_b_guidler_screw_offset =
 
 extruder_b_guidler_mount_w = - extruder_b_guidler_mount_off.y;
 
-extruder_b_pushfit_nut = NutKnurlM5_5_42;
+extruder_b_pushfit_nut = [
+    [NutHoleDia, 9*mm],
+    [NutWidthMin, 9.35*mm],
+    [NutThickness, 5*mm],
+    [NutWidthMax, 9.55*mm],
+    [NutThread, ThreadM10],
+    [NutFacets, 20],
+];
 extruder_b_pushfit_nut_thread = get(NutThread, extruder_b_pushfit_nut);
 
 sensor_diameter=12;

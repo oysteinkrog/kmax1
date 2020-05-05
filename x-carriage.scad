@@ -695,7 +695,7 @@ module extruder_b(part=undef)
         guidler_w_cut = guidler_w+.2*mm;
 
         t(extruder_b_guidler_screw_offset)
-        /*tx(3*mm)*/
+        tx(1*mm)
         ty(guidler_w_cut/2)
         cubea([100,100,100], align=X-Y+Z);
 
