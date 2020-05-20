@@ -1034,10 +1034,14 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
     {
         x_carriage(part=part, beltpath_sign=beltpath_sign);
 
-        // rod between extruder part A and B
+        // rod/gear between extruder part A and B
         translate(extruder_offset)
         {
-            cylindera(h=100*mm, d=extruder_shaft_d+3*mm, orient=Y, align=N);
+            cylindera(h=100*mm, d=5*mm+1*mm, orient=Y, align=N);
+
+            // we also want to allow drivegear through
+            scale(1.10)
+            extruder_drivegear(part="cutout");
         }
 
         // extruder A mount cutout
