@@ -335,12 +335,23 @@ extruder_b_guidler_screw_offset =
 
 extruder_b_guidler_mount_w = - extruder_b_guidler_mount_off.y;
 
+// straight-through pneumatic fitting for PTFE tube
+// https://www.aliexpress.com/item/32841176775.html?spm=a2g0s.9042311.0.0.27424c4dZ2drcQ
+// uses a PT1/8 thread
+
+ThreadPT1_8 = [
+    [ThreadSize, 8.9*mm],
+    [ThreadThreadKey, "PT1/8"],
+    [ThreadThreadKeySimple, "PT1/8"],
+    [ThreadPitchMm, 0.907*mm],
+];
+
 extruder_b_pushfit_nut = [
     [NutHoleDia, 9*mm],
-    [NutWidthMin, 9.35*mm],
+    [NutWidthMin, 8.8*mm],
     [NutThickness, 5*mm],
     [NutWidthMax, 9.55*mm],
-    [NutThread, ThreadM10],
+    [NutThread, ThreadPT1_8],
     [NutFacets, 20],
 ];
 extruder_b_pushfit_nut_thread = get(NutThread, extruder_b_pushfit_nut);
