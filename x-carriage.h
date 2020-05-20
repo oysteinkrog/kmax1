@@ -130,7 +130,7 @@ extruder_motor = dict_replace_multiple(Nema17,
 
 extruder_a_bearing = bearing_MR125;
 extruder_a_bearing_offset = [0,-.5*mm,0];
-extruder_a_h = 16*mm;
+extruder_a_h = 14*mm;
 extruder_a_base_h=extruder_a_bearing[2]-extruder_a_bearing_offset.y+1*mm;
 
 extruder_b_bearing = bearing_MR105;
