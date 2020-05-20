@@ -14,6 +14,9 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
     height = belt_dist + belt_t2 + angle_screw_dia + 3*mm;
     slide_width=20*mm;
     depth = belt_width + 10*mm;
+    tighten_range=10*mm;
+    belt_hook_dia=4*mm;
+    belt_hook_offset=tighten_range+5*mm;
 
     s= [width, depth, height];
     size_align(size=s, orient=orient, align=align, orient_ref=-X)
@@ -25,6 +28,7 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
                 belt_fastener("pos", belt=belt, belt_width=belt_width, belt_dist=belt_dist, width=width, with_tensioner=with_tensioner, align=align, orient=orient);
                 belt_fastener("neg", belt=belt, belt_width=belt_width, belt_dist=belt_dist, width=width, with_tensioner=with_tensioner, align=align, orient=orient);
             }
+            if($show_vit)
             belt_fastener("vit", belt=belt, belt_width=belt_width, belt_dist=belt_dist, width=width, with_tensioner=with_tensioner, align=align, orient=orient);
         }
         else if(part=="pos")
@@ -47,16 +51,29 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
             translate(-belt_dist/2*Z)
             if(with_tensioner)
             {
-                translate([0,0,belt_t2/4])
-                cubea(size=[1000, belt_width+.1, belt_t2], extra_size=1000*Y, extra_align=Y);
+                for(i=[-1,1])
+                tz(belt_t2/4)
+                {
+                    tx(-tighten_range)
+                    cubea(size=[1000, belt_width+.5, belt_t2], align=-X, extra_size=1000*Y, extra_align=Y);
+
+                    tx(belt_hook_offset+belt_hook_dia/2)
+                    cubea(size=[1000, belt_width+.5, belt_t2], align=X, extra_size=1000*Y, extra_align=Y);
+                }
 
                 /*translate([0,0,angle_screw_dia/2])*/
                 {
                     hull()
+                    for(i=[-1,1])
+                    tx(i*tighten_range)
+                    cylindera(d=angle_screw_dia+belt_t2, h=belt_width+.1, extra_h=1000, extra_align=Y, orient=Y);
+
+                    // belt loop fasten
+                    tx(belt_hook_offset)
+                    difference()
                     {
-                        for(i=[-1,1])
-                        translate(i*11*mm*X)
-                        cylindera(d=angle_screw_dia+belt_t2, h=belt_width+.1, extra_h=1000, extra_align=Y, orient=Y);
+                        cylindera(d=belt_hook_dia+belt_t2+.25*mm, h=belt_width+.1, extra_h=1000, extra_align=Y, orient=Y);
+                        cylindera(d=belt_hook_dia, h=belt_width+.3, extra_h=1000, extra_align=Y, orient=Y);
                     }
 
                     hull()
