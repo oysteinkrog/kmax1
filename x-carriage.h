@@ -129,8 +129,8 @@ extruder_motor = dict_replace_multiple(Nema17,
         ]);
 
 extruder_a_bearing = bearing_MR125;
-extruder_a_bearing_offset = [0,-.5*mm,0];
-extruder_a_h = 14*mm;
+extruder_a_bearing_offset = Y*-.5*mm;
+extruder_a_h = -xaxis_carriage_thickness + xaxis_carriage_bearing_offset_y + xaxis_bearing_top_OD+10*mm;//14*mm;
 extruder_a_base_h=extruder_a_bearing[2]-extruder_a_bearing_offset.y+1*mm;
 
 extruder_b_bearing = bearing_MR105;
@@ -212,10 +212,7 @@ extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 extruder_offset = [0, 0, 9.8*mm];
 
 // extruder a offset relative to extruder
-extruder_offset_a = -extruder_gear_big_offset+[
-    0,
-    xaxis_bearing_top_OD + xaxis_carriage_bearing_offset_y + 2*mm,
-    0];
+extruder_offset_a = -extruder_gear_big_offset + Y*xaxis_carriage_thickness;
 
 // extruder b offset relative to extruder
 extruder_offset_b = N;

@@ -435,8 +435,8 @@ module extruder_a(part=undef)
             {
                 ty(-between_bearing_and_gear)
                 ty(-extruder_a_bearing[2])
-                ty(-1*mm)
-                extruder_gear_big(orient=-Y, align=-Y);
+                ty(-1.5*mm)
+                extruder_gear_big(orient=Y, align=-Y);
 
                 // bearing
                 t(extruder_a_bearing_offset)
@@ -1019,17 +1019,7 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
     else if(part=="pos")
     {
         x_carriage(part=part, beltpath_sign=beltpath_sign, with_sensormount=with_sensormount);
-
-            // extruder A mount
-            material(Mat_Plastic)
-            translate(extruder_offset)
-            translate(extruder_offset_a)
-            {
-                rotate([0,extruder_motor_mount_angle,0])
-                position(extruder_a_mount_offsets)
-                rcylindera(d=extruder_b_mount_dia, h=extruder_offset_a[1], orient=Y, align=[0,-1,0]);
-            }
-        }
+    }
     else if(part=="neg")
     {
         x_carriage(part=part, beltpath_sign=beltpath_sign);
