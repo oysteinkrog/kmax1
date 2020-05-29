@@ -1669,7 +1669,7 @@ module xaxis_end_bucket(part)
     /*if(false)*/
     ty(xaxis_carriage_beltpath_offset_y)
     for(x=sides)
-    translate([x*200,0,0])
+    translate([x*270,0,0])
     mirror([max(0,x),0,0])
     {
         xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=true);
