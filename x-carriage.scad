@@ -285,16 +285,16 @@ module extruder_gear_small(orient, align)
                     gear(z=get(GearTeeth, extruder_gear_small), m=get(GearMod, extruder_gear_small), h=h);
                 }
             }
-            h=13*mm;
+            /*h=13*mm;*/
 
-            cylindera(d=extruder_gear_small_PD, h=h-7*mm, orient=orient, align=align);
+            /*#cylindera(d=extruder_gear_small_PD, h=h-7*mm, orient=orient, align=align);*/
         }
         cylindera(d=5*mm, h=13*mm+.1, orient=orient, align=align);
     }
 }
 
 
-module extruder_gear_big(align=N, orient=Z)
+module extruder_gear_big(align=N, orient=Z, with_hub=false)
 {
     total_h = extruder_gear_big_h[0]+extruder_gear_big_h[1];
     material(Mat_Steel)
@@ -314,8 +314,10 @@ module extruder_gear_big(align=N, orient=Z)
                 gear(z=get(GearTeeth, extruder_gear_big), m=get(GearMod, extruder_gear_big),h=extruder_gear_big_h[0]);
             }
 
+            if(with_hub)
             cylindera(d=12*mm, h=extruder_gear_big_h[1], orient=Z, align=[0,0,-1]);
         }
+
         translate([0,0,-.5])
         cylindera(d=5*mm, h=total_h+.2, orient=Z, align=N);
     }
@@ -374,7 +376,7 @@ module extruder_a_motor_mount(part)
         for(z=[-1,1])
         tx(x*extruder_motor_holedist/2)
         tz(z*extruder_motor_holedist/2)
-        screw_cut(nut=motor_nut, h=6*mm, with_nut=false, head_embed=false, orient=Y, align=Y);
+        screw_cut(nut=motor_nut, h=6*mm, head="button", with_nut=false, head_embed=false, orient=Y, align=Y);
     }
     else if(part=="vit")
     {
@@ -429,7 +431,7 @@ module extruder_a(part=undef)
             cylindera(d=extruder_shaft_d+1*mm, h=extruder_a_h+.2, orient=Y, align=[0,-1,0]);
 
             t(extruder_a_bearing_offset)
-            cylindera(d=extruder_a_bearing[1]+bearing_pressfit_tolerance, h=1000*mm, orient=Y, align=[0,-1,0]);
+            cylindera(d=extruder_a_bearing[1]+bearing_pressfit_tolerance, h=1000*mm, orient=Y, align=-Y);
         }
     }
     else if(part=="vit")
@@ -447,7 +449,7 @@ module extruder_a(part=undef)
             {
                 ty(-between_bearing_and_gear)
                 ty(-extruder_a_bearing[2])
-                ty(-1.5*mm)
+                ty(-2*mm)
                 extruder_gear_big(orient=Y, align=-Y);
 
                 // bearing
