@@ -44,6 +44,9 @@ module x_extruder_hotend()
 module x_extruder_hotend_()
 {
     material(Mat_Aluminium)
+    tz(-21.3*mm)
+    rz(-90)
+    rx(90)
     import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
 
     // official 30mm duct
@@ -81,6 +84,9 @@ module x_extruder_hotend_()
     /*rotate(90*X)*/
     /*import("stl/Radial_Fan_Fang_5015_mod.stl");*/
 
+    tz(-21.3*mm)
+    rz(-90)
+    rx(90)
     tz(0)
     tx(24.5)
     ty(-7.5)
@@ -90,6 +96,9 @@ module x_extruder_hotend_()
 
     tt = 10*mm; // E3D fan thickness
 
+    tz(-21.3*mm)
+    rz(-90)
+    rx(90)
     tx(tt)
     tx(-5.7)
     ty(28)
@@ -97,6 +106,9 @@ module x_extruder_hotend_()
     import("extras/Fang_5015_40mm_v4 - Copy.stl");
 
     // E3D fan
+    tz(-21.3*mm)
+    rz(-90)
+    rx(90)
     tx(7.2)
     tx(tt)
     tx(12.5*mm)
