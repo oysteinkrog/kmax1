@@ -148,7 +148,7 @@ extruder_filament_bite = extruder_drivegear_type == "Bondtech" ? .4*mm : .4*mm;
 
 // drivegear relative to extruder B
 extruder_b_drivegear_offset =
-    - Y*(12.5*mm)
+    - Y*(7.5*mm)
     - Y*(hotend_outer_size_xy/2)
 ;
 
@@ -235,9 +235,9 @@ extruder_b_thick=
     + hotend_outer_size_xy/2
 ;
 
-extruder_c_thickness = extruder_b_bearing[2]+5*mm;
+extruder_c_thickness = extruder_b_bearing[2]+2.5*mm;
 
-hotend_clamp_screw_l = 40*mm;
+hotend_clamp_screw_l = 30*mm;
 //hotend_clamp_screw_l = extruder_b_thick+extruder_c_thickness + 5*mm;
 
 // extruder c offset relative to extruder
@@ -286,7 +286,7 @@ guidler_drivegear_offset =
 
 guidler_bolt_mount_d = extruder_drivegear_bearing_id+3*mm;
 
-guidler_w = max(hotend_outer_size_xy, extruder_drivegear_bearing_bolt_h + 4*mm);
+guidler_w = max(hotend_outer_size_xy, extruder_drivegear_bearing_bolt_h + 1*mm);
 guidler_d = extruder_drivegear_bearing_id/2+2*mm;
 
 guidler_screw_distance = 10;

@@ -649,7 +649,6 @@ module extruder_b(part=undef)
     else if(part=="pos")
     material(Mat_Plastic)
     {
-        /*proj_extrude_axis_part(axis=Y, offset=5*mm)*/
         hull()
         {
             position(extruder_b_mount_offsets)
@@ -657,13 +656,12 @@ module extruder_b(part=undef)
 
             // guidler mount
             txz(extruder_b_guidler_mount_off)
-            rcylindera(d=guidler_mount_d, h=extruder_b_guidler_mount_w, orient=Y, align=-Y);
+            rcylindera(d=guidler_mount_d, h=extruder_b_thick, orient=Y, align=-Y);
 
             // guidler screw support
             txz(extruder_b_guidler_screw_offset)
             {
                 d = guidler_screw_thread_dia + 3*mm;
-
                 rcubea([d, extruder_b_thick, d], align=-Y);
             }
 
@@ -681,7 +679,7 @@ module extruder_b(part=undef)
             t(extruder_b_hotend_mount_offset)
             t(extruder_b_hotend_clamp_offset)
             ty(-hotend_outer_size_xy/2)
-            rcylindera(d=get(ThreadSize, extruder_hotend_clamp_thread)+8*mm, h=extruder_b_thick, orient=Y, align=Y);
+            rcylindera(d=extruder_b_mount_dia, h=extruder_b_thick, orient=Y, align=Y);
 
             t(extruder_b_hotend_mount_offset)
             extruder_b_filaguide(part="support");
@@ -982,8 +980,10 @@ module extruder_c(part=undef, is_extruder_b=false)
     else if(part=="neg")
     {
         // b bearing cutout
-        ty(.1)
-        cylindera(d=extruder_b_bearing[1]+bearing_pressfit_tolerance, h=extruder_b_bearing[2]+1.5*mm, orient=Y, align=-Y);
+        cylindera(d=extruder_b_bearing[1]+bearing_pressfit_tolerance, h=extruder_b_bearing[2]+1*mm, orient=Y, align=-Y, extra_h=.1*mm, extra_align=Y);
+
+        // cut out for shaft (so we can attach a knob)
+        cylindera(d=extruder_b_bearing[0]+1*mm, h=1000, orient=Y, align=N);
 
         /*// guidler mount screw cut*/
         /*translate(extruder_b_bearing[2]/2*Y)*/
@@ -998,13 +998,13 @@ module extruder_c(part=undef, is_extruder_b=false)
         // mount screws
         ty(-extruder_c_thickness)
         position(extruder_c_mount_offsets)
-        screw_cut(thread=extruder_hotend_clamp_thread, h=hotend_clamp_screw_l, nut_offset=0*mm, head_embed=false, orient=Y, align=Y);
+        screw_cut(thread=extruder_hotend_clamp_thread, h=hotend_clamp_screw_l, nut_offset=0*mm, head_embed=true, orient=Y, align=Y);
 
         // guidler mount screw hole
         tx(extruder_b_guidler_mount_off.x)
         tz(guidler_mount_off.z)
         ty(-extruder_c_thickness)
-        screw_cut(thread=guidler_screw_thread, h=hotend_clamp_screw_l, orient=Y, align=Y);
+        screw_cut(thread=guidler_screw_thread, h=hotend_clamp_screw_l, head_embed=true, orient=Y, align=Y);
     }
     else if(part=="vit")
     {
@@ -1268,7 +1268,7 @@ module extruder_guidler(part, override_w)
 
         // screw/spring for tighten
         t(extruder_guidler_screw_offset)
-        tx(-8*mm)
+        tx(-15*mm)
         screw_cut(thread=guidler_screw_thread, nut=guidler_screw_nut, h=30*mm, orient=-X, align=X, nut_offset=6*mm);
     }
     else if(part=="vit")
