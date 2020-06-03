@@ -99,12 +99,14 @@ module x_axis()
             echo("x carriage", x, pos);
 
             tx(pos)
-            mirror([x==0?0:1,0,0])
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],N])
             {
-                x_carriage_withmounts($show_vit=true, beltpath_sign=x==0?-1:1, with_sensormount=x==0);
+                $show_vit=true;
 
-                x_carriage_extruder($show_vit=true);
+                mirror([x==0?0:1,0,0])
+                x_carriage_withmounts(beltpath_sign=x==0?-1:1, with_sensormount=x==0);
+
+                x_carriage_extruder(x==0?-1:1);
             }
         }
 

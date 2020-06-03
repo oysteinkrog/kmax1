@@ -18,8 +18,12 @@ include <thing_libutils/bearing_data.scad>;
 include <thing_libutils/pulley.scad>;
 include <thing_libutils/timing-belts.scad>
 include <thing_libutils/materials.scad>
+use <thing_libutils/fan_axial.scad>
+include <thing_libutils/fan_axial_data.scad>
 
-module x_extruder_hotend()
+use <thing_libutils/fan_5015S.scad>
+
+module x_extruder_hotend(side=-1, new=true)
 {
     material(Mat_Aluminium)
     tz(-21.3*mm)
@@ -39,108 +43,82 @@ module x_extruder_hotend()
     //filament path
     material(Mat_PlasticBlack)
     cylindera(h=1000, d=1.75*mm, orient=Z, align=N);
-}
 
-module x_extruder_hotend_()
-{
-    material(Mat_Aluminium)
-    tz(-21.3*mm)
+    mx(side>=1)
+    tx(-16)
+    tz(-29)
     rz(-90)
-    rx(90)
-    import("stl/E3D_V6_1.75mm_Universal_HotEnd_Mockup.stl");
+    rx(-90)
+    tx(-123)
+    ty(-123)
+    import("stl/thing_43783214/30mm_clip_with_venturi_v3_50_by_thed0ct0r_.stl");
 
-    // official 30mm duct
-    /*ty(-22)*/
-    /*rotate(180*Y)*/
-    /*import("stl/V6.6_Duct.stl");*/
+    mx(side>=1)
+    tx(-26)
+    ty(-4.1)
+    tz(-30)
+    rz(10)
+    fan(orient=X, align=-X);
 
-    /*ty(-21.5)*/
-    /*rotate(180*Y)*/
-    /*import("stl/30mm_Clamp.stl");*/
+    mx(side>=1)
+    tz(-76.4)
+    ty(-112.8)
+    rx(-90)
+    rz(180)
+    import("stl/thing_3316685/e3d_v6_30mm_to_40mm_adapter.stl");
 
-    /*mirror(Z)*/
-    /*tx(10)*/
-    /*tx(27)*/
-    /*tz(-44)*/
-    /*ty(38)*/
-    /*rotate(-22*Z)*/
-    /*rotate(270*Y)*/
-    /*rotate(90*X)*/
-    /*import("stl/Radial_Fan_Fang_5015_SN04.stl");*/
-
-    /*mirror(Z)*/
-    /*tx(10)*/
-    /*tx(37)*/
-    /*tz(-43.6)*/
-    /*ty(34)*/
-    /*rotate(-22*Z)*/
-    /*rotate(270*Y)*/
-    /*rotate(90*X)*/
-    /*import("stl/Radial_Fan_Fang_5015.stl");*/
-
-    /*tx(10) // E3D fan thickness*/
-    /*tx(-12.7)*/
-    /*ty(22)*/
-    /*rotate(90*X)*/
-    /*import("stl/Radial_Fan_Fang_5015_mod.stl");*/
-
-    tz(-21.3*mm)
-    rz(-90)
-    rx(90)
-    tz(0)
-    tx(24.5)
-    ty(-7.5)
-    ry(90)
-    ry(180)
-    import("stl/Custom_E3D_V6_40mm_Fan_V2.stl");
-
-    tt = 10*mm; // E3D fan thickness
-
-    tz(-21.3*mm)
-    rz(-90)
-    rx(90)
-    tx(tt)
-    tx(-5.7)
-    ty(28)
-    rx(90)
-    import("extras/Fang_5015_40mm_v4 - Copy.stl");
-
-    // E3D fan
-    tz(-21.3*mm)
-    rz(-90)
-    rx(90)
-    tx(7.2)
-    tx(tt)
-    tx(12.5*mm)
-    ty(-6*mm)
+    if(new)
     {
-        d=40*mm;
-        difference()
-        {
-            cubea([tt,d,d]);
-            cylindera(d=d-5*mm, h=1000, orient=X);
+        tx(-13)
+        ty(129)
+        tz(-178)
+        rz(180)
+        ry(-90)
+        import("stl/thing_43783214/Clip_with_sliding_guide_and_screw_slot_rev2.stl");
 
-            for(x=[-1,1])
-            for(y=[-1,1])
-            tz(x*(d/2 - 3.5*mm))
-            ty(y*(d/2 - 3.5*mm))
-            screw_cut(thread=extruder_hotend_clamp_thread, h=12*mm, orient=-X, align=-X);
-        }
+        tx(-161.2)
+        ty(-147.9)
+        tz(71)
+        rx(-90)
+        rx(45)
+        import("stl/thing_43783214/5015_sloped_layer_cooling.stl");
+
+        tx(-150.5)
+        ty(-163.5)
+        tz(-65.5)
+        import("stl/thing_43783214/Prusa_like_nozzle_duct1.stl");
+
+        tx(-17)
+        ty(-49)
+        tz(-38)
+        rx(-45)
+        rz(-90)
+        fan_5015S();
     }
+    else
+    {
+        tx(-113.5)
+        ty(-22.1)
+        tz(-148)
+        rz(-90)
+        ry(-90)
+        import("stl/thing_2769783/5015_layer_cooling_adapter_-_for_prusa_cooler_v1_2_-_rotated.stl");
 
-    /*tx(25)*/
-    /*ty(-7)*/
-    /*rotate(-90*Y)*/
-    /*import("stl/Custom_E3D_V6_40mm_Fan_V2.stl");*/
+        tx(17)
+        ty(-30)
+        tz(-25)
+        rz(180)
+        rx(-90)
+        rz(-90)
+        fan_5015S();
 
-    /*[>tx(10)<]*/
-    /*tx(22)*/
-    /*tz(-56)*/
-    /*ty(49)*/
-    /*rotate(-22*Z)*/
-    /*rotate(90*X)*/
-    /*import("stl/Radial_Fan_Fang_5015_for_40mm_thicker.stl");*/
+        tx(-1)
+        ty(13)
+        tz(-4)
+        rz(180)
+        import("stl/thing_2769783/prusa_nozzle_fan_converted_2_v3_5L3.stl");
 
+    }
 }
 
 module x_carriage(part=undef, beltpath_sign=1, with_sensormount)
@@ -1537,7 +1515,7 @@ module x_carriage_full()
     x_carriage_extruder();
 }
 
-module x_carriage_extruder(with_sensormount=false)
+module x_carriage_extruder(side)
 {
     $show_conn=false;
     $show_vit=true;
@@ -1550,6 +1528,7 @@ module x_carriage_extruder(with_sensormount=false)
     translate(extruder_offset)
     {
         te(extruder_offset_a, Y*$explode)
+        mx(side==1)
         extruder_a();
 
         te(extruder_offset_b+[0,-.1,0], Y*$explode)
@@ -1558,18 +1537,22 @@ module x_carriage_extruder(with_sensormount=false)
             {
                 union()
                 {
+                    mx(side==1)
                     extruder_b();
 
+                    mx(side==1)
                     te(extruder_offset_b, Y*$explode)
                     t(extruder_b_hotend_mount_offset)
                     extruder_b_filaguide();
 
+                    mx(side==1)
                     attach(extruder_conn_guidler, guidler_conn, extruder_guidler_roll, $explode=$explode/2)
                     extruder_guidler();
 
                     attach(extruder_b_hotend_mount_conn, hotend_conn, roll=0)
-                    x_extruder_hotend();
+                    x_extruder_hotend(side);
 
+                    mx(side==1)
                     te(extruder_offset_c, Y*$explode)
                     extruder_c();
                 }
@@ -1579,26 +1562,6 @@ module x_carriage_extruder(with_sensormount=false)
                 cubea([1000,1000,1000], align=-Y);
             }
         }
-
-
-        /*translate([explode[0],-explode[1],explode[2]])*/
-        /*translate([-95,53,20])*/
-        /*rotate([-152,0,0])*/
-        /*import("stl/E3D_40_mm_Duct.stl");*/
-
-        /*translate([explode[0],-explode[1],explode[2]])*/
-        /*translate([-123.5,78.5,-54])*/
-        /*rotate([0,0,-90])*/
-        /*import("stl/E3D_30_mm_Duct.stl");*/
-
-        /*translate(-extruder_offset)*/
-        /*translate(34*X)*/
-        /*translate(2*Y)*/
-        /*translate(-1*Z)*/
-        /*rotate(180*Z)*/
-        /*rotate(-90*X)*/
-        /*import("stl/Fan_Duct_V4.STL");*/
-
     }
 }
 
@@ -1646,13 +1609,14 @@ module xaxis_end_bucket(part)
     /*if(false)*/
     for(x=sides)
     /*for(x=[-1,1])*/
-    tx(x==-1?x*156*mm:-98*mm)
-    mirror([x<0?0:1,0,0])
+    tx(x==-1?x*187*mm:-129*mm)
     {
+        mx(x==1)
         x_carriage_withmounts($show_vit=true, beltpath_sign=x, with_sensormount=x<0);
 
-        x_carriage_extruder(with_sensormount=x<0);
+        x_carriage_extruder(x);
 
+        mx(x==1)
         if(x<0)
         t(extruder_offset)
         attach(extruder_carriage_sensormount_conn, sensormount_conn)
