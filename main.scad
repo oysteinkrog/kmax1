@@ -250,6 +250,7 @@ module gantry_upper()
     }
 
     // upper gantry connectors
+    ty(-gantry_upper_offset_y)
     for(x=[-1,1])
     tx(x*(main_upper_width/2))
     tz(main_height)
@@ -321,6 +322,7 @@ module main()
 
     render();
     translate(-zaxis_rod_offset)
+    ty(gantry_upper_offset_y)
     gantry_upper();
 
     render();
