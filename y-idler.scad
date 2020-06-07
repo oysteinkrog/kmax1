@@ -185,7 +185,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
             tx(9*mm)
             nut_trap_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, screw_l=10*mm, trap_axis=-Z, orient=-X, align=X);
 
-            screw_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, screw_l=10*mm, with_nut=false, trap_axis=-Z, orient=X, align=X);
+            screw_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, h=10*mm, with_nut=false, orient=X, align=X);
         }
     }
     else if(part=="vit")
