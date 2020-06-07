@@ -49,7 +49,7 @@ include <printbed.h>
 /*include <psu.h>*/
 
 /*use <lcd2004.scad>*/
-/*use <power-panel-iec320.scad>*/
+use <power-panel-iec320.scad>
 
 // x carriage
 axis_range_x_ = main_width/2 - extrusion_size - x_carriage_w/2 + 20;
