@@ -120,6 +120,69 @@ module part_z_motor_mount_clamp()
             thread=zmotor_mount_clamp_thread);
 }
 
+module zaxis_motor_mount_addon(part)
+{
+    if(part==U)
+    {
+        difference()
+        {
+            zaxis_motor_mount_addon(part="pos");
+            zaxis_motor_mount_addon(part="neg");
+        }
+        if($show_vit)
+        zaxis_motor_mount_addon(part="vit");
+    }
+    else if(part=="pos")
+    {
+        tz(zmotor_mount_thickness_h)
+        tx(zmotor_mount_rod_offset_x/2)
+        rcubea([zmotor_mount_rod_offset_x-13, zmotor_w+zmotor_mount_thickness*2-13, 2], align=Z);
+
+        tz(zmotor_mount_thickness_h)
+        tx(zmotor_mount_rod_offset_x/2)
+        hull_pairwise()
+        {
+            rcylindera(d=zmotor_mount_rod_offset_x-23, h=3, align=Z);
+            rcylindera(d=zmotor_mount_rod_offset_x-30, h=7, align=Z);
+            rcylindera(d=zmotor_mount_rod_offset_x-30, h=12, align=Z);
+        }
+    }
+    else if(part=="neg")
+    {
+        holeDist = get(NemaDistanceBetweenMountingHoles, zaxis_motor) * 0.5;
+        holeRadius = get(NemaMountingHoleDiameter, zaxis_motor) * 0.5;
+        holeDepth = get(NemaMountingHoleDepth, zaxis_motor);
+        attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
+        material(Mat_Aluminium)
+        for(x=[-1,1])
+        for(y=[-1,1])
+        tx(x*holeDist)
+        ty(y*holeDist)
+        cylindera(h=1000, r=holeRadius, align=N, extra_h=.1, extra_align=Z);
+
+        axleRadius = get(NemaAxleDiameter, zaxis_motor) * 0.5;
+        attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
+        material(Mat_Aluminium)
+        cylindera(r=axleRadius+2*mm, h=1000);
+
+        tz(zmotor_mount_thickness_h)
+        tz(zmotor_mount_thickness_h)
+        attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
+        rcubea([10,10000,7]);
+
+        tz(2*zmotor_mount_thickness_h)
+        attach([[get(NemaSideSize,zaxis_motor)/2,0,0],N],zmotor_mount_conn_motor)
+        ty(zmotor_w/2)
+        rcubea([10,zmotor_w,1000]);
+
+    }
+}
+
+module part_z_motor_mount_addon()
+{
+    zaxis_motor_mount_addon();
+}
+
 if(false)
 zaxis_motor_mount();
 

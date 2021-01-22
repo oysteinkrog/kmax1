@@ -61,7 +61,7 @@ axis_x_parked = [false, true];
 axis_range_y=[0*mm,200*mm];
 axis_pos_y = -axis_range_y[0]/2-30*mm;
 axis_range_z=[-extruder_offset.z-extruder_offset_b.z-extruder_b_hotend_mount_offset.z+hotend_height+yaxis_carriage_offset.z+yaxis_carriage_bearing_mount_conn_bearing[0].z+yaxis_carriage_printbed_offset.z+printbed_size.z,353*mm];
-axis_pos_z = axis_range_z[0];
+axis_pos_z = axis_range_z[0]-21;
 
 echo(str("Axis range X: " , axis_range_x[0], " ", axis_range_x[1]," mm"));
 echo(str("Axis range Y: " , axis_range_y[0], " ", axis_range_y[1]," mm"));
@@ -214,6 +214,7 @@ module z_axis()
             mirror([x==-1?1:0,0,0])
             {
                 zaxis_motor_mount();
+                zaxis_motor_mount_addon();
 
                 tx(zmotor_mount_rod_offset_x)
                 tz(zmotor_mount_thickness_h/2)
