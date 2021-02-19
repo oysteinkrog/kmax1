@@ -52,6 +52,9 @@ main_depth = 420*mm;
 main_height = 400*mm;
 main_upper_width = 500*mm;
 
+// underneath y axis
+y_plate_offset_z = -5*mm;
+
 extrusion_size = 20*mm;
 extrusion_thread = ThreadM5;
 extrusion_thread_dia = lookup(ThreadSize, extrusion_thread);

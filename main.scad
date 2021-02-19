@@ -266,14 +266,14 @@ module gantry_upper()
 module gantry_lower()
 {
     for(z=[-1,1])
-    translate([0,0,z*-main_lower_dist_z/2])
+    tz(z*-main_lower_dist_z/2)
     {
         for(y=[-1,1])
-        translate([0, y*(main_depth/2), 0])
+        ty(y*(main_depth/2))
         linear_extrusion(h=main_width, align=[0,y,-1], orient=X);
 
         for(x=[-1,1])
-        translate([x*(main_width/2), 0, 0])
+        tx(x*(main_width/2))
         linear_extrusion(h=main_depth, align=-x*X-Z, orient=Y);
     }
 
@@ -315,6 +315,59 @@ module enclosure()
     }
 }
 
+module y_plate_connector(part)
+{
+    h=5*mm;
+    plate_offset_z=yaxis_rod_d/2-get(LinearBearingOuterDiameter,yaxis_bearing)/2+y_plate_offset_z;
+    if(part==U)
+    {
+        difference()
+        {
+            y_plate_connector(part="pos");
+            y_plate_connector(part="neg");
+        }
+        %y_plate_connector(part="vit");
+    }
+    else if(part=="pos")
+    {
+        hull()
+        {
+            // upper/on top of extrusion
+            rcubea([extrusion_size,extrusion_size,h], align=Z);
+
+            // lower/on y bed plate
+            tx(-extrusion_size)
+            tz(plate_offset_z)
+            /*tz(yaxis_rod_d/2)*/
+            /*tz(-get(LinearBearingOuterDiameter,yaxis_bearing)/2)*/
+            /*tz(y_plate_offset_z)*/
+
+            rcubea([extrusion_size,extrusion_size,h-y_plate_offset_z/2], align=Z);
+        }
+    }
+    else if(part=="neg")
+    {
+        // the extrusion
+        rcubea([extrusion_size,1000*mm,extrusion_size], align=-Z);
+
+        // screw mount into extrusion
+        tz(h)
+        screw_cut(nut=extrusion_nut, head="button", h=12*mm, align=-Z, orient=-Z);
+
+        // screw into plate
+        tx(-extrusion_size)
+        tz(plate_offset_z)
+        tz(h)
+        screw_cut(nut=extrusion_nut, head="button", h=10*mm, align=-Z, orient=-Z);
+    }
+}
+
+module part_y_plate_connector()
+{
+    rx(90)
+    y_plate_connector();
+}
+
 module main()
 {
     render();
@@ -325,6 +378,13 @@ module main()
     translate(-zaxis_rod_offset)
     ty(gantry_upper_offset_y)
     gantry_upper();
+
+    for(x=[-1,1])
+    for(y=[-1,1])
+    translate([x*(main_width/2-extrusion_size/2),y*(main_depth*.6/2),0])
+    mirror([x==1?0:-1,0,0])
+    mirror([0,y==1?1:0,0])
+    y_plate_connector();
 
     render();
     x_axis();
@@ -341,6 +401,12 @@ module main()
     translate([0,extrusion_size,0])
     translate([0,0,-main_lower_dist_z/2-extrusion_size/2])
     power_panel_iec320(orient=[0,-1,0], align=Y);
+
+    /*tz(-extrusion_size)*/
+    tz(yaxis_rod_d/2)
+    tz(-get(LinearBearingOuterDiameter,yaxis_bearing)/2)
+    tz(y_plate_offset_z)
+    cubea([main_width-extrusion_size*2, main_depth, 1*cm], align=-Z);
 
     if(!$preview_mode)
     {
