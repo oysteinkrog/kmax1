@@ -1026,14 +1026,15 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
             extruder_drivegear(part="cutout");
         }
 
+        h = extruder_offset_a[1]+.2;
+        echo("carriage => A screw length:", h);
+
         // extruder A mount cutout
         t(extruder_offset)
         txz(extruder_offset_a)
         ry(extruder_motor_mount_angle)
         position(extruder_a_mount_offsets)
         {
-            h= extruder_offset_a[1]+.2;
-            echo("carriage => A screw length:", h);
             screw_cut(
                $show_vit=true,
                 nut=NutHexM3,
@@ -1049,10 +1050,10 @@ module x_carriage_withmounts(part, beltpath_sign, with_sensormount)
         translate(extruder_offset)
         position(extruder_b_mount_offsets)
         screw_cut(
-            nut=NutKnurlM3_3_42,
+            nut=NutSquareM3,
             h=4*mm,
             nut_offset=0,
-            with_nut_access=false,
+            with_nut_access=true,
             head_embed=false,
             orient=Y, align=Y);
 

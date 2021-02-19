@@ -422,3 +422,12 @@ extruder_c_mount_offsets=[
 
 
 guidler_extra_h_up=extruder_drivegear_bearing_d/2+hotend_clamp_screw_dia/2;
+
+NutSquareM3 = [
+    [NutHoleDia, 3*mm],
+    [NutWidthMin, 5.4*mm],
+    [NutThickness, 2.45*mm],
+    [NutWidthMax, 5.45*mm],
+    [NutThread, ThreadM3],
+    [NutFacets, 4],
+];
