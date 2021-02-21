@@ -123,8 +123,8 @@ module yaxis_idler(part)
 module yaxis_idler_pulleyblock(part, show_pulley=false)
 {
     washer_h=.8*mm + .1*mm;
-    h = yaxis_idler_pulley_h + 2*washer_h + 3*mm*2;
-    d=yaxis_idler_mount_tightscrew_hexnut_dia*2;
+    h = yaxis_idler_pulley_h + 2*washer_h + 3*mm*2+2*mm;
+    d = max(h, yaxis_idler_mount_tightscrew_hexnut_dia*2);
 
     if(part==U)
     {
@@ -142,13 +142,13 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
         {
             // idler
             tz(h/2)
-            rcylindera(d=yaxis_idler_pulley_thread_dia+15*mm, h=h, orient=-Z, align=-Z);
+            rcylindera(d=yaxis_idler_pulley_thread_dia+20*mm, h=h, orient=-Z, align=-Z);
 
             // tension screws
             tx(-yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len)
             for(y=[-1,1])
             ty(y*yaxis_idler_tightscrew_dist)
-            rcubea([d,d,yaxis_idler_pulley_tight_len], orient=X, align=X);
+            rcubea([d,d,yaxis_idler_pulley_tight_len+10], orient=X, align=X);
 
             // adjustment screw
             tx(-yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len)
@@ -169,6 +169,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
 
         // pulley screw
         tz(h/2)
+        tz(-2*mm)
         screw_cut(yaxis_idler_pulley_nut, head="button", h=h+5*mm, orient=-Z, align=-Z);
 
         // tension screws
@@ -190,7 +191,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
     }
     else if(part=="vit")
     {
-        pulley(pulley_2GT_20T_idler);
+        pulley(yaxis_idler_pulley);
         // TODO: add washers
     }
 

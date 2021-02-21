@@ -136,7 +136,7 @@ yaxis_belt_path_offset_z = 5*mm;
 
 yaxis_motor_offset_z = yaxis_belt_path_offset_z - 10*mm;
 
-yaxis_idler_pulley = pulley_2GT_20T_idler;
+yaxis_idler_pulley = pulley_2GT_20T_idler_9mm;
 yaxis_idler_pulley_inner_d = yaxis_idler_pulley[2];
 yaxis_idler_pulley_outer_d = yaxis_idler_pulley[3];
 yaxis_idler_pulley_h = yaxis_idler_pulley[0];
