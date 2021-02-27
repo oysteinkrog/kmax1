@@ -349,10 +349,10 @@ module extruder_a_motor_mount(part)
         }
 
         position(extruder_a_mount_offsets)
-        screw_cut(nut=NutKnurlM3_3_42, h=6*mm, with_nut=false, head_embed=false, orient=Y, align=Y);
+        screw_cut(nut=NutKnurlM3_3_42, h=extruder_a_h+1*mm, with_nut=false, head_embed=false, orient=Y, align=Y);
 
         // screws for mounting motor
-        ty(-3*mm)
+        ty(-2*mm)
         ty(extruder_a_h)
         for(x=[-1,1])
         for(z=[-1,1])
@@ -1301,7 +1301,7 @@ module sensormount(part=undef)
     material(Mat_Plastic)
     {
         /*ty(4*mm)*/
-        tz(-2*mm)
+        ty(-2*mm)
         rcubea(size=sensormount_size, align=Y);
     }
     else if(part == "neg")
