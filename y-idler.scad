@@ -122,9 +122,9 @@ module yaxis_idler(part)
 
 module yaxis_idler_pulleyblock(part, show_pulley=false)
 {
-    washer_h=.8*mm + .1*mm;
-    h = yaxis_idler_pulley_h + 2*washer_h + 3*mm*2+2*mm;
-    d = max(h, yaxis_idler_mount_tightscrew_hexnut_dia*2);
+    bearing_bump=1*mm;
+    h = yaxis_idler_pulley_h + 2*bearing_bump + 2*3*mm;
+    d = max(h, yaxis_idler_mount_tightscrew_hexnut_dia*1.5);
 
     if(part==U)
     {
@@ -158,19 +158,25 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
     }
     else if(part=="neg")
     {
-
-        // pulley+washers cutout
-        tx(-3*mm)
-        cubea(
-            size=[yaxis_idler_pulley_outer_d, yaxis_idler_pulley_outer_d*3, yaxis_idler_pulley_h+0.5+2*washer_h],
-            align=N,
-            extra_size=[20*mm,0,0], extra_align=X
-            );
+        // pulley cutout
+        difference()
+        {
+            tx(-3*mm)
+            cubea(
+                size=[yaxis_idler_pulley_outer_d, yaxis_idler_pulley_outer_d*3, yaxis_idler_pulley_h+2*bearing_bump],
+                align=N,
+                extra_size=[20*mm,0,0], extra_align=X
+                );
+            for(z=[-1,1])
+            tz(z*(yaxis_idler_pulley_h+2*bearing_bump)/2)
+            mz(z<1)
+            cylindera(d1=yaxis_idler_pulley[5]+2*mm,d2=yaxis_idler_pulley[5]+4*mm, h=bearing_bump, align=-Z);
+        }
 
         // pulley screw
         tz(h/2)
-        tz(-2*mm)
-        screw_cut(yaxis_idler_pulley_nut, head="button", h=h+5*mm, orient=-Z, align=-Z);
+        tz(-1*mm)
+        screw_cut(yaxis_idler_pulley_nut, head="button", with_nut=false, h=h-1*mm, orient=-Z, align=-Z);
 
         // tension screws
         for(y=[-1,1])
@@ -182,7 +188,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
         tx(-yaxis_idler_pulleyblock_supportsize/2-yaxis_idler_pulley_tight_len)
         t(yaxis_idler_mount_adjustscrew_offset)
         {
-        tx(yaxis_idler_pulley_tight_len/2)
+            tx(yaxis_idler_pulley_tight_len/2)
             tx(9*mm)
             nut_trap_cut(nut=yaxis_idler_mount_adjustscrew_hexnut, screw_l=10*mm, trap_axis=-Z, orient=-X, align=X);
 
