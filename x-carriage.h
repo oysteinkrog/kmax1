@@ -17,6 +17,9 @@ xaxis_bearing_bottom_ID = get(LinearBearingInnerDiameter, xaxis_bearing_bottom);
 xaxis_bearing_bottom_OD = get(LinearBearingOuterDiameter, xaxis_bearing_bottom);
 xaxis_bearing_bottom_L = get(LinearBearingLength, xaxis_bearing_bottom);
 
+xaxis_bearing_top_pos = Z*xaxis_rod_distance/2;
+xaxis_bearing_bottom_pos = Z*-xaxis_rod_distance/2-X*7*mm;
+
 xaxis_carriage_bearing_distance = .5*mm;
 xaxis_carriage_bearing_spread = xaxis_bearings_top*xaxis_bearing_top_L + (xaxis_bearings_top-1)*xaxis_carriage_bearing_distance;
 xaxis_carriage_padding = 1*mm;
@@ -129,9 +132,9 @@ extruder_motor = dict_replace_multiple(Nema17,
         ]);
 
 extruder_a_bearing = bearing_MR125;
-extruder_a_bearing_offset = Y*-.5*mm;
-extruder_a_h = -xaxis_carriage_thickness + xaxis_carriage_bearing_offset_y + xaxis_bearing_top_OD+10*mm;//14*mm;
-extruder_a_base_h=extruder_a_bearing[2]-extruder_a_bearing_offset.y+1*mm;
+extruder_a_bearing_offset = Y*-.0*mm;
+extruder_a_h = -xaxis_carriage_thickness + xaxis_carriage_bearing_offset_y + xaxis_bearing_top_OD+11*mm;//14*mm;
+extruder_a_base_h=extruder_a_bearing[2];
 
 extruder_b_bearing = bearing_MR105;
 extruder_b_mount_dia = 9*mm;

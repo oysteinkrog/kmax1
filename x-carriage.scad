@@ -137,11 +137,11 @@ module x_carriage(part=undef, beltpath_sign=1, with_sensormount)
         hull()
         {
             // top bearings support
-            tz(xaxis_rod_distance/2)
+            t(xaxis_bearing_top_pos)
             rcubea([xaxis_carriage_top_width, xaxis_carriage_thickness, xaxis_bearing_top_OD+xaxis_carriage_padding+ziptie_bearing_distance*2], align=Y);
 
             // bottom bearings support
-            tz(-xaxis_rod_distance/2)
+            t(xaxis_bearing_bottom_pos)
             rcubea([xaxis_carriage_bottom_width, xaxis_carriage_thickness, xaxis_bearing_bottom_OD+xaxis_carriage_padding+ziptie_bearing_distance*2], align=Y);
 
             /// support for extruder mount
@@ -232,13 +232,17 @@ module x_carriage(part=undef, beltpath_sign=1, with_sensormount)
     }
 
     // bearing mount top
+    t(xaxis_bearing_top_pos)
+    ty(xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y)
     for(x=spread(-xaxis_carriage_bearing_spread/2,xaxis_carriage_bearing_spread/2,xaxis_bearings_top))
-    translate([x,xaxis_bearing_top_OD/2+xaxis_carriage_bearing_offset_y,xaxis_rod_distance/2])
+    tx(x)
     linear_bearing_mount(part=part, bearing=xaxis_bearing_top, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X, mount_dir_align=Y);
 
     // bearing mount bottom
+    t(xaxis_bearing_bottom_pos)
+    ty(xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y)
     for(x=spread(-xaxis_carriage_bearing_spread/2,xaxis_carriage_bearing_spread/2,xaxis_bearings_bottom))
-    translate([x,xaxis_bearing_bottom_OD/2+xaxis_carriage_bearing_offset_y,-xaxis_rod_distance/2])
+    tx(x)
     linear_bearing_mount(part=part, bearing=xaxis_bearing_bottom, ziptie_type=ziptie_type, ziptie_bearing_distance=ziptie_bearing_distance, orient=X, align=-sign(x)*X, mount_dir_align=Y);
 }
 
