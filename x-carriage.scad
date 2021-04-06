@@ -1606,7 +1606,7 @@ module xaxis_end_bucket(part)
     }
 }
 
-/*if(false)*/
+if(false)
 {
     sides=[-1,1];
     /*sides=[-1];*/
@@ -1616,16 +1616,9 @@ module xaxis_end_bucket(part)
     /*for(x=[-1,1])*/
     tx(x==-1?x*187*mm:-129*mm)
     {
-        mx(x==1)
-        x_carriage_withmounts($show_vit=true, beltpath_sign=x, with_sensormount=x<0);
+        x_carriage_withmounts(side=x, with_sensormount=x<=0);
 
-        x_carriage_extruder(x);
-
-        mx(x==1)
-        if(x<0)
-        t(extruder_offset)
-        attach(extruder_carriage_sensormount_conn, sensormount_conn)
-        sensormount_clamp();
+        x_carriage_extruder(side=x);
     }
 
     /*if(false)*/

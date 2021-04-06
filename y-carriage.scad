@@ -4,6 +4,7 @@ include <thing_libutils/shapes.scad>
 module yaxis_carriage()
 {
     tz(14.5)
+    material(Mat_PrintCarriage)
     import("stl/Original_Prusa_i3_MK3_platform.stl");
 
     /*material(Mat_PrintCarriage)*/
