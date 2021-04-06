@@ -54,14 +54,14 @@ use <power-panel-iec320.scad>
 // x carriage
 axis_range_x_ = main_width/2 - extrusion_size - x_carriage_w/2 + 20;
 axis_range_x = [-1,1] *  axis_range_x_;
-axis_printrange_x = [-1, 1] * (printbed_size[0]/2+extruder_b_hotend_mount_offset.x);
+axis_printrange_x = [-1, 1] * (printbed_size[0]/2+extruder_b_hotend_mount_offset.x+3);
 axis_x_pos_relative=[1,0];
-axis_x_parked = [false, true];
+axis_x_parked = [true, true];
 
 axis_range_y=[0*mm,200*mm];
 axis_pos_y = -axis_range_y[0]/2-30*mm;
 axis_range_z=[-extruder_offset.z-extruder_offset_b.z-extruder_b_hotend_mount_offset.z+hotend_height+yaxis_carriage_offset.z+yaxis_carriage_bearing_mount_conn_bearing[0].z+yaxis_carriage_printbed_offset.z+printbed_size.z,353*mm];
-axis_pos_z = axis_range_z[0]-21;
+axis_pos_z = axis_range_z[0];//-21;
 
 echo(str("Axis range X: " , axis_range_x[0], " ", axis_range_x[1]," mm"));
 echo(str("Axis range Y: " , axis_range_y[0], " ", axis_range_y[1]," mm"));
@@ -103,10 +103,9 @@ module x_axis()
             {
                 $show_vit=true;
 
-                mirror([x==0?0:1,0,0])
-                x_carriage_withmounts(beltpath_sign=x==0?-1:1, with_sensormount=x==0);
+                x_carriage_withmounts(side=x, with_sensormount=x==0);
 
-                x_carriage_extruder(x==0?1:-1);
+                x_carriage_extruder(side=x);
             }
         }
 

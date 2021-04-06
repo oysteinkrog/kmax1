@@ -18,11 +18,11 @@ xaxis_bearing_bottom_OD = get(LinearBearingOuterDiameter, xaxis_bearing_bottom);
 xaxis_bearing_bottom_L = get(LinearBearingLength, xaxis_bearing_bottom);
 
 xaxis_bearing_top_pos = Z*xaxis_rod_distance/2;
-xaxis_bearing_bottom_pos = Z*-xaxis_rod_distance/2-X*7*mm;
+xaxis_bearing_bottom_pos = Z*-xaxis_rod_distance/2-X*4*mm;
 
 xaxis_carriage_bearing_distance = .5*mm;
 xaxis_carriage_bearing_spread = xaxis_bearings_top*xaxis_bearing_top_L + (xaxis_bearings_top-1)*xaxis_carriage_bearing_distance;
-xaxis_carriage_padding = 1*mm;
+xaxis_carriage_padding = 0*mm;
 
 xaxis_carriage_top_width =
     xaxis_bearing_top_L*xaxis_bearings_top
@@ -131,13 +131,13 @@ extruder_motor = dict_replace_multiple(Nema17,
         [NemaFrontAxleLength, 5*mm],
         ]);
 
-extruder_a_bearing = bearing_MR125;
+extruder_a_bearing = bearing_MR85;
 extruder_a_bearing_offset = Y*-.0*mm;
 extruder_a_h = -xaxis_carriage_thickness + xaxis_carriage_bearing_offset_y + xaxis_bearing_top_OD+11*mm;//14*mm;
 extruder_a_base_h=extruder_a_bearing[2];
 
 extruder_b_bearing = bearing_MR105;
-extruder_b_mount_dia = 9*mm;
+extruder_b_mount_dia = 8*mm;
 
 // from E3D V6 heatsink drawing
 // http://wiki.e3d-online.com/wiki/File:DRAWING-V6-175-SINK.png
@@ -151,7 +151,8 @@ extruder_filament_bite = extruder_drivegear_type == "Bondtech" ? .4*mm : .4*mm;
 
 // drivegear relative to extruder B
 extruder_b_drivegear_offset =
-    - Y*(7.5*mm)
+    - X*(8.5)
+    - Y*(6.5*mm)
     - Y*(hotend_outer_size_xy/2)
 ;
 
@@ -191,7 +192,7 @@ extruder_b_mount_thick = 5*mm;
 
 /*extruder_carriage_sensormount_offset=[35,-7,-41];*/
 //extruder_carriage_sensormount_offset=[-25,-7,-47];
-extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x+16*mm, 0*mm,-52*mm];
+extruder_carriage_sensormount_offset=[extruder_b_filapath_offset.x+23*mm, 5.5*mm,-73*mm];
 extruder_carriage_sensormount_conn=[extruder_carriage_sensormount_offset,Y];
 
 sensormount_conn = [N,Y];
@@ -206,13 +207,13 @@ extruder_motor_offset_z = sin(extruder_motor_gear_offset_angle) * extruder_gears
 extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_motor);
 
 extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
-[x*(x_carriage_w/2-extruder_b_mount_dia-1*mm),0,z*extruder_motor_holedist/2]+[x*5,0,z<0?-6*mm:z*4-11*mm]
+[x*(x_carriage_w/2-extruder_b_mount_dia-3*mm),0,z*extruder_motor_holedist/2]+[x*5,0,z<0?+3*mm:z*4-14*mm]
 ];
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
 
 // extruder mount offset, relative to X carriage
-extruder_offset = [0, 0, 9.8*mm];
+extruder_offset = [2, 0, 19.5*mm];
 
 // extruder a offset relative to extruder
 extruder_offset_a = -extruder_gear_big_offset + Y*xaxis_carriage_thickness;
@@ -224,7 +225,7 @@ extruder_offset_b = N;
 // basically lower it by the size of the drivegear and then a bit of a margin
 // this margin is basically needed for the guidler pivot/mount
 extruder_filament_path_hotend_mount_offset =
-    + Z*(-extruder_drivegear_d_outer/2 - 10*mm);
+    + Z*(-extruder_drivegear_d_outer/2 -14.6*mm);
 
 // hotend mount offset relative to extruder B
 extruder_b_hotend_mount_offset =
@@ -356,9 +357,8 @@ extruder_b_pushfit_nut = [
 ];
 extruder_b_pushfit_nut_thread = get(NutThread, extruder_b_pushfit_nut);
 
-sensor_diameter=12;
-sensormount_thickness=5*mm;
-sensormount_size = [17*mm,sensormount_thickness,8*mm];
+sensor_diameter=8;
+sensormount_size = [17*mm,9*mm,10*mm];
 
 sensormount_sensor_hotend_offset = v_xy(extruder_carriage_sensormount_offset) - v_xy(extruder_b_hotend_mount_offset);
 echo("Sensor mount offset", sensormount_sensor_hotend_offset);
@@ -406,13 +406,18 @@ extruder_c_hotend_clamp_offset =
     - Y*(hotend_outer_size_xy/2)
 ;
 
+voron_extruder_body_pos=[0,0,0];
+voron_printhead_rear_pos=[-4.3,0,-42.2];
 
-// extruder b mount offsets onto extruder
+// voron printhead and extruder body mount offsets onto extruder
 extruder_b_mount_offsets=[
-    // position the mount offsets so that we reuse the hotend clamp screws
-    +X*hotend_clamp_screws_dist+v_xz(extruder_b_hotend_mount_offset+extruder_b_hotend_clamp_offset),
-    -X*hotend_clamp_screws_dist+v_xz(extruder_b_hotend_mount_offset+extruder_b_hotend_clamp_offset),
-    -X*(3*mm)+Z*(20*mm)
+    voron_extruder_body_pos-X*13.75*mm-Z*11.55*mm,
+    voron_extruder_body_pos-X*19.85*mm+Z*31.75*mm,
+    voron_extruder_body_pos+X*11.20*mm+Z*31.75*mm,
+    voron_printhead_rear_pos+X*-30.8/2+Z*43.2/2,
+    voron_printhead_rear_pos+X*+30.8/2+Z*43.2/2,
+    voron_printhead_rear_pos+X*-32.45/2-Z*43.2/2,
+    voron_printhead_rear_pos+X*+32.45/2-Z*43.2/2,
 ];
 
 // extruder c mount offsets onto extruder b

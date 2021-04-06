@@ -75,3 +75,5 @@ module part_y_carriage_bearing_mount()
         yaxis_carriage_bearing_mount();
     }
 }
+
+yaxis_carriage_bearing_mount();

@@ -59,3 +59,5 @@ module part_y_carriage_belt_holder()
         yaxis_belt_holder();
     }
 }
+
+yaxis_belt_holder();

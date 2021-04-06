@@ -197,7 +197,7 @@ module yaxis_idler_pulleyblock(part, show_pulley=false)
     }
     else if(part=="vit")
     {
-        pulley(yaxis_idler_pulley);
+        /*pulley(yaxis_idler_pulley);*/
         // TODO: add washers
     }
 
@@ -219,6 +219,8 @@ module part_y_idler_pulleyblock()
         yaxis_idler_pulleyblock(show_pulley=false);
     }
 }
+
+yaxis_idler_pulleyblock();
 
 if(false)
 {
