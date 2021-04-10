@@ -284,6 +284,102 @@ module extruder_a_motor_mount(part)
     }
 }
 
+module extruder_a_motor_cablechain(part)
+{
+    w = lookup(NemaSideSize, extruder_motor);
+    roundR = get(NemaEdgeRoundingRadius, model);
+    extrSize = get(NemaRoundExtrusionHeight, model);
+    thick = 6*mm;
+    depth = 8*mm;
+    gap = 4*mm;
+    if(part==U)
+    {
+        difference()
+        {
+            extruder_a_motor_cablechain(part="pos");
+            extruder_a_motor_cablechain(part="neg");
+        }
+        if($show_vit)
+        %extruder_a_motor_cablechain(part="vit");
+    }
+    else if(part=="pos")
+    material(Mat_Plastic)
+    {
+        hull()
+        {
+            motor_outline(model=extruder_motor, length=depth, extra_side=thick, orient=-Y);
+
+            // for chain mount
+            tz(w/2)
+            tx(-w/4)
+            rcubea([6*mm,depth,20*mm], align=Z);
+        }
+        hull()
+        {
+            motor_outline(model=extruder_motor, length=depth, extra_side=thick, orient=-Y);
+
+            // for chain mount
+            tz(w/2)
+            tx(-w/4)
+            rcubea([6*mm,depth,20*mm], align=Z, extra_size=Y*8, extra_align=Y);
+        }
+
+        // for tighten screw 
+        tz(-w/2)
+        for(x=[-gap/2,gap/2])
+        tx(x)
+        rcubea([5*mm,depth,10*mm], align=X*sign(x)-Z);
+    }
+    else if(part=="neg")
+    {
+        ty(-.1)
+        for(x=[-w/2,w/2])
+        tx(x)
+        rcubea([2*mm, depth/2, 15*mm], align=X*sign(x)-Y);
+
+        ty(-.1)
+        for(z=[w/2])
+        tz(z)
+        rcubea([15*mm, depth/2, 2*mm], align=Z*sign(z)-Y);
+
+        // for chain mount
+        tz(w/2)
+        tz(thick)
+        tx(3)
+        tx(-w/4)
+        rcubea([w,1000,20*mm], align=Z+X);
+
+        tx(-3)
+        tx(-w/4)
+        tz(w/2)
+        tz(thick)
+        tz(10.5)
+        ty(4)
+        for(y=[-6.35/2,6.35/2])
+        ty(y)
+        screw_cut(nut=NutKnurlM3_5_42, h=6*mm, orient=-X, align=X);
+
+        // gap for tighten
+        tz(-w/2)
+        cubea([gap,1000,w+thick+1], align=N);
+
+        // inner cut of motor
+        motor_outline(model=extruder_motor, length=1000, extra_side=1*mm, orient=-Y);
+
+        // tighten screw
+        tx(-gap-5*mm/2)
+        tz(-w/2)
+        tz(-1)
+        tz(-10*mm/2)
+        screw_cut(nut=NutKnurlM3_5_42, h=14*mm, orient=X, align=X);
+    }
+    else if(part=="vit")
+    {
+        ty(lookup(NemaLengthMedium, extruder_motor)/2)
+        motor(model=extruder_motor, size=NemaMedium, orient=Y);
+    }
+}
+
 module extruder_a(part=undef)
 {
     between_bearing_and_gear=0*mm;
@@ -363,17 +459,19 @@ module extruder_a(part=undef)
 
         ty(extruder_a_h)
         ry(extruder_motor_mount_angle)
-        ty(-1*mm)
         {
             motor(model=extruder_motor, size=NemaMedium, orient=-Y);
 
-            // motor heatsink
+            ty(lookup(NemaLengthMedium, extruder_motor)/2)
+            extruder_a_motor_cablechain();
+
+            if(false)
+            // motor heatsink+fan
             ty(lookup(NemaLengthMedium, extruder_motor)+2*mm)
             {
                 w = lookup(NemaSideSize, extruder_motor);
-                if(false)
                 color([.5,.5,.5])
-                cubea([40*mm,11*mm,40*mm], align=Y);
+                #cubea([40*mm,11*mm,40*mm], align=Y);
 
                 // fan
                 if(false)
@@ -1459,6 +1557,12 @@ module part_x_carriage_sensormount_clamp()
 {
     rx(-90)
     sensormount_clamp();
+}
+
+module part_x_carriage_extruder_a_motor_cablechain()
+{
+    rx(90)
+    extruder_a_motor_cablechain();
 }
 
 

@@ -127,8 +127,8 @@ extruder_gear_big_OD = calc_gear_OD(extruder_gear_big);
 extruder_gear_big_h = [3.85*mm, 5*mm];
 extruder_motor = dict_replace_multiple(Nema17,
         [
-        [NemaLengthMedium, 11.75*mm],
-        [NemaFrontAxleLength, 5*mm],
+        [NemaLengthMedium, 20.65*mm],
+        [NemaFrontAxleLength, 10*mm],
         ]);
 
 extruder_a_bearing = bearing_MR85;
