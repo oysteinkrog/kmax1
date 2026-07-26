@@ -2,19 +2,20 @@ include <psu.h>
 
 use <thing_libutils/shapes.scad>;
 use <thing_libutils/misc.scad>;
+use <thing_libutils/transforms.scad>;
 
 module psu_a(align=N, detailed_model=true)
 {
     if(detailed_model)
     {
-        size_align([psu_a_w,psu_a_d,psu_a_h], align)
+        size_align(size=[psu_a_w,psu_a_d,psu_a_h], align=align)
             translate([-24.5,105,-25])
             rotate([0,0,90])
             import("stl/ledpowersupply.stl");
     }
     else
     {
-        size_align([psu_a_w,psu_a_d,psu_a_h], align)
+        size_align(size=[psu_a_w,psu_a_d,psu_a_h], align=align)
         difference()
         {
             cubea([psu_a_w,psu_a_d,psu_a_h]);
@@ -91,7 +92,7 @@ module psu_a_extrusion_bracket_back()
 module psu_b(align=N)
 {
     {
-        size_align([psu_b_w,psu_b_d,psu_b_h], align)
+        size_align(size=[psu_b_w,psu_b_d,psu_b_h], align=align)
         difference()
         {
             rcubea([psu_b_w,psu_b_d,psu_b_h]);
