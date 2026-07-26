@@ -45,10 +45,10 @@ include <rod-clamps.h>
 use <printbed.scad>
 include <printbed.h>
 
-/*use <psu.scad>*/
-/*include <psu.h>*/
+use <psu.scad>
+include <psu.h>
 
-/*use <lcd2004.scad>*/
+use <lcd2004.scad>
 use <power-panel-iec320.scad>
 
 // x carriage
