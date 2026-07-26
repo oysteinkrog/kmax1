@@ -207,7 +207,7 @@ extruder_motor_offset_z = sin(extruder_motor_gear_offset_angle) * extruder_gears
 extruder_motor_holedist = lookup(NemaDistanceBetweenMountingHoles, extruder_motor);
 
 extruder_a_mount_offsets = [for(x=[-1,1]) for(z=[-1,1])
-[x*(x_carriage_w/2-extruder_b_mount_dia-3*mm),0,z*extruder_motor_holedist/2]+[x*5,0,z<0?+3*mm:z*4-14*mm]
+[x*(x_carriage_w/2-extruder_b_mount_dia-3*mm),0,z*extruder_motor_holedist/2]+[x>0&&z>0?x*7:x<0?x*5:x*7,0,x>0&&z>0?4*mm:z<0?+3*mm:z*4-14*mm]
 ];
 
 extruder_gear_big_offset=[-extruder_motor_offset_x,0,extruder_motor_offset_z];
@@ -411,13 +411,13 @@ voron_printhead_rear_pos=[-4.3,0,-42.2];
 
 // voron printhead and extruder body mount offsets onto extruder
 extruder_b_mount_offsets=[
-    voron_extruder_body_pos-X*13.75*mm-Z*11.55*mm,
+    voron_extruder_body_pos-X*13.65*mm-Z*11.50*mm,
     voron_extruder_body_pos-X*19.85*mm+Z*31.75*mm,
     voron_extruder_body_pos+X*11.20*mm+Z*31.75*mm,
-    voron_printhead_rear_pos+X*-30.8/2+Z*43.2/2,
-    voron_printhead_rear_pos+X*+30.8/2+Z*43.2/2,
-    voron_printhead_rear_pos+X*-32.45/2-Z*43.2/2,
-    voron_printhead_rear_pos+X*+32.45/2-Z*43.2/2,
+    voron_printhead_rear_pos+X*-30.8/2+Z*45.5/2,
+    voron_printhead_rear_pos+X*+30.8/2+Z*45.5/2,
+    voron_printhead_rear_pos+X*-32.45/2-Z*42.2/2,
+    voron_printhead_rear_pos+X*+32.45/2-Z*42.2/2,
 ];
 
 // extruder c mount offsets onto extruder b
