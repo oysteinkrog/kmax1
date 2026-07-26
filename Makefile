@@ -2,13 +2,19 @@
 CPUS ?= $(shell nproc)
 MAKEFLAGS += --jobs=$(CPUS)
 
-# Passed to openscad itself, not to make. fast-csg/fast-csg-trust-corefinement
-# were dropped upstream once the Manifold backend landed; Manifold is the
-# default backend now, so lazy-union is the only one still worth asking for.
-OPENSCAD_FLAGS = --enable lazy-union
+# Passed to openscad itself, not to make. Deliberately empty: Manifold is the
+# default backend now, and lazy-union is NOT safe here. It drops the implicit
+# union between sibling geometry, so a part whose body is several statements
+# not wrapped in union() exports as separate solids in one STL rather than one
+# merged manifold, with no error. Add flags here if a part needs them.
+OPENSCAD_FLAGS =
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
+# Native Linux only. WSL is deliberately unsupported: openscad there is a
+# Windows binary needing Windows paths, and the .deps file it writes back
+# would then contain "Z:\...", whose drive-letter colon make parses as a rule
+# separator. Use ./openscad.sh for the GUI, or build from git-bash/Windows.
 OPENSCAD="openscad-nightly"
 endif
 ifneq (,$(findstring MINGW64_NT,$(UNAME_S)))
