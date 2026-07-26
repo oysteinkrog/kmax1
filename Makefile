@@ -2,13 +2,17 @@
 CPUS ?= $(shell nproc)
 MAKEFLAGS += --jobs=$(CPUS)
 
+# Passed to openscad itself, not to make. fast-csg/fast-csg-trust-corefinement
+# were dropped upstream once the Manifold backend landed; Manifold is the
+# default backend now, so lazy-union is the only one still worth asking for.
+OPENSCAD_FLAGS = --enable lazy-union
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 OPENSCAD="openscad-nightly"
 endif
 ifneq (,$(findstring MINGW64_NT,$(UNAME_S)))
-OPENSCAD=/c/Program\ Files/OpenSCAD/openscad.com
+OPENSCAD=/c/Program\ Files/OpenSCAD\ \(Nightly\)/openscad.com
 endif
 
 OPENSCADPATH=$(shell pwd)
@@ -31,7 +35,7 @@ $(BUILDDIR)/$2.scad: $1 | dir_build dir_output
 
 $(OUTPUTDIR)/$2.stl: $(BUILDDIR)/$2.scad
 	@echo Building $2
-	@OPENSCADPATH=$(OPENSCADPATH) $(OPENSCAD) -m make -D is_build=true -o $(OPENSCADPATH)/$(OUTPUTDIR)/$2.stl -d $(OPENSCADPATH)/$(BUILDDIR)/$2.deps $(OPENSCADPATH)/$(BUILDDIR)/$2.scad
+	@OPENSCADPATH=$(OPENSCADPATH) $(OPENSCAD) $(OPENSCAD_FLAGS) -m make -D is_build=true -o $(OPENSCADPATH)/$(OUTPUTDIR)/$2.stl -d $(OPENSCADPATH)/$(BUILDDIR)/$2.deps $(OPENSCADPATH)/$(BUILDDIR)/$2.scad
 
 .PHONY: all
 all:: $(OUTPUTDIR)/$2.stl
