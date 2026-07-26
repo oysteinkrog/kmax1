@@ -443,7 +443,7 @@ module main()
 
 
 feet_height = 8*mm;
-translate([0, 0, main_lower_dist_z+extrusion_size*2+feet_height])
+/*translate([0, 0, main_lower_dist_z+extrusion_size*2+feet_height])*/
 main();
 
 /*psu();*/
