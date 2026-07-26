@@ -9,7 +9,7 @@
 if command -v wslpath >/dev/null 2>&1; then
     OPENSCADPATH=`wslpath -w .`
     export OPENSCADPATH WSLENV=OPENSCADPATH
-    exec "/mnt/c/Program Files/OpenSCAD (Nightly)/openscad.com" "$@" &
+    "/mnt/c/Program Files/OpenSCAD (Nightly)/openscad.com" "$@" &
 else
     OPENSCADPATH=`cygpath -aw .` openscad-nightly "$@" &
 fi
