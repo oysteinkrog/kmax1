@@ -13,6 +13,8 @@ use <thing_libutils/misc.scad>
 e=0.01*mm;
 
 // high quality etc
+// The Makefile overrides this with -D is_build=true when exporting STLs, so
+// the checked-in value is the one the GUI sees.
 is_build = false;
 
 // minimum size of a fragment
