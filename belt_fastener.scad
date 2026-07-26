@@ -70,9 +70,15 @@ module belt_fastener(part, belt=TimingBelt_GT2_2, belt_width=6*mm, belt_dist=pul
 
                     // belt loop fasten
                     tx(belt_hook_offset)
+                    tz(belt_hook_dia/2)
                     difference()
                     {
-                        cylindera(d=belt_hook_dia+belt_t2+.25*mm, h=belt_width+.1, extra_h=1000, extra_align=Y, orient=Y);
+                        hull()
+                        {
+                            cylindera(d=belt_hook_dia+belt_t2+.25*mm, h=belt_width+.1, extra_h=1000, extra_align=Y, orient=Y);
+                            tx(belt_hook_dia)
+                            cylindera(d=belt_t2+.25*mm, h=belt_width+.1, extra_h=1000, align=-X, extra_align=Y, orient=Y);
+                        }
                         cylindera(d=belt_hook_dia, h=belt_width+.3, extra_h=1000, extra_align=Y, orient=Y);
                     }
 
