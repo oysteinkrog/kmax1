@@ -17,7 +17,9 @@ module mount_lcd2004_parts(
     eps=[0.1,0.1,0], // gap for cavities
     part=undef,
     height=16*mm,
-    align, orient, roll, extra_roll, extra_roll_orient
+    // roll reaches orient() as `roll*axis`, so leaving it undef warns whenever
+    // a caller gives orient but not roll. 0 is the same no-op rotation.
+    align, orient, roll=0, extra_roll, extra_roll_orient
     )
 {
 
