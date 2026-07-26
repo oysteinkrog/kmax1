@@ -40,7 +40,10 @@ module xaxis_end_body(part, with_motor, beltpath_index=0, nut_top=false, with_xr
             translate(xaxis_end_motor_offset)
             {
                 translate([x*screw_dist/2, 0, z*screw_dist/2])
-                cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=Y, align=[0,-1,0], round_r=2);
+                // round_r must stay under half the boss radius (here 3.5mm),
+                // or the fillet profile crosses the rotation axis and the boss
+                // renders empty.
+                cylindera(d=lookup(ThreadSize,xaxis_motor_thread)+4*mm, h=motor_mount_wall_thick, orient=Y, align=[0,-1,0], round_r=1.5);
             }
         }
 
