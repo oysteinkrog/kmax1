@@ -432,7 +432,7 @@ module main()
             psu_a_extrusion_bracket_side();
 
             render()
-            translate(psu_a_screw_dist_y/2)
+            ty(psu_a_screw_dist_y/2)
             psu_a_extrusion_bracket_back();
         }
     }
