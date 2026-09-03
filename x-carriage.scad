@@ -23,6 +23,20 @@ include <thing_libutils/fan_axial_data.scad>
 
 use <thing_libutils/fan_5015S.scad>
 
+// Voron Stealthburner front cowl (V6/Revo Six file), registered to the V6
+// heatsink: the cowl's fin cradle (print-frame y -39.43..-13.55, axis at
+// x=0/z=27.5) aligned to the mockup's fin band (local z -42.65..-16.65).
+// The real printer runs SB; the AB imports below are the old toolhead.
+module x_printhead_sb()
+{
+    material(Mat_PlasticBlack)
+    tz(-3.10)
+    ty(-27.5)
+    rz(180)
+    rx(90)
+    import("stl/voron-sb/stealthburner_printhead_v6_r6_front.stl");
+}
+
 module x_extruder_hotend(side=-1, new=true)
 {
     material(Mat_Aluminium)
@@ -36,7 +50,8 @@ module x_extruder_hotend(side=-1, new=true)
     color("blue")
     spherea(2, align=Z);
 
-    //filament path
+    //filament path (vitamin mockup; keep out of boolean clearance probes)
+    if(is_undef($show_vit) || $show_vit)
     material(Mat_PlasticBlack)
     cylindera(h=1000, d=1.75*mm, orient=Z, align=N);
 }
@@ -1685,48 +1700,15 @@ module x_carriage_extruder(side)
             import("stl/voron/extruder_body.stl");
 
             attach(extruder_b_hotend_mount_conn, hotend_conn, roll=0)
-            x_extruder_hotend(side);
+            {
+                x_extruder_hotend(side);
+                x_printhead_sb();
+            }
 
             if(debug_filapath)
             t(extruder_b_filapath_offset)
             cubea([1000,1000,1000], align=-Y);
         }
-    }
-}
-
-module xaxis_end_bucket(part)
-{
-    s=[60,60,30];
-
-    if(part==U)
-    {
-        difference()
-        {
-            xaxis_end_bucket(part="pos");
-            xaxis_end_bucket(part="neg");
-        }
-    }
-    else if(part=="pos")
-    {
-        tz(extruder_offset.z)
-        tz(extruder_offset_b.z)
-        tz(-hotend_height)
-        t(extruder_b_hotend_mount_offset)
-
-        tx(100)
-        ty(extruder_b_filapath_offset.y)
-        rcubea(size=s, align=-Z);
-    }
-    else if(part=="neg")
-    {
-        tz(extruder_offset.z)
-        tz(extruder_offset_b.z)
-        tz(-hotend_height)
-        t(extruder_b_hotend_mount_offset)
-
-        tx(100)
-        ty(extruder_b_filapath_offset.y)
-        rcubea(size=s-[3,3,3], align=-Z, extra_size=1000*Z, extra_align=Z);
     }
 }
 
@@ -1774,8 +1756,6 @@ module xaxis_end_bucket(part)
     mirror([max(0,x),0,0])
     {
         xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=false, show_nut=false, show_bearings=false, with_xrod_adjustment=true);
-
-        xaxis_end_bucket();
     }
 
     if(false)
