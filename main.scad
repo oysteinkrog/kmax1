@@ -51,6 +51,9 @@ include <psu.h>
 use <lcd2004.scad>
 use <power-panel-iec320.scad>
 
+use <tool-dock-v2.scad>
+include <tool-dock-v2.h>
+
 // x carriage
 axis_range_x_ = main_width/2 - extrusion_size - x_carriage_w/2 + 20;
 axis_range_x = [-1,1] *  axis_range_x_;
@@ -101,7 +104,9 @@ module x_axis()
             tx(pos)
             attach(xaxis_carriage_conn, [[0,-xaxis_zaxis_distance_y,0],N])
             {
-                $show_vit=true;
+                // default vitamins on, but let clearance probes force
+                // them off from outside
+                $show_vit = is_undef($show_vit) ? true : $show_vit;
 
                 x_carriage_withmounts(side=x, with_sensormount=x==0);
 
@@ -123,7 +128,10 @@ module x_axis()
         {
             xaxis_end(with_motor=true, beltpath_index=max(0,x), show_motor=true, show_nut=true);
 
-            xaxis_end_bucket();
+            // $tooldock_hide lets clearance probes draw the machine
+            // without the docks (see validation/td2_isect_machine.scad)
+            if(is_undef($tooldock_hide) || !$tooldock_hide)
+            tool_dock2(beltpath_index=max(0,x));
         }
     }
 }
